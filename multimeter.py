@@ -23,7 +23,7 @@ class S7081:
         self.instr.write("OUTPUT,GP-IB=ON")
         self.instr.write("FORMAT=DVM,COMPRESSED")
         self.instr.write("DRIFT,OFF")
-        self.instr.write("MODe=VDC: RANge=Auto: NInes=7")
+        self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
 
     def read(self):
         self.instr.write("MEAsure, SIGLE")
@@ -48,7 +48,7 @@ class K2001:
         self.instr.write(":SYST:LSYN:STAT ON")
         self.instr.write(":SENS:FUNC 'VOLT:DC'")
         #self.instr.write(":SENS:VOLT:DC:DIG 8; NPLC 10; AVER:COUN 5; TCON REP")
-        self.instr.write(":SENS:VOLT:DC:DIG 8; NPLC 10; TCON REP")
+        self.instr.write(":SENS:VOLT:DC:DIG 9; NPLC 10; TCON REP")
         self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
         self.instr.write(":SENS:VOLT:DC:RANG 20")
         self.instr.write(":FORM:ELEM READ")

@@ -13,7 +13,7 @@ long_sensor = TMP117(0x49)
 bench_2001 = K2001(16)
 bench_7081 = S7081(2)
 
-with open('asdf.csv', mode='w') as csv_file:
+with open('LTZ-7081-driftoff.csv', mode='w') as csv_file:
     writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Time','Short Temp Sensor', 'Long Temp Sensor', 'K2001', 'S7081'])
     while True:
