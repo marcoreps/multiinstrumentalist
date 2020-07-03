@@ -16,7 +16,7 @@ class S7081:
         self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
         self.instr.timeout = 60*1000
         self.instr.write("INITIALISE")
-        time.sleep(3000)
+        time.sleep(3)
         self.instr.write("BEEp")
         #self.instr.write("OUTPUT, GP-IB, ON: FORMAT = ENGINEERING,EXPANDED")
         #self.instr.write("MODe=VDC: RANge=Auto: NInes=6")
