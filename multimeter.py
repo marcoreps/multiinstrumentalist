@@ -7,6 +7,7 @@ import vxi11
 class S7081:
     
     vxi_ip = "192.168.178.88"
+    address = 1
     
     def __init__(self, address):   
         self.gpib_address = address
