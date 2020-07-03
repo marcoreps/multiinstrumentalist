@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#from temp_sensor import TMP117
+from temp_sensor import TMP117
 from multimeter import *
 
 short_sensor = TMP117(0x48)
