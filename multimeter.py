@@ -20,4 +20,4 @@ class S7081:
         self.instr.write("BEEp")
         self.instr.write("OUTPUT, GP-IB, ON: FORMAT = ENGINEERING,EXPANDED")
         self.instr.write("MODe=VDC: RANge=Auto: NInes=6")
-        print(self.instr.ask("MEASURE, SINGLE"))
+        print(self.instr.ask("DRift?"))
