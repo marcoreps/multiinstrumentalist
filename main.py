@@ -1,4 +1,4 @@
-from .instruments import TMP177
+import TMP177
 
 short_sensor = TMP117(0x48)
 long_sensor = TMP117(0x49)
