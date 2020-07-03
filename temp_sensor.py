@@ -28,7 +28,7 @@ class TMP117:
         print("TMP117 sensor init")
         
     # Read temperature registers and calculate Celsius from the TMP117 sensor
-    def read_temperature(self):
+    def read(self):
         # Read temperature registers
         val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_temp, 2)
         temp_c = (val[0] << 8) | (val[1] )
