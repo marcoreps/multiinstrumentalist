@@ -35,8 +35,3 @@ class TMP117:
         temp_c = temp_c * 0.0078125
 
         return temp_c
-        
-short_sensor = TMP117(0x48)
-long_sensor = TMP117(0x49)
-print(short_sensor.read_temperature())
-print(long_sensor.read_temperature())
