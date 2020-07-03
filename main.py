@@ -1,4 +1,4 @@
-import TMP177
+from TMP177 import *
 
 short_sensor = TMP117(0x48)
 long_sensor = TMP117(0x49)
