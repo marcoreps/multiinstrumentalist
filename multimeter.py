@@ -11,5 +11,5 @@ class S7081:
     
     def __init__(self, address):   
         self.gpib_address = address
-        instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+self.address)
+        instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
         instr.write("BEEp")
