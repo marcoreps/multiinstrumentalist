@@ -67,7 +67,8 @@ class K2001:
         self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
         self.instr.write(":SENS:VOLT:DC:AVER:COUN 100")
         self.instr.write(":SENS:VOLT:DC:AVER:TCON REP")
-        self.instr.write(":volt:filt on")
         self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
+        self.instr.write(":SENS:VOLT:DC:FILT:LPAS:STAT ON")
+        self.instr.write(":FORM:ELEM READ")
 
         
