@@ -45,7 +45,7 @@ class K2001:
         self.instr.timeout = 60*1000
         self.instr.clear()
         
-    def config_DCV_9digit():
+    def config_DCV_9digit(self):
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
         self.instr.write(":SYST:LSYN:STAT ON")
@@ -58,7 +58,7 @@ class K2001:
     def read(self):
         return self.instr.ask("READ?")
         
-    def config_DCV_9digit_1000(): #Max filtering
+    def config_DCV_9digit_1000(self): #Max filtering
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
         self.instr.write(":SYST:LSYN:STAT ON")
