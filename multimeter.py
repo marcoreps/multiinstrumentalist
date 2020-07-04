@@ -7,11 +7,9 @@ import time
 
 
 class S7081:
-    
-    vxi_ip = "192.168.178.88"
-    address = 0
-    
-    def __init__(self, address):   
+
+    def __init__(self, vxi_ip, address):
+        self.vxi_ip = vxi_ip
         self.address = address
         self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
         self.instr.timeout = 60*1000
@@ -28,18 +26,12 @@ class S7081:
     def read(self):
         self.instr.write("MEAsure, SIGLE")
         return self.instr.read()
-            
-        
-
-
 
 
 class K2001:
-    
-    vxi_ip = "192.168.178.88"
-    address = 0
-    
-    def __init__(self, address):   
+
+    def __init__(self, vxi_ip, address):
+        self.vxi_ip = vxi_ip
         self.address = address
         self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
         self.instr.timeout = 60*1000
@@ -70,4 +62,13 @@ class K2001:
 
     def read(self):
         return self.instr.ask("READ?")
-        
+
+
+class A6581T:
+
+    def __init__(self, vxi_ip, address):
+        self.vxi_ip = vxi_ip
+        self.address = address
+        self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
+        self.instr.timeout = 60*1000
+        self.instr.clear()
