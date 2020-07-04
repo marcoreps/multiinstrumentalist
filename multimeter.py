@@ -48,7 +48,7 @@ class K2001:
         self.instr.write(":SYST:LSYN:STAT ON")
         self.instr.write(":SENS:FUNC 'VOLT:DC'")
         #self.instr.write(":SENS:VOLT:DC:DIG 8; NPLC 10; AVER:COUN 5; TCON REP")
-        self.instr.write(":SENS:VOLT:DC:DIG 9; NPLC 10; TCON REP")
+        self.instr.write(":SENS:VOLT:DC:DIG 9; NPLC 20; TCON REP")
         self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
         self.instr.write(":SENS:VOLT:DC:RANG 20")
         self.instr.write(":FORM:ELEM READ")
