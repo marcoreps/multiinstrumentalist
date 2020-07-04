@@ -55,9 +55,6 @@ class K2001:
         self.instr.write(":SENS:VOLT:DC:RANG 20")
         self.instr.write(":FORM:ELEM READ")
         
-    def read(self):
-        return self.instr.ask("READ?")
-        
     def config_DCV_9digit_1000(self): #Max filtering
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
@@ -71,4 +68,6 @@ class K2001:
         self.instr.write(":SENS:VOLT:DC:FILT:LPAS:STAT ON")
         self.instr.write(":FORM:ELEM READ")
 
+    def read(self):
+        return self.instr.ask("READ?")
         
