@@ -42,18 +42,32 @@ class K2001:
     def __init__(self, address):   
         self.address = address
         self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
+        self.instr.timeout = 60*1000
         self.instr.clear()
+        
+    def config_DCV_9digit():
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
         self.instr.write(":SYST:LSYN:STAT ON")
         self.instr.write(":SENS:FUNC 'VOLT:DC'")
-        #self.instr.write(":SENS:VOLT:DC:DIG 8; NPLC 10; AVER:COUN 5; TCON REP")
-        self.instr.write(":SENS:VOLT:DC:DIG 9; NPLC 20; TCON REP")
+        self.instr.write(":SENS:VOLT:DC:DIG 9; NPLC 10; TCON REP")
         self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
         self.instr.write(":SENS:VOLT:DC:RANG 20")
         self.instr.write(":FORM:ELEM READ")
         
     def read(self):
         return self.instr.ask("READ?")
+        
+    def config_DCV_9digit_1000 #Max filtering
+        self.instr.write("*RST")
+        self.instr.write(":SYST:AZER:TYPE SYNC")
+        self.instr.write(":SYST:LSYN:STAT ON")
+        self.instr.write(":SENS:FUNC 'VOLT:DC'")
+        self.instr.write(":SENS:VOLT:DC:DIG 9; NPLC 10")
+        self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
+        self.instr.write(":SENS:VOLT:DC:AVER:COUN 100")
+        self.instr.write(":SENS:VOLT:DC:AVER:TCON REP")
+        self.instr.write(":volt:filt on")
+        self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
 
         
