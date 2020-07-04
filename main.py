@@ -6,7 +6,7 @@ import threading
 from datetime import datetime
 
 #from temp_sensor import TMP117
-from multimeter import *
+from instruments.multimeter import *
 
 vxi_ip = "192.168.178.88"
 
@@ -15,7 +15,8 @@ vxi_ip = "192.168.178.88"
 
 #bench_2001 = K2001(16)
 #bench_2001.config_DCV_9digit_1000()
-bench_7081 = S7081(vxi_ip, 2)
+#bench_7081 = S7081(vxi_ip, 2)
+bench_6581 = A6581T(vxi_ip, 3)
 
 #with open('5700A-10V_2.csv', mode='w') as csv_file:
  #   writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
