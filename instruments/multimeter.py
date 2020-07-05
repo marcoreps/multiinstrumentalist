@@ -8,8 +8,8 @@ import logging
 class S7081:
 
     def __init__(self, ip, gpib_address, title='Solartron 7081'):
-        logging.debug(self.title+' init started')
         self.title = title
+        logging.debug(self.title+' init started')
         self.ip = ip
         self.gpib_address = gpib_address
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
@@ -39,8 +39,8 @@ class S7081:
 class K2001:
 
     def __init__(self, ip, gpib_address, title='Keithley 2001'):
-        logging.debug('K2001 init started')
         self.title = title
+        logging.debug('K2001 init started')
         self.ip = ip
         self.gpib_address = gpib_address
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
@@ -86,8 +86,8 @@ class K2001:
 class R6581T:
 
     def __init__(self, ip, gpib_address, title='Advantest R6581T'):
-        logging.debug(self.title+' init started')
         self.title = title
+        logging.debug(self.title+' init started')
         self.ip = ip
         self.gpib_address = gpib_address
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
