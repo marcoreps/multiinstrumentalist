@@ -25,14 +25,16 @@ class S7081:
         self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
 
     def read(self):
-        logging.debug(self.title+' read started')
+        logging.debug(self.title+' reading started')
         self.instr.write("MEAsure, SIGLE")
         self.read_val = self.instr.read()
         
     def get_title(self):
+        logging.debug(self.title+' get_title')
         return self.title
         
     def get_read_val(self):
+        logging.debug(self.title+' returns '+self.read_val)
         return self.read_val
 
 
