@@ -8,7 +8,7 @@ import concurrent.futures
 
 from datetime import datetime
 
-#from instruments.temp_sensor import TMP117
+from instruments.temp_sensor import TMP117
 from instruments.multimeter import *
 
 logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(message)s')
@@ -16,8 +16,8 @@ logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(
 vxi_ip = "192.168.178.88"
 
 instruments = []
-#instruments.append(TMP117(address=0x48, title="Short Temp Sensor"))
-#instruments.append(TMP117(address=0x49, title="Long Temp Sensor"))
+instruments.append(TMP117(address=0x48, title="Short Temp Sensor"))
+instruments.append(TMP117(address=0x49, title="Long Temp Sensor"))
 instruments.append(S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081"))
 instruments.append(R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T"))
 instruments[-1].config_DCV_9digit()
