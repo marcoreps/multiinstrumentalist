@@ -5,7 +5,7 @@ import csv
 import threading
 from datetime import datetime
 
-from temp_sensor import TMP117
+from instruments.temp_sensor import TMP117
 from instruments.multimeter import *
 
 vxi_ip = "192.168.178.88"
