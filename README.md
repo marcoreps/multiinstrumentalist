@@ -2,4 +2,4 @@
 Multi instrument datalogging platform
 
 
-pip install python-vxi11
+pip3 install python-vxi11

@@ -36,4 +36,12 @@ class TMP117:
         # Convert registers value to temperature (C)
         temp_c = temp_c * 0.0078125
 
-        return temp_c
+        self.read_val = temp_c
+        
+    def get_title(self):
+        logging.debug('TMP117 get_title started')
+        return self.title
+        
+    def get_read_val(self):
+        logging.debug('TMP117 returning '+self.read_val)
+        return self.read_val
