@@ -28,10 +28,11 @@ class TMP117:
         # Read CONFIG to verify that we changed it
         val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_config, 2)
         #print("New CONFIG:", val)
-        logging.debug('TMP117 inited')
+        logging.debug(self.title+' inited')
         
     # Read temperature registers and calculate Celsius from the TMP117 sensor
     def read(self):
+        logging.debug(self.title+' reading started')
         # Read temperature registers
         val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_temp, 2)
         temp_c = (val[0] << 8) | (val[1] )
@@ -41,9 +42,9 @@ class TMP117:
         self.read_val = temp_c
         
     def get_title(self):
-        logging.debug('TMP117 get_title started')
+        logging.debug(self.title+' get_title started')
         return self.title
         
     def get_read_val(self):
-        logging.debug('TMP117 returning '+str(self.read_val))
+        logging.debug(self.title+' returning '+str(self.read_val))
         return self.read_val
