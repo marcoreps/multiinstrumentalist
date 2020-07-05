@@ -73,6 +73,7 @@ class R6581T:
         
     def config_DCV_9digit(self):
         self.instr.write("*RST")
+        time.sleep(3)
         self.instr.write("CONFigure:VOLTage:DC")
         self.instr.write(":SENSe:VOLTage:DC:RANGe:AUTO ON")
         self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
