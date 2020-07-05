@@ -22,7 +22,7 @@ instruments.append(S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081"))
 instruments.append(R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T"))
 instruments[-1].config_DCV_9digit()
         
-with open('multithread_test.csv', mode='wb') as csv_file:
+with open('multithread_test.csv', mode='w', newline='') as csv_file:
     writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     writer.writerow([x.get_title() for x in instruments])
     while True:
