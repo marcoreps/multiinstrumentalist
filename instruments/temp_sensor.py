@@ -45,5 +45,5 @@ class TMP117:
         return self.title
         
     def get_read_val(self):
-        logging.debug('TMP117 returning '+self.read_val)
+        logging.debug('TMP117 returning '+str(self.read_val))
         return self.read_val
