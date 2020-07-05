@@ -18,7 +18,7 @@ class S7081:
         self.instr.write("DELIMITER=END")
         self.instr.write("OUTPUT,GP-IB=ON")
         self.instr.write("FORMAT=DVM,COMPRESSED")
-        self.instr.write("DRIFT,OFF")
+        #self.instr.write("DRIFT,OFF")
         self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
 
     def read(self):
