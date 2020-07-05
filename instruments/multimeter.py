@@ -62,7 +62,7 @@ class K2001:
         return self.instr.ask("READ?")
 
 
-class A6581T:
+class R6581T:
 
     def __init__(self, vxi_ip, address):
         self.vxi_ip = vxi_ip
@@ -80,13 +80,16 @@ class A6581T:
         self.instr.write(":SENSe:VOLTage:DC:APERture MAXimum")
         #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
         #self.instr.write(":SENSe:ZERO:AUTO OFF")
+        
         self.instr.write(":CALCulate:DFILter:STATe ON")
+        self.instr.write(":CALCulate:DFILter SMOothing")
         self.instr.write(":CALCulate:DFILter:SMOothing MAXimum")
-        #self.instr.write(":CALCulate:DFILter:AVERage MAXimum")
         #self.instr.write(":DISPlay OFF")
         #self.instr.write(":DISPlay ON")
-        #self.instr.ask(":SENSe:ITEMperature?")
         
     def read(self):
         return self.instr.ask("READ?")
+        
+    def read_int_temp(self):
+        return self.instr.ask(":SENSe:ITEMperature?")
         
