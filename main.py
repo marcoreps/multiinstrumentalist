@@ -24,4 +24,4 @@ with open('5700A-10V_7081drifton_6581.csv', mode='w') as csv_file:
     writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
     writer.writerow(['Time','Short Temp Sensor', 'Long Temp Sensor', 'A6581T Int Temp', 'A6581T', 'S7081'])
     while True:
-        writer.writerow([datetime.now(), short_sensor.read(), long_sensor.read(), read_int_temp(), bench_6581.read(), bench_7081.read()])
+        writer.writerow([datetime.now(), short_sensor.read(), long_sensor.read(), bench_6581.read_int_temp(), bench_6581.read(), bench_7081.read()])
