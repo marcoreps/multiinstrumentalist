@@ -28,7 +28,7 @@ class TMP117:
         # Read CONFIG to verify that we changed it
         val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_config, 2)
         #print("New CONFIG:", val)
-        print("TMP117 sensor init")
+        logging.debug('TMP117 inited')
         
     # Read temperature registers and calculate Celsius from the TMP117 sensor
     def read(self):

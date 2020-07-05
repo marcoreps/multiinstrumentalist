@@ -119,11 +119,6 @@ class R6581T:
         logging.debug(self.title+' reading started')
         self.read_val = self.instr.ask("READ?")
         
-    def read_int_temp(self):
-        self.internal_temp = self.instr.ask(":SENSe:ITEMperature?")
-        logging.debug(self.title+' read_int_temp '+self.internal_temp)
-        return self.internal_temp
-        
     def get_title(self):
         logging.debug(self.title+' get_title')
         return self.title
@@ -132,3 +127,18 @@ class R6581T:
         logging.debug(self.title+' returns '+self.read_val)
         return self.read_val
         
+        
+class R6581T_temp:
+
+    def __init__(self, r6581t, title='R6581T Int Temp Sensor'):
+        self.title = title
+        logging.debug(self.title+' init started')
+        self.r6581t = r6581t
+    
+    def read(self):
+        self.read_val = self.r6581t.ask(":SENSe:ITEMperature?")
+        logging.debug(self.title+' read_int_temp '+self.internal_temp)
+        
+    def get_read_val(self):
+        logging.debug(self.title+' returns '+self.read_val)
+        return self.read_val
