@@ -7,11 +7,12 @@ import logging
 
 class S7081:
 
-    def __init__(self, vxi_ip, address):
+    def __init__(self, ip, gpib_address, title='Solartron 7081'):
         logging.debug('S7081 init started')
-        self.vxi_ip = vxi_ip
-        self.address = address
-        self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
+        self.title = title
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 60*1000
         self.instr.clear()
         self.instr.write("INItialise")
@@ -19,23 +20,30 @@ class S7081:
         #self.instr.write("BEEp")
         self.instr.write("DELIMITER=END")
         self.instr.write("OUTPUT,GP-IB=ON")
-        self.instr.write("FORMAT=DVM,COMPRESSED")
+        self.instr.write("FORMAT=ENGINEERING")
         #self.instr.write("DRIFT,OFF")
         self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
 
     def read(self):
         logging.debug('S7081 read started')
         self.instr.write("MEAsure, SIGLE")
-        return self.instr.read()
+        self.read_val = self.instr.read()
+        
+    def get_title(self):
+        return self.title
+        
+    def get_read_val(self):
+        return self.read_val
 
 
 class K2001:
 
-    def __init__(self, vxi_ip, address):
+    def __init__(self, ip, gpib_address, title='Keithley 2001'):
         logging.debug('K2001 init started')
-        self.vxi_ip = vxi_ip
-        self.address = address
-        self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
+        self.title = title
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 60*1000
         self.instr.clear()
         
@@ -66,16 +74,23 @@ class K2001:
 
     def read(self):
         logging.debug('K2001 read started')
-        return self.instr.ask("READ?")
+        self.read_val = self.instr.ask("READ?")
+        
+    def get_title(self):
+        return self.title
+        
+    def get_read_val(self):
+        return self.read_val
 
 
 class R6581T:
 
-    def __init__(self, vxi_ip, address):
+    def __init__(self, ip, gpib_address, title='Advantest R6581T'):
         logging.debug('R6581T init started')
-        self.vxi_ip = vxi_ip
-        self.address = address
-        self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
+        self.title = title
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 60*1000
         self.instr.clear()
         logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
@@ -94,15 +109,23 @@ class R6581T:
         
         self.instr.write(":CALCulate:DFILter:STATe ON")
         self.instr.write(":CALCulate:DFILter AVERage")
-        self.instr.write(":CALCulate:DFILter:AVERage 15")
+        self.instr.write(":CALCulate:DFILter:AVERage 10")
         #self.instr.write(":DISPlay OFF")
         #self.instr.write(":DISPlay ON")
         
     def read(self):
         logging.debug('R6581T read started')
-        return self.instr.ask("READ?")
+        self.read_val = self.instr.ask("READ?")
         
     def read_int_temp(self):
         logging.debug('R6581T read_int_temp started')
         return self.instr.ask(":SENSe:ITEMperature?")
+        
+    def get_title(self):
+        logging.debug('R6581T get_title started')
+        return self.title
+        
+    def get_read_val(self):
+        logging.debug('R6581T returning '+self.read_val)
+        return self.read_val
         

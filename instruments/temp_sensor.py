@@ -9,7 +9,8 @@ class TMP117:
     reg_config = 0x01
     bus = smbus.SMBus(i2c_ch)
     
-    def __init__(self, address):   
+    def __init__(self, address, title):
+        self.title = title
         self.i2c_address = address
         # Read the CONFIG register (2 bytes)
         val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_config, 2)
