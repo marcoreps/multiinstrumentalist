@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import smbus
+import logging
+
     
 class TMP117:
     
