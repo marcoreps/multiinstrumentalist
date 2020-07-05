@@ -11,7 +11,7 @@ from datetime import datetime
 #from instruments.temp_sensor import TMP117
 from instruments.multimeter import *
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(message)s')
 
 
 vxi_ip = "192.168.178.88"
@@ -33,6 +33,10 @@ bench_6581.config_DCV_9digit()
         
         
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    future = executor.submit(bench_6581.read)
-    return_value = future.result()
-    print(return_value)
+    bench_7081_thread = executor.submit(bench_7081.read)
+    bench_6581_thread = executor.submit(bench_6581.read)
+    bench_6581_return_vlaue = bench_6581_thread.result()
+    bench_7081_return_vlaue = bench_7081_thread.result()
+    print("6581 = "+bench_6581_return_vlaue)
+    print("7081 = "+bench_7081_return_vlaue)
+

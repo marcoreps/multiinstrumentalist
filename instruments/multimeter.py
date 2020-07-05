@@ -3,10 +3,12 @@
 
 import vxi11
 import time
+import logging
 
 class S7081:
 
     def __init__(self, vxi_ip, address):
+        logging.debug('S7081 init started')
         self.vxi_ip = vxi_ip
         self.address = address
         self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
@@ -30,6 +32,7 @@ class S7081:
 class K2001:
 
     def __init__(self, vxi_ip, address):
+        logging.debug('K2001 init started')
         self.vxi_ip = vxi_ip
         self.address = address
         self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
@@ -37,6 +40,7 @@ class K2001:
         self.instr.clear()
         
     def config_DCV_9digit(self):
+        logging.debug('K2001 config_DCV_9digit started')
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
         self.instr.write(":SYST:LSYN:STAT ON")
@@ -47,6 +51,7 @@ class K2001:
         self.instr.write(":FORM:ELEM READ")
         
     def config_DCV_9digit_1000(self): #Max filtering
+        logging.debug('K2001 config_DCV_9digit_1000 started')
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
         self.instr.write(":SYST:LSYN:STAT ON")
@@ -67,26 +72,29 @@ class K2001:
 class R6581T:
 
     def __init__(self, vxi_ip, address):
+        logging.debug('R6581T init started')
         self.vxi_ip = vxi_ip
         self.address = address
         self.instr =  vxi11.Instrument(self.vxi_ip, "gpib0,"+str(self.address))
         self.instr.timeout = 60*1000
         self.instr.clear()
+        logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
         
     def config_DCV_9digit(self):
+        logging.debug('R6581T config_DCV_9digit started')
         self.instr.write("*RST")
-        time.sleep(3)
+        self.instr.ask("*OPC?")
         self.instr.write("CONFigure:VOLTage:DC")
         self.instr.write(":SENSe:VOLTage:DC:RANGe:AUTO ON")
         self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
         self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
-        self.instr.write(":SENSe:VOLTage:DC:APERture MAXimum")
+        #self.instr.write(":SENSe:VOLTage:DC:APERture MAXimum")
         #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
         #self.instr.write(":SENSe:ZERO:AUTO OFF")
         
         self.instr.write(":CALCulate:DFILter:STATe ON")
-        self.instr.write(":CALCulate:DFILter SMOothing")
-        self.instr.write(":CALCulate:DFILter:SMOothing MAXimum")
+        self.instr.write(":CALCulate:DFILter AVERage")
+        self.instr.write(":CALCulate:DFILter:AVERage 15")
         #self.instr.write(":DISPlay OFF")
         #self.instr.write(":DISPlay ON")
         
@@ -95,5 +103,6 @@ class R6581T:
         return self.instr.ask("READ?")
         
     def read_int_temp(self):
+        logging.debug('R6581T read_int_temp started')
         return self.instr.ask(":SENSe:ITEMperature?")
         
