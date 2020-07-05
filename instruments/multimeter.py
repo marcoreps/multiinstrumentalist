@@ -22,6 +22,7 @@ class S7081:
         self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
 
     def read(self):
+        logging.debug('S7081 read started')
         self.instr.write("MEAsure, SIGLE")
         return self.instr.read()
 
@@ -59,6 +60,7 @@ class K2001:
         self.instr.write(":FORM:ELEM READ")
 
     def read(self):
+        logging.debug('K2001 read started')
         return self.instr.ask("READ?")
 
 
@@ -89,6 +91,7 @@ class R6581T:
         #self.instr.write(":DISPlay ON")
         
     def read(self):
+        logging.debug('R6581T read started')
         return self.instr.ask("READ?")
         
     def read_int_temp(self):
