@@ -8,7 +8,7 @@ import logging
 class S7081:
 
     def __init__(self, ip, gpib_address, title='Solartron 7081'):
-        logging.debug('S7081 init started')
+        logging.debug(self.title+' init started')
         self.title = title
         self.ip = ip
         self.gpib_address = gpib_address
@@ -25,7 +25,7 @@ class S7081:
         self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
 
     def read(self):
-        logging.debug('S7081 read started')
+        logging.debug(self.title+' read started')
         self.instr.write("MEAsure, SIGLE")
         self.read_val = self.instr.read()
         
@@ -86,7 +86,7 @@ class K2001:
 class R6581T:
 
     def __init__(self, ip, gpib_address, title='Advantest R6581T'):
-        logging.debug('R6581T init started')
+        logging.debug(self.title+' init started')
         self.title = title
         self.ip = ip
         self.gpib_address = gpib_address
@@ -96,7 +96,7 @@ class R6581T:
         logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
         
     def config_DCV_9digit(self):
-        logging.debug('R6581T config_DCV_9digit started')
+        logging.debug(self.title+' config_DCV_9digit started')
         self.instr.write("*RST")
         self.instr.ask("*OPC?")
         self.instr.write("CONFigure:VOLTage:DC")
@@ -114,18 +114,19 @@ class R6581T:
         #self.instr.write(":DISPlay ON")
         
     def read(self):
-        logging.debug('R6581T read started')
+        logging.debug(self.title+' reading started')
         self.read_val = self.instr.ask("READ?")
         
     def read_int_temp(self):
-        logging.debug('R6581T read_int_temp started')
-        return self.instr.ask(":SENSe:ITEMperature?")
+        self.internal_temp = self.instr.ask(":SENSe:ITEMperature?")
+        logging.debug(self.title+' read_int_temp '+self.internal_temp)
+        return self.internal_temp
         
     def get_title(self):
-        logging.debug('R6581T get_title started')
+        logging.debug(self.title+' get_title')
         return self.title
         
     def get_read_val(self):
-        logging.debug('R6581T returning '+self.read_val)
+        logging.debug(self.title+' returns '+self.read_val)
         return self.read_val
         
