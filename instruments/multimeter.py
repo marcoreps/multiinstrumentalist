@@ -14,7 +14,7 @@ class S7081:
         self.instr.clear()
         self.instr.write("INItialise")
         time.sleep(3)
-        self.instr.write("BEEp")
+        #self.instr.write("BEEp")
         self.instr.write("DELIMITER=END")
         self.instr.write("OUTPUT,GP-IB=ON")
         self.instr.write("FORMAT=DVM,COMPRESSED")
