@@ -28,6 +28,8 @@ class S7081:
         logging.debug(self.title+' reading started')
         self.instr.write("MEAsure, SIGLE")
         self.read_val = self.instr.read()
+        logging.debug(self.title+' reading measurement done')
+
         
     def get_title(self):
         logging.debug(self.title+' get_title')
@@ -119,18 +121,17 @@ class R6581T:
     def read(self):
         logging.debug(self.title+' reading started')
         self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
+        logging.debug(self.title+' reading internal temperature done')
         self.read_val = self.instr.ask("READ?")
+        logging.debug(self.title+' reading measurement done')
         
     def get_title(self):
-        logging.debug(self.title+' get_title')
         return self.title
         
     def get_read_val(self):
-        logging.debug(self.title+' returns '+self.read_val)
         return self.read_val
         
     def get_int_temp(self):
-        logging.debug(self.title+' returns internal temperature '+self.int_temp)
         return self.int_temp
         
         
@@ -139,11 +140,10 @@ class R6581T_temp:
 
     def __init__(self, r6581t, title='R6581T Int Temp Sensor'):
         self.title = title
-        logging.debug(self.title+' init started')
         self.r6581t = r6581t
     
     def read(self):
-        logging.debug(self.title+' does nothing')
+        return
         
     def get_read_val(self):
         return self.r6581t.get_int_temp()
