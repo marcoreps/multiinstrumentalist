@@ -26,7 +26,7 @@ class MySeriesHelper(SeriesHelper):
 
         # The series name must be a string. Add dependent fields/tags
         # in curly brackets.
-        series_name = 'events.stats.{instrument_name}'
+        series_name = '{instrument_name}'
 
         # Defines all the fields in this time series.
         fields = ['value']
