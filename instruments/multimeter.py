@@ -144,6 +144,7 @@ class R6581T_temp:
     def read(self):
         logging.debug(self.title+' reading started')
         self.read_val = self.r6581t.get_int_temp()
+        logging.debug(self.title+' reading finished = '+str(self.read_val))
         
         
     def get_read_val(self):
