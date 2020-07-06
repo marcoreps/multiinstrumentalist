@@ -45,6 +45,8 @@ def write_influxdb_forever():
                 executor.shutdown(wait=True)
             for i in instruments:
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                logging.debug(i.get_title()+' processed')
+            logging.debug('MySeriesHelper.commit()')
             MySeriesHelper.commit()
 
 write_influxdb_forever()
