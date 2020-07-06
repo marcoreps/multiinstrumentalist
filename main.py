@@ -25,11 +25,11 @@ instruments.append(R6581T_temp(r6581t=instruments[-1], title="R6581T Int Temp Se
         
 with open('multithread_test.csv', mode='w', newline='') as csv_file:
     writer = csv.writer(csv_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-    writer.writerow([x.get_title() for x in instruments])
+    writer.writerow([i.get_title() for i in instruments])
     while True:
         with concurrent.futures.ThreadPoolExecutor() as executor:
             for instrument in instruments:
                 executor.submit(instrument.read)
             executor.shutdown(wait=True)
-        writer.writerow([x.get_read_val() for x in instruments])
+        writer.writerow([i.get_read_val() for i in instruments])
         csv_file.flush()

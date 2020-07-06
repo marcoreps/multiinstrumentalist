@@ -148,7 +148,7 @@ class R6581T_temp:
         
     def get_read_val(self):
         logging.debug(self.title+' returns '+str(self.r6581t.get_read_val()))
-        return self.r6581t.get_read_val
+        return self.r6581t.get_read_val()
         
     def get_title(self):
         logging.debug(self.title+' get_title')
