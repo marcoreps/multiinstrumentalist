@@ -112,11 +112,10 @@ class R6581T:
         #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
         #self.instr.write(":SENSe:ZERO:AUTO OFF")
         
-        self.instr.write(":CALCulate:DFILter:STATe ON")
-        self.instr.write(":CALCulate:DFILter AVERage")
-        self.instr.write(":CALCulate:DFILter:AVERage 15")
-        #self.instr.write(":DISPlay OFF")
-        #self.instr.write(":DISPlay ON")
+        #self.instr.write(":CALCulate:DFILter:STATe ON")
+        #self.instr.write(":CALCulate:DFILter AVERage")
+        #self.instr.write(":CALCulate:DFILter:AVERage 15")
+
         
     def read(self):
         logging.debug(self.title+' reading started')
