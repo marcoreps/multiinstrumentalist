@@ -22,7 +22,7 @@ class S7081:
         self.instr.write("OUTPUT,GP-IB=ON")
         self.instr.write("FORMAT=ENGINEERING")
         #self.instr.write("DRIFT,OFF")
-        self.instr.write("MODe=VDC: RANge=Auto: NInes=7")
+        self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
 
     def read(self):
         logging.debug(self.title+' reading started')
@@ -112,7 +112,7 @@ class R6581T:
         
         self.instr.write(":CALCulate:DFILter:STATe ON")
         self.instr.write(":CALCulate:DFILter AVERage")
-        #self.instr.write(":CALCulate:DFILter:AVERage 15")
+        self.instr.write(":CALCulate:DFILter:AVERage 15")
         #self.instr.write(":DISPlay OFF")
         #self.instr.write(":DISPlay ON")
         
