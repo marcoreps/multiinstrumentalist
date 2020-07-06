@@ -108,21 +108,20 @@ class R6581T:
         self.instr.write(":SENSe:VOLTage:DC:RANGe:AUTO ON")
         self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
         self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
-        #self.instr.write(":SENSe:VOLTage:DC:APERture MAXimum")
         #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
         #self.instr.write(":SENSe:ZERO:AUTO OFF")
         
-        #self.instr.write(":CALCulate:DFILter:STATe ON")
-        #self.instr.write(":CALCulate:DFILter AVERage")
-        #self.instr.write(":CALCulate:DFILter:AVERage 15")
+        self.instr.write(":CALCulate:DFILter:STATe ON")
+        self.instr.write(":CALCulate:DFILter AVERage")
+        self.instr.write(":CALCulate:DFILter:AVERage 15")
 
         
     def read(self):
         logging.debug(self.title+' reading started')
-        self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
-        logging.debug(self.title+' reading internal temperature done')
         self.read_val = self.instr.ask("READ?")
         logging.debug(self.title+' reading measurement done')
+        self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
+        logging.debug(self.title+' reading internal temperature done')
         
     def get_title(self):
         return self.title
