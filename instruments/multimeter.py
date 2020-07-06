@@ -96,6 +96,7 @@ class R6581T:
         self.instr.timeout = 60*1000
         self.instr.clear()
         logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+        self.int_temp = 0
         
     def config_DCV_9digit(self):
         logging.debug(self.title+' config_DCV_9digit started')
