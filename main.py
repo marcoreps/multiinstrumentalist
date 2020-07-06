@@ -47,3 +47,4 @@ def write_influxdb_forever():
                 MySeriesHelper(instrument_name=i.get_title(), value=i.get_read_val())
             MySeriesHelper.commit()
 
+write_influxdb_forever()
