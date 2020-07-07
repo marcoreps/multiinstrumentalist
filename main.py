@@ -64,7 +64,7 @@ def inl_test():
     for i in numpy.arange(start,end,step):
     
         instruments[4].out(str(i)+"V")
-        MySeriesHelper(instrument_name=instruments[4].get_title(), value=i)
+        
         
         instruments[0].read()
         MySeriesHelper(instrument_name=instruments[0].get_title(), value=float(instruments[0].get_read_val()))
@@ -80,7 +80,7 @@ def inl_test():
         instruments[2].read()
         R6581T_read_val = float(instruments[2].get_read_val())
         MySeriesHelper(instrument_name=instruments[2].get_title(), value=R6581T_read_val)
-        
+        MySeriesHelper(instrument_name=instruments[4].get_title(), value=i)
         MySeriesHelper(instrument_name="difference", value=R6581T_read_val-i)
         
         MySeriesHelper.commit()
