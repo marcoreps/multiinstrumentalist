@@ -67,22 +67,21 @@ def inl_test():
         MySeriesHelper(instrument_name=instruments[4].get_title(), value=i)
         
         instruments[0].read()
-        instruments[0].get_read_val()
         MySeriesHelper(instrument_name=instruments[0].get_title(), value=float(instruments[0].get_read_val()))
         
         instruments[1].read()
-        instruments[1].get_read_val()
         MySeriesHelper(instrument_name=instruments[1].get_title(), value=float(instruments[1].get_read_val()))
         
         instruments[3].read()
-        instruments[3].get_read_val()
         MySeriesHelper(instrument_name=instruments[3].get_title(), value=float(instruments[3].get_read_val()))
         
         time.sleep(1)
         
         instruments[2].read()
-        instruments[2].get_read_val()
-        MySeriesHelper(instrument_name=instruments[2].get_title(), value=float(instruments[2].get_read_val()))
+        R6581T_read_val = float(instruments[2].get_read_val())
+        MySeriesHelper(instrument_name=instruments[2].get_title(), value=R6581T_read_val)
+        
+        MySeriesHelper(instrument_name="difference", value=R6581T_read_val-i)
         
         MySeriesHelper.commit()
         
