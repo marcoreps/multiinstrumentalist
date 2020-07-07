@@ -107,14 +107,14 @@ class R6581T:
         self.instr.write("CONFigure:VOLTage:DC")
         self.instr.write(":SENSe:VOLTage:DC:RANGe:AUTO ON")
         self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
-        #self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
+        self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
         
         #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
         #self.instr.write(":SENSe:ZERO:AUTO OFF")
         
-        #self.instr.write(":CALCulate:DFILter:STATe ON")
-        #self.instr.write(":CALCulate:DFILter AVERage")
-        #self.instr.write(":CALCulate:DFILter:AVERage 15")
+        self.instr.write(":CALCulate:DFILter:STATe ON")
+        self.instr.write(":CALCulate:DFILter AVERage")
+        self.instr.write(":CALCulate:DFILter:AVERage 15")
 
         
     def read(self):
