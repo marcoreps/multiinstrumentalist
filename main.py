@@ -6,6 +6,8 @@ import logging
 import threading
 import concurrent.futures
 import time
+import numpy
+
 
 from influxdb_interface import MySeriesHelper
 
@@ -59,7 +61,7 @@ def inl_test():
     
     instruments[4].oper()
     
-    for i in range(start,end,step):
+    for i in numpy.arange(start,end,step):
     
         instruments[4].out(str(i)+"V")
         MySeriesHelper(instrument_name=instruments[4].get_title(), value=i)
