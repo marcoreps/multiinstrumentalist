@@ -84,3 +84,5 @@ def inl_test():
         
         MySeriesHelper.commit()
         
+inl_test()
+        
