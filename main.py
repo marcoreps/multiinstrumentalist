@@ -86,5 +86,9 @@ def inl_test():
         
         MySeriesHelper.commit()
         
+    instruments[4].stby()
+        
 inl_test()
+
+
         
