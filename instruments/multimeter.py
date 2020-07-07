@@ -106,7 +106,7 @@ class R6581T:
         self.instr.ask("*OPC?")
         self.instr.write("CONFigure:VOLTage:DC")
         self.instr.write(":SENSe:VOLTage:DC:RANGe:AUTO ON")
-        #self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
+        self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
         #self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
         
         #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
