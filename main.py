@@ -5,6 +5,7 @@ import csv
 import logging
 import threading
 import concurrent.futures
+import time
 
 from influxdb_interface import MySeriesHelper
 
@@ -12,6 +13,7 @@ from datetime import datetime
 
 from instruments.temp_sensor import TMP117
 from instruments.multimeter import *
+from instruments.source import F5700A
 
 logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(message)s')
 
@@ -20,10 +22,11 @@ vxi_ip = "192.168.178.88"
 instruments = []
 instruments.append(TMP117(address=0x48, title="Short Temp Sensor"))
 instruments.append(TMP117(address=0x49, title="Long Temp Sensor"))
-instruments.append(S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081"))
+#instruments.append(S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081"))
 instruments.append(R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T"))
 instruments[-1].config_DCV_9digit()
 instruments.append(R6581T_temp(r6581t=instruments[-1], title="R6581T Int Temp Sensor"))
+instruments.append(F5700A(ip=vxi_ip, gpib_address=4, title="R6581T Int Temp Sensor"))
      
 def write_csv_forever():     
     with open('multithread_test.csv', mode='w', newline='') as csv_file:
@@ -38,15 +41,46 @@ def write_csv_forever():
             csv_file.flush()
 
 def write_influxdb_forever():
-        while True:
-            with concurrent.futures.ThreadPoolExecutor() as executor:
-                for i in instruments:
-                    executor.submit(i.read)
-                executor.shutdown(wait=True)
+    while True:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
             for i in instruments:
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-                logging.debug(i.get_title()+' processed')
-            logging.debug('MySeriesHelper.commit()')
-            MySeriesHelper.commit()
+                executor.submit(i.read)
+            executor.shutdown(wait=True)
+        for i in instruments:
+            MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+            logging.debug(i.get_title()+' processed')
+        logging.debug('MySeriesHelper.commit()')
+        MySeriesHelper.commit()
 
-write_influxdb_forever()
+def inl_test():
+    start = -10
+    step = 0.1
+    end = 10
+    
+    instruments[4].oper()
+    
+    for i in range(start,end,step):
+    
+        instruments[4].out(str(i)+"V")
+        MySeriesHelper(instrument_name=instruments[4].get_title(), value=i)
+        
+        instruments[0].read()
+        instruments[0].get_read_val()
+        MySeriesHelper(instrument_name=instruments[0].get_title(), value=float(instruments[0].get_read_val()))
+        
+        instruments[1].read()
+        instruments[1].get_read_val()
+        MySeriesHelper(instrument_name=instruments[1].get_title(), value=float(instruments[1].get_read_val()))
+        
+        instruments[3].read()
+        instruments[3].get_read_val()
+        MySeriesHelper(instrument_name=instruments[3].get_title(), value=float(instruments[3].get_read_val()))
+        
+        time.sleep(1)
+        
+        instruments[2].read()
+        instruments[2].get_read_val()
+        MySeriesHelper(instrument_name=instruments[2].get_title(), value=float(instruments[2].get_read_val()))
+        
+        MySeriesHelper.commit()
+        
