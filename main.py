@@ -121,7 +121,7 @@ def S7081_inl_test():
         
     instruments[3].stby()
         
-inl_test()
+S7081_inl_test()
 
 
         
