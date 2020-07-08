@@ -36,4 +36,4 @@ class F5700A:
         return self.read_val
 
     def rangelck(self):
-        self.instr.write("RANGELCK")
+        self.instr.write("RANGELCK ON")
