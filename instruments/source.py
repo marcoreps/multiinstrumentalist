@@ -34,3 +34,6 @@ class F5700A:
         
     def get_read_val(self):
         return self.read_val
+
+    def rangelck(self):
+        self.instr.write("RANGELCK")

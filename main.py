@@ -56,10 +56,12 @@ def write_influxdb_forever():
 
 def inl_test():
     start = -10
-    step = 0.05
+    step = 0.1
     end = 10
     
     instruments[4].oper()
+    instruments[4].out(str(start)+"V")
+    instruments[4].rangelck()
     
     for i in numpy.arange(start,end,step):
     
@@ -75,7 +77,7 @@ def inl_test():
         instruments[3].read()
         MySeriesHelper(instrument_name=instruments[3].get_title(), value=float(instruments[3].get_read_val()))
         
-        time.sleep(6)
+        time.sleep(1)
         
         instruments[2].read()
         R6581T_read_val = float(instruments[2].get_read_val())
