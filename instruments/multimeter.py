@@ -22,7 +22,7 @@ class S7081:
         self.instr.write("OUTPUT,GP-IB=ON")
         self.instr.write("FORMAT=ENGINEERING")
         #self.instr.write("DRIFT,OFF")
-        self.instr.write("MODe=VDC: RANge=Auto: NInes=8")
+        self.instr.write("MODe=VDC: RANge=10: NInes=8")
 
     def read(self):
         logging.debug(self.title+' reading started')
