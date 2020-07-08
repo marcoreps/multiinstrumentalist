@@ -77,7 +77,7 @@ def inl_test():
         instruments[3].read()
         MySeriesHelper(instrument_name=instruments[3].get_title(), value=float(instruments[3].get_read_val()))
         
-        time.sleep(1)
+        time.sleep(2)
         
         instruments[2].read()
         R6581T_read_val = float(instruments[2].get_read_val())
