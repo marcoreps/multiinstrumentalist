@@ -33,6 +33,7 @@ instruments["2002"].config_20DCV_9digit_filtered()
 #instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T")
 #instruments["R6581T"].config_10DCV_9digit_filtered()
 #instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
+time.sleep(3)
 instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="Fluke 5700A")
      
 def write_csv_forever():     
