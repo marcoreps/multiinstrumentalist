@@ -24,7 +24,7 @@ logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(
 
 vxi_ip = "192.168.178.88"
 
-instruments = []
+instruments = dict()
 instruments["temp_short"]=TMP117(address=0x48, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081")
