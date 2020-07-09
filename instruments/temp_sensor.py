@@ -87,3 +87,6 @@ class R6581T_temp:
         
     def is_measuring(self):
         return False
+        
+    def measure(self):
+        pass
