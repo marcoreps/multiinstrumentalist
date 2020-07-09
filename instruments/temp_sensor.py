@@ -80,10 +80,10 @@ class R6581T_temp:
         
     def get_read_val(self):
         logging.debug(self.title+' returning '+str(self.read_val))
-        return self.R6581T.get_int_temp()
+        return self.r6581t.get_int_temp()
         
     def is_ready_to_read(self):
-        return self.R6581T.is_ready_to_read()
+        return self.r6581t.is_ready_to_read()
         
     def is_measuring(self):
         return False
