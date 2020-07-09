@@ -10,6 +10,7 @@ class TMP117:
     reg_temp = 0x00
     reg_config = 0x01
     bus = smbus.SMBus(i2c_ch)
+    self.is_ready_to_read = False
     
     def __init__(self, address, title):
         self.title = title
@@ -31,7 +32,7 @@ class TMP117:
         logging.debug(self.title+' inited')
         
     # Read temperature registers and calculate Celsius from the TMP117 sensor
-    def read(self):
+    def measure(self):
         logging.debug(self.title+' reading started')
         # Read temperature registers
         val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_temp, 2)
@@ -41,6 +42,9 @@ class TMP117:
 
         self.read_val = temp_c
         
+        self.is_ready_to_read = True
+        
+        
     def get_title(self):
         logging.debug(self.title+' get_title started')
         return self.title
@@ -49,19 +53,6 @@ class TMP117:
         logging.debug(self.title+' returning '+str(self.read_val))
         return self.read_val
         
-        
-class R6581T_temp:
-
-    def __init__(self, r6581t, title='R6581T Int Temp Sensor'):
-        self.title = title
-        self.r6581t = r6581t
-    
-    def read(self):
-        return
-        
-    def get_read_val(self):
-        return self.r6581t.get_int_temp()
-        
-    def get_title(self):
-        logging.debug(self.title+' get_title')
-        return self.title
+    def is_ready_to_read(self):
+        self.is_ready_to_read = False
+        return self.is_ready_to_read
