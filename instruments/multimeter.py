@@ -76,6 +76,7 @@ class S7081(multimeter):
         
 
     def measure(self):
+        logging.debug(self.title+' measure started')
         self.measuring = True
         self.connect()
         try:
@@ -146,6 +147,7 @@ class K2001(multimeter):
 
 
     def measure(self):
+        logging.debug(self.title+' measure started')
         self.measuring = True
         self.connect()
         try:
@@ -228,6 +230,7 @@ class R6581T(multimeter):
         
         
     def measure(self):
+        logging.debug(self.title+' measure started')
         self.measuring = True
         self.connect()
         try:
@@ -238,6 +241,7 @@ class R6581T(multimeter):
         
         
     def get_int_temp(self):
+        logging.debug(self.title+' get_int_temp started')
         self.connect()
         try:
             self.int_temp = self.instr.ask(":SENSe:ITEMperature?")

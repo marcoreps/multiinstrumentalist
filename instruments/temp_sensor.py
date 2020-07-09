@@ -83,7 +83,7 @@ class R6581T_temp:
         return self.r6581t.get_int_temp()
         
     def is_ready_to_read(self):
-        return self.r6581t.is_ready_to_read()
+        return True
         
     def is_measuring(self):
         return False
