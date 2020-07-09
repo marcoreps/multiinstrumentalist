@@ -79,7 +79,6 @@ class R6581T_temp:
         return self.title
         
     def get_read_val(self):
-        logging.debug(self.title+' returning '+str(self.read_val))
         return self.r6581t.get_int_temp()
         
     def is_ready_to_read(self):
