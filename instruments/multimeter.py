@@ -16,7 +16,6 @@ class S7081:
         self.instr.timeout = 60*1000
         self.instr.clear()
         self.instr.write("INItialise")
-        time.sleep(3)
         #self.instr.write("BEEp")
         self.instr.write("DELIMITER=END")
         self.instr.write("OUTPUT,GP-IB=ON")
