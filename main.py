@@ -30,7 +30,7 @@ instruments["2002"].config_20DCV_9digit_filtered()
 
     
 while True:
-    time.sleep(1)
+    time.sleep(10)
     for i in instruments.values():
         if i.is_ready_to_read():
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
