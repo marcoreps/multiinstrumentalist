@@ -15,7 +15,7 @@ class F5700A:
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         time.sleep(10)
         self.instr.timeout = 60*1000
-        self.instr.clear()
+        #self.instr.clear()
         self.instr.write("*RST")
         self.instr.write("STBY")
         self.instr.write("EXTGUARD OFF")
