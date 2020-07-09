@@ -69,9 +69,9 @@ class R6581T_temp:
 
     ready_to_read = False
     
-    def __init__(self, R6581T, title):
-        self.R6581T = R6581T
+    def __init__(self, r6581t, title='R6581T Int Temp Sensor'):
         self.title = title
+        self.r6581t = r6581t
         
         
     def get_title(self):
