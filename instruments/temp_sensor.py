@@ -10,7 +10,7 @@ class TMP117:
     reg_temp = 0x00
     reg_config = 0x01
     bus = smbus.SMBus(i2c_ch)
-    is_ready_to_read = False
+    ready_to_read = False
     
     def __init__(self, address, title):
         self.title = title
@@ -42,7 +42,7 @@ class TMP117:
 
         self.read_val = temp_c
         
-        self.is_ready_to_read = True
+        self.ready_to_read = True
         
         
     def get_title(self):
@@ -54,8 +54,8 @@ class TMP117:
         return self.read_val
         
     def is_ready_to_read(self):
-        self.is_ready_to_read = False
-        return self.is_ready_to_read
+        self.ready_to_read = False
+        return self.ready_to_read
         
     def is_measuring(self):
         return False
