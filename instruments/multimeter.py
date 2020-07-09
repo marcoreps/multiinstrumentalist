@@ -190,7 +190,7 @@ class R6581T(multimeter):
         try:
             logging.debug(self.title+' config_10DCV_9digit_fast started')
             self.instr.write("*RST")
-            self.instr.ask("*OPC?")
+            #self.instr.ask("*OPC?")
             self.instr.write("CONFigure:VOLTage:DC")
             self.instr.write(":SENSe:VOLTage:DC:RANGe:1.00E+01")
             #self.instr.write(":SENSe:VOLTage:DC:RANGe:AUTO ON")
@@ -210,12 +210,11 @@ class R6581T(multimeter):
         try:
             logging.debug(self.title+' config_10DCV_9digit_filtered started')
             self.instr.write("*RST")
-            self.instr.ask("*OPC?")
+            #self.instr.ask("*OPC?")
             self.instr.write("CONFigure:VOLTage:DC")
-            self.instr.write(":SENSe:VOLTage:DC:RANGe:1.00E+01")
+            self.instr.write(":SENSe:VOLTage:DC:RANGe 10")
             self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
             self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
-            self.instr.write(":SENSe:VOLTage:DC:RANGe 10")
             
             #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
             #self.instr.write(":SENSe:ZERO:AUTO OFF")
