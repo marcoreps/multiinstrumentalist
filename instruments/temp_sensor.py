@@ -62,3 +62,28 @@ class TMP117:
         
     def is_measuring(self):
         return False
+        
+        
+        
+class R6581T_temp:
+
+    ready_to_read = False
+    
+    def __init__(self, R6581T, title):
+        self.R6581T = R6581T
+        self.title = title
+        
+        
+    def get_title(self):
+        logging.debug(self.title+' get_title started')
+        return self.title
+        
+    def get_read_val(self):
+        logging.debug(self.title+' returning '+str(self.read_val))
+        return self.R6581T.get_int_temp()
+        
+    def is_ready_to_read(self):
+    return self.R6581T.is_ready_to_read()
+        
+    def is_measuring(self):
+        return False
