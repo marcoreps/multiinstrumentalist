@@ -10,12 +10,14 @@ class S7081:
 
     def __init__(self, ip, gpib_address, title='Solartron 7081'):
         self.title = title
+        logging.debug(self.title+' init started')
         self.ip = ip
         self.gpib_address = gpib_address
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 60*1000
         self.instr.clear()
         self.instr.write("INItialise")
+        time.sleep(5)
         #self.instr.write("BEEp")
         self.instr.write("DELIMITER=END")
         self.instr.write("OUTPUT,GP-IB=ON")
