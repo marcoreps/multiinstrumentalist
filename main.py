@@ -29,7 +29,7 @@ instruments["2002"].config_20DCV_9digit_filtered()
 
     
 while True:
-    for i in instruments:
+    for i in instruments.items():
         if i.is_ready_to_read():
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         if not i.is_measuring:
