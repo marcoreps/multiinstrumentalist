@@ -13,7 +13,7 @@ class multimeter:
     read_val = 0
     title = ""
     lock = threading.Lock()
-    is_measuring = False
+    measuring = False
     
     
     def connect(self):
@@ -31,7 +31,7 @@ class multimeter:
         try:
             self.read_val = self.instr.read()
             self.instr.close()
-            self.is_measuring = False
+            self.measuring = False
         finally:
             self.lock.release()
         return self.read_val
@@ -47,7 +47,7 @@ class multimeter:
             
             
     def is_measuring(self):
-        return self.is_measuring
+        return self.measuring
 
 
 class S7081(multimeter):
@@ -75,7 +75,7 @@ class S7081(multimeter):
         
 
     def measure(self):
-        self.is_measuring = True
+        self.measuring = True
         self.connect()
         try:
             self.instr.write("MEAsure, SIGLE")
@@ -142,7 +142,7 @@ class K2001(multimeter):
             self.lock.release()
 
     def measure(self):
-        self.is_measuring = True
+        self.measuring = True
         self.connect()
         try:
             self.read_val = self.instr.write("READ?")
@@ -220,7 +220,7 @@ class R6581T(multimeter):
             self.lock.release()
         
     def measure(self):
-        self.is_measuring = True
+        self.measuring = True
         self.connect()
         try:
             self.instr.write("READ?")
