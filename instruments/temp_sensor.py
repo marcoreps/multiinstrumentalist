@@ -56,3 +56,6 @@ class TMP117:
     def is_ready_to_read(self):
         self.is_ready_to_read = False
         return self.is_ready_to_read
+        
+    def is_measuring(self):
+        return False
