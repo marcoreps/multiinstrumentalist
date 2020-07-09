@@ -19,15 +19,23 @@ class F5700A:
         self.instr.write("STBY")
         self.instr.write("EXTGUARD OFF")
         logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+        self.instr.close()
+        
         
     def out(self,out_cmd):
+        vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.write("OUT "+out_cmd)
+        self.instr.close()
         
     def oper(self):
+        vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.write("OPER")
+        self.instr.close()
 
     def stby(self):
+        vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.write("STBY")
+        self.instr.close()
         
     def get_title(self):
         return self.title
@@ -36,4 +44,6 @@ class F5700A:
         return self.read_val
 
     def rangelck(self):
+        vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.write("RANGELCK ON")
+        self.instr.close()

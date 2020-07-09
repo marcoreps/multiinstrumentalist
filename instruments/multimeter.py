@@ -24,16 +24,22 @@ class S7081:
         self.instr.write("FORMAT=ENGINEERING")
         #self.instr.write("DRIFT,OFF")
         self.instr.write("MODe=VDC: RANge=10: NInes=8")
+        self.instr.close()
 
     def read(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.write("MEAsure, SIGLE")
-        self.read_val = self.instr.read()
+        self.instr.close()
         
     def get_title(self):
         return self.title
         
     def get_read_val(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.read_val = self.instr.read()
+        self.instr.close()
         return self.read_val
+        
 
 
 class K2001:
@@ -44,11 +50,12 @@ class K2001:
         self.ip = ip
         self.gpib_address = gpib_address
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
-        self.instr.timeout = 60*1000
         self.instr.clear()
         logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+        self.instr.close()
         
     def config_20DCV_9digit_fast(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
         self.instr.write(":SYST:LSYN:STAT ON")
@@ -57,8 +64,10 @@ class K2001:
         self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
         self.instr.write(":SENS:VOLT:DC:RANG 20")
         self.instr.write(":FORM:ELEM READ")
+        self.instr.close()
         
     def config_20DCV_9digit_filtered(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.write("*RST")
         self.instr.write(":SYST:AZER:TYPE SYNC")
         self.instr.write(":SYST:LSYN:STAT ON")
@@ -71,15 +80,22 @@ class K2001:
         self.instr.write(":SENS:VOLT:DC:RANG 20")
         #self.instr.write(":SENS:VOLT:DC:FILT:LPAS:STAT ON")
         self.instr.write(":FORM:ELEM READ")
+        self.instr.close()
 
     def read(self):
-        self.read_val = self.instr.ask("READ?")
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.read_val = self.instr.write("READ?")
+        self.instr.close()
         
     def get_title(self):
         return self.title
         
     def get_read_val(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.read_val = self.instr.read()
+        self.instr.close()
         return self.read_val
+        
         
         
 class K2002(K2001):
@@ -98,8 +114,10 @@ class R6581T:
         self.instr.clear()
         logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
         self.int_temp = 0
+        self.instr.close()
         
     def config_10DCV_9digit_fast(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         logging.debug(self.title+' config_10DCV_9digit_fast started')
         self.instr.write("*RST")
         self.instr.ask("*OPC?")
@@ -112,8 +130,10 @@ class R6581T:
         
         #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
         #self.instr.write(":SENSe:ZERO:AUTO OFF")
+        self.instr.close()
         
     def config_10DCV_9digit_filtered(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         logging.debug(self.title+' config_10DCV_9digit_filtered started')
         self.instr.write("*RST")
         self.instr.ask("*OPC?")
@@ -129,16 +149,24 @@ class R6581T:
         self.instr.write(":CALCulate:DFILter:STATe ON")
         self.instr.write(":CALCulate:DFILter AVERage")
         self.instr.write(":CALCulate:DFILter:AVERage 15")
+        self.instr.close()
         
     def read(self):
-        self.read_val = self.instr.ask("READ?")
-        self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.instr.write("READ?")
+        self.instr.close()
         
     def get_title(self):
         return self.title
         
     def get_read_val(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.read_val = self.instr.read()
+        self.instr.close()
         return self.read_val
         
     def get_int_temp(self):
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
+        self.instr.close()
         return self.int_temp
