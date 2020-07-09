@@ -128,6 +128,7 @@ def S7081_inl_test():
     
     
 def read_write_instrument(i):
+    logging.debug('read_write_instrument started')
     i.read()
     MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
     
@@ -147,7 +148,7 @@ def S7081_job():
     read_write_instrument(instruments["S7081"])
     
     
-    
+logging.debug('tl starting')
 tl.start(block=True)
     
     
