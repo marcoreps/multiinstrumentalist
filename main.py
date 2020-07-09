@@ -28,9 +28,10 @@ instruments = []
 instruments["temp_short"]=TMP117(address=0x48, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081")
+
 instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T")
-instruments["R6581T"].config_DCV_9digit()
-instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments[-1], title="R6581T Int Temp Sensor")
+instruments["R6581T"].config_10DCV_9digit_filtered()
+instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=4, title="Fluke 5700A")
      
 def write_csv_forever():     
