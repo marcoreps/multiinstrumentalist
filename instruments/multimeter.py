@@ -87,7 +87,7 @@ class S7081(multimeter):
             
     def is_ready_to_read(self):
         self.read_stb()
-        return self.stb & 0b00010000
+        return self.stb == 24
         
 
 
@@ -157,7 +157,7 @@ class K2001(multimeter):
             
     def is_ready_to_read(self):
         self.read_stb()
-        return self.stb == 16
+        return self.stb & 0b00010000
         
         
         
