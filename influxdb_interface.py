@@ -36,7 +36,7 @@ class MySeriesHelper(SeriesHelper):
 
         # Defines the number of data points to store prior to writing
         # on the wire.
-        #bulk_size = 10
+        bulk_size = 10
 
         # autocommit must be set to True when using bulk_size
-        #autocommit = True
+        autocommit = True

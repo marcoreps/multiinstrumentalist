@@ -7,28 +7,31 @@ import threading
 import concurrent.futures
 import time
 import numpy
+import sched
 
+from timeloop import Timeloop
+from datetime import timedelta
 
 from influxdb_interface import MySeriesHelper
 
 from datetime import datetime
 
-from instruments.temp_sensor import TMP117
+from instruments.temp_sensor import *
 from instruments.multimeter import *
-from instruments.source import F5700A
+from instruments.source import *
 
 logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(message)s')
 
 vxi_ip = "192.168.178.88"
 
 instruments = []
-instruments.append(TMP117(address=0x48, title="Short Temp Sensor"))
-instruments.append(TMP117(address=0x49, title="Long Temp Sensor"))
-instruments.append(S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081"))
-#instruments.append(R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T"))
-#instruments[-1].config_DCV_9digit()
-#instruments.append(R6581T_temp(r6581t=instruments[-1], title="R6581T Int Temp Sensor"))
-instruments.append(F5700A(ip=vxi_ip, gpib_address=4, title="Fluke 5700A"))
+instruments["temp_short"]=TMP117(address=0x48, title="Short Temp Sensor")
+instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
+instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081")
+instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T")
+instruments["R6581T"].config_DCV_9digit()
+instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments[-1], title="R6581T Int Temp Sensor")
+instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=4, title="Fluke 5700A")
      
 def write_csv_forever():     
     with open('multithread_test.csv', mode='w', newline='') as csv_file:
@@ -120,8 +123,30 @@ def S7081_inl_test():
         MySeriesHelper.commit()
         
     instruments[3].stby()
-        
-S7081_inl_test()
+    
+    
+    
+def read_write_instrument(i):
+    i.read()
+    MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+    
+    
+tl = Timeloop()
 
-
-        
+@tl.job(interval=timedelta(seconds=10))
+def temp_short_job():
+    read_write_instrument(instruments["temp_short"])
+    
+@tl.job(interval=timedelta(seconds=10))
+def temp_long_job():
+    read_write_instrument(instruments["temp_long"])
+    
+@tl.job(interval=timedelta(seconds=60))
+def S7081_job():
+    read_write_instrument(instruments["S7081"])
+    
+    
+    
+tl.start(block=True)
+    
+    

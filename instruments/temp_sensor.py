@@ -48,3 +48,20 @@ class TMP117:
     def get_read_val(self):
         logging.debug(self.title+' returning '+str(self.read_val))
         return self.read_val
+        
+        
+class R6581T_temp:
+
+    def __init__(self, r6581t, title='R6581T Int Temp Sensor'):
+        self.title = title
+        self.r6581t = r6581t
+    
+    def read(self):
+        return
+        
+    def get_read_val(self):
+        return self.r6581t.get_int_temp()
+        
+    def get_title(self):
+        logging.debug(self.title+' get_title')
+        return self.title
