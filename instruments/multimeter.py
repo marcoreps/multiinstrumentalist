@@ -10,10 +10,10 @@ import threading
 
 class multimeter:
 
-    self.read_val = 0
-    self.title = ""
-    self.lock = threading.Lock()
-    self.is_measuring = False
+    read_val = 0
+    title = ""
+    lock = threading.Lock()
+    is_measuring = False
     
     
     def connect(self):
