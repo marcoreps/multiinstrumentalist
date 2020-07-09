@@ -14,11 +14,12 @@ class F5700A:
         self.gpib_address = gpib_address
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 60*1000
+        logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
         self.instr.clear()
         self.instr.write("*RST")
         self.instr.write("STBY")
         self.instr.write("EXTGUARD OFF")
-        logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+        
         
     def out(self,out_cmd):
         self.instr.write("OUT "+out_cmd)
