@@ -50,6 +50,7 @@ class multimeter:
         return self.measuring
 
 
+
 class S7081(multimeter):
 
     def __init__(self, ip, gpib_address, title='Solartron 7081'):
@@ -107,6 +108,7 @@ class K2001(multimeter):
         finally:
             self.lock.release()
         
+        
     def config_20DCV_9digit_fast(self):
         self.connect()
         try:
@@ -121,6 +123,7 @@ class K2001(multimeter):
             self.instr.close()
         finally:
             self.lock.release()
+        
         
     def config_20DCV_9digit_filtered(self):
         self.connect()
@@ -141,6 +144,7 @@ class K2001(multimeter):
         finally:
             self.lock.release()
 
+
     def measure(self):
         self.measuring = True
         self.connect()
@@ -156,8 +160,10 @@ class K2001(multimeter):
         return self.stb == 16
         
         
+        
 class K2002(K2001):
     pass
+    
     
 
 class R6581T(multimeter):
@@ -178,6 +184,7 @@ class R6581T(multimeter):
         finally:
             self.lock.release()
         
+        
     def config_10DCV_9digit_fast(self):
         self.connect()
         try:
@@ -196,6 +203,7 @@ class R6581T(multimeter):
             self.instr.close()
         finally:
             self.lock.release()
+        
         
     def config_10DCV_9digit_filtered(self):
         self.connect()
@@ -219,6 +227,7 @@ class R6581T(multimeter):
         finally:
             self.lock.release()
         
+        
     def measure(self):
         self.measuring = True
         self.connect()
@@ -227,6 +236,7 @@ class R6581T(multimeter):
             self.instr.close()
         finally:
             self.lock.release()
+        
         
     def get_int_temp(self):
         self.connect()
