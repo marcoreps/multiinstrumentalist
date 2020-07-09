@@ -99,6 +99,7 @@ class R6581T:
         self.int_temp = 0
         
     def config_10DCV_9digit_fast(self):
+        logging.debug(self.title+' config_10DCV_9digit_fast started')
         self.instr.write("*RST")
         self.instr.ask("*OPC?")
         self.instr.write("CONFigure:VOLTage:DC")
@@ -112,6 +113,7 @@ class R6581T:
         #self.instr.write(":SENSe:ZERO:AUTO OFF")
         
     def config_10DCV_9digit_filtered(self):
+        logging.debug(self.title+' config_10DCV_9digit_filtered started')
         self.instr.write("*RST")
         self.instr.ask("*OPC?")
         self.instr.write("CONFigure:VOLTage:DC")
