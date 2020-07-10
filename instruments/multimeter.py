@@ -175,6 +175,7 @@ class R6581T(multimeter):
         self.title = title
         logging.debug(self.title+' init started')
         self.ip = ip
+        self.int_temp = 0
         self.gpib_address = gpib_address
         self.lock.acquire()
         try:
@@ -234,6 +235,7 @@ class R6581T(multimeter):
         self.measuring = True
         self.connect()
         try:
+            self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
             self.instr.write("READ?")
             self.instr.close()
         finally:
@@ -241,13 +243,6 @@ class R6581T(multimeter):
         
         
     def get_int_temp(self):
-        logging.debug(self.title+' get_int_temp started')
-        self.connect()
-        try:
-            self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
-            self.instr.close()
-        finally:
-            self.lock.release()
         return self.int_temp
         
         
