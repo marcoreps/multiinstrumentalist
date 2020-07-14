@@ -9,6 +9,8 @@ import threading
 
 class F5700A:
 
+    lock = threading.Lock()
+
     def connect(self):
         logging.debug(self.title+' waiting for lock')
         self.lock.acquire()
