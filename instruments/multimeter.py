@@ -144,6 +144,25 @@ class K2001(multimeter):
             self.instr.close()
         finally:
             self.lock.release()
+            
+    def config_2ADC_9digit_filtered(self):
+        self.connect()
+        try:
+            self.instr.write("*RST")
+            self.instr.write(":SYST:AZER:TYPE SYNC")
+            self.instr.write(":SYST:LSYN:STAT ON")
+            self.instr.write(":SENS:FUNC 'AMPERE:DC'")
+            self.instr.write(":SENS:VOLT:DC:DIG 9; NPLC 10")
+            self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
+            self.instr.write(":SENS:VOLT:DC:AVER:COUN 50")
+            self.instr.write(":SENS:VOLT:DC:AVER:TCON REP")
+            self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
+            self.instr.write(":SENS:VOLT:DC:RANG 20")
+            #self.instr.write(":SENS:VOLT:DC:FILT:LPAS:STAT ON")
+            self.instr.write(":FORM:ELEM READ")
+            self.instr.close()
+        finally:
+            self.lock.release()
 
 
     def measure(self):
