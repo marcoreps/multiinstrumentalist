@@ -10,6 +10,10 @@ import threading
 class F5700A:
 
     lock = threading.Lock()
+    readable = False
+    
+    def is_readable(self):
+        return readable
 
     def connect(self):
         logging.debug(self.title+' waiting for lock')

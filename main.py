@@ -34,8 +34,9 @@ instruments["F5700A"].oper()
 while True:
     time.sleep(5)
     for i in instruments.values():
-        if i.is_ready_to_read():
-            MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-        if not i.is_measuring():
-            i.measure()
+        if i.is_readable():
+            if i.is_ready_to_read():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+            if not i.is_measuring():
+                i.measure()
             

@@ -14,6 +14,10 @@ class multimeter:
     title = ""
     lock = threading.Lock()
     measuring = False
+    readable = True
+    
+    def is_readable(self):
+        return readable
     
     
     def connect(self):
