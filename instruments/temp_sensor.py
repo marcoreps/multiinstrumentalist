@@ -11,6 +11,10 @@ class TMP117:
     reg_config = 0x01
     bus = smbus.SMBus(i2c_ch)
     ready_to_read = False
+    readable = True
+    
+    def is_readable(self):
+        return readable
     
     def __init__(self, address, title):
         self.title = title
