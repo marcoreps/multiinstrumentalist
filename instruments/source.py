@@ -13,7 +13,7 @@ class F5700A:
     readable = False
     
     def is_readable(self):
-        return readable
+        return self.readable
 
     def connect(self):
         logging.debug(self.title+' waiting for lock')

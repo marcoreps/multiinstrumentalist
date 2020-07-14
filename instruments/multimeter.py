@@ -17,7 +17,7 @@ class multimeter:
     readable = True
     
     def is_readable(self):
-        return readable
+        return self.readable
     
     
     def connect(self):

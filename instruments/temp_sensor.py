@@ -14,7 +14,7 @@ class TMP117:
     readable = True
     
     def is_readable(self):
-        return readable
+        return self.readable
     
     def __init__(self, address, title):
         self.title = title
