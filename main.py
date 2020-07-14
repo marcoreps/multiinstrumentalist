@@ -27,6 +27,8 @@ instruments["2002"].config_2ADC_9digit_filtered()
 #instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 
 instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="Fluke 5700A")
+instruments["F5700A"].out("1A")
+instruments["F5700A"].oper()
 
 
 while True:
