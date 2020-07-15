@@ -13,15 +13,15 @@ class F5700A:
 
     lock = threading.Lock()
     readable = True
-    ready_to_read = True
+    ready_to_read = False
     
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.measuring = True
         self.connect()
         try:
-            self.read_val = self.instr.write("OUT?")
+            self.read_val = self.instr.ask("OUT?")
             self.instr.close()
+            ready_to_read = True
         finally:
             self.lock.release()
     
@@ -81,6 +81,7 @@ class F5700A:
         
     def get_read_val(self):
         tokenized_read_val = re.split("' |, ",self.read_val)
+        self.ready_to_read = False
         return tokenized_read_val[1]
 
         return self.read_val
