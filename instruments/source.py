@@ -5,12 +5,24 @@ import vxi11
 import time
 import logging
 import threading
+import re
+
 
 
 class F5700A:
 
     lock = threading.Lock()
-    readable = False
+    readable = True
+    
+    def measure(self):
+        logging.debug(self.title+' measure started')
+        self.measuring = True
+        self.connect()
+        try:
+            self.read_val = self.instr.write("OUT?")
+            self.instr.close()
+        finally:
+            self.lock.release()
     
     def is_readable(self):
         return self.readable
@@ -67,6 +79,9 @@ class F5700A:
         return self.title
         
     def get_read_val(self):
+        tokenized_read_val = re.split("' |, ",self.read_val)
+        return tokenized_read_val[1]
+
         return self.read_val
 
     def rangelck(self):
