@@ -96,3 +96,6 @@ class F5700A:
             
     def is_ready_to_read(self):
         return self.ready_to_read
+        
+    def is_measuring(self):
+        return False
