@@ -40,7 +40,7 @@ class multimeter:
             pass
         finally:
             self.lock.release()
-        logging.debug("%s reading %s" % (self.title, read_val))
+        logging.debug("%s reading %s" % (self.title, self.read_val))
         return self.read_val
         
         

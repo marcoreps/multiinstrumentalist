@@ -55,7 +55,6 @@ class TMP117:
         return self.read_val
         
     def is_ready_to_read(self):
-        logging.debug(self.title+' is ready to read')
         return True
 
         
@@ -81,7 +80,6 @@ class R6581T_temp:
         return self.r6581t.get_int_temp()
         
     def is_ready_to_read(self):
-        logging.debug(self.title+' is ready to read')
         return True
         
     def is_measuring(self):
