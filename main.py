@@ -19,7 +19,7 @@ vxi_ip = "192.168.178.88"
 instruments = dict()
 instruments["temp_short"]=TMP117(address=0x48, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
-instruments["second_S7081"]=S7081(ip=vxi_ip, gpib_address=6, title="Bench S7081")
+instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, title="Bench S7081")
 instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, title="2002")
 #instruments["2002"].config_2ADC_9digit_filtered()
 instruments["2002"].config_20DCV_9digit_filtered()
