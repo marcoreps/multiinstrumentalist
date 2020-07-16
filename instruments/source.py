@@ -21,7 +21,7 @@ class F5700A:
         try:
             self.read_val = self.instr.ask("OUT?")
             self.instr.close()
-            ready_to_read = True
+            self.ready_to_read = True
         finally:
             self.lock.release()
     
