@@ -27,7 +27,7 @@ instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, title="2002")
 instruments["2002"].config_20DCV_9digit_filtered()
 instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, title="Bench R6581T")
 instruments["R6581T"].config_10DCV_9digit_filtered()
-#instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
+instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 
 instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="Fluke 5700A")
 
@@ -68,11 +68,23 @@ def linearity():
         for i in instruments.values():
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
             
-        calibrator_out = float(instruments["F5700A"].get_read_val())
+        MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+        MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
+        MySeriesHelper(instrument_name=instruments["temp_R6581T"].get_title(), value=float(instruments["temp_R6581T"].get_read_val()))
         
-        MySeriesHelper(instrument_name="S7081 ppm", value=(calibrator_out-float(instruments["S7081"].get_read_val()))/0.00001)
-        MySeriesHelper(instrument_name="2002 ppm", value=(calibrator_out-float(instruments["2002"].get_read_val()))/0.00001)
-        MySeriesHelper(instrument_name="R6581T ppm", value=(calibrator_out-float(instruments["R6581T"].get_read_val()))/0.00001)
+        calibrator_out = float(instruments["F5700A"].get_read_val())
+        S7081_out = float(instruments["S7081"].get_read_val())
+        K2002_out = float(instruments["2002"].get_read_val())
+        R6581T_out = float(instruments["R6581T"].get_read_val())
+        
+        MySeriesHelper(instrument_name=instruments["S7081"].get_title(), value=S7081_out)
+        MySeriesHelper(instrument_name=instruments["2002"].get_title(), value=K2002_out)
+        MySeriesHelper(instrument_name=instruments["R6581T"].get_title(), value=R6581T_out)
+        MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+            
+        MySeriesHelper(instrument_name="S7081 ppm", value=(calibrator_out-S7081_out)/0.00001)
+        MySeriesHelper(instrument_name="2002 ppm", value=(calibrator_out-K2002_out)/0.00001)
+        MySeriesHelper(instrument_name="R6581T ppm", value=(calibrator_out-R6581T_out)/0.00001)
         
         
         instruments["F5700A"].out(str(u)+"V")
