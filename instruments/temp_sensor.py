@@ -10,7 +10,6 @@ class TMP117:
     reg_temp = 0x00
     reg_config = 0x01
     bus = smbus.SMBus(i2c_ch)
-    ready_to_read = False
     readable = True
     
     def is_readable(self):
@@ -45,9 +44,7 @@ class TMP117:
         temp_c = temp_c * 0.0078125
 
         self.read_val = temp_c
-        
-        self.ready_to_read = True
-        
+
         
     def get_title(self):
         logging.debug(self.title+' get_title started')
@@ -58,13 +55,9 @@ class TMP117:
         return self.read_val
         
     def is_ready_to_read(self):
-        if self.ready_to_read:
-            self.ready_to_read = False
-            logging.debug(self.title+' is ready to read')
-            return True
-        else:
-            logging.debug(self.title+' is not ready to read')
-            return False
+        logging.debug(self.title+' is ready to read')
+        return True
+
         
     def is_measuring(self):
         return False
