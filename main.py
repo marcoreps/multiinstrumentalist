@@ -23,15 +23,15 @@ vxi_ip = "192.168.178.88"
 instruments = dict()
 instruments["temp_short"]=TMP117(address=0x48, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
-instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=6, loctite, title="Bench S7081")
-instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, loctite, title="2002")
+instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=6, lock=loctite, title="Bench S7081")
+instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, lock=loctite, title="2002")
 #instruments["2002"].config_2ADC_9digit_filtered()
 instruments["2002"].config_20DCV_9digit_filtered()
-instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, loctite, title="Bench R6581T")
+instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=loctite, title="Bench R6581T")
 instruments["R6581T"].config_10DCV_9digit_filtered()
 instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 
-instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, loctite, title="Fluke 5700A")
+instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=loctite, title="Fluke 5700A")
 
 
 def drift():
