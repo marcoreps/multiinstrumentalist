@@ -90,9 +90,20 @@ class S7081(multimeter):
             self.lock.release()
             
             
+        
+        
     def is_ready_to_read(self):
         self.read_stb()
-        return self.stb == 24
+        ready = self.stb == 24
+        if ready:
+            logging.debug(self.title+' is ready to read')
+        else:
+            logging.debug(self.title+' is not ready to read')
+        return ready
+        
+        
+        
+        
         
 
 
@@ -179,10 +190,16 @@ class K2001(multimeter):
         finally:
             self.lock.release()
             
-            
+        
+        
     def is_ready_to_read(self):
         self.read_stb()
-        return self.stb & 0b00010000
+        ready = self.stb & 0b00010000
+        if ready:
+            logging.debug(self.title+' is ready to read')
+        else:
+            logging.debug(self.title+' is not ready to read')
+        return ready
         
         
         
@@ -271,4 +288,9 @@ class R6581T(multimeter):
         
     def is_ready_to_read(self):
         self.read_stb()
-        return self.stb == 16
+        ready = self.stb == 16
+        if ready:
+            logging.debug(self.title+' is ready to read')
+        else:
+            logging.debug(self.title+' is not ready to read')
+        return ready
