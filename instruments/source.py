@@ -84,7 +84,7 @@ class F5700A:
         tokenized_read_val = re.split("' |, ",self.read_val)
         self.ready_to_read = False
         #logging.debug(self.title+' returning '+str(tokenized_read_val[1]))
-        return self.read_val
+        return 10
         
 
     def rangelck(self):
