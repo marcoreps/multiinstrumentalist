@@ -65,3 +65,6 @@ def linearity():
         for i in instruments.values():
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         instruments["F5700A"].out(str(u)+"V")
+        
+        
+linearity()
