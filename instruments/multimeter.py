@@ -36,11 +36,11 @@ class multimeter:
             self.instr.close()
             self.measuring = False
         except:
-            logger.error("Error in %s get_read_val" % self.title, exc_info=True)
+            logging.error("Error in %s get_read_val" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
-        logger.debug("%s reading %s" % (self.title, read_val))
+        logging.debug("%s reading %s" % (self.title, read_val))
         return self.read_val
         
         
@@ -50,7 +50,7 @@ class multimeter:
             self.stb = self.instr.read_stb()
             self.instr.close()
         except:
-            logger.error("Error in %s read_stb" % self.title, exc_info=True)
+            logging.error("Error in %s read_stb" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -83,7 +83,7 @@ class S7081(multimeter):
             self.instr.write("MODe=VDC: RANge=10: NInes=8")
             self.instr.close()
         except:
-            logger.error("Error in %s __init__" % self.title, exc_info=True)
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -97,7 +97,7 @@ class S7081(multimeter):
             self.instr.write("MEAsure, SIGLE")
             self.instr.close()
         except:
-            logger.error("Error in %s measure" % self.title, exc_info=True)
+            logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -132,7 +132,7 @@ class K2001(multimeter):
             logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
             self.instr.close()
         except:
-            logger.error("Error in %s __init__" % self.title, exc_info=True)
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -151,7 +151,7 @@ class K2001(multimeter):
             self.instr.write(":FORM:ELEM READ")
             self.instr.close()
         except:
-            logger.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
+            logging.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -174,7 +174,7 @@ class K2001(multimeter):
             self.instr.write(":FORM:ELEM READ")
             self.instr.close()
         except:
-            logger.error("Error in %s config_20DCV_9digit_filtered" % self.title, exc_info=True)
+            logging.error("Error in %s config_20DCV_9digit_filtered" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -196,7 +196,7 @@ class K2001(multimeter):
             self.instr.write(":FORM:ELEM READ")
             self.instr.close()
         except:
-            logger.error("Error in %s config_2ADC_9digit_filtered" % self.title, exc_info=True)
+            logging.error("Error in %s config_2ADC_9digit_filtered" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -210,7 +210,7 @@ class K2001(multimeter):
             self.read_val = self.instr.write("READ?")
             self.instr.close()
         except:
-            logger.error("Error in %s measure" % self.title, exc_info=True)
+            logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -247,7 +247,7 @@ class R6581T(multimeter):
             self.int_temp = 0
             self.instr.close()
         except:
-            logger.error("Error in %s __init__" % self.title, exc_info=True)
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -270,7 +270,7 @@ class R6581T(multimeter):
             #self.instr.write(":SENSe:ZERO:AUTO OFF")
             self.instr.close()
         except:
-            logger.error("Error in %s config_10DCV_9digit_fast" % self.title, exc_info=True)
+            logging.error("Error in %s config_10DCV_9digit_fast" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -295,7 +295,7 @@ class R6581T(multimeter):
             self.instr.write(":CALCulate:DFILter:AVERage 15")
             self.instr.close()
         except:
-            logger.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
+            logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -310,7 +310,7 @@ class R6581T(multimeter):
             self.instr.write("READ?")
             self.instr.close()
         except:
-            logger.error("Error in %s measure" % self.title, exc_info=True)
+            logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
