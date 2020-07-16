@@ -80,6 +80,7 @@ class F5700A:
         return self.title
         
     def get_read_val(self):
+        logging.debug(self.title+' get_read_val started')
         tokenized_read_val = re.split("' |, ",self.read_val)
         self.ready_to_read = False
         logging.debug(self.title+' returning '+str(tokenized_read_val[1]))
