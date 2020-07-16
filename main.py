@@ -49,7 +49,7 @@ def drift():
 def linearity():
     umin = -10
     umax = 10
-    ustep = 0.1
+    ustep = 0.05
     wait_settle = 5
     
     instruments["F5700A"].out(str(umin)+"V")
