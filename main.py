@@ -67,6 +67,14 @@ def linearity():
         
         for i in instruments.values():
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+            
+        calibrator_out = float(instruments["F5700A"].get_read_val())
+        
+        MySeriesHelper(instrument_name="S7081 ppm", value=(calibrator_out-float(instruments["S7081"].get_read_val()))/0.00001)
+        MySeriesHelper(instrument_name="2002 ppm", value=(calibrator_out-float(instruments["2002"].get_read_val()))/0.00001)
+        MySeriesHelper(instrument_name="R6581T ppm", value=(calibrator_out-float(instruments["R6581T"].get_read_val()))/0.00001)
+        
+        
         instruments["F5700A"].out(str(u)+"V")
         
         
