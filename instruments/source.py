@@ -13,7 +13,7 @@ class F5700A:
 
     lock = threading.Lock()
     readable = True
-    self.read_val = 0
+    read_val = 0
     
     def measure(self):
         logging.debug(self.title+' measure started')
