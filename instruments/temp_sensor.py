@@ -60,8 +60,10 @@ class TMP117:
     def is_ready_to_read(self):
         if self.ready_to_read:
             self.ready_to_read = False
+            logging.debug(self.title+' is ready to read')
             return True
         else:
+            logging.debug(self.title+' is not ready to read')
             return False
         
     def is_measuring(self):
@@ -86,6 +88,7 @@ class R6581T_temp:
         return self.r6581t.get_int_temp()
         
     def is_ready_to_read(self):
+        logging.debug(self.title+' is ready to read')
         return True
         
     def is_measuring(self):
