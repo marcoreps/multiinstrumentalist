@@ -12,7 +12,7 @@ class multimeter:
 
     read_val = 0
     title = ""
-    lock = threading.Lock()
+
     measuring = False
     readable = True
     
@@ -21,7 +21,6 @@ class multimeter:
     
     
     def connect(self):
-        logging.debug(self.title+' waiting for lock')
         self.lock.acquire()
         self.instr.open()
         
@@ -36,8 +35,12 @@ class multimeter:
             self.read_val = self.instr.read()
             self.instr.close()
             self.measuring = False
+        except:
+            logger.error("Error in %s get_read_val" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
+        logger.debug("%s reading %s" % (self.title, read_val))
         return self.read_val
         
         
@@ -46,6 +49,9 @@ class multimeter:
         try:
             self.stb = self.instr.read_stb()
             self.instr.close()
+        except:
+            logger.error("Error in %s read_stb" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
             
@@ -57,8 +63,9 @@ class multimeter:
 
 class S7081(multimeter):
 
-    def __init__(self, ip, gpib_address, title='Solartron 7081'):
+    def __init__(self, ip, gpib_address, lock, title='Solartron 7081'):
         self.title = title
+        self.lock = lock
         logging.debug(self.title+' init started')
         self.ip = ip
         self.gpib_address = gpib_address
@@ -75,6 +82,9 @@ class S7081(multimeter):
             #self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=VDC: RANge=10: NInes=8")
             self.instr.close()
+        except:
+            logger.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -86,6 +96,9 @@ class S7081(multimeter):
         try:
             self.instr.write("MEAsure, SIGLE")
             self.instr.close()
+        except:
+            logger.error("Error in %s measure" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
             
@@ -95,10 +108,6 @@ class S7081(multimeter):
     def is_ready_to_read(self):
         self.read_stb()
         ready = self.stb == 24
-        if ready:
-            logging.debug(self.title+' is ready to read')
-        else:
-            logging.debug(self.title+' is not ready to read')
         return ready
         
         
@@ -109,9 +118,10 @@ class S7081(multimeter):
 
 class K2001(multimeter):
 
-    def __init__(self, ip, gpib_address, title='Keithley 200X'):
+    def __init__(self, ip, gpib_address, lock, title='Keithley 200X'):
         self.read_val = 0
         self.title = title
+        self.lock = lock
         logging.debug(self.title+' init started')
         self.ip = ip
         self.gpib_address = gpib_address
@@ -121,6 +131,9 @@ class K2001(multimeter):
             self.instr.clear()
             logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
             self.instr.close()
+        except:
+            logger.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -137,6 +150,9 @@ class K2001(multimeter):
             self.instr.write(":SENS:VOLT:DC:RANG 20")
             self.instr.write(":FORM:ELEM READ")
             self.instr.close()
+        except:
+            logger.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -157,6 +173,9 @@ class K2001(multimeter):
             #self.instr.write(":SENS:VOLT:DC:FILT:LPAS:STAT ON")
             self.instr.write(":FORM:ELEM READ")
             self.instr.close()
+        except:
+            logger.error("Error in %s config_20DCV_9digit_filtered" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
             
@@ -176,6 +195,9 @@ class K2001(multimeter):
             #self.instr.write(":SENS:CURRent:DC:FILT:LPAS:STAT ON")
             self.instr.write(":FORM:ELEM READ")
             self.instr.close()
+        except:
+            logger.error("Error in %s config_2ADC_9digit_filtered" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
 
@@ -187,6 +209,9 @@ class K2001(multimeter):
         try:
             self.read_val = self.instr.write("READ?")
             self.instr.close()
+        except:
+            logger.error("Error in %s measure" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
             
@@ -195,10 +220,6 @@ class K2001(multimeter):
     def is_ready_to_read(self):
         self.read_stb()
         ready = self.stb & 0b00010000
-        if ready:
-            logging.debug(self.title+' is ready to read')
-        else:
-            logging.debug(self.title+' is not ready to read')
         return ready
         
         
@@ -210,9 +231,10 @@ class K2002(K2001):
 
 class R6581T(multimeter):
 
-    def __init__(self, ip, gpib_address, title='Advantest R6581T'):
+    def __init__(self, ip, gpib_address, lock, title='Advantest R6581T'):
         self.read_val = 0
         self.title = title
+        self.lock = lock
         logging.debug(self.title+' init started')
         self.ip = ip
         self.int_temp = 0
@@ -224,6 +246,9 @@ class R6581T(multimeter):
             logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
             self.int_temp = 0
             self.instr.close()
+        except:
+            logger.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -244,6 +269,9 @@ class R6581T(multimeter):
             #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
             #self.instr.write(":SENSe:ZERO:AUTO OFF")
             self.instr.close()
+        except:
+            logger.error("Error in %s config_10DCV_9digit_fast" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -266,6 +294,9 @@ class R6581T(multimeter):
             self.instr.write(":CALCulate:DFILter AVERage")
             self.instr.write(":CALCulate:DFILter:AVERage 15")
             self.instr.close()
+        except:
+            logger.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -278,6 +309,9 @@ class R6581T(multimeter):
             self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
             self.instr.write("READ?")
             self.instr.close()
+        except:
+            logger.error("Error in %s measure" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -289,8 +323,4 @@ class R6581T(multimeter):
     def is_ready_to_read(self):
         self.read_stb()
         ready = self.stb == 16
-        if ready:
-            logging.debug(self.title+' is ready to read')
-        else:
-            logging.debug(self.title+' is not ready to read')
         return ready

@@ -21,6 +21,9 @@ class F5700A:
         try:
             self.read_val = self.instr.ask("OUT?")
             self.instr.close()
+        except:
+            logger.error("Error in %s measure" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
     
@@ -32,8 +35,9 @@ class F5700A:
         self.lock.acquire()
         self.instr.open()
 
-    def __init__(self, ip, gpib_address, title='Fluke 5700A'):
+    def __init__(self, ip, gpib_address, lock, title='Fluke 5700A'):
         self.title = title
+        self.lock = lock
         logging.debug(self.title+' init started')
         self.ip = ip
         self.gpib_address = gpib_address
@@ -47,6 +51,9 @@ class F5700A:
             self.instr.write("EXTGUARD OFF")
             logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
             self.instr.close()
+        except:
+            logger.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -56,6 +63,9 @@ class F5700A:
         try:
             self.instr.write("OUT "+out_cmd)
             self.instr.close()
+        except:
+            logger.error("Error in %s out" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -64,6 +74,9 @@ class F5700A:
         try:
             self.instr.write("OPER")
             self.instr.close()
+        except:
+            logger.error("Error in %s oper" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
 
@@ -72,6 +85,9 @@ class F5700A:
         try:
             self.instr.write("STBY")
             self.instr.close()
+        except:
+            logger.error("Error in %s stby" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
         
@@ -89,6 +105,9 @@ class F5700A:
         try:
             self.instr.write("RANGELCK ON")
             self.instr.close()
+        except:
+            logger.error("Error in %s rangelck" % self.title, exc_info=True)
+            pass
         finally:
             self.lock.release()
             
