@@ -50,7 +50,6 @@ def linearity():
     umin = -10
     umax = 10
     ustep = 0.1
-    wait_measure = 60
     wait_settle = 5
     
     instruments["F5700A"].out(str(umin)+"V")
@@ -61,7 +60,10 @@ def linearity():
         time.sleep(wait_settle)
         for i in instruments.values():
             t = threading.Thread(target=i.measure())
-        time.sleep(wait_measure)
+            
+        while not all(i.is_ready_to_read() for i in instruments.values()):
+            sleep(1)
+        
         for i in instruments.values():
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         instruments["F5700A"].out(str(u)+"V")
