@@ -5,6 +5,8 @@ import csv
 import logging
 import threading
 import time
+import numpy
+
 
 from influxdb_interface import MySeriesHelper
 
@@ -28,16 +30,38 @@ instruments["R6581T"].config_10DCV_9digit_filtered()
 #instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 
 instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="Fluke 5700A")
-instruments["F5700A"].out("10V")
-instruments["F5700A"].oper()
 
 
-while True:
-    time.sleep(5)
-    for i in instruments.values():
-        if i.is_readable():
-            if i.is_ready_to_read():
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-            if not i.is_measuring():
-                t = threading.Thread(target=i.measure())
-            
+def drift():
+    instruments["F5700A"].out("10V")
+    instruments["F5700A"].oper()
+
+
+    while True:
+        time.sleep(5)
+        for i in instruments.values():
+            if i.is_readable():
+                if i.is_ready_to_read():
+                    MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                if not i.is_measuring():
+                    t = threading.Thread(target=i.measure())
+                    
+def linearity():
+    umin = -10
+    umax = 10
+    ustep = 0.1
+    wait_measure = 60
+    wait_settle = 5
+    
+    instruments["F5700A"].out(str(umin)+"V")
+    instruments["F5700A"].oper()
+    instruments["F5700A"].rangelck(self)
+    
+    for u in numpy.arange(umin, umax, ustep):
+        time.sleep(wait_settle)
+        for i in instruments.values():
+            t = threading.Thread(target=i.measure())
+        time.sleep(wait_measure)
+        for i in instruments.values():
+            MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        instruments["F5700A"].out(str(u)+"V")
