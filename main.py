@@ -55,7 +55,7 @@ def linearity():
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
-    instruments["F5700A"].rangelck(self)
+    instruments["F5700A"].rangelck()
     
     for u in numpy.arange(umin, umax, ustep):
         time.sleep(wait_settle)
