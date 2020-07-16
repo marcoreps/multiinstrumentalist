@@ -62,11 +62,7 @@ def linearity():
             t = threading.Thread(target=i.measure())
             
         while not all(i.is_ready_to_read() for i in instruments.values()):
-            logging.debug('not all are ready to read')
             time.sleep(1)
-        
-        for i in instruments.values():
-            MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
             
         MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
         MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
