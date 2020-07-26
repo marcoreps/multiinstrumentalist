@@ -11,6 +11,7 @@ class TMP117:
     reg_config = 0x01
     bus = smbus.SMBus(i2c_ch)
     readable = True
+    read_val = 0.0
     
     def is_readable(self):
         return self.readable

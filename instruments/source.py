@@ -35,7 +35,6 @@ class K237:
         self.lock.acquire()
         try:
             self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
-            self.instr.timeout = 60*1000
             self.instr.clear()
             self.instr.write("J0X") # Factory init
             self.instr.write("F0,0X") # Source V DC
