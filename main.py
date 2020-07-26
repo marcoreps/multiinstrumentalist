@@ -90,7 +90,7 @@ def linearity():
         
 def leakage():
     while True:
-    time.sleep(5)
+        time.sleep(5)
     for i in instruments.values():
         if i.is_ready_to_read():
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
