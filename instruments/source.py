@@ -27,29 +27,29 @@ class K237:
     self.read_val = 0.0
     
     def __init__(self, ip, gpib_address, lock, title='Keithley 237'):
-    self.title = title
-    logging.debug(self.title+' init started')
-    self.ip = ip
-    self.gpib_address = gpib_address
-    self.lock.acquire()
-    try:
-        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
-        self.instr.timeout = 60*1000
-        self.instr.clear()
-        self.instr.write("J0X") # Factory init
-        self.instr.write("F0,0X") # Source V DC
-        self.instr.write("H0X") # Immediate trigger
-        self.instr.write("G4,2,0X") # Output measure value with no prefix, no suffix
-        self.instr.write("S3X") # 20ms integration time
-        self.instr.write("V1X") # Enable 1000V range
-        self.instr.write("B7.1,0,0X") # Bias 7.1V autorange
-        self.instr.write("L1E-6,4X") # 1µA compliance 1µA range
-        self.instr.close()
-    except:
-        logging.error("Error in %s __init__" % self.title, exc_info=True)
-        pass
-    finally:
-        self.lock.release()
+        self.title = title
+        logging.debug(self.title+' init started')
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.lock.acquire()
+        try:
+            self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+            self.instr.timeout = 60*1000
+            self.instr.clear()
+            self.instr.write("J0X") # Factory init
+            self.instr.write("F0,0X") # Source V DC
+            self.instr.write("H0X") # Immediate trigger
+            self.instr.write("G4,2,0X") # Output measure value with no prefix, no suffix
+            self.instr.write("S3X") # 20ms integration time
+            self.instr.write("V1X") # Enable 1000V range
+            self.instr.write("B7.1,0,0X") # Bias 7.1V autorange
+            self.instr.write("L1E-6,4X") # 1µA compliance 1µA range
+            self.instr.close()
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
         
         
     def oper(self):
