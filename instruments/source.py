@@ -102,7 +102,7 @@ class K237:
         return self.read_val
 
         
-     def is_ready_to_read(self):
+    def is_ready_to_read(self):
         return True
         
         
