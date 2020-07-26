@@ -43,7 +43,7 @@ class K237:
             self.instr.write("S3X") # 20ms integration time
             self.instr.write("V1X") # Enable 1000V range
             self.instr.write("B7.1,0,0X") # Bias 7.1V autorange
-            self.instr.write("L1E-6,4X") # 1µA compliance 1µA range
+            self.instr.write("L500E-6,0X") # 500µA compliance auto range
             self.instr.close()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
