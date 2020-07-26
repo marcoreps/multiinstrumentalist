@@ -89,6 +89,7 @@ def linearity():
         
         
 def leakage():
+    instruments["K237"].oper()
     while True:
         time.sleep(5)
     for i in instruments.values():
