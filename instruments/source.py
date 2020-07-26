@@ -29,6 +29,7 @@ class K237:
     def __init__(self, ip, gpib_address, lock, title='Keithley 237'):
         self.title = title
         logging.debug(self.title+' init started')
+        self.lock = lock
         self.ip = ip
         self.gpib_address = gpib_address
         self.lock.acquire()
