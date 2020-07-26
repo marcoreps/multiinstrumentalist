@@ -24,7 +24,7 @@ class K237:
 #define FILTER_32READINGS	           writeToDevice("P5X");
 
 
-    self.read_val = 0.0
+    read_val = 0.0
     
     def __init__(self, ip, gpib_address, lock, title='Keithley 237'):
         self.title = title
