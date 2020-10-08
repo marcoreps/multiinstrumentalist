@@ -75,11 +75,11 @@ class S7081(multimeter):
             self.instr.clear()
             self.instr.write("INItialise")
             time.sleep(5)
-            #self.instr.write("BEEp")
+            self.instr.write("BEEp")
             self.instr.write("DELIMITER=END")
             self.instr.write("OUTPUT,GP-IB=ON")
             self.instr.write("FORMAT=ENGINEERING")
-            #self.instr.write("DRIFT,OFF")
+            self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=VDC: RANge=10: NInes=8")
             self.instr.close()
         except:
