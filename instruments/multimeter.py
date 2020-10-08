@@ -263,7 +263,7 @@ class R6581T(multimeter):
             self.instr.write(":SENSe:VOLTage:DC:RANGe:1.00E+01")
             #self.instr.write(":SENSe:VOLTage:DC:RANGe:AUTO ON")
             self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
-            self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
+            self.instr.write(":SENSe:VOLTage:DC:NPLCycles 10")
             self.instr.write(":SENSe:VOLTage:DC:RANGe 10")
             
             #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
@@ -285,14 +285,14 @@ class R6581T(multimeter):
             self.instr.write("CONFigure:VOLTage:DC")
             self.instr.write(":SENSe:VOLTage:DC:RANGe 10")
             self.instr.write(":SENSe:VOLTage:DC:DIGits MAXimum")
-            self.instr.write(":SENSe:VOLTage:DC:NPLCycles MAXimum")
+            self.instr.write(":SENSe:VOLTage:DC:NPLCycles 10")
             
             #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
             #self.instr.write(":SENSe:ZERO:AUTO OFF")
             
             self.instr.write(":CALCulate:DFILter:STATe ON")
             self.instr.write(":CALCulate:DFILter AVERage")
-            self.instr.write(":CALCulate:DFILter:AVERage 15")
+            self.instr.write(":CALCulate:DFILter:AVERage 10")
             self.instr.close()
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
