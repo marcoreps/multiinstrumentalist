@@ -101,8 +101,15 @@ class Arroyo:
         self.dev = dev
         self.baud = baud
         self.title = title
-        self.serial = serial.Serial(self.dev, self.baud)
-        self.serial.close()
+        try:
+            self.serial = serial.Serial(self.dev, self.baud)
+            self.serial.write('CLS\r'.encode())
+            self.serial.write('*IDN?\r'.encode())
+            logging.debug(self.serial.readline().rstrip())
+            self.serial.close()
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
         
         
     def get_title(self):
@@ -110,11 +117,26 @@ class Arroyo:
         return self.title
         
     def get_read_val(self):
-        self.serial.open()
-        self.serial.write('TEC:T?\r'.encode())
-        val = float(self.serial.readline().rstrip())
-        self.serial.close()
+        val = 0.0
+        try:
+            self.serial.open()
+            self.serial.write('TEC:T?\r'.encode())
+            val = float(self.serial.readline().rstrip())
+            self.serial.close()
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
         return val
+        
+    def out(self, temp):
+        try:
+            self.serial.open()
+            self.serial.write('TEC:SET:T '+str(temp)+'\r'.encode())
+        except:
+            logging.error("Error in %s out" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
         
     def is_ready_to_read(self):
         return True
