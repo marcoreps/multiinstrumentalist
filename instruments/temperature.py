@@ -131,7 +131,8 @@ class Arroyo:
     def out(self, temp):
         try:
             self.serial.open()
-            self.serial.write('TEC:SET:T '+str(temp)+'\r'.encode())
+            command = 'TEC:SET:T '+str(temp)+'\r'
+            self.serial.write(command.encode())
             self.serial.close()
         except:
             logging.error("Error in %s out" % self.title, exc_info=True)
