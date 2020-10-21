@@ -106,16 +106,26 @@ def temperature_sweep():
     Tmax = 30
     Tstep = 0.1
     wait = 1
-    j=30
-    for T in numpy.arange(Tmin, Tmax, Tstep):
-        j=j-1
-        instruments["A5235"].out(j)
-        for i in range(0, 60):
-            time.sleep(wait)
-            for i in instruments.values():
-                if i.is_ready_to_read():
-                    MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-                if not i.is_measuring():
-                    t = threading.Thread(target=i.measure())
+    while True:
+        for T in numpy.arange(Tmin, Tmax, Tstep):
+            instruments["A5235"].out(T)
+            for i in range(0, 5):
+                time.sleep(wait)
+                for i in instruments.values():
+                    if i.is_ready_to_read():
+                        MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                    if not i.is_measuring():
+                        t = threading.Thread(target=i.measure())
+                        
+            for T in numpy.arange(Tmin, Tmax, Tstep):
+            instruments["A5235"].out(15+30-T)
+            for i in range(0, 5):
+                time.sleep(wait)
+                for i in instruments.values():
+                    if i.is_ready_to_read():
+                        MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                    if not i.is_measuring():
+                        t = threading.Thread(target=i.measure())
+                    
             
 temperature_sweep()
