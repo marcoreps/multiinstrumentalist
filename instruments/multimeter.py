@@ -307,7 +307,7 @@ class R6581T(multimeter):
             logging.debug(self.title+' config_100k4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
-            self.instr.write("CONFigure:FRESistance:DC")
+            self.instr.write("CONFigure:FRESistance")
             self.instr.write(":SENSe:FRESistance:RANGe 1.00E+04")
             self.instr.write(":SENSe:FRESistance:DIGits MAXimum")
             self.instr.write(":SENSe:FRESistance:NPLCycles 10")
