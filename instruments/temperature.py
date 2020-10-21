@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import smbus
 import logging
+import serial
+#import io
 
     
 class TMP117:
@@ -79,6 +81,40 @@ class R6581T_temp:
         
     def get_read_val(self):
         return self.r6581t.get_int_temp()
+        
+    def is_ready_to_read(self):
+        return True
+        
+    def is_measuring(self):
+        return False
+        
+    def measure(self):
+        pass
+        
+        
+        
+class Arroyo:
+
+    ready_to_read = False
+    
+    def __init__(self, dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource'):
+        self.dev = dev
+        self.baud = baud
+        self.title = title
+        self.serial = serial.Serial(self.dev, self.baud)
+        self.serial.close()
+        
+        
+    def get_title(self):
+        logging.debug(self.title+' get_title started')
+        return self.title
+        
+    def get_read_val(self):
+        self.serial.open()
+        self.serial.write('TEC:T?\r'.encode())
+        val = float(self.serial.readline().rstrip())
+        self.serial.close()
+        return val
         
     def is_ready_to_read(self):
         return True
