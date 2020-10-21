@@ -10,7 +10,7 @@ import numpy
 
 from influxdb_interface import MySeriesHelper
 
-from instruments.temp_sensor import *
+from instruments.temperature import *
 from instruments.multimeter import *
 from instruments.source import *
 
