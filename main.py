@@ -117,7 +117,7 @@ def temperature_sweep():
                     if not i.is_measuring():
                         t = threading.Thread(target=i.measure())
                         
-            for T in numpy.arange(Tmin, Tmax, Tstep):
+        for T in numpy.arange(Tmin, Tmax, Tstep):
             instruments["A5235"].out(15+30-T)
             for i in range(0, 5):
                 time.sleep(wait)
