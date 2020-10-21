@@ -110,7 +110,7 @@ def temperature_sweep():
         for T in numpy.arange(Tmin, Tmax, Tstep):
             instruments["A5235"].out(T)
             for i in range(0, 5):
-                time.sleep(wait)
+                #time.sleep(wait)
                 for i in instruments.values():
                     if i.is_ready_to_read():
                         MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
@@ -120,7 +120,7 @@ def temperature_sweep():
         for T in numpy.arange(Tmin, Tmax, Tstep):
             instruments["A5235"].out(15+30-T)
             for i in range(0, 5):
-                time.sleep(wait)
+                #time.sleep(wait)
                 for i in instruments.values():
                     if i.is_ready_to_read():
                         MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
