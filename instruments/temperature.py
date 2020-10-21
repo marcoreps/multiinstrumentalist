@@ -134,7 +134,7 @@ class Arroyo:
         logging.debug(self.title+' out started: '+str(temp))
         try:
             self.serial.open()
-            command = 'TEC:SET:T '+str(temp)+'\r'
+            command = 'TEC:T '+str(temp)+'\r'
             self.serial.write(command.encode())
             self.serial.close()
         except:
