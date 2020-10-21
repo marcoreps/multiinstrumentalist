@@ -135,8 +135,7 @@ class Arroyo:
         except:
             logging.error("Error in %s out" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
     def is_ready_to_read(self):
         return True
