@@ -131,6 +131,7 @@ class Arroyo:
         return val
         
     def out(self, temp):
+        logging.debug(self.title+' out started: '+str(temp))
         try:
             self.serial.open()
             command = 'TEC:SET:T '+str(temp)+'\r'
