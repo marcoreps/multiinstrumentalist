@@ -308,7 +308,7 @@ class R6581T(multimeter):
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
             self.instr.write("CONFigure:FRESistance")
-            self.instr.write(":SENSe:FRESistance:RANGe 1.00E+04")
+            self.instr.write(":SENSe:FRESistance:RANGe 1.00E+05")
             self.instr.write(":SENSe:FRESistance:DIGits MAXimum")
             self.instr.write(":SENSe:FRESistance:NPLCycles 10")
             self.instr.write(":SENSe:FRESistance:SOURce OCOMpensated")
