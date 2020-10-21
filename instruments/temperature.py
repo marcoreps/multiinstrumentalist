@@ -127,7 +127,7 @@ class Arroyo:
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
-        logging.debug(self.title+' read '+str(val)
+        logging.debug(self.title+' read '+str(val))
         return val
         
     def out(self, temp):
