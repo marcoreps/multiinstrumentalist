@@ -102,13 +102,13 @@ def leakage():
                 
                 
 def temperature_sweep():
-    Tmin = 15
-    Tmax = 30
+    Tmin = 30
+    Tmax = 15
     Tstep = 0.1
     wait = 1
     for T in numpy.arange(Tmin, Tmax, Tstep):
         instruments["A5235"].out(T)
-        for i in range(0, 120):
+        for i in range(0, 60):
             time.sleep(wait)
             for i in instruments.values():
                 if i.is_ready_to_read():
