@@ -117,6 +117,7 @@ class Arroyo:
         return self.title
         
     def get_read_val(self):
+        logging.debug(self.title+' get_read_val started')
         val = 0.0
         try:
             self.serial.open()
@@ -126,6 +127,7 @@ class Arroyo:
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
+        logging.debug(self.title+' read '+str(val)
         return val
         
     def out(self, temp):
