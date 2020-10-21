@@ -132,6 +132,7 @@ class Arroyo:
         try:
             self.serial.open()
             self.serial.write('TEC:SET:T '+str(temp)+'\r'.encode())
+            self.serial.close()
         except:
             logging.error("Error in %s out" % self.title, exc_info=True)
             pass
