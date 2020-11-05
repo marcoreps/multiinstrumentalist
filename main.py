@@ -138,3 +138,5 @@ def r_drift():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
             if not i.is_measuring():
                 t = threading.Thread(target=i.measure())
+                
+r_drift()
