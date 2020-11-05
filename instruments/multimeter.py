@@ -79,8 +79,30 @@ class S7081(multimeter):
             self.instr.write("DELIMITER=END")
             self.instr.write("OUTPUT,GP-IB=ON")
             self.instr.write("FORMAT=ENGINEERING")
+            self.instr.close()
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def config_10DCV_9digit(self):
+        self.connect()
+        try:
             self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=VDC: RANge=10: NInes=8")
+            self.instr.close()
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def config_10KOHM_9digit(self):
+        self.connect()
+        try:
+            self.instr.write("DRIFT,OFF")
+            self.instr.write("MODe=KOHM: RANge=10: NInes=8")
             self.instr.close()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
@@ -327,6 +349,33 @@ class R6581T(multimeter):
         finally:
             self.lock.release()
         
+        
+    def config_10R4W_9digit_filtered(self):
+        self.connect()
+        try:
+            logging.debug(self.title+' config_100k4W_9digit_filtered started')
+            self.instr.write("*RST")
+            #self.instr.ask("*OPC?")
+            self.instr.write("CONFigure:FRESistance")
+            self.instr.write(":SENSe:FRESistance:RANGe 1.00E+01")
+            self.instr.write(":SENSe:FRESistance:DIGits MAXimum")
+            self.instr.write(":SENSe:FRESistance:NPLCycles 10")
+            self.instr.write(":SENSe:FRESistance:SOURce OCOMpensated")
+            self.instr.write(":SENSe:FRESistance:POWer HI")
+            
+            #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
+            #self.instr.write(":SENSe:ZERO:AUTO OFF")
+            
+            self.instr.write(":CALCulate:DFILter:STATe ON")
+            self.instr.write(":CALCulate:DFILter AVERage")
+            self.instr.write(":CALCulate:DFILter:AVERage 10")
+            self.instr.close()
+        except:
+            logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
         
     def measure(self):
         logging.debug(self.title+' measure started')
