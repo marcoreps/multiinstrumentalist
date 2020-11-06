@@ -98,7 +98,7 @@ class S7081(multimeter):
         finally:
             self.lock.release()
             
-    def config_10KOHM_9digit(self):
+    def config_10k_9digit(self):
         self.connect()
         try:
             self.instr.write("DRIFT,OFF")
