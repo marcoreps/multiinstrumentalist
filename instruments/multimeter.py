@@ -348,12 +348,39 @@ class R6581T(multimeter):
             pass
         finally:
             self.lock.release()
+            
+            
+    def config_10k4W_9digit_filtered(self):
+        self.connect()
+        try:
+            logging.debug(self.title+' config_10k4W_9digit_filtered started')
+            self.instr.write("*RST")
+            #self.instr.ask("*OPC?")
+            self.instr.write("CONFigure:FRESistance")
+            self.instr.write(":SENSe:FRESistance:RANGe 1.00E+04")
+            self.instr.write(":SENSe:FRESistance:DIGits MAXimum")
+            self.instr.write(":SENSe:FRESistance:NPLCycles 10")
+            self.instr.write(":SENSe:FRESistance:SOURce OCOMpensated")
+            self.instr.write(":SENSe:FRESistance:POWer HI")
+            
+            #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
+            #self.instr.write(":SENSe:ZERO:AUTO OFF")
+            
+            self.instr.write(":CALCulate:DFILter:STATe ON")
+            self.instr.write(":CALCulate:DFILter AVERage")
+            self.instr.write(":CALCulate:DFILter:AVERage 10")
+            self.instr.close()
+        except:
+            logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
         
         
     def config_10R4W_9digit_filtered(self):
         self.connect()
         try:
-            logging.debug(self.title+' config_100k4W_9digit_filtered started')
+            logging.debug(self.title+' config_10R4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
             self.instr.write("CONFigure:FRESistance")

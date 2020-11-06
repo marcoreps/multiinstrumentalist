@@ -129,7 +129,7 @@ def temperature_sweep():
             
 def r_drift():
     instruments["S7081"].config_10KOHM_9digit()
-    instruments["R6581T"].config_10R4W_9digit_filtered()
+    instruments["R6581T"].config_10K4W_9digit_filtered()
 
     while True:
         time.sleep(1)
