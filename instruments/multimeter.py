@@ -101,7 +101,7 @@ class S7081(multimeter):
     def config_10k_9digit(self):
         self.connect()
         try:
-            self.instr.write("DRIFT,OFF")
+            self.instr.write("DRIFT,ON")
             self.instr.write("MODe=KOHM: RANge=10: NInes=8")
             self.instr.close()
         except:
@@ -360,7 +360,7 @@ class R6581T(multimeter):
             self.instr.write(":SENSe:FRESistance:RANGe 1.00E+04")
             self.instr.write(":SENSe:FRESistance:DIGits MAXimum")
             self.instr.write(":SENSe:FRESistance:NPLCycles 10")
-            self.instr.write(":SENSe:FRESistance:SOURce OCOMpensated")
+            #self.instr.write(":SENSe:FRESistance:SOURce OCOMpensated")
             self.instr.write(":SENSe:FRESistance:POWer HI")
             
             #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
