@@ -28,7 +28,6 @@ instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=loctite, title="Bench
 #instruments["2002"].config_2ADC_9digit_filtered()
 #instruments["2002"].config_20DCV_9digit_filtered()
 instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=loctite, title="Bench R6581T")
-#instruments["R6581T"].config_10DCV_9digit_filtered()
 instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
 #instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=loctite, title="Bench K237")
@@ -139,4 +138,16 @@ def r_drift():
             if not i.is_measuring():
                 t = threading.Thread(target=i.measure())
                 
-r_drift()
+def f732a_test():
+    instruments["S7081"].config_10k_9digit()
+    instruments["R6581T"].config_10DCV_9digit_filtered()
+
+    while True:
+        time.sleep(1)
+        for i in instruments.values():
+            if i.is_ready_to_read():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+            if not i.is_measuring():
+                t = threading.Thread(target=i.measure())
+                
+f732a_test()
