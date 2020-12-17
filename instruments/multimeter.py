@@ -101,7 +101,8 @@ class S7081(multimeter):
     def config_10k_9digit(self):
         self.connect()
         try:
-            self.instr.write("DRIFT,ON")
+            #self.instr.write("DRIFT,ON")
+            self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=KOHM: RANge=10: NInes=8")
             self.instr.close()
         except:
