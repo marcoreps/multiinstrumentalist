@@ -23,21 +23,21 @@ vxi_ip = "192.168.178.88"
 instruments = dict()
 instruments["temp_short"]=TMP117(address=0x48, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
-instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=loctite, title="Bench S7081")
+#instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=loctite, title="Bench S7081")
 #instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, lock=loctite, title="2002")
 #instruments["2002"].config_2ADC_9digit_filtered()
 #instruments["2002"].config_20DCV_9digit_filtered()
-instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=loctite, title="Bench R6581T")
-instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
+#instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=loctite, title="Bench R6581T")
+#instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
 #instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=loctite, title="Bench K237")
 
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=loctite, title="Fluke 5700A")
 
 
-def drift():
-#    instruments["F5700A"].out("10V")
-#    instruments["F5700A"].oper()
+def v_drift():
+    instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=loctite, title="Bench S7081")
+    instruments["S7081"].config_10DCV_9digit()
 
     while True:
         time.sleep(5)
@@ -150,4 +150,4 @@ def f732a_test():
             if not i.is_measuring():
                 t = threading.Thread(target=i.measure())
                 
-f732a_test()
+v_drift()
