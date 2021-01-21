@@ -459,6 +459,7 @@ class HPM7177(multimeter):
         
         
     def is_ready_to_read(self):
+        logging.debug(self.title+' is_ready_to_read started')
         return self.ready_to_read
 
 
@@ -466,13 +467,11 @@ class HPM7177(multimeter):
         logging.debug(self.title+' get_read_val started')
         i = 0
 
-        
         while len(self.readings)<self.nfilter:
-
             number = int.from_bytes(self.buffer[i:i+4], byteorder='big', signed=False)
             print(self.buffer[i:i+6])
             self.readings.append(number)
-            #logging.debug(self.title+' number '+str(number))
+            logging.debug(self.title+' number '+str(number))
             i=i+6
                 
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
