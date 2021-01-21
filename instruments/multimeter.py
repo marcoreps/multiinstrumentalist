@@ -441,7 +441,6 @@ class HPM7177(multimeter):
         logging.debug(self.title+' init started')
         self.dev = dev
         self.baud = baud
-        self.buffer = bytearray()
         self.nfilter = nfilter
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
@@ -450,22 +449,19 @@ class HPM7177(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         self.measuring = True
-        self.serial.reset_input_buffer()        
-        
-        
-    def is_ready_to_read(self):
-        logging.debug(self.title+' is_ready_to_read started')
-        logging.debug(self.title+' has '+str(self.serial.in_waiting)+' bytes in waiting')
-        return self.serial.in_waiting>(6*self.nfilter)+12
-
-
-    def get_read_val(self):
+        self.serial.reset_input_buffer()    
         self.serial.readline()
         while (len(self.readings)<self.nfilter):
             line=self.serial.readline()
             number = int.from_bytes(line[:4], byteorder='big', signed=False)
             self.readings.append(number)
+        
+        
+    def is_ready_to_read(self):
+        return len(self.readings)==self.nfilter
 
+
+    def get_read_val(self):
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
         self.measuring = False
