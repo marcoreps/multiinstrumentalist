@@ -458,9 +458,7 @@ class HPM7177(multimeter):
         
         
     def is_ready_to_read(self):
-        logging.debug(self.title+' is_ready_to_read started')
-        logging.debug(self.title+' len readings = '+str(len(self.readings)))
-        return len(self.readings)>=self.nfilter
+        return len(self.buffer)>=self.nfilter*6
 
 
     def get_read_val(self):
