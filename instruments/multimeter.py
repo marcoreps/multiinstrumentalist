@@ -439,7 +439,6 @@ class HPM7177(multimeter):
     def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
         self.read_val = 0
         self.title = title
-        self.lock = lock
         logging.debug(self.title+' init started')
         self.dev = dev
         self.baud = baud
