@@ -159,4 +159,4 @@ def HPM_test():
             if not i.is_measuring():
                 t = threading.Thread(target=i.measure())
                 
-v_drift()
+HPM_test()
