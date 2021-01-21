@@ -464,6 +464,7 @@ class HPM7177(multimeter):
 
     def get_read_val(self):
         i=1
+        print(len(self.buffer))
         while not self.buffer[i]==b'\r':
             i=i+1
         i=i+1
