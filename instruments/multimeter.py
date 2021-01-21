@@ -454,18 +454,14 @@ class HPM7177(multimeter):
         logging.debug(self.title+' measure started')
         self.measuring = True
         self.buffer.clear()
-        self.thread.start()
-        
-        
-    def readserial(self):
-        self.ser = serial.Serial(self.dev, self.baud)
-        while True:
-                reading=self.ser.read(102400)
-                self.buffer.extend(reading)
+        while( not self.is_ready_to_read() ):
+            reading=self.ser.read(102400)
+            self.buffer.extend(reading)
+        self.measuring = False
         
         
     def is_ready_to_read(self):
-        return len(self.buffer)>6*self.nfilter
+        return len(self.buffer)>(6*self.nfilter)+6
 
 
     def get_read_val(self):
