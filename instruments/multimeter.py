@@ -454,7 +454,7 @@ class HPM7177(multimeter):
         
         
     def is_ready_to_read(self):
-        return self.serial.in_waiting()>(6*self.nfilter)+12
+        return self.serial.in_waiting>(6*self.nfilter)+12
 
 
     def get_read_val(self):
