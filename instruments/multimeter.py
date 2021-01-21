@@ -446,8 +446,6 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
-        self.thread = threading.Thread(target=self.readserial)
-        self.thread.daemon = True
 
 
     def measure(self):
