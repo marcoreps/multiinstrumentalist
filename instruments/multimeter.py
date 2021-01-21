@@ -442,7 +442,7 @@ class HPM7177(multimeter):
         self.dev = dev
         self.baud = baud
         self.nfilter = nfilter
-        self.buffer = bytearray([None]*(nfilter*6))
+        self.buffer = bytearray(nfilter*6)
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
 
