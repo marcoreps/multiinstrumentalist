@@ -469,7 +469,7 @@ class HPM7177(multimeter):
             print(self.buffer[i:i+4])
             self.readings.append(number)
             logging.debug(self.title+' number '+str(number))
-            i=i+5
+            i=i+6
                 
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
