@@ -454,6 +454,8 @@ class HPM7177(multimeter):
         
         
     def is_ready_to_read(self):
+        logging.debug(self.title+' is_ready_to_read started')
+        logging.debug(self.title+' has '+str(self.serial.in_waiting)+' bytes in waiting')
         return self.serial.in_waiting>(6*self.nfilter)+12
 
 
