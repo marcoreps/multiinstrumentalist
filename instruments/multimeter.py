@@ -453,8 +453,7 @@ class HPM7177(multimeter):
         self.serial.reset_input_buffer()   
         while not self.serial.read()==b'\r':
             pass
-        reading=self.serial.read(self.nfilter*6)
-        self.buffer.extend(reading)
+        self.buffer=self.serial.read(self.nfilter*6)
         
         
     def is_ready_to_read(self):
@@ -466,9 +465,11 @@ class HPM7177(multimeter):
             number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
             del self.buffer[:6]
             self.readings.append(number)
+            logging.debug(self.title+' number '+str(number))
                 
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
+        self.buffer.clear()
         self.measuring = False
         logging.debug(self.title+' returning '+str(mean))
         return mean
