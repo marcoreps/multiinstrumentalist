@@ -436,7 +436,7 @@ class R6581T(multimeter):
 
 class HPM7177(multimeter):
 
-    def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
+    def __init__(self, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177'):
         self.title = title
         logging.debug(self.title+' init started')
         self.dev = dev
@@ -470,7 +470,7 @@ class HPM7177(multimeter):
         while len(self.readings)<self.nfilter:
 
             number = int.from_bytes(self.buffer[i:i+4], byteorder='big', signed=False)
-            print(self.buffer[i:i+6][0])
+            print(self.buffer[i:i+6])
             self.readings.append(number)
             #logging.debug(self.title+' number '+str(number))
             i=i+6
