@@ -472,7 +472,6 @@ class HPM7177(multimeter):
                 
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
-        self.buffer.clear()
         self.measuring = False
         self.ready_to_read = False
         logging.debug(self.title+' returning '+str(mean))
