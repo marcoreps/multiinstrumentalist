@@ -151,7 +151,7 @@ def f732a_test():
                 
 def HPM_test():
     
-    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
+    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
 
     while True:
         time.sleep(0.1)
