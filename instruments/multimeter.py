@@ -464,21 +464,12 @@ class HPM7177(multimeter):
 
     def get_read_val(self):
         logging.debug(self.title+' get_read_val started')
-        i = 0
-        print(self.buffer[0])
-        print(self.buffer[1])
-        print(self.buffer[2])
-        print(self.buffer[3])
-        print(self.buffer[4])
-        print(self.buffer[5])
-        print(self.buffer[6])
-        print(self.buffer[7])
-        print(self.buffer[8])
-        print(self.buffer[9])
-        print(self.buffer[10])
+        i = self.buffer.find(13)
+        print(self.buffer)
+
         
         while len(self.readings)<self.nfilter:
-            #print(i)
+            print(i)
             number = int.from_bytes(self.buffer[i:i+4], byteorder='big', signed=False)
             #print(self.buffer[i:i+4])
             self.readings.append(number)
