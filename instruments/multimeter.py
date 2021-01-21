@@ -476,7 +476,7 @@ class HPM7177(multimeter):
                 self.readings.append(number)
             else:
                 logging.debug(self.title+' ditching a byte')
-                del buffer_1[0]
+                del self.buffer[0]
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
         return mean
