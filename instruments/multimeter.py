@@ -451,13 +451,9 @@ class HPM7177(multimeter):
         logging.debug(self.title+' measure started')
         self.measuring = True
         self.serial.reset_input_buffer()   
-        while True:
-            byte=self.serial.read()
-            logging.debug(self.title+' read byte '+str(byte))
+        while not self.serial.read()==b'\r':
             logging.debug(self.title+' ditching a byte')
-            if(byte==13):
-                break
-
+            pass
         reading=self.serial.read(self.nfilter*6)
         self.buffer.extend(reading)
         
