@@ -454,6 +454,7 @@ class HPM7177(multimeter):
         while not self.serial.read()==b'\r':
             pass
         reading=self.serial.read(self.nfilter*6)
+        logging.debug(self.title+' extending buffer')
         self.buffer.extend(reading)
         
         
