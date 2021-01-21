@@ -455,6 +455,7 @@ class HPM7177(multimeter):
             line=self.serial.readline()
             number = int.from_bytes(line[:4], byteorder='big', signed=False)
             self.readings.append(number)
+            logging.debug(self.title+' read number '+str(number))
         
         
     def is_ready_to_read(self):
