@@ -31,7 +31,6 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 #instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
 #instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=loctite, title="Bench K237")
-
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=loctite, title="Fluke 5700A")
 
 
@@ -144,6 +143,16 @@ def f732a_test():
 
     while True:
         time.sleep(1)
+        for i in instruments.values():
+            if i.is_ready_to_read():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+            if not i.is_measuring():
+                t = threading.Thread(target=i.measure())
+                
+def HPM_test():
+    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
+
+    while True:
         for i in instruments.values():
             if i.is_ready_to_read():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))

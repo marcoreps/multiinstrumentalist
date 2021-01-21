@@ -5,6 +5,8 @@ import vxi11
 import time
 import logging
 import threading
+import serial
+import statistics
 
 
 
@@ -428,3 +430,54 @@ class R6581T(multimeter):
         self.read_stb()
         ready = self.stb == 16
         return ready
+
+
+
+
+class HPM7177(multimeter):
+
+    def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
+        self.read_val = 0
+        self.title = title
+        self.lock = lock
+        logging.debug(self.title+' init started')
+        self.dev = dev
+        self.baud = baud
+        self.buffer = bytearray()
+        self.nfilter = 10000
+        self.readings = []
+        self.serial = serial.Serial(self.dev, self.baud)
+        self.thread = threading.Thread(target=readserial, args=(self.dev, self.baud, self.buffer))
+        self.thread.daemon = True
+
+
+    def measure(self):
+        logging.debug(self.title+' measure started')
+        self.measuring = True
+        self.buffer.clear()
+        self.thread.start()
+        
+        
+    def readserial(dev, baud, buf):
+        s = serial.Serial(dev, baud)
+        while True:
+                reading=s.read(102400)
+                buf.extend(reading)
+        
+        
+    def is_ready_to_read(self):
+        return len(self.buffer)>6*self.nfilter
+
+
+    def get_read_val(self):
+        while (len(self.readings)<nfilter):
+            if(self.buffer[4]==160 and self.buffer[5]==13):
+                number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
+                del self.buffer[:6]
+                self.readings.append(number)
+            else:
+                logging.debug(self.title+' ditching a byte')
+                del buffer_1[0]
+        mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
+        self.readings.clear()
+        return mean
