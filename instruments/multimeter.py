@@ -464,7 +464,7 @@ class HPM7177(multimeter):
 
 
     def get_read_val(self):
-        while self.readings<nfilter:
+        while self.readings<self.nfilter:
             number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
             del self.buffer[:6]
             self.readings.append(number)
