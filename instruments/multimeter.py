@@ -454,7 +454,7 @@ class HPM7177(multimeter):
         self.serial.reset_input_buffer()   
         while not self.serial.read()==b'\r':
             pass
-        self.buffer=self.serial.read(self.nfilter*6)
+        self.buffer=self.serial.read(self.nfilter*6+6)
         self.ready_to_read = True
         
         
@@ -464,6 +464,9 @@ class HPM7177(multimeter):
 
     def get_read_val(self):
         i=0
+        while not self.buffer[i]==b'\r':
+            i++
+        i++
         while len(self.readings)<self.nfilter:
             number = int.from_bytes(self.buffer[i:i+4], byteorder='big', signed=False)
             print(self.buffer[i:i+4])
