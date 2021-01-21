@@ -453,7 +453,7 @@ class HPM7177(multimeter):
         self.measuring = True
         self.buffer.clear()
         while( not self.is_ready_to_read() ):
-            reading=self.ser.read(102400)
+            reading=self.serial.read(102400)
             self.buffer.extend(reading)
         self.measuring = False
         
