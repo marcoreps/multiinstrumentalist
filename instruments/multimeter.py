@@ -437,7 +437,6 @@ class R6581T(multimeter):
 class HPM7177(multimeter):
 
     def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
-        self.read_val = 0
         self.title = title
         logging.debug(self.title+' init started')
         self.dev = dev
@@ -451,28 +450,22 @@ class HPM7177(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         self.measuring = True
-        self.buffer.clear()
-        while( not self.is_ready_to_read() ):
-            reading=self.serial.read(102400)
-            self.buffer.extend(reading)
-        self.measuring = False
+        self.serial.reset_input_buffer()        
         
         
     def is_ready_to_read(self):
-        return len(self.buffer)>(6*self.nfilter)+6
+        return self.serial.in_waiting()>(6*self.nfilter)+12
 
 
     def get_read_val(self):
+        self.serial.readline()
         while (len(self.readings)<self.nfilter):
-            if(self.buffer[4]==160 and self.buffer[5]==13):
-                number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
-                del self.buffer[:6]
-                self.readings.append(number)
-            else:
-                logging.error(self.title+' ditching a byte')
-                logging.error(self.title+'len in buffer='+str(len(self.buffer)))
-                del self.buffer[0]
+            line=self.serial.readline()
+            number = int.from_bytes(line[:4], byteorder='big', signed=False)
+            self.readings.append(number)
+
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
+        self.measuring = False
         logging.debug(self.title+' returning '+str(mean))
         return mean
