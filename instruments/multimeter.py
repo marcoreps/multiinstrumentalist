@@ -452,14 +452,13 @@ class HPM7177(multimeter):
         self.measuring = True
         self.serial.reset_input_buffer()   
         while not self.serial.read()==b'\r':
-            logging.debug(self.title+' ditching a byte')
             pass
         reading=self.serial.read(self.nfilter*6)
         self.buffer.extend(reading)
         
         
     def is_ready_to_read(self):
-        return len(self.readings)==self.nfilter
+        return len(self.readings)>=self.nfilter
 
 
     def get_read_val(self):
