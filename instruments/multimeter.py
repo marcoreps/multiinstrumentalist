@@ -454,6 +454,7 @@ class HPM7177(multimeter):
         self.serial.reset_input_buffer()
         logging.debug(self.title+' input buffer reset')
         while True:
+            logging.debug(self.title+' started reading')
             print(self.serial.read())
             logging.debug(self.title+' ditching a byte')
         logging.debug(self.title+' done ditching')
