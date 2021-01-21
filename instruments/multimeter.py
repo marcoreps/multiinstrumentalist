@@ -443,7 +443,7 @@ class HPM7177(multimeter):
         self.dev = dev
         self.baud = baud
         self.buffer = bytearray()
-        self.nfilter = 10000
+        self.nfilter = nfilter
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
         self.thread = threading.Thread(target=self.readserial)
@@ -469,7 +469,7 @@ class HPM7177(multimeter):
 
 
     def get_read_val(self):
-        while (len(self.readings)<nfilter):
+        while (len(self.readings)<self.nfilter):
             if(self.buffer[4]==160 and self.buffer[5]==13):
                 number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
                 del self.buffer[:6]
