@@ -463,6 +463,7 @@ class HPM7177(multimeter):
 
 
     def get_read_val(self):
+        logging.debug(self.title+' get_read_val started')
         i = 0
         print(self.buffer[0:20])
         while len(self.readings)<self.nfilter:
