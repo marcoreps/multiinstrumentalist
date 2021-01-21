@@ -442,7 +442,7 @@ class HPM7177(multimeter):
         self.dev = dev
         self.baud = baud
         self.nfilter = nfilter
-        self.buffer = bytearray(self.nfilter*6)
+        self.buffer = bytes()
         self.readings = []
         self.ready_to_read = False
         self.serial = serial.Serial(self.dev, self.baud)
@@ -450,12 +450,11 @@ class HPM7177(multimeter):
 
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.buffer = bytearray(self.nfilter*6)
         self.measuring = True
         self.serial.reset_input_buffer()   
         while not self.serial.read()==b'\r':
             pass
-        self.buffer=self.serial.readinto(self.buffer)
+        self.buffer=self.serial.read(self.nfilter*6)
         self.ready_to_read = True
         
         
