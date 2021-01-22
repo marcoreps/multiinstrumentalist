@@ -51,7 +51,7 @@ def HPM_test():
             process.terminate()
             process.join()
             time.sleep(1)
-        if not instruments["HPM2"].is_measuring():
+        if (not instruments["HPM2"].is_measuring()) and (not process.is_alive()):
             logging.debug('starting process')
             process.start()
         
