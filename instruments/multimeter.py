@@ -464,6 +464,7 @@ class HPM7177(multimeter):
                     number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
                     del self.buffer[:6]
                     self.readings.append(number)
+                    print('.', end='')
                 else:
                     logging.debug(self.title+' ditching a byte')
                     del self.buffer[0]
