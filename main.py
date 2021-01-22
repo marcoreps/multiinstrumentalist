@@ -156,6 +156,7 @@ def HPM_test():
     process = multiprocessing.Process(target=instruments["HPM2"].measure)
 
     while True:
+        time.sleep(1)
         logging.debug('main')
         for i in instruments.values():
             if instruments["HPM2"].is_ready_to_read():
