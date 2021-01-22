@@ -7,8 +7,6 @@ import logging
 import threading
 import serial
 import statistics
-import multiprocessing 
-
 
 
 
@@ -447,14 +445,11 @@ class HPM7177(multimeter):
         self.buffer = bytearray()
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
-        self.thread_1 = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
-        self.thread_1.daemon = True
-        self.thread_1.start()
+        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
+        self.readserial_thread.daemon = True
+        self.readserial_thread.start()
         
-
         
-
-
     def readserial(self, dev, baud, buf):
         s = serial.Serial(dev, baud)
         while True:
@@ -476,7 +471,6 @@ class HPM7177(multimeter):
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
         self.buffer.clear()
-        logging.debug(self.title+' result= '+str(mean))
         self.read_val=mean
         self.readable=True
         self.measuring=False
@@ -489,12 +483,10 @@ class HPM7177(multimeter):
         self.thread_2.start()
         
         
-    def is_ready_to_read(self):
-        logging.debug(self.title+' is_ready_to_read started')
+    def is_readable(self):
         return self.readable
 
 
     def get_read_val(self):
-        logging.debug(self.title+' get_read_val started')
         self.readable=False
         return self.read_val
