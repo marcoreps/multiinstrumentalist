@@ -447,9 +447,12 @@ class HPM7177(multimeter):
         self.buffer = bytearray()
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
-        thread_1 = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
-        thread_1.daemon = True
-        thread_1.start()
+        self.thread_1 = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
+        self.thread_1.daemon = True
+        self.thread_1.start()
+        
+
+        
 
 
     def readserial(self, dev, baud, buf):
@@ -459,8 +462,7 @@ class HPM7177(multimeter):
                 buf.extend(reading)
         
         
-    def measure(self):
-        self.measuring=True
+    def process(self):
         while (len(self.readings)<self.nfilter):
             if (len(self.buffer)>5):
                 if(self.buffer[4]==160 and self.buffer[5]==13):
@@ -478,6 +480,13 @@ class HPM7177(multimeter):
         self.read_val=mean
         self.readable=True
         self.measuring=False
+        
+        
+    def measure(self):
+        self.measuring=True
+        self.thread_2 = threading.Thread(target=self.process)
+        self.thread_2.daemon = True
+        self.thread_2.start()
         
         
     def is_ready_to_read(self):
