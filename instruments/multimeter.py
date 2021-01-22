@@ -436,7 +436,7 @@ class R6581T(multimeter):
 
 class HPM7177(multimeter):
 
-    def __init__(self, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177'):
+    def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
         self.title = title
         logging.debug(self.title+' init started')
         self.dev = dev
@@ -451,10 +451,10 @@ class HPM7177(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         self.measuring = True
-        self.serial.reset_input_buffer()
+        #self.serial.reset_input_buffer()
         while not self.serial.read()==b'\r':
             logging.debug(self.title+' ditching a byte')
-        self.buffer=self.serial.read(self.nfilter*6+6)
+        self.buffer.extend(self.serial.read(self.nfilter*6+6))
         self.ready_to_read = True
         
         
