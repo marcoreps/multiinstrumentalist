@@ -158,7 +158,7 @@ def HPM_test():
     while True:
         logging.debug('main')
         for i in instruments.values():
-            i.is_ready_to_read()
+            print(i.is_ready_to_read())
 
                 
 HPM_test()
