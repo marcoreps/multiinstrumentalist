@@ -5,7 +5,8 @@ import csv
 import logging
 import threading
 import time
-import numpy
+import multiprocessing 
+
 
 
 from influxdb_interface import MySeriesHelper
@@ -152,18 +153,18 @@ def f732a_test():
 def HPM_test():
     
     instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
-    t = threading.Thread(target=instruments["HPM2"].measure())
-    t.daemon = True
+    process = multiprocessing.Process(target=instruments["HPM2"].measure())
 
     while True:
         logging.debug('main')
         for i in instruments.values():
             if i.is_ready_to_read():
+                process.terminate()
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
             else:
                 logging.debug('HPM is not ready to read')
             if not i.is_measuring():
-                t.start()
+                process.start()
             else:
                 logging.debug('HPM is measuring')
                 
