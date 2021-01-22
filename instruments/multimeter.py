@@ -460,7 +460,6 @@ class HPM7177(multimeter):
     def process(self):
         logging.debug("HPM->process")
         while (len(self.readings)<self.nfilter):
-            print('.', end='')
             if (len(self.buffer)>5):
                 if(self.buffer[4]==160 and self.buffer[5]==13):
                     number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
