@@ -449,7 +449,7 @@ class HPM7177(multimeter):
         self.ready_to_read = False
         self.read_val = 0
         self.serial = serial.Serial(self.dev, self.baud)
-        self.process
+        self.process = multiprocessing.Process()
 
 
     def work(self):
