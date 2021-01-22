@@ -162,6 +162,8 @@ def HPM_test():
                 logging.debug('HPM is not ready to read')
             if not i.is_measuring():
                 t = threading.Thread(target=i.measure())
+                t.daemon = True
+                t.start()
             else:
                 logging.debug('HPM is measuring')
                 
