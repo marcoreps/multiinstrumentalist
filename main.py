@@ -158,16 +158,7 @@ def HPM_test():
     while True:
         logging.debug('main')
         for i in instruments.values():
-            if i.is_ready_to_read():
-                logging.debug('HPM is ready to read')
-                process.terminate()
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-            else:
-                logging.debug('HPM is not ready to read')
-            if not i.is_measuring():
-                logging.debug('HPM is not measuring')
-                process.start()
-            else:
-                logging.debug('HPM is measuring')
+            i.is_ready_to_read()
+
                 
 HPM_test()
