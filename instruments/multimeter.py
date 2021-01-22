@@ -14,8 +14,8 @@ import multiprocessing
 
 class multimeter:
 
-    self.read_val = 0
-    self.title = ""
+    read_val = 0
+    title = ""
 
     self.measuring = False
     self.readable = False
