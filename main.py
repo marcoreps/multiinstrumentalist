@@ -47,9 +47,9 @@ def HPM_test():
         if instruments["HPM2"].is_ready_to_read():
             logging.debug(str(instruments["HPM2"].get_read_val()))
 
-        if (not instruments["HPM2"].is_measuring()) and (not process.is_alive()):
+        if not instruments["HPM2"].is_measuring():
             logging.debug('starting process')
-            process.start()
+            instruments["HPM2"].measure()
         
                 
 HPM_test()
