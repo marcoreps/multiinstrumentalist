@@ -17,8 +17,8 @@ class multimeter:
     read_val = 0
     title = ""
 
-    self.measuring = False
-    self.readable = False
+    measuring = False
+    readable = False
     
     def is_readable(self):
         return self.readable
