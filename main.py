@@ -48,6 +48,7 @@ def HPM_test():
         MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
         if instruments["HPM2"].is_ready_to_read():
             process.terminate()
+            process.join()
             time.sleep(1)
         if not instruments["HPM2"].is_measuring():
             logging.debug('starting process')
