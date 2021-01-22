@@ -458,6 +458,7 @@ class HPM7177(multimeter):
         
         
     def process(self):
+        logging.debug("HPM->process")
         while (len(self.readings)<self.nfilter):
             if (len(self.buffer)>5):
                 if(self.buffer[4]==160 and self.buffer[5]==13):
