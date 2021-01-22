@@ -14,11 +14,11 @@ import multiprocessing
 
 class multimeter:
 
-    read_val = 0
-    title = ""
+    self.read_val = 0
+    self.title = ""
 
-    measuring = False
-    readable = True
+    self.measuring = False
+    self.readable = False
     
     def is_readable(self):
         return self.readable
@@ -446,52 +446,46 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.buffer = bytearray()
         self.readings = []
-        self.ready_to_read = False
-        self.read_val = 0
         self.serial = serial.Serial(self.dev, self.baud)
-        self.process = multiprocessing.Process()
+        thread_1 = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
+        thread_1.daemon = True
+        thread_1.start()
 
 
-    def work(self):
-        logging.debug(self.title+' work started')
-        self.ready_to_read = False
-        while not self.serial.read()==b'\r':
-            logging.debug(self.title+' ditching a byte')
-        self.buffer.extend(self.serial.read(self.nfilter*6+6))
-        
-        i = 0
-        while len(self.readings)<self.nfilter:
-            number = int.from_bytes(self.buffer[i:i+4], byteorder='big', signed=False)
-            #print(number)
-            self.readings.append(number)
-            i=i+6
-                
-        mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
-        self.readings.clear()
-        self.buffer.clear()
-        logging.debug(self.title+' returning '+str(mean))
-        self.read_val = mean
-        self.ready_to_read = True
-        logging.debug(self.title+' set ready to read True')
-        logging.debug(self.title+str(self.ready_to_read))
+    def readserial(self, dev, baud, buf):
+        s = serial.Serial(dev, baud)
+        while True:
+                reading=s.read(10000*6)
+                buf.extend(reading)
         
         
     def measure(self):
-        self.process=multiprocessing.Process(target=self.work)
-        self.process.daemon = True
-        self.process.start()
+        self.measuring=True
+        while (len(self.readings)<self.nfilter):
+            if (len(self.buffer)>5):
+                if(self.buffer[4]==160 and self.buffer[5]==13):
+                    number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
+                    del self.buffer[:6]
+                    self.readings.append(number)
+                else:
+                    logging.debug(self.title+' ditching a byte')
+                    del buffer_1[0]
+
+        mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
+        self.readings.clear()
+        self.buffer.clear()
+        logging.debug(self.title+' result= '+str(mean))
+        self.read_val=mean
+        self.readable=True
+        self.measuring=False
         
         
     def is_ready_to_read(self):
         logging.debug(self.title+' is_ready_to_read started')
-        if self.ready_to_read:
-            self.process.terminate()
-            self.process.join()
-            return True
-        else:
-            return False
+        return self.readable
 
 
     def get_read_val(self):
         logging.debug(self.title+' get_read_val started')
+        self.readable=False
         return self.read_val
