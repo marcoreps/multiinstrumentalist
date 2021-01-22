@@ -151,7 +151,7 @@ def f732a_test():
                 t = threading.Thread(target=i.measure())
                 
 def HPM_test():
-    
+    logging.debug('HPM_test function')
     instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
     process = multiprocessing.Process(target=instruments["HPM2"].measure())
 
