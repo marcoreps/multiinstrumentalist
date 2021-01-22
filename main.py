@@ -40,7 +40,7 @@ def HPM_test():
 
     while True:
         time.sleep(0.1)
-        for i in instruments:
+        for i in instruments.values():
             if i.is_readable():
                 logging.debug(str(i.get_read_val()))
 
