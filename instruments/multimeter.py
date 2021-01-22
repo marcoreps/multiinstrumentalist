@@ -467,14 +467,14 @@ class HPM7177(multimeter):
         self.readings.clear()
         self.buffer.clear()
         self.measuring = False
-        self.ready_to_read = False
         logging.debug(self.title+' returning '+str(mean))
-        
+        self.read_val = mean
         self.ready_to_read = True
         
         
     def is_ready_to_read(self):
         logging.debug(self.title+' is_ready_to_read started')
+        print self.ready_to_read
         return self.ready_to_read
 
 
