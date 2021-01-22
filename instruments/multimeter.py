@@ -477,8 +477,9 @@ class HPM7177(multimeter):
         
         
     def measure(self):
-        process=multiprocessing.Process(target=self.work)
-        process.daemon = True
+        self.process=multiprocessing.Process(target=self.work)
+        self.process.daemon = True
+        self.process.start()
         
         
     def is_ready_to_read(self):
