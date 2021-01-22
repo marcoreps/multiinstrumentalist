@@ -152,6 +152,8 @@ def f732a_test():
 def HPM_test():
     
     instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
+    t = threading.Thread(target=instruments["HPM2"].measure())
+    t.daemon = True
 
     while True:
         logging.debug('main')
@@ -161,8 +163,6 @@ def HPM_test():
             else:
                 logging.debug('HPM is not ready to read')
             if not i.is_measuring():
-                t = threading.Thread(target=i.measure())
-                t.daemon = True
                 t.start()
             else:
                 logging.debug('HPM is measuring')
