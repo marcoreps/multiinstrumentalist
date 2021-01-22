@@ -453,7 +453,7 @@ class HPM7177(multimeter):
     def readserial(self, dev, baud, buf):
         s = serial.Serial(dev, baud)
         while True:
-                reading=s.read(10000*6)
+                reading=s.read(10000*7)
                 buf.extend(reading)
         
         
