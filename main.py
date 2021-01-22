@@ -43,11 +43,9 @@ def HPM_test():
         #MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
         #MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
         if instruments["HPM2"].is_readable():
-            logging.debug("main->readable")
             logging.debug(str(instruments["HPM2"].get_read_val()))
 
         if not instruments["HPM2"].is_measuring():
-            logging.debug("main->not measuring")
             instruments["HPM2"].measure()
         
                 
