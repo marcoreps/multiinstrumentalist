@@ -5,7 +5,6 @@ import csv
 import logging
 import threading
 import time
-import multiprocessing 
 
 
 
@@ -39,8 +38,6 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 def HPM_test():
     logging.debug('HPM_test function')
     instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
-    process = multiprocessing.Process(target=instruments["HPM2"].measure)
-    process.daemon = True
 
     while True:
         time.sleep(1)
@@ -48,10 +45,8 @@ def HPM_test():
         #MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
         #MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
         if instruments["HPM2"].is_ready_to_read():
-            logging.debug('stopping process')
-            process.terminate()
-            process.join()
-            time.sleep(1)
+            logging.debug(str(instruments["HPM2"].get_read_val()))
+
         if (not instruments["HPM2"].is_measuring()) and (not process.is_alive()):
             logging.debug('starting process')
             process.start()

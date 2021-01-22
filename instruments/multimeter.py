@@ -7,6 +7,8 @@ import logging
 import threading
 import serial
 import statistics
+import multiprocessing 
+
 
 
 
@@ -447,11 +449,12 @@ class HPM7177(multimeter):
         self.ready_to_read = False
         self.read_val = 0
         self.serial = serial.Serial(self.dev, self.baud)
+        self.process
 
 
-    def measure(self):
-        logging.debug(self.title+' measure started')
-        self.measuring = True
+    def work(self):
+        logging.debug(self.title+' work started')
+        self.ready_to_read = False
         while not self.serial.read()==b'\r':
             logging.debug(self.title+' ditching a byte')
         self.buffer.extend(self.serial.read(self.nfilter*6+6))
@@ -466,7 +469,6 @@ class HPM7177(multimeter):
         mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
         self.readings.clear()
         self.buffer.clear()
-        self.measuring = False
         logging.debug(self.title+' returning '+str(mean))
         self.read_val = mean
         self.ready_to_read = True
@@ -474,10 +476,19 @@ class HPM7177(multimeter):
         logging.debug(self.title+str(self.ready_to_read))
         
         
+    def measure(self):
+        process=multiprocessing.Process(target=self.work)
+        process.daemon = True
+        
+        
     def is_ready_to_read(self):
         logging.debug(self.title+' is_ready_to_read started')
-        logging.debug(self.title+str(self.ready_to_read))
-        return self.ready_to_read
+        if self.ready_to_read:
+            self.process.terminate()
+            self.process.join()
+            return True
+        else:
+            return False
 
 
     def get_read_val(self):
