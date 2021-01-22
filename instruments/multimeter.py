@@ -474,7 +474,7 @@ class HPM7177(multimeter):
         
     def is_ready_to_read(self):
         logging.debug(self.title+' is_ready_to_read started')
-        print (self.ready_to_read)
+        logging.debug(self.title+str(self.ready_to_read))
         return self.ready_to_read
 
 
