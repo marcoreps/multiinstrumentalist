@@ -17,22 +17,22 @@ from instruments.source import *
 
 logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(message)s')
 
-loctite = threading.Lock()
+gpiblock = threading.Lock()
 
 vxi_ip = "192.168.178.88"
 
 instruments = dict()
 instruments["temp_short"]=TMP117(address=0x48, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
-#instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=loctite, title="Bench S7081")
-#instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, lock=loctite, title="2002")
+#instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
+#instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, lock=gpiblock, title="2002")
 #instruments["2002"].config_2ADC_9digit_filtered()
 #instruments["2002"].config_20DCV_9digit_filtered()
-#instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=loctite, title="Bench R6581T")
+#instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=gpiblock, title="Bench R6581T")
 #instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
-#instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=loctite, title="Bench K237")
-#instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=loctite, title="Fluke 5700A")
+#instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=gpiblock, title="Bench K237")
+#instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
 
 
 
@@ -45,8 +45,8 @@ def HPM_test():
     while True:
         time.sleep(1)
         logging.debug('main')
-        MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
-        MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
+        #MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+        #MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
         if instruments["HPM2"].is_ready_to_read():
             logging.debug('stopping process')
             process.terminate()

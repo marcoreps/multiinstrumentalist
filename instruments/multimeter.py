@@ -470,6 +470,8 @@ class HPM7177(multimeter):
         logging.debug(self.title+' returning '+str(mean))
         self.read_val = mean
         self.ready_to_read = True
+        logging.debug(self.title+' set ready to read True')
+        logging.debug(self.title+str(self.ready_to_read))
         
         
     def is_ready_to_read(self):
