@@ -48,7 +48,7 @@ def HPM_test():
 
             if not i.is_measuring():
                 i.measure()
-                time.sleep(0.1)
+                time.sleep(1)
                 
                 
                 
