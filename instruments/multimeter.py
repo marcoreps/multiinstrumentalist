@@ -455,7 +455,7 @@ class HPM7177(multimeter):
     def readserial(self, dev, baud, buf):
         s = serial.Serial(dev, baud)
         while True:
-                reading=s.read(self.nfilter*6+6)
+                reading=s.read(s.inWaiting() or 1)
                 buf.extend(reading)
         
         
@@ -472,6 +472,7 @@ class HPM7177(multimeter):
                     del self.buffer[0]
 
         mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
+        logging.debug(self.title+' '+str(mean))
         logging.debug(self.title+str(mean))
         self.readings.clear()
         self.buffer.clear()
