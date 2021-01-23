@@ -5,6 +5,8 @@ import csv
 import logging
 import threading
 import time
+import numpy
+
 
 
 
@@ -48,4 +50,43 @@ def HPM_test():
                 i.measure()
                 time.sleep(1)
                 
-HPM_test()
+                
+                
+def HPM_INL():
+    instruments["HPM1"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1', cal1=2147448089.450398, cal2=147862000)
+    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
+    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
+    
+    umin = -10
+    umax = 10
+    ustep = 0.05
+    wait_settle = 5
+    
+    instruments["F5700A"].out(str(umin)+"V")
+    instruments["F5700A"].oper()
+    instruments["F5700A"].rangelck()
+
+    for u in numpy.arange(umin, umax, ustep):
+        time.sleep(wait_settle)
+        for i in instruments.values():
+            if not i.is_measuring():
+                i.measure()
+                time.sleep(1)
+            
+        MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+        MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
+        
+        calibrator_out = float(instruments["F5700A"].get_read_val())
+        hpm1_out = float(instruments["HPM1"].get_read_val())
+        hpm2_out = float(instruments["HPM2"].get_read_val())
+        
+        MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
+        MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
+        MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+            
+        MySeriesHelper(instrument_name="hpm1 ppm", value=(calibrator_out-hpm1_out)/0.00001)
+        MySeriesHelper(instrument_name="hpm2 ppm", value=(calibrator_out-hpm2_out)/0.00001)        
+        
+        instruments["F5700A"].out(str(u)+"V")
+                
+HPM_INL()
