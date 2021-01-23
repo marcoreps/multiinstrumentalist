@@ -472,7 +472,7 @@ class HPM7177(multimeter):
                     self.readings.append(number)
                     i=i+6
                 else:
-                    i=i+20
+                    i=i+7
 
         mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
         logging.debug(self.title+str(mean))
