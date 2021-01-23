@@ -460,13 +460,13 @@ class HPM7177(multimeter):
     def readserial(self):
         s = serial.Serial(self.dev, self.baud)
         while True:
-            print("readserial")
             self.buffer.extend(s.read(self.nfilter*7))
         
         
     def convert(self):
         i=self.buffer.find(13)
         while (len(self.readings)<self.nfilter):
+            print(len(self.readings))
             if(len(self.buffer)>32):
                 i=i+1+self.buffer[i+1:].find(13)
                 j=i+1+self.buffer[i+1:].find(13)
