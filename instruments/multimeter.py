@@ -469,6 +469,7 @@ class HPM7177(multimeter):
         readings = []
         while True:
             if not output_q.full():
+                logging.debug("output q not full")
                 while (len(readings)<nfilter):
                     while not serial_q.get()==13:
                         pass
