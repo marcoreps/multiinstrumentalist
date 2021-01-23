@@ -37,15 +37,16 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 
 def HPM_test():
     instruments["HPM1"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
+    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
 
     while True:
-        time.sleep(0.2)
+        
         for i in instruments.values():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
 
             if not i.is_measuring():
                 i.measure()
-        
+                time.sleep(1)
                 
 HPM_test()
