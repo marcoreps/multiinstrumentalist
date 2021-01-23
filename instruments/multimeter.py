@@ -444,7 +444,7 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.buffer = bytearray()
+        self.buffer = ''
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
         self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
@@ -452,16 +452,16 @@ class HPM7177(multimeter):
         self.readserial_thread.start()
         
         
-    def readserial(self, dev, baud, buf):
+    def readserial(self, dev, baud):
         s = serial.Serial(dev, baud)
         while True:
-                buf.extend(s.read(s.inWaiting() or 1))
+                self.buffer += s.read(s.inWaiting() or 1)
         
         
     def process(self):
         while (len(self.readings)<self.nfilter):
-            while '\n' in self.buffer.decode(): #split data line by line and store it in var
-                var, self.buffer.decode() = self.buffer.decode().split('\n', 1)
+            while '\n' in self.buffer: #split data line by line and store it in var
+                var, self.buffer = self.buffer.split('\n', 1)
                 self.readings.append(var) #put received line in the queue
                 logging.debug(self.title+' '+var)
 
