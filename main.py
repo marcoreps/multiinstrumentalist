@@ -37,7 +37,7 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 
 def HPM_test():
     instruments["HPM1"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1', cal1=2147448089.450398, cal2=147862000)
-    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147436771.52992, cal2=1)
+    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=1)
 
     while True:
         
