@@ -460,10 +460,8 @@ class HPM7177(multimeter):
         
     def process(self):
         while (len(self.readings)<self.nfilter):
-            while '\n' in self.buffer: #split data line by line and store it in var
-                var, self.buffer = self.buffer.split('\n', 1)
-                self.readings.append(var) #put received line in the queue
-                logging.debug(self.title+' '+var)
+            print(self.buffer.find('\n'))
+
 
 
         mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
