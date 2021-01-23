@@ -444,19 +444,23 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.buffer = bytearray()
+        self.buffer = ''
+        self.q = queue.Queue()
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
-        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
+        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud))
         self.readserial_thread.daemon = True
         self.readserial_thread.start()
         
         
-    def readserial(self, dev, baud, buf):
+    def readserial(self, dev, baud):
         s = serial.Serial(dev, baud)
         while True:
-                reading=s.read(self.nfilter*6+6)
-                buf.extend(reading)
+                self.buffer += self.ser.read(self.ser.inWaiting() or 1)
+                while '\n' in self.buffer:
+                    var, self.buffer = self.buffer.split('\n', 1)
+                    self.q.put(var)
+                    logging.debug(self.title+' '+var)
         
         
     def process(self):
