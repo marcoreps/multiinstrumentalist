@@ -455,21 +455,16 @@ class HPM7177(multimeter):
     def readserial(self, dev, baud, buf):
         s = serial.Serial(dev, baud)
         while True:
-                reading=s.read(self.nfilter*6+6)
-                buf.extend(reading)
+                buf.extend(s.read(s.inWaiting() or 1))
         
         
     def process(self):
         while (len(self.readings)<self.nfilter):
-            if (len(self.buffer)>5):
-                if(self.buffer[4]==160 and self.buffer[5]==13):
-                    number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
-                    del self.buffer[:6]
-                    self.readings.append(number)
-                    
-                else:
-                    logging.debug(self.title+' ditching a byte')
-                    del self.buffer[0]
+            while '\n' in self.buffer: #split data line by line and store it in var
+                var, self.buffer = self.buffer.split('\n', 1)
+                self.readings.append(var) #put received line in the queue
+                logging.debug(self.title+' '+var)
+
 
         mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
         logging.debug(self.title+str(mean))
