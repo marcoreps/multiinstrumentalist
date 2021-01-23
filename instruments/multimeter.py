@@ -476,8 +476,8 @@ class HPM7177(multimeter):
                         pass
                     print("previous byte was b'\r'")
                     fresh_bytes=[serial_q.get() for i in range(4)]
-                    if not serial_q.get()==160:
-                        break
+                    #if not serial_q.get()==160:
+                    #    break
                     number = int.from_bytes(fresh_bytes, byteorder='big', signed=False)
                     readings.append(number)
 
