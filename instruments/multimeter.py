@@ -7,7 +7,6 @@ import logging
 import threading
 import serial
 import statistics
-import queue
 
 
 
@@ -446,22 +445,18 @@ class HPM7177(multimeter):
         self.cal1 = cal1
         self.cal2 = cal2
         self.buffer = bytearray()
-        self.q = queue.Queue()
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
-        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud))
+        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
         self.readserial_thread.daemon = True
         self.readserial_thread.start()
         
         
-    def readserial(self, dev, baud):
+    def readserial(self, dev, baud, buf):
         s = serial.Serial(dev, baud)
         while True:
-                self.buffer.extend(s.read(s.inWaiting() or 1))
-                while '\n' in self.buffer:
-                    var, self.buffer = self.buffer.split('\n', 1)
-                    self.q.put(var)
-                    logging.debug(self.title+' '+var)
+                reading=s.read(self.nfilter*6+6)
+                buf.extend(reading)
         
         
     def process(self):
