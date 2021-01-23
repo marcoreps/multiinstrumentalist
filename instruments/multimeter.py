@@ -7,8 +7,6 @@ import logging
 import threading
 import serial
 import statistics
-import queue
-
 
 
 
@@ -446,31 +444,40 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.buffer = ''
-        self.queue = queue.Queue()
+        self.buffer = bytearray()
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
-        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud))
+        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
         self.readserial_thread.daemon = True
         self.readserial_thread.start()
         
         
-    def readserial(self, dev, baud):
+    def readserial(self, dev, baud, buf):
         s = serial.Serial(dev, baud)
         while True:
-                self.buffer += s.read(s.inWaiting() or 1)
-                while '\n' in self.buffer:
-                    var, self.buffer = self.buffer.split('\n', 1)
-                    self.queue.put(var)
+                reading=s.read(self.nfilter*6+6)
+                buf.extend(reading)
         
         
     def process(self):
-            try:
-                var = self.queue.get(False) #try to fetch a value from queue
-            except Queue.Empty: 
-                pass #if it is empty, do nothing
-            else:
-                print(var) 
+        while (len(self.readings)<self.nfilter):
+            if (len(self.buffer)>5):
+                if(self.buffer[4]==160 and self.buffer[5]==13):
+                    number = int.from_bytes(self.buffer[:4], byteorder='big', signed=False)
+                    del self.buffer[:6]
+                    self.readings.append(number)
+                    
+                else:
+                    logging.debug(self.title+' ditching a byte')
+                    del self.buffer[0]
+
+        mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
+        logging.debug(self.title+str(mean))
+        self.readings.clear()
+        self.buffer.clear()
+        self.read_val=mean
+        self.readable=True
+        self.measuring=False
         
         
     def measure(self):
