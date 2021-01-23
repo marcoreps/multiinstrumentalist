@@ -458,14 +458,14 @@ class HPM7177(multimeter):
         self.convert_process.start()
         
         
-    def readserial(q):
+    def readserial(self,q):
         s = serial.Serial(self.dev, self.baud)
         while True:
             if not q.full():
                 q.put(s.read())
         
         
-    def convert(serial_q,output_q):
+    def convert(self,serial_q,output_q):
         readings = []
         while True:
             if not output_q.full():
