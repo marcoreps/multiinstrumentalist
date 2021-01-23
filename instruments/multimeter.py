@@ -457,7 +457,7 @@ class HPM7177(multimeter):
     def readserial(self, dev, baud):
         s = serial.Serial(dev, baud)
         while True:
-                self.buffer += self.ser.read(self.ser.inWaiting() or 1)
+                self.buffer += s.read(s.inWaiting() or 1)
                 while '\n' in self.buffer:
                     var, self.buffer = self.buffer.split('\n', 1)
                     self.q.put(var)
