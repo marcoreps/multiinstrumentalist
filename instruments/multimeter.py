@@ -473,6 +473,7 @@ class HPM7177(multimeter):
                 while (len(readings)<nfilter):
                     logging.debug("len(readings)<nfilter")
                     while not serial_q.get()==13:
+                        logging.debug("while not serial_q.get()==13")
                         pass
                     fresh_bytes=[serial_q.get() for i in range(4)]
                     if not serial_q.get()==160:
