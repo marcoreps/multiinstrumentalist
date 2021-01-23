@@ -461,12 +461,9 @@ class HPM7177(multimeter):
     def process(self):
         i=self.buffer.find(13)+6
         while (len(self.readings)<self.nfilter):
-            print(self.buffer[i+1:i+5])
-            number = int.from_bytes(self.buffer[i:i+4], byteorder='big', signed=False)
+            number = int.from_bytes(self.buffer[i+1:i+5], byteorder='big', signed=False)
             self.readings.append(number)
             i=i+6
-
-
 
         mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
         logging.debug(self.title+str(mean))
