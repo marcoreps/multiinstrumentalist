@@ -485,6 +485,7 @@ class HPM7177(multimeter):
                 readings.clear()
             else:
                 logging.debug("output q full")
+                time.sleep(0.1)
 
         
         
