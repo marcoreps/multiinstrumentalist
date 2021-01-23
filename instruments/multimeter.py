@@ -460,7 +460,7 @@ class HPM7177(multimeter):
         
     def readserial(self,q):
         s = serial.Serial(self.dev, self.baud)
-        while not serial_q.get()==b'\r':
+        while not s.read()==b'\r':
             pass
         while True:
             if not q.full():
