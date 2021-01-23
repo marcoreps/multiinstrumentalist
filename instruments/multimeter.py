@@ -478,7 +478,6 @@ class HPM7177(multimeter):
                     #    break
                     number = int.from_bytes(fresh_bytes, byteorder='big', signed=False)
                     readings.append(number)
-                    print(len(readings))
 
                 mean=statistics.mean(readings)
                 output_q.put(mean)
