@@ -7,6 +7,8 @@ import logging
 import threading
 import serial
 import statistics
+from multiprocessing import Process
+
 
 
 
@@ -456,9 +458,10 @@ class HPM7177(multimeter):
         s = serial.Serial(dev, baud)
         while True:
                 self.buffer.extend(s.read(self.nfilter*7))
+                time.sleep(1)
         
         
-    def process(self):
+    def work(self):
         i=self.buffer.find(13)
         while (len(self.readings)<self.nfilter):
             if(len(self.buffer)>32):
@@ -485,9 +488,9 @@ class HPM7177(multimeter):
         
     def measure(self):
         self.measuring=True
-        self.thread_2 = threading.Thread(target=self.process)
-        self.thread_2.daemon = True
-        self.thread_2.start()
+        self.workpro = Process(target=self.work)
+        self.workpro.daemon = True
+        self.workpro.start()
         
         
     def is_readable(self):
