@@ -481,7 +481,7 @@ class HPM7177(multimeter):
                     number = int.from_bytes(fresh_bytes, byteorder='big', signed=False)
                     readings.append(number)
 
-                mean=statistics.mean(self.readings)
+                mean=statistics.mean(readings)
                 output_q.put(mean)
                 logging.debug(str(mean))
                 readings.clear()
