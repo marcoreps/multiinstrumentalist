@@ -458,7 +458,6 @@ class HPM7177(multimeter):
         s = serial.Serial(dev, baud)
         while True:
                 self.buffer.extend(s.read(self.nfilter*7))
-                time.sleep(0.11)
         
         
     def work(self):
@@ -470,6 +469,7 @@ class HPM7177(multimeter):
                 #print("i="+str(i)+" "+"j="+str(j))
                 #print(j-i)
                 print(self.buffer[i+1:j+1])
+                time.sleep(0.1)
                 if(j-i == 6):
                     number = int.from_bytes(self.buffer[i+1:j-1], byteorder='big', signed=False)
                     self.readings.append(number)
