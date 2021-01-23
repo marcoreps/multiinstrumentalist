@@ -45,10 +45,7 @@ def HPM_test():
         for i in instruments.values():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-
-            if not i.is_measuring():
-                i.measure()
-                time.sleep(1)
+        time.sleep(0.1)
                 
                 
                 
