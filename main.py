@@ -68,19 +68,20 @@ def HPM_INL():
 
     for u in numpy.arange(umin, umax, ustep):
         time.sleep(wait_settle)
-        for i in instruments.values():
-            if not i.is_measuring():
-                i.measure()
-                time.sleep(1)
-            
+
+        instruments["temp_short"].measure()
         MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+        instruments["temp_long"].measure()
         MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
-        
+        instruments["F5700A"].measure()
         calibrator_out = float(instruments["F5700A"].get_read_val())
         
+        instruments["HPM1"].measure()
         while not instruments["HPM1"].is_readable():
             pass
         hpm1_out = float(instruments["HPM1"].get_read_val())
+        
+        instruments["HPM2"].measure()
         while not instruments["HPM2"].is_readable():
             pass
         hpm2_out = float(instruments["HPM2"].get_read_val())
