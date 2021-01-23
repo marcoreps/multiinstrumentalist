@@ -78,12 +78,12 @@ def HPM_INL():
         
         instruments["HPM1"].measure()
         while not instruments["HPM1"].is_readable():
-            time.sleep(0.1)
+            time.sleep(1)
         hpm1_out = float(instruments["HPM1"].get_read_val())
         
         instruments["HPM2"].measure()
         while not instruments["HPM2"].is_readable():
-            time.sleep(0.1)
+            time.sleep(1)
         hpm2_out = float(instruments["HPM2"].get_read_val())
         
         MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
