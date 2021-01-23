@@ -460,7 +460,8 @@ class HPM7177(multimeter):
     def readserial(self):
         s = serial.Serial(self.dev, self.baud)
         while True:
-                self.buffer.extend(s.read(self.nfilter*7))
+            print("readserial")
+            self.buffer.extend(s.read(self.nfilter*7))
         
         
     def convert(self):
