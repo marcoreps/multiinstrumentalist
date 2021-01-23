@@ -7,8 +7,6 @@ import logging
 import threading
 import serial
 import statistics
-from multiprocessing import Process
-
 
 
 
@@ -448,40 +446,33 @@ class HPM7177(multimeter):
         self.cal2 = cal2
         self.buffer = bytearray()
         self.readings = []
-        
-        self.serial_process = Process(target=self.readserial)
-        self.serial_process.daemon = True
-        self.serial_process.start()
-        
-        self.convert_process = Process(target=self.convert)
-        self.convert_process.daemon = True
+        self.serial = serial.Serial(self.dev, self.baud)
+        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud))
+        self.readserial_thread.daemon = True
+        self.readserial_thread.start()
         
         
-    def readserial(self):
-        s = serial.Serial(self.dev, self.baud)
+    def readserial(self, dev, baud):
+        s = serial.Serial(dev, baud)
         while True:
-            self.buffer.extend(s.read(self.nfilter*7))
-            print(len(self.buffer))
+                self.buffer.extend(s.read(s.inWaiting() or 1))
         
         
-    def convert(self):
+    def process(self):
         i=self.buffer.find(13)
         while (len(self.readings)<self.nfilter):
-            print(len(self.buffer)>32)
             if(len(self.buffer)>32):
-                print(len(self.readings))
                 i=i+1+self.buffer[i+1:].find(13)
                 j=i+1+self.buffer[i+1:].find(13)
                 #print("i="+str(i)+" "+"j="+str(j))
                 #print(j-i)
-                print(self.buffer[i+1:j+1])
-                time.sleep(0.1)
+                #print(self.buffer[i+1:j+1])
                 if(j-i == 6):
                     number = int.from_bytes(self.buffer[i+1:j-1], byteorder='big', signed=False)
                     self.readings.append(number)
                     i=i+6
                 else:
-                    i=i+7
+                    i=i+20
 
         mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
         logging.debug(self.title+str(mean))
@@ -494,7 +485,9 @@ class HPM7177(multimeter):
         
     def measure(self):
         self.measuring=True
-        self.convert_process.start()
+        self.thread_2 = threading.Thread(target=self.process)
+        self.thread_2.daemon = True
+        self.thread_2.start()
         
         
     def is_readable(self):
