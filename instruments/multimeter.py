@@ -477,6 +477,10 @@ class HPM7177(multimeter):
                     print(serial_q.get())
                     print(serial_q.get())
                     print(serial_q.get())
+                    print(serial_q.get())
+                    print(serial_q.get())
+                    print(serial_q.get())
+                    print(serial_q.get())
 
                     fresh_bytes=[serial_q.get() for i in range(4)]
                     if not serial_q.get()==160:
