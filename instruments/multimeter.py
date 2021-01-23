@@ -463,7 +463,7 @@ class HPM7177(multimeter):
         while (len(self.readings)<self.nfilter):
             if(len(self.buffer)>32):
                 i=i+1+self.buffer[i+1:].find(13)
-                j=j+1+self.buffer[i+1:].find(13)
+                j=i+1+self.buffer[i+1:].find(13)
                 print("i="+str(i)+" "+"j="+str(j))
                 print(self.buffer[i+1:j+1])
                 number = int.from_bytes(self.buffer[i+1:i+5], byteorder='big', signed=False)
