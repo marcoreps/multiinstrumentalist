@@ -463,13 +463,14 @@ class HPM7177(multimeter):
         while True:
             if not q.full():
                 q.put(s.read())
+            else:
+                logging.debug("serial q is full")
         
         
     def convert(self,serial_q,output_q,nfilter):
         readings = []
         while True:
             if not output_q.full():
-                logging.debug("output q not full")
                 while (len(readings)<nfilter):
                     while not serial_q.get()==b'\r':
                         pass
@@ -483,9 +484,6 @@ class HPM7177(multimeter):
                 output_q.put(mean)
                 logging.debug(str(mean))
                 readings.clear()
-            else:
-                logging.debug("output q full")
-                time.sleep(0.1)
 
         
         
