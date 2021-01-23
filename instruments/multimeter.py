@@ -453,7 +453,7 @@ class HPM7177(multimeter):
         self.serial_process.daemon = True
         self.serial_process.start()
         
-        self.convert_process = Process(target=self.convert, args=(self.serial_q,self.output_q,))
+        self.convert_process = Process(target=self.convert, args=(self.serial_q,self.output_q,self.nfilter,))
         self.convert_process.daemon = True
         self.convert_process.start()
         
@@ -465,7 +465,7 @@ class HPM7177(multimeter):
                 q.put(s.read())
         
         
-    def convert(self,serial_q,output_q):
+    def convert(self,serial_q,output_q,nfilter):
         readings = []
         while True:
             if not output_q.full():
