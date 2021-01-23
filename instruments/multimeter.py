@@ -7,6 +7,7 @@ import logging
 import threading
 import serial
 import statistics
+import queue
 
 
 
