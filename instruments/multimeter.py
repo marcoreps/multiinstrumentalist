@@ -449,11 +449,11 @@ class HPM7177(multimeter):
         self.serial_q = Queue(maxsize=nfilter*6)
         self.output_q = Queue(maxsize=1)
         
-        self.serial_process = Process(target=self.readserial, args=(serial_q,))
+        self.serial_process = Process(target=self.readserial, args=(self.serial_q,))
         self.serial_process.daemon = True
         self.serial_process.start()
         
-        self.convert_process = Process(target=self.convert, args=(serial_q,output_q,))
+        self.convert_process = Process(target=self.convert, args=(self.serial_q,self.output_q,))
         self.convert_process.daemon = True
         self.convert_process.start()
         
