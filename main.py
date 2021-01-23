@@ -60,7 +60,7 @@ def HPM_INL():
     umin = -10
     umax = 10
     ustep = 0.05
-    wait_settle = 5
+    wait_settle = 10
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
@@ -77,7 +77,12 @@ def HPM_INL():
         MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
         
         calibrator_out = float(instruments["F5700A"].get_read_val())
+        
+        while not instruments["HPM1"].is_readable():
+            pass
         hpm1_out = float(instruments["HPM1"].get_read_val())
+        while not instruments["HPM2"].is_readable():
+            pass
         hpm2_out = float(instruments["HPM2"].get_read_val())
         
         MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
