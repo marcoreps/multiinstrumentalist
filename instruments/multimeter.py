@@ -491,7 +491,7 @@ class HPM7177(multimeter):
         
     def measure(self):
         self.measuring=True
-        self.workpro.start()
+        self.convert_process.start()
         
         
     def is_readable(self):
