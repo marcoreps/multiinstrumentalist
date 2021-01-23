@@ -436,12 +436,14 @@ class R6581T(multimeter):
 
 class HPM7177(multimeter):
 
-    def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
+    def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177', cal1=2000000000, cal2=150000000):
         self.title = title
         logging.debug(self.title+' init started')
         self.dev = dev
         self.baud = baud
         self.nfilter = nfilter
+        self.cal1 = cal1
+        self.cal2 = cal2
         self.buffer = bytearray()
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
@@ -469,7 +471,7 @@ class HPM7177(multimeter):
                     logging.debug(self.title+' ditching a byte')
                     del self.buffer[0]
 
-        mean=(statistics.mean(self.readings)-2147448089.450398)/147862000
+        mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
         self.readings.clear()
         self.buffer.clear()
         self.read_val=mean
