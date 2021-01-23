@@ -40,7 +40,7 @@ def HPM_test():
     instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
 
     while True:
-        
+        time.sleep(1)
         for i in instruments.values():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
