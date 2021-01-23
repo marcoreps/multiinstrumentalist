@@ -95,4 +95,4 @@ def HPM_INL():
         
         instruments["F5700A"].out(str(u)+"V")
                 
-HPM_INL()
+HPM_test()
