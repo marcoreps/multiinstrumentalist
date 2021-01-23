@@ -447,7 +447,7 @@ class HPM7177(multimeter):
         self.buffer = ''
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
-        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud, self.buffer))
+        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud))
         self.readserial_thread.daemon = True
         self.readserial_thread.start()
         
