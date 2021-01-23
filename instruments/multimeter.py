@@ -467,7 +467,7 @@ class HPM7177(multimeter):
     def convert(self):
         i=self.buffer.find(13)
         while (len(self.readings)<self.nfilter):
-            print(len(self.readings))
+            #print(len(self.readings))
             if(len(self.buffer)>32):
                 i=i+1+self.buffer[i+1:].find(13)
                 j=i+1+self.buffer[i+1:].find(13)
