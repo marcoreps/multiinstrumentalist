@@ -460,7 +460,7 @@ class HPM7177(multimeter):
         
     def process(self):
         while (len(self.readings)<self.nfilter):
-            print(self.buffer.find(b'\n'))
+            print(self.buffer.find(13))
 
 
 
