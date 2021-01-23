@@ -448,10 +448,13 @@ class HPM7177(multimeter):
         self.cal2 = cal2
         self.buffer = bytearray()
         self.readings = []
-        self.serial = serial.Serial(self.dev, self.baud)
-        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud))
-        self.readserial_thread.daemon = True
-        self.readserial_thread.start()
+        
+        self.serial_process = Process(target=self.readserial)
+        self.serial_process.daemon = True
+        self.serial_process.start()
+        
+        self.convert_process = Process(target=self.work)
+        self.convert_process.daemon = True
         
         
     def readserial(self, dev, baud):
@@ -460,7 +463,7 @@ class HPM7177(multimeter):
                 self.buffer.extend(s.read(self.nfilter*7))
         
         
-    def work(self):
+    def convert(self):
         i=self.buffer.find(13)
         while (len(self.readings)<self.nfilter):
             if(len(self.buffer)>32):
@@ -488,8 +491,6 @@ class HPM7177(multimeter):
         
     def measure(self):
         self.measuring=True
-        self.workpro = Process(target=self.work)
-        self.workpro.daemon = True
         self.workpro.start()
         
         
