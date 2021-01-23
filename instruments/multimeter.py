@@ -453,7 +453,7 @@ class HPM7177(multimeter):
         self.serial_process.daemon = True
         self.serial_process.start()
         
-        self.convert_process = Process(target=self.work)
+        self.convert_process = Process(target=self.convert)
         self.convert_process.daemon = True
         
         
