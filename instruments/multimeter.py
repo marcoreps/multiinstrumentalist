@@ -483,6 +483,9 @@ class HPM7177(multimeter):
                 output_q.put(mean)
                 logging.debug(str(mean))
                 readings.clear()
+            else:
+                logging.debug("output q full")
+
         
         
     def is_readable(self):
