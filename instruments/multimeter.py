@@ -474,10 +474,10 @@ class HPM7177(multimeter):
                     while not serial_q.get()==b'\r':
                         pass
                     fresh_bytes=bytearray(b''.join([serial_q.get() for i in range(4)]))
-                    print(fresh_bytes)
                     #if not serial_q.get()==160:
                     #    break
                     number = int.from_bytes(fresh_bytes, byteorder='big', signed=False)
+                    print(number)
                     readings.append(number)
 
                 mean=statistics.mean(readings)
