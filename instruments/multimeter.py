@@ -464,6 +464,7 @@ class HPM7177(multimeter):
             print(self.buffer[i+1:i+5])
             number = int.from_bytes(self.buffer[i:i+4], byteorder='big', signed=False)
             self.readings.append(number)
+            i=i+6
 
 
 
