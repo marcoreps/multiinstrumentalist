@@ -472,6 +472,7 @@ class HPM7177(multimeter):
                     del self.buffer[0]
 
         mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
+        logging.debug(self.title+str(mean))
         self.readings.clear()
         self.buffer.clear()
         self.read_val=mean
