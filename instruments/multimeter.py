@@ -460,6 +460,7 @@ class HPM7177(multimeter):
         
     def process(self):
         i=self.buffer.find(13)+6
+        time.sleep(0.1)
         while (len(self.readings)<self.nfilter):
             number = int.from_bytes(self.buffer[i+1:i+5], byteorder='big', signed=False)
             self.readings.append(number)
