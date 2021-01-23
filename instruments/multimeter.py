@@ -465,8 +465,9 @@ class HPM7177(multimeter):
                 i=i+1+self.buffer[i+1:].find(13)
                 j=i+1+self.buffer[i+1:].find(13)
                 print("i="+str(i)+" "+"j="+str(j))
+                print(j-i)
                 print(self.buffer[i+1:j+1])
-                number = int.from_bytes(self.buffer[i+1:j], byteorder='big', signed=False)
+                number = int.from_bytes(self.buffer[i+1:j-1], byteorder='big', signed=False)
                 self.readings.append(number)
                 i=i+6
 
