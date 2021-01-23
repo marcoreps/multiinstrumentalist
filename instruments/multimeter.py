@@ -471,10 +471,10 @@ class HPM7177(multimeter):
             if not output_q.full():
                 logging.debug("output q not full")
                 while (len(readings)<nfilter):
-                    logging.debug("len(readings)<nfilter")
                     while not serial_q.get()==b'\r':
                         pass
                     fresh_bytes=bytearray(b''.join([serial_q.get() for i in range(4)]))
+                    print(fresh_bytes)
                     #if not serial_q.get()==160:
                     #    break
                     number = int.from_bytes(fresh_bytes, byteorder='big', signed=False)
