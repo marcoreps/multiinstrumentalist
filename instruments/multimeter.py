@@ -7,6 +7,8 @@ import logging
 import threading
 import serial
 import statistics
+from multiprocessing import Process, Queue
+
 
 
 
@@ -444,56 +446,47 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.buffer = bytearray()
-        self.readings = []
-        self.serial = serial.Serial(self.dev, self.baud)
-        self.readserial_thread = threading.Thread(target=self.readserial, args=(self.dev, self.baud))
-        self.readserial_thread.daemon = True
-        self.readserial_thread.start()
+        self.serial_q = Queue(maxsize=nfilter*6)
+        self.output_q = Queue(maxsize=1)
+        
+        self.serial_process = Process(target=self.readserial, args=(serial_q,))
+        self.serial_process.daemon = True
+        self.serial_process.start()
+        
+        self.convert_process = Process(target=self.convert, args=(serial_q,output_q,))
+        self.convert_process.daemon = True
+        self.convert_process.start()
         
         
-    def readserial(self, dev, baud):
-        s = serial.Serial(dev, baud)
+    def readserial(q):
+        s = serial.Serial(self.dev, self.baud)
         while True:
-                self.buffer.extend(s.read(s.inWaiting() or 1))
+            if not q.full():
+                q.put(s.read())
         
         
-    def process(self):
-        i=self.buffer.find(13)
-        while (len(self.readings)<self.nfilter):
-            if(len(self.buffer)>32):
-                i=i+1+self.buffer[i+1:].find(13)
-                j=i+1+self.buffer[i+1:].find(13)
-                #print("i="+str(i)+" "+"j="+str(j))
-                #print(j-i)
-                #print(self.buffer[i+1:j+1])
-                if(j-i == 6):
-                    number = int.from_bytes(self.buffer[i+1:j-1], byteorder='big', signed=False)
-                    self.readings.append(number)
-                    i=i+6
-                else:
-                    i=i+20
+    def convert(serial_q,output_q):
+        readings = []
+        while True:
+            if not output_q.full():
+                while (len(readings)<nfilter):
+                    while not serial_q.get()==13:
+                        pass
+                    fresh_bytes=[serial_q.get() for i in range(4)]
+                    if not serial_q.get()==160:
+                        break
+                    number = int.from_bytes(fresh_bytes, byteorder='big', signed=False)
+                    readings.append(number)
 
-        mean=(statistics.mean(self.readings)-self.cal1)/self.cal2
-        logging.debug(self.title+str(mean))
-        self.readings.clear()
-        self.buffer.clear()
-        self.read_val=mean
-        self.readable=True
-        self.measuring=False
-        
-        
-    def measure(self):
-        self.measuring=True
-        self.thread_2 = threading.Thread(target=self.process)
-        self.thread_2.daemon = True
-        self.thread_2.start()
+                mean=statistics.mean(self.readings)
+                output_q.put(mean)
+                logging.debug(str(mean))
+                readings.clear()
         
         
     def is_readable(self):
-        return self.readable
+        return self.output_q.full()
 
 
     def get_read_val(self):
-        self.readable=False
-        return self.read_val
+        return (self.output_q.get()-self.cal1)/self.cal2
