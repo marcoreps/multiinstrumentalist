@@ -445,7 +445,7 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.buffer = ''
+        self.buffer = bytes
         self.q = queue.Queue()
         self.readings = []
         self.serial = serial.Serial(self.dev, self.baud)
