@@ -56,9 +56,9 @@ def HPM_INL():
     
     umin = -10
     umax = 10
-    ustep = 0.05
+    ustep = 0.1
     wait_settle = 5
-    msmts_per_step = 1
+    samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
@@ -67,7 +67,7 @@ def HPM_INL():
     for u in numpy.arange(umin, umax, ustep):
         time.sleep(wait_settle)
 
-        for j in range(msmts_per_step):
+        for j in range(samples_per_step):
             for i in instruments.values():
                 if not i.is_measuring():
                     i.measure()
