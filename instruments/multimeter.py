@@ -446,7 +446,7 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.serial_q = Queue(maxsize=3)
+        self.serial_q = Queue(maxsize=2)
         self.output_q = Queue(maxsize=1)
         
         self.serial_process = Process(target=self.readserial, args=(self.serial_q,))
@@ -498,7 +498,6 @@ class HPM7177(multimeter):
         return (self.output_q.get()-self.cal1)/self.cal2
         
     def measure(self):
-        with self.serial_q.mutex:
-            self.serial_q.queue.clear()
-        with self.output_q.mutex:
-            self.output_q.queue.clear()
+        self.serial_q.get()
+        self.serial_q.get()
+        self.output_q.get()
