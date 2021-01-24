@@ -57,7 +57,7 @@ def HPM_INL():
     umin = -10
     umax = 10
     ustep = 0.05
-    wait_settle = 10
+    wait_settle = 5
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
@@ -66,30 +66,29 @@ def HPM_INL():
     for u in numpy.arange(umin, umax, ustep):
         time.sleep(wait_settle)
 
-        instruments["temp_short"].measure()
-        MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
-        instruments["temp_long"].measure()
-        MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
-        instruments["F5700A"].measure()
-        calibrator_out = float(instruments["F5700A"].get_read_val())
-        
-        instruments["HPM1"].measure()
-        while not instruments["HPM1"].is_readable():
-            pass
-        hpm1_out = float(instruments["HPM1"].get_read_val())
-        
-        instruments["HPM2"].measure()
-        while not instruments["HPM2"].is_readable():
-            pass
-        hpm2_out = float(instruments["HPM2"].get_read_val())
-        
-        MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
-        MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
-        MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+        for i in range(5):
+            time.sleep(1)
+            MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+            MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
+            instruments["F5700A"].measure()
+            calibrator_out = float(instruments["F5700A"].get_read_val())
             
-        MySeriesHelper(instrument_name="hpm1 ppm", value=(calibrator_out-hpm1_out)/0.00001)
-        MySeriesHelper(instrument_name="hpm2 ppm", value=(calibrator_out-hpm2_out)/0.00001)        
-        
-        instruments["F5700A"].out(str(u)+"V")
+            while not instruments["HPM1"].is_readable():
+                pass
+            hpm1_out = float(instruments["HPM1"].get_read_val())
+            
+
+            while not instruments["HPM2"].is_readable():
+                pass
+            hpm2_out = float(instruments["HPM2"].get_read_val())
+            
+            MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
+            MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
+            MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                 
-HPM_test()
+            MySeriesHelper(instrument_name="hpm1 ppm", value=(calibrator_out-hpm1_out)/0.00001)
+            MySeriesHelper(instrument_name="hpm2 ppm", value=(calibrator_out-hpm2_out)/0.00001)        
+            
+            instruments["F5700A"].out(str(u)+"V")
+                
+HPM_INL()
