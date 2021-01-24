@@ -447,7 +447,7 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.serial_q = Queue(maxsize=2)
+        self.serial_q = Queue(maxsize=1)
         self.output_q = Queue(maxsize=1)
         
         self.serial_process = Process(target=self.readserial, args=(self.lock, self.serial_q,))
@@ -479,7 +479,7 @@ class HPM7177(multimeter):
                 chunk=serial_q.get()
                 i=chunk.find(13)
                 while (len(readings)<self.nfilter):
-                    index=chunk[i:].find(13)
+                    index=chunk[i:].find([13,160])
                     if index == -1:
                         logging.debug(self.title+' getting a new chonk')
                         chunk=serial_q.get()
@@ -492,8 +492,8 @@ class HPM7177(multimeter):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
                         readings.append(number)
                         #logging.debug(self.title+' '+str(len(readings)))
-                    #else:
-                        #logging.debug(self.title+' wrong length line')
+                    else:
+                        logging.debug(self.title+' wrong length line')
                     i=i+6
 
                 mean=statistics.mean(readings)
