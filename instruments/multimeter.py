@@ -4,10 +4,10 @@
 import vxi11
 import time
 import logging
-import threading
 import serial
 import statistics
 from multiprocessing import Process, Queue
+from scipy.optimize import curve_fit
 
 
 
@@ -463,10 +463,9 @@ class HPM7177(multimeter):
         s = serial.Serial(self.dev, self.baud)
         while True:
             if not q.full():
-                q.put(s.read(self.nfilter*8))
+                q.put(s.read(self.nfilter*7))
             else:
                 time.sleep(0.2)
-                
         
         
     def convert(self,serial_q,output_q):
@@ -487,7 +486,6 @@ class HPM7177(multimeter):
                     i=i+6
 
                 mean=statistics.mean(readings)
-                mean=statistics.mean(readings)
                 output_q.put(mean)
                 logging.debug(str(mean))
                 readings.clear()
@@ -501,6 +499,7 @@ class HPM7177(multimeter):
 
     def get_read_val(self):
         return (self.output_q.get()-self.cal1)/self.cal2
+        return self.output_q.get()
         
     def measure(self):
         self.serial_q.get()
