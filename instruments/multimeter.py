@@ -453,7 +453,7 @@ class HPM7177(multimeter):
         self.serial_process.daemon = True
         self.serial_process.start()
         
-        self.convert_process = Process(target=self.convert, args=(self.serial_q,self.output_q,self.nfilter,))
+        self.convert_process = Process(target=self.convert, args=(self.serial_q,self.output_q,))
         self.convert_process.daemon = True
         self.convert_process.start()
         
@@ -479,6 +479,7 @@ class HPM7177(multimeter):
                         readings.append(number)
                         i=i+6
 
+                mean=statistics.mean(readings)
                 mean=statistics.mean(readings)
                 output_q.put(mean)
                 logging.debug(str(mean))
