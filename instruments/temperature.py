@@ -29,17 +29,17 @@ class TMP117:
         
         
     def measure(self):
-        val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_temp, 2)
-        temp_c = (val[0] << 8) | (val[1] )
-        temp_c = temp_c * 0.0078125
-        self.read_val = temp_c
+        pass
         
         
     def get_title(self):
         return self.title
         
     def get_read_val(self):
-        return self.read_val
+        val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_temp, 2)
+        temp_c = (val[0] << 8) | (val[1] )
+        temp_c = temp_c * 0.0078125
+        return temp_c
         
     def is_ready_to_read(self):
         return True
