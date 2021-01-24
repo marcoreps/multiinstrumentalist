@@ -498,7 +498,7 @@ class HPM7177(multimeter):
         return (self.output_q.get()-self.cal1)/self.cal2
         
     def measure(self):
-        with serial_q.mutex:
+        with self.serial_q.mutex:
             self.serial_q.queue.clear()
-        with output_q.mutex:
+        with self.output_q.mutex:
             self.output_q.queue.clear()
