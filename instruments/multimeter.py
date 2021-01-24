@@ -477,7 +477,7 @@ class HPM7177(multimeter):
         while True:
             if not output_q.full() and not serial_q.empty():
                 chunk=serial_q.get()
-                i=chunk.find(13)
+                i=chunk.find(b'\xa0\r')
                 while (len(readings)<self.nfilter):
                     index=chunk[i:].find(b'\xa0\r')
                     if index == -1:
@@ -492,8 +492,8 @@ class HPM7177(multimeter):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
                         readings.append(number)
                         #logging.debug(self.title+' '+str(len(readings)))
-                    else:
-                        logging.debug(self.title+' wrong length line')
+                    #else:
+                        #logging.debug(self.title+' wrong length line')
                     i=i+6
 
                 mean=statistics.mean(readings)
