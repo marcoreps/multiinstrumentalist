@@ -490,6 +490,7 @@ class HPM7177(multimeter):
                 readings.clear()
             else:
                 time.sleep(0.2)
+                logging.debug(self.title+' out q full or serial q empty')
         
         
     def is_readable(self):
