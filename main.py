@@ -78,13 +78,11 @@ def HPM_INL():
             calibrator_out = float(instruments["F5700A"].get_read_val())
             
             while not instruments["HPM1"].is_readable():
-                print("HPM1 is not readable")
                 pass
             hpm1_out = float(instruments["HPM1"].get_read_val())
             
 
             while not instruments["HPM2"].is_readable():
-                print("HPM2 is not readable")
                 pass
             hpm2_out = float(instruments["HPM2"].get_read_val())
             
