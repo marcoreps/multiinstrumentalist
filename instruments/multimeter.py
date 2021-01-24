@@ -492,3 +492,6 @@ class HPM7177(multimeter):
 
     def get_read_val(self):
         return (self.output_q.get()-self.cal1)/self.cal2
+        
+    def measure(self):
+        pass
