@@ -482,11 +482,11 @@ class HPM7177(multimeter):
                     index=chunk[i:].find(b'\xa0\r')
                     i=i+index
                     j=i+1+chunk[i+1:].find(b'\xa0\r')
-                    logging.debug(self.title+' j-i='+str(j-i))
+                    #logging.debug(self.title+' j-i='+str(j-i))
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
                         readings.append(number)
-                        logging.debug(self.title+' '+str(number))
+                        #logging.debug(self.title+' '+str(number))
                         #logging.debug(self.title+' '+str(len(readings)))
                     else:
                         logging.debug(self.title+' wrong length line')
