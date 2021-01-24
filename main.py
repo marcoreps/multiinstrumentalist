@@ -79,12 +79,12 @@ def HPM_INL():
             MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
             calibrator_out = float(instruments["F5700A"].get_read_val())
             
+            instruments["HPM1"].measure()
             while not instruments["HPM1"].is_readable():
                 time.sleep(0.1)
-                
             hpm1_out = float(instruments["HPM1"].get_read_val())
             
-
+            instruments["HPM2"].measure()
             while not instruments["HPM2"].is_readable():
                 time.sleep(0.1)
             hpm2_out = float(instruments["HPM2"].get_read_val())
