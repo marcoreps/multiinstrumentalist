@@ -464,7 +464,7 @@ class HPM7177(multimeter):
             if not q.full():
                 q.put(s.read(self.nfilter*7))
             else:
-                time.sleep(0.1)
+                time.sleep(0.2)
         
         
     def convert(self,serial_q,output_q):
@@ -487,7 +487,7 @@ class HPM7177(multimeter):
                 logging.debug(str(mean))
                 readings.clear()
             else:
-                time.sleep(0.1)
+                time.sleep(0.2)
         
         
     def is_readable(self):
