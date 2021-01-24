@@ -446,7 +446,7 @@ class HPM7177(multimeter):
         self.nfilter = nfilter
         self.cal1 = cal1
         self.cal2 = cal2
-        self.serial_q = Queue(maxsize=nfilter*6)
+        self.serial_q = Queue(maxsize=3)
         self.output_q = Queue(maxsize=1)
         
         self.serial_process = Process(target=self.readserial, args=(self.serial_q,))
