@@ -66,7 +66,7 @@ def HPM_INL():
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
 
-    for u in numpy.arange(umin, umax, ustep):
+    for u in numpy.arange(umin, umax+1, ustep):
         instruments["F5700A"].out(str(u)+"V")
         time.sleep(wait_settle)
 
