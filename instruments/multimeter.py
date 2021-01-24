@@ -471,7 +471,7 @@ class HPM7177(multimeter):
             if not output_q.full() and not serial_q.empty():
                 while (len(readings)<nfilter):
                     chunk=serial_q.get()
-                    print(chunk)
+                    print(chunk[2])
                     number = int.from_bytes(serial_q.get(), byteorder='big', signed=False)
                     readings.append(number)
 
