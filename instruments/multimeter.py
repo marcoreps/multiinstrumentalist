@@ -465,7 +465,7 @@ class HPM7177(multimeter):
                 q.put(s.read(self.nfilter*8))
             else:
                 time.sleep(0.2)
-                logging.debug(self.title+' serial q is full')
+                #logging.debug(self.title+' serial q is full')
                 
         
         
@@ -481,6 +481,7 @@ class HPM7177(multimeter):
                         logging.debug(self.title+' getting a new chonk')
                         chunk=serial_q.get()
                         i=chunk.find(13)
+                        print(i)
                     i=i+index
                     j=i+1+chunk[i+1:].find(13)
                     if(j-i == 6):
@@ -494,7 +495,7 @@ class HPM7177(multimeter):
                 mean=statistics.mean(readings)
                 mean=statistics.mean(readings)
                 output_q.put(mean)
-                #logging.debug(str(mean))
+                logging.debug(str(mean))
                 readings.clear()
             else:
                 time.sleep(0.2)
