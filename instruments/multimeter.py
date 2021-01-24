@@ -477,7 +477,6 @@ class HPM7177(multimeter):
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
                         readings.append(number)
-                        print(len(readings))
                     i=i+6
 
 
