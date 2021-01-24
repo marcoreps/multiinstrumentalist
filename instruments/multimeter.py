@@ -479,13 +479,11 @@ class HPM7177(multimeter):
                         readings.append(number)
                     i=i+6
 
-
                 mean=statistics.mean(readings)
                 mean=statistics.mean(readings)
                 output_q.put(mean)
                 logging.debug(str(mean))
                 readings.clear()
-
         
         
     def is_readable(self):
