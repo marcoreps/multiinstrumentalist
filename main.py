@@ -66,7 +66,7 @@ def HPM_INL():
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
 
-    for u in numpy.arange(umin, umax, ustep):
+    for u in numpy.arange(umin, umax+1, ustep):
         time.sleep(wait_settle)
 
         for j in range(samples_per_step):
@@ -79,12 +79,10 @@ def HPM_INL():
             MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
             calibrator_out = float(instruments["F5700A"].get_read_val())
             
-            instruments["HPM1"].measure()
             while not instruments["HPM1"].is_readable():
                 time.sleep(0.1)
             hpm1_out = float(instruments["HPM1"].get_read_val())
             
-            instruments["HPM2"].measure()
             while not instruments["HPM2"].is_readable():
                 time.sleep(0.1)
             hpm2_out = float(instruments["HPM2"].get_read_val())
@@ -97,5 +95,7 @@ def HPM_INL():
             MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)        
             
         instruments["F5700A"].out(str(u)+"V")
+        
+    MySeriesHelper.commit()
                 
 HPM_INL()
