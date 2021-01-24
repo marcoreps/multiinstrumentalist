@@ -485,7 +485,7 @@ class HPM7177(multimeter):
                     #logging.debug(self.title+' j-i='+str(j-i))
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+1:j], byteorder='big', signed=False)
-                        print(chunk[i+2:j])
+                        print(chunk[i+2:j+1])
                         readings.append(number)
                         #logging.debug(self.title+' '+str(number))
                         #logging.debug(self.title+' '+str(len(readings)))
