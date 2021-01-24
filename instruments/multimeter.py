@@ -476,9 +476,11 @@ class HPM7177(multimeter):
                 chunk=serial_q.get()
                 i=chunk.find(13)
                 while (len(readings)<self.nfilter):
-                    if chunk[i:].find(13) == -1:
+                    index=chunk[i:].find(13)
+                    if index == -1:
+                        logging.debug(self.title+' breaking the while loop')
                         break
-                    i=i+chunk[i:].find(13)
+                    i=i+index
                     j=i+1+chunk[i+1:].find(13)
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
