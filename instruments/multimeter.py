@@ -481,7 +481,9 @@ class HPM7177(multimeter):
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
                         readings.append(number)
-                        logging.debug(self.title+' '+str(len(readings)))
+                        #logging.debug(self.title+' '+str(len(readings)))
+                    else:
+                        logging.debug(self.title+' wrong length line'))
                     i=i+6
 
                 mean=statistics.mean(readings)
