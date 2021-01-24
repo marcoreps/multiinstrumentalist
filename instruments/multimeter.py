@@ -463,12 +463,9 @@ class HPM7177(multimeter):
         s = serial.Serial(self.dev, self.baud)
         while True:
             if not q.full():
-                lock.acquire()
                 q.put(s.read(self.nfilter*8))
-                lock.release()
             else:
                 time.sleep(0.2)
-                #logging.debug(self.title+' serial q is full')
                 
         
         
