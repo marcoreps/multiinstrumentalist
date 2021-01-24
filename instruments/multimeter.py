@@ -478,8 +478,9 @@ class HPM7177(multimeter):
                 while (len(readings)<self.nfilter):
                     index=chunk[i:].find(13)
                     if index == -1:
-                        logging.debug(self.title+' breaking the while loop')
-                        break
+                        logging.debug(self.title+' getting a new chonk')
+                        chunk=serial_q.get()
+                        i=chunk.find(13)
                     i=i+index
                     j=i+1+chunk[i+1:].find(13)
                     if(j-i == 6):
@@ -487,17 +488,17 @@ class HPM7177(multimeter):
                         readings.append(number)
                         #logging.debug(self.title+' '+str(len(readings)))
                     else:
-                        logging.debug(self.title+' wrong length line')
+                        #logging.debug(self.title+' wrong length line')
                     i=i+6
 
                 mean=statistics.mean(readings)
                 mean=statistics.mean(readings)
                 output_q.put(mean)
-                logging.debug(str(mean))
+                #logging.debug(str(mean))
                 readings.clear()
             else:
                 time.sleep(0.2)
-                logging.debug(self.title+' out q full or serial q empty')
+                #logging.debug(self.title+' out q full or serial q empty')
         
         
     def is_readable(self):
