@@ -462,7 +462,7 @@ class HPM7177(multimeter):
         s = serial.Serial(self.dev, self.baud)
         while True:
             if not q.full():
-                q.put(s.read(self.nfilter*13))
+                q.put(s.read(self.nfilter*6+6))
         
         
     def convert(self,serial_q,output_q):
@@ -472,12 +472,13 @@ class HPM7177(multimeter):
                 chunk=serial_q.get()
                 i=chunk.find(13)
                 while (len(readings)<self.nfilter):
-                    i=i+1+chunk[i+1:].find(13)
+                    i=chunk[i].find(13)
                     j=i+1+chunk[i+1:].find(13)
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
                         readings.append(number)
-                        i=i+6
+                    i=i+6
+
 
                 mean=statistics.mean(readings)
                 mean=statistics.mean(readings)
