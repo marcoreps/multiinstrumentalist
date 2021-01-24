@@ -483,7 +483,7 @@ class HPM7177(multimeter):
                     if index == -1:
                         logging.debug(self.title+' getting a new chonk')
                         chunk=serial_q.get()
-                        i=chunk.find(13)+1
+                        i=chunk.find(bytes([13,160]))
                         print(i)
                         print(chunk[:20])
                     i=i+index
