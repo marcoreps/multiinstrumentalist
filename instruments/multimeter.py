@@ -458,22 +458,20 @@ class HPM7177(multimeter):
         self.convert_process.start()
         
         
-    def readserial(self,q):
+    def readserial(self,q,):
         s = serial.Serial(self.dev, self.baud)
-        while not s.read()==b'\r':
-            pass
         while True:
             if not q.full():
-                q.put(s.read(6))
-            else:
-                logging.debug("serial q is full")
+                q.put(s.read(1000))
         
         
     def convert(self,serial_q,output_q,nfilter):
         readings = []
         while True:
-            if not output_q.full():
+            if not output_q.full() and not serial_q.empty():
                 while (len(readings)<nfilter):
+                    chunk=serial_q.get()
+                    print(chunk)
                     number = int.from_bytes(serial_q.get(), byteorder='big', signed=False)
                     readings.append(number)
 
