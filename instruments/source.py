@@ -135,6 +135,7 @@ class F5700A:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug(self.title+' measured '+self.read_val)
             self.lock.release()
     
     def is_readable(self):
@@ -207,6 +208,7 @@ class F5700A:
     def get_read_val(self):
         logging.debug(self.title+' get_read_val started')
         tokenized_read_val = re.split(',',self.read_val)
+        logging.debug(self.title+' get_read_val returning '+tokenized_read_val[0])
         return tokenized_read_val[0]
         
 

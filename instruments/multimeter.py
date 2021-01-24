@@ -503,5 +503,4 @@ class HPM7177(multimeter):
         
     def measure(self):
         self.serial_q.get()
-        self.serial_q.get()
         self.output_q.get()
