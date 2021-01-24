@@ -478,6 +478,7 @@ class HPM7177(multimeter):
                         number = int.from_bytes(chunk[i+1:j-1], byteorder='big', signed=False)
                         readings.append(number)
                         print(number)
+                        print(len(readings))
                         i=i+6
 
                 mean=statistics.mean(readings)
