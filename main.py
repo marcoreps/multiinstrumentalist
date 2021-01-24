@@ -56,7 +56,7 @@ def HPM_INL():
     
     umin = -10
     umax = 10
-    ustep = 1
+    ustep = 0.5
     wait_settle = 5
     samples_per_step = 1
     
