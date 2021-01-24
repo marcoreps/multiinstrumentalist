@@ -7,7 +7,7 @@ import logging
 import serial
 import statistics
 from multiprocessing import Process, Queue
-from scipy.optimize import curve_fit
+#from scipy.optimize import curve_fit
 
 
 
