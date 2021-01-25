@@ -3,10 +3,9 @@
 
 import csv
 import logging
-import threading
 import time
 import numpy
-from multiprocessing import Process
+from multiprocessing import Process, Lock
 
 
 
@@ -19,7 +18,8 @@ from instruments.source import *
 
 logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(message)s')
 
-gpiblock = threading.Lock()
+gpiblock = Lock()
+seriallock = Lock()
 
 vxi_ip = "192.168.178.88"
 
@@ -51,8 +51,8 @@ def HPM_test():
                 
                 
 def HPM_INL():
-    instruments["HPM1"]=HPM7177(dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1', cal1=2147448089.450398, cal2=147862000)
-    instruments["HPM2"]=HPM7177(dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
+    instruments["HPM1"]=HPM7177(seriallock, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1', cal1=2147448089.450398, cal2=147862000)
+    instruments["HPM2"]=HPM7177(seriallock, dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     
     umin = -10
