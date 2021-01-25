@@ -7,7 +7,7 @@ import logging
 import serial
 import statistics
 from multiprocessing import Process, Queue
-#from scipy.optimize import curve_fit
+import numpy as np
 
 
 
@@ -438,10 +438,11 @@ class R6581T(multimeter):
 
 class HPM7177(multimeter):
 
-    def __init__(self, seriallock, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177', cal1=2000000000, cal2=150000000):
+    def __init__(self, seriallock, polyterms, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
         self.title = title
         logging.debug(self.title+' init started')
         self.seriallock = seriallock
+        self.polyfunc = np.poly1d(polyterms)
         self.dev = dev
         self.baud = baud
         self.nfilter = nfilter
@@ -485,7 +486,6 @@ class HPM7177(multimeter):
                         readings.append(number)
                     else:
                         logging.debug(self.title+' wrong length line')
-                        i=i+1
                     i=i+6
 
                 mean=statistics.mean(readings)
@@ -500,7 +500,7 @@ class HPM7177(multimeter):
 
 
     def get_read_val(self):
-        return (self.output_q.get()-self.cal1)/self.cal2
+        return self.polyfunc(self.output_q.get())
         #return self.output_q.get()
         
     def measure(self):

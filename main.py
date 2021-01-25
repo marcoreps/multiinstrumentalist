@@ -51,8 +51,13 @@ def HPM_test():
                 
                 
 def HPM_INL():
-    instruments["HPM1"]=HPM7177(seriallock, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1', cal1=2147448089.450398, cal2=147862000)
-    instruments["HPM2"]=HPM7177(seriallock, dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
+
+hpm1_poly = [3.96677016e-33, -2.70403897e-23, 6.76305181e-09, -1.45232164e+01]
+hpm2_poly = [4.63789001e-33, -3.02808960e-23,  6.75648550e-09, -1.45090221e+01]
+
+
+    instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
+    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     
     umin = -10
@@ -101,5 +106,5 @@ def HPM_INL():
         
     MySeriesHelper.commit()
                 
-#HPM_INL()
-HPM_test()
+HPM_INL()
+#HPM_test()
