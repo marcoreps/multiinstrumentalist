@@ -484,6 +484,7 @@ class HPM7177(multimeter):
                         readings.append(number)
                     else:
                         logging.debug(self.title+' wrong length line')
+                        i=i+6
                     i=i+6
 
                 mean=statistics.mean(readings)
