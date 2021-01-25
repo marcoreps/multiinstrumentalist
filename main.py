@@ -102,4 +102,5 @@ def HPM_INL():
         
     MySeriesHelper.commit()
                 
-HPM_INL()
+#HPM_INL()
+HPM_test()
