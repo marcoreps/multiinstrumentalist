@@ -486,7 +486,6 @@ class HPM7177(multimeter):
 
                 mean=statistics.mean(readings)
                 output_q.put(mean)
-                logging.debug(self.title+' '+str(mean))
                 readings.clear()
             else:
                 time.sleep(0.2)
