@@ -446,7 +446,7 @@ class HPM7177(multimeter):
         self.dev = dev
         self.baud = baud
         self.nfilter = nfilter
-        self.serial_q = Queue(maxsize=1)
+        self.serial_q = Queue(maxsize=2)
         self.output_q = Queue(maxsize=1)
         
         self.serial_process = Process(target=self.readserial, args=(self.serial_q,))
@@ -475,9 +475,14 @@ class HPM7177(multimeter):
             if not output_q.full() and not serial_q.empty():
                 chunk=serial_q.get()
                 i=chunk.find(b'\xa0\r')
+                print(chunk[:30])
+                print("i="+str(i))
                 while (len(readings)<self.nfilter):
                     index=chunk[i:].find(b'\xa0\r')
+                    print("chunk[i:]:")
+                    print(chunk[i:i+30])
                     i=i+index
+                    print("index="+str(index))
                     j=i+1+chunk[i+1:].find(b'\xa0\r')
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+2:j], byteorder='big', signed=False)
