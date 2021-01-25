@@ -478,6 +478,7 @@ class HPM7177(multimeter):
                 print(chunk[:30])
                 print("i="+str(i))
                 while (len(readings)<self.nfilter):
+                    time.sleep(0.1)
                     index=chunk[i:].find(b'\xa0\r')
                     print("chunk[i:]:")
                     print(chunk[i:i+30])
