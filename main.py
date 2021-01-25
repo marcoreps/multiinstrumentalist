@@ -16,8 +16,8 @@ from instruments.temperature import *
 from instruments.multimeter import *
 from instruments.source import *
 
-logging.basicConfig(level=logging.DEBUG,  format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(filename='log.log', encoding='utf-8', level=logging.DEBUG)
+
+logging.basicConfig(filename='log.log', encoding='utf-8', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s'))
 
 gpiblock = Lock()
 seriallock = Lock()
