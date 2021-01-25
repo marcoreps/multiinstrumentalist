@@ -438,10 +438,9 @@ class R6581T(multimeter):
 
 class HPM7177(multimeter):
 
-    def __init__(self, lock, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177', cal1=2000000000, cal2=150000000):
+    def __init__(self, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177', cal1=2000000000, cal2=150000000):
         self.title = title
         logging.debug(self.title+' init started')
-        self.lock = lock
         self.dev = dev
         self.baud = baud
         self.nfilter = nfilter
@@ -450,7 +449,7 @@ class HPM7177(multimeter):
         self.serial_q = Queue(maxsize=1)
         self.output_q = Queue(maxsize=1)
         
-        self.serial_process = Process(target=self.readserial, args=(self.lock, self.serial_q,))
+        self.serial_process = Process(target=self.readserial, args=(self.serial_q,))
         self.serial_process.daemon = True
         self.serial_process.start()
         
@@ -459,7 +458,7 @@ class HPM7177(multimeter):
         self.convert_process.start()
         
         
-    def readserial(self,lock, q,):
+    def readserial(self, q,):
         s = serial.Serial(self.dev, self.baud)
         while True:
             if not q.full():
