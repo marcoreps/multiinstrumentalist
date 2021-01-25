@@ -39,8 +39,8 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 
 
 def HPM_test():
-    instruments["HPM1"]=HPM7177(seriallock, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1', cal1=2147448089.450398, cal2=147862000)
-    instruments["HPM2"]=HPM7177(seriallock, dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
+    instruments["HPM1"]=HPM7177(seriallock, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
+    instruments["HPM2"]=HPM7177(seriallock, dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
 
     while True:
         for i in instruments.values():
@@ -57,7 +57,7 @@ def HPM_INL():
 
 
     instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
-    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2', cal1=2147434771.52992, cal2=148003093)
+    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB2', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     
     umin = -10
