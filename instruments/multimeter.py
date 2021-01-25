@@ -462,9 +462,9 @@ class HPM7177(multimeter):
         s = serial.Serial(self.dev, self.baud)
         while True:
             if not q.full():
-                #self.seriallock.acquire()
+                self.seriallock.acquire()
                 q.put(s.read(self.nfilter*7))
-                #self.seriallock.release()
+                self.seriallock.release()
             else:
                 time.sleep(0.2)
         
@@ -476,10 +476,8 @@ class HPM7177(multimeter):
                 chunk=serial_q.get()
                 i=chunk.find(b'\xa0\r')
                 while (len(readings)<self.nfilter):
-                    #time.sleep(0.01)
                     i=i+chunk[i:].find(b'\xa0\r')
                     j=i+1+chunk[i+1:].find(b'\xa0\r')
-                    #print(self.title+" "+str(i)+" "+str(j))
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+2:j], byteorder='big', signed=False)
                         readings.append(number)
