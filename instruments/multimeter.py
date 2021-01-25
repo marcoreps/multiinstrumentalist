@@ -446,8 +446,6 @@ class HPM7177(multimeter):
         self.dev = dev
         self.baud = baud
         self.nfilter = nfilter
-        self.cal1 = cal1
-        self.cal2 = cal2
         self.serial_q = Queue(maxsize=1)
         self.output_q = Queue(maxsize=1)
         
