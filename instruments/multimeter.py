@@ -476,15 +476,15 @@ class HPM7177(multimeter):
                 chunk=serial_q.get()
                 i=chunk.find(b'\xa0\r')
                 while (len(readings)<self.nfilter):
+                    i=i+chunk[i:].find(b'\xa0\r')
                     j=i+1+chunk[i+1:].find(b'\xa0\r')
                     if(j-i == 6):
                         number = int.from_bytes(chunk[i+2:j], byteorder='big', signed=False)
                         readings.append(number)
-                        i=i+6
                     else:
                         logging.debug(self.title+' wrong length line')
                         print(self.title+' wrong length line')
-                        i=i+1
+                i=j
 
                 mean=statistics.mean(readings)
                 output_q.put(mean)
