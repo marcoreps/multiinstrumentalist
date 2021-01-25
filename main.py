@@ -68,6 +68,7 @@ def HPM_INL():
 
     for u in numpy.arange(umin, umax+1, ustep):
         instruments["F5700A"].out(str(u)+"V")
+        logging.debug('main setting source to '+str(u)+'V')
         time.sleep(wait_settle)
 
         for j in range(samples_per_step):
@@ -83,10 +84,12 @@ def HPM_INL():
             while not instruments["HPM1"].is_readable():
                 time.sleep(0.1)
             hpm1_out = float(instruments["HPM1"].get_read_val())
+            logging.debug('main hpm1 reporting '+str(hpm1_out))
             
             while not instruments["HPM2"].is_readable():
                 time.sleep(0.1)
             hpm2_out = float(instruments["HPM2"].get_read_val())
+            logging.debug('main hpm2 reporting '+str(hpm2_out))
             
             MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
             MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
