@@ -43,8 +43,8 @@ hpm2_poly = [-2.08518515e-96,  3.37626791e-86, -2.10980311e-76,  5.51512175e-67,
 
 
 def HPM_test():
-    instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
-    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
+    instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=100000, title='HPM7177 Unit 1')
+    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=100000, title='HPM7177 Unit 2')
 
     while True:
         for i in instruments.values():
