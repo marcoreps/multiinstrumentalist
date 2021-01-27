@@ -463,7 +463,7 @@ class HPM7177(multimeter):
         while True:
             if not q.full():
                 #self.seriallock.acquire()
-                q.put(s.read(self.nfilter*7))
+                q.put(s.read(100000))
                 #self.seriallock.release()
             else:
                 time.sleep(0.2)
@@ -483,8 +483,10 @@ class HPM7177(multimeter):
                         readings.append(number)
                     else:
                         logging.debug(self.title+' wrong length line')
-                        print(self.title+' wrong length line')
                     i=j
+                    if len(chunk[i:])<10:
+                        chunk=serial_q.get()
+                        i=0
 
                 mean=statistics.mean(readings)
                 output_q.put(mean)
