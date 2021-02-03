@@ -147,7 +147,7 @@ class HPM7177_temp:
         self.title = title
         self.sn = sn
         self.sensor = W1ThermSensor(Sensor.DS18B20, sn)
-        sensor.set_resolution(9, persist=False)
+        self.sensor.set_resolution(9, persist=False)
         
         
     def get_title(self):
