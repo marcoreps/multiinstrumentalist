@@ -4,6 +4,8 @@ import smbus
 import logging
 import serial
 from w1thermsensor import W1ThermSensor, Sensor
+from multiprocessing import Process, Queue
+import time
 
 
     
@@ -148,6 +150,17 @@ class HPM7177_temp:
         self.sn = sn
         self.sensor = W1ThermSensor(Sensor.DS18B20, sn)
         #self.sensor.set_resolution(9, persist=False)
+        
+        self.serial_process = Process(target=self.read_temperature)
+        self.serial_process.daemon = True
+        self.serial_process.start()
+        
+    def read_temperature(self):
+        while True:
+            if not self.measuring:
+                self.measure()
+            else:
+                time.sleep(0.2)
         
         
     def get_title(self):
