@@ -3,7 +3,7 @@
 import smbus
 import logging
 import serial
-from w1thermsensor import W1ThermSensor
+from w1thermsensor import W1ThermSensor, Sensor
 
 
     
