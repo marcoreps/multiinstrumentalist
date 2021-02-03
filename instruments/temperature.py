@@ -139,9 +139,9 @@ class Arroyo:
         
 class HPM7177_temp:
 
-    self.ready_to_read = False
-    self.measuring = False
-    self.read_val = 0
+    ready_to_read = False
+    measuring = False
+    read_val = 0
     
     def __init__(self, sn, title='HPM7177 Int Temp Sensor'):
         self.title = title
