@@ -166,6 +166,8 @@ class HPM7177_temp:
                     readval = self.sensor.get_temperature()
                     logging.debug(self.title+' '+str(readval))
                     q.put(readval)
+                except Exception:
+                    pass
                 finally:
                     l.release()
             else:
