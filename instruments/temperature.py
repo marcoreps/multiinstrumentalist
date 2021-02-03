@@ -174,6 +174,7 @@ class HPM7177_temp:
         return self.read_val
         
     def is_readable(self):
+        logging.debug(self.title+' '+str(self.ready_to_read))
         if self.ready_to_read:
             logging.debug(self.title+' is ready to read')
         else:
