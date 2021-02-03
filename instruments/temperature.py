@@ -190,3 +190,4 @@ class HPM7177_temp:
         self.read_val = self.sensor.get_temperature()
         logging.debug(self.title+' measured '+str(self.read_val))
         self.ready_to_read = True
+        logging.debug(self.title+' '+str(self.ready_to_read))
