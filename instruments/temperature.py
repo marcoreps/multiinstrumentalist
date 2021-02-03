@@ -162,7 +162,10 @@ class HPM7177_temp:
             if not q.full():
                 l.acquire()
                 try:
-                    q.put(self.sensor.get_temperature())
+                    logging.debug(self.title+' reading now')
+                    readval = self.sensor.get_temperature()
+                    logging.debug(self.title+' '+str(readval))
+                    q.put(readval)
                 finally:
                     l.release()
             else:

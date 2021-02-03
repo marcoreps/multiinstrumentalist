@@ -54,7 +54,6 @@ def HPM_test():
     instruments["HPM1_MAIN_TEMP"]=HPM7177_temp(onewire_lock, "00000c7454a1", title='HPM7177 Unit 1 Main module Temperature sensor')
     instruments["HPM2_MEZ_TEMP"]=HPM7177_temp(onewire_lock, "00000cc5f815", title='HPM7177 Unit 2 Mezzanine Temperature sensor')
     instruments["HPM2_MAIN_TEMP"]=HPM7177_temp(onewire_lock, "00000c745496", title='HPM7177 Unit 2 Main module Temperature sensor')
-    instruments["HPM2_MAIN_TEMP"]=HPM7177_temp(onewire_lock, "00000c745496", title='HPM7177 Unit 2 Main module Temperature sensor')
 
     while True:
         for i in instruments.values():
