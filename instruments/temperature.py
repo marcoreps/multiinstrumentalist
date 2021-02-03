@@ -140,16 +140,16 @@ class Arroyo:
         
         
 class HPM7177_temp:
-
-    ready_to_read = False
-    measuring = False
-    read_val = 0
     
     def __init__(self, sn, title='HPM7177 Int Temp Sensor'):
         self.title = title
         self.sn = sn
         self.sensor = W1ThermSensor(Sensor.DS18B20, sn)
-        #self.sensor.set_resolution(9, persist=False)
+        
+        
+        self.ready_to_read = False
+        self.measuring = False
+        self.read_val = 0
         
         self.serial_process = Process(target=self.read_temperature)
         self.serial_process.daemon = True
