@@ -159,7 +159,7 @@ class HPM7177_temp:
         self.ready_to_read = False
         return self.read_val
         
-    def is_ready_to_read(self):
+    def is_readable(self):
         return self.ready_to_read
         
     def is_measuring(self):
