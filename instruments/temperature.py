@@ -170,6 +170,7 @@ class HPM7177_temp:
     def get_read_val(self):
         self.measuring = False
         self.ready_to_read = False
+        logging.debug(self.title+' returning '+self.read_val)
         return self.read_val
         
     def is_readable(self):
