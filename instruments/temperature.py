@@ -178,7 +178,7 @@ class HPM7177_temp:
             logging.debug(self.title+' is ready to read')
         else:
             logging.debug(self.title+' is not ready to read')
-        return self.ready_to_read
+    return self.ready_to_read
         
     def is_measuring(self):
         return self.measuring
