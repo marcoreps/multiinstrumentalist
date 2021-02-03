@@ -3,6 +3,8 @@
 import smbus
 import logging
 import serial
+from w1thermsensor import W1ThermSensor
+
 
     
 class TMP117:
@@ -51,8 +53,6 @@ class TMP117:
         
         
 class R6581T_temp:
-
-    ready_to_read = False
     
     def __init__(self, r6581t, title='R6581T Int Temp Sensor'):
         self.title = title
@@ -134,3 +134,38 @@ class Arroyo:
         
     def measure(self):
         pass
+        
+        
+        
+class HPM7177_temp:
+
+    self.ready_to_read = False
+    self.measuring = False
+    self.read_val = 0
+    
+    def __init__(self, sn, title='HPM7177 Int Temp Sensor'):
+        self.title = title
+        self.sn = sn
+        self.sensor = W1ThermSensor(Sensor.DS18B20, sn)
+        sensor.set_resolution(9, persist=False)
+        
+        
+    def get_title(self):
+        logging.debug(self.title+' get_title started')
+        return self.title
+        
+    def get_read_val(self):
+        self.measuring = False
+        self.ready_to_read = False
+        return self.read_val
+        
+    def is_ready_to_read(self):
+        return self.ready_to_read
+        
+    def is_measuring(self):
+        return self.measuring
+        
+    def measure(self):
+        self.measuring = True
+        self.read_val = self.sensor.get_temperature()
+        self.ready_to_read = True
