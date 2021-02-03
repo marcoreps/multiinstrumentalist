@@ -180,6 +180,7 @@ class HPM7177_temp:
         return self.measuring
         
     def measure(self):
+        logging.debug(self.title+' measuring now')
         self.measuring = True
         self.read_val = self.sensor.get_temperature()
         self.ready_to_read = True
