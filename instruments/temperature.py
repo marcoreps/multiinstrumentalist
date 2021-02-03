@@ -173,4 +173,4 @@ class HPM7177_temp:
         return readval
         
     def is_readable(self):
-        self.output_q.full()
+        return self.output_q.full()
