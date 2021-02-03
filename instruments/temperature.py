@@ -162,19 +162,19 @@ class HPM7177_temp:
             else:
                 time.sleep(0.2)
         
-        
     def get_title(self):
         logging.debug(self.title+' get_title started')
         return self.title
         
     def get_read_val(self):
+        logging.debug(self.title+' get_read_val() '+str(self.ready_to_read))
         self.measuring = False
-        self.ready_to_read = False
+        #self.ready_to_read = False
         logging.debug(self.title+' returning '+self.read_val)
         return self.read_val
         
     def is_readable(self):
-        logging.debug(self.title+' '+str(self.ready_to_read))
+        logging.debug(self.title+' is_readable(self) '+str(self.ready_to_read))
         if self.ready_to_read:
             logging.debug(self.title+' is ready to read')
         else:
