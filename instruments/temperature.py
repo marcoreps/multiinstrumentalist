@@ -168,7 +168,9 @@ class HPM7177_temp:
         return self.title
         
     def get_read_val(self):
-        return self.output_q.get()
+        readval = self.output_q.get()
+        logging.debug(self.title+' reading '+str(readval))
+        return readval
         
     def is_readable(self):
         self.output_q.full()
