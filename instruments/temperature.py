@@ -141,8 +141,9 @@ class Arroyo:
         
 class HPM7177_temp:
     
-    def __init__(self, sn, title='HPM7177 Int Temp Sensor'):
+    def __init__(self, lock, sn, title='HPM7177 Int Temp Sensor'):
         self.title = title
+        self.lock = lock
         self.sn = sn
         self.sensor = W1ThermSensor(Sensor.DS18B20, sn)
         
@@ -152,16 +153,20 @@ class HPM7177_temp:
         
         self.output_q = Queue(maxsize=1)
         
-        self.serial_process = Process(target=self.read_temperature, args=(self.output_q,))
+        self.serial_process = Process(target=self.read_temperature, args=(self.lock, self.output_q,))
         self.serial_process.daemon = True
         self.serial_process.start()
         
-    def read_temperature(self, q):
+    def read_temperature(self, l, q):
         while True:
             if not q.full():
-                q.put(self.sensor.get_temperature())
+                l.acquire()
+                try:
+                    q.put(self.sensor.get_temperature())
+                finally:
+                    l.release()
             else:
-                time.sleep(0.2)
+                time.sleep(0.1)
         
     def get_title(self):
         logging.debug(self.title+' get_title started')
