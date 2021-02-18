@@ -501,7 +501,7 @@ class HPM7177(multimeter):
 
     def get_read_val(self):
         #return self.polyfunc(self.output_q.get())
-        val = self.output_q.get()-2147449731.50969
+        val = (self.output_q.get()-2147449731.50969)/147863258.00064
         logging.debug(self.title+' '+str(val))
         return val
         
