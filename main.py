@@ -73,47 +73,54 @@ def HPM_INL():
     #instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     
-    umin = -10
+    umin = -10.5
     umax = 10
-    ustep = 0.5
+    ustep = 0.1
     wait_settle = 5
     samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
+    
+    with open('inl.csv', mode='w') as csv_file:
+    fieldnames = ['vref', 'counts']
+    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+    writer.writeheader()
 
-    for u in numpy.arange(umin, umax+1, ustep):
-        instruments["F5700A"].out(str(u)+"V")
-        logging.debug('main setting source to '+str(u)+'V')
-        time.sleep(wait_settle)
+        for u in numpy.arange(umin, umax+1, ustep):
+            instruments["F5700A"].out(str(u)+"V")
+            logging.debug('main setting source to '+str(u)+'V')
+            time.sleep(wait_settle)
 
-        for j in range(samples_per_step):
-            for i in instruments.values():
-                if not i.is_measuring():
-                    i.measure()
-            time.sleep(1)
+            for j in range(samples_per_step):
+                for i in instruments.values():
+                    if not i.is_measuring():
+                        i.measure()
+                time.sleep(1)
 
-            MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
-            MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
-            calibrator_out = float(instruments["F5700A"].get_read_val())
-            
-            while not instruments["HPM1"].is_readable():
-                time.sleep(0.1)
-            hpm1_out = float(instruments["HPM1"].get_read_val())
-            logging.debug('main hpm1 reporting '+str(hpm1_out))
-            
-            #while not instruments["HPM2"].is_readable():
-            #    time.sleep(0.1)
-            #hpm2_out = float(instruments["HPM2"].get_read_val())
-            #logging.debug('main hpm2 reporting '+str(hpm2_out))
-            
-            MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
-            #MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
-            MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+                MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+                MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
+                calibrator_out = float(instruments["F5700A"].get_read_val())
                 
-            MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
-            #MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)        
+                while not instruments["HPM1"].is_readable():
+                    time.sleep(0.1)
+                hpm1_out = float(instruments["HPM1"].get_read_val())
+                logging.debug('main hpm1 reporting '+str(hpm1_out))
+                
+                #while not instruments["HPM2"].is_readable():
+                #    time.sleep(0.1)
+                #hpm2_out = float(instruments["HPM2"].get_read_val())
+                #logging.debug('main hpm2 reporting '+str(hpm2_out))
+                
+                #MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
+                #MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
+                #MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+                    
+                #MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
+                #MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)    
+
+                writer.writerow({'vref': calibrator_out, 'counts': hpm1_out})
             
 
         
