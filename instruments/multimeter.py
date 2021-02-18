@@ -501,7 +501,9 @@ class HPM7177(multimeter):
 
     def get_read_val(self):
         #return self.polyfunc(self.output_q.get())
-        return self.output_q.get()
+        val = self.output_q.get()
+        logging.debug(self.title+' '+str(val))
+        return val
         
     def measure(self):
         self.serial_q.get()
