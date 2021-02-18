@@ -84,7 +84,7 @@ def HPM_INL():
     instruments["F5700A"].rangelck()
     
     with open('inl.csv', mode='w') as csv_file:
-        fieldnames = ['vref', 'counts']
+        fieldnames = ['vref', 'hpm1_counts', 'hpm2_counts']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -108,10 +108,10 @@ def HPM_INL():
                 hpm1_out = float(instruments["HPM1"].get_read_val())
                 logging.debug('main hpm1 reporting '+str(hpm1_out))
                 
-                #while not instruments["HPM2"].is_readable():
-                #    time.sleep(0.1)
-                #hpm2_out = float(instruments["HPM2"].get_read_val())
-                #logging.debug('main hpm2 reporting '+str(hpm2_out))
+                while not instruments["HPM2"].is_readable():
+                    time.sleep(0.1)
+                hpm2_out = float(instruments["HPM2"].get_read_val())
+                logging.debug('main hpm2 reporting '+str(hpm2_out))
                 
                 #MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
                 #MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
@@ -120,7 +120,7 @@ def HPM_INL():
                 #MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
                 #MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)    
 
-                writer.writerow({'vref': calibrator_out, 'counts': hpm1_out})
+                writer.writerow({'vref': calibrator_out, 'hpm1_counts': hpm1_out, 'hpm2_counts': hpm2_out})
             
 
         
