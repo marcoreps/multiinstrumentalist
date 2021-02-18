@@ -98,26 +98,26 @@ def HPM_INL():
             MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
             calibrator_out = float(instruments["F5700A"].get_read_val())
             
-            #while not instruments["HPM1"].is_readable():
-            #    time.sleep(0.1)
-            #hpm1_out = float(instruments["HPM1"].get_read_val())
-            #logging.debug('main hpm1 reporting '+str(hpm1_out))
-            
-            while not instruments["HPM2"].is_readable():
+            while not instruments["HPM1"].is_readable():
                 time.sleep(0.1)
-            hpm2_out = float(instruments["HPM2"].get_read_val())
-            logging.debug('main hpm2 reporting '+str(hpm2_out))
+            hpm1_out = float(instruments["HPM1"].get_read_val())
+            logging.debug('main hpm1 reporting '+str(hpm1_out))
             
-            #MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
-            MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
+            #while not instruments["HPM2"].is_readable():
+            #    time.sleep(0.1)
+            #hpm2_out = float(instruments["HPM2"].get_read_val())
+            #logging.debug('main hpm2 reporting '+str(hpm2_out))
+            
+            MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
+            #MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
             MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                 
-            #MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
-            MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)        
+            MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
+            #MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)        
             
 
         
     MySeriesHelper.commit()
                 
-#HPM_INL()
-HPM_test()
+HPM_INL()
+#HPM_test()
