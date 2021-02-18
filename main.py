@@ -84,9 +84,9 @@ def HPM_INL():
     instruments["F5700A"].rangelck()
     
     with open('inl.csv', mode='w') as csv_file:
-    fieldnames = ['vref', 'counts']
-    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    writer.writeheader()
+        fieldnames = ['vref', 'counts']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
 
         for u in numpy.arange(umin, umax+1, ustep):
             instruments["F5700A"].out(str(u)+"V")
