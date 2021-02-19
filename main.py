@@ -40,8 +40,8 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
 
 
-hpm1_poly = [-3.51593532e-96,  6.75874660e-86, -5.62487551e-76,  2.66345177e-66, -7.94362256e-57,  1.56331493e-47, -2.07025468e-38,  1.84240813e-29, -1.06911600e-20,  6.76670027e-09, -1.45237740e+01]
-hpm2_poly = [-2.08518515e-96,  3.37626791e-86, -2.10980311e-76,  5.51512175e-67,  1.68433739e-58, -5.14018299e-48,  1.51231959e-38, -2.25282568e-29,  1.88826926e-20,  6.74800382e-09, -1.45074450e+01]
+hpm1_poly = [ 2.40345908e-132, -7.13281560e-122,  9.65518170e-112, -7.89429765e-102,  4.35153235e-092, -1.70908630e-082,  4.92789264e-073, -1.05890055e-063,  1.70311273e-054, -2.03990709e-045,  1.79104753e-036, -1.11779656e-027,  4.68611861e-019,  6.64499794e-009, -1.45097732e+001]
+hpm2_poly = [ 3.02323750e-132, -8.82599853e-122,  1.17169769e-111, -9.36229522e-102,  5.02250824e-092, -1.91043137e-082,  5.30425219e-073, -1.09017744e-063,  1.66421315e-054, -1.87573278e-045,  1.53596203e-036, -8.86668455e-028,  3.41789275e-019,  6.67735326e-009, -1.45005433e+001]
 
 
 
@@ -65,17 +65,14 @@ def HPM_test():
                 
 def HPM_INL():
 
-    hpm1_poly = [-3.51593532e-96,  6.75874660e-86, -5.62487551e-76,  2.66345177e-66, -7.94362256e-57,  1.56331493e-47, -2.07025468e-38,  1.84240813e-29, -1.06911600e-20,  6.76670027e-09, -1.45237740e+01]
-    hpm2_poly = [-2.08518515e-96,  3.37626791e-86, -2.10980311e-76,  5.51512175e-67,  1.68433739e-58, -5.14018299e-48,  1.51231959e-38, -2.25282568e-29,  1.88826926e-20,  6.74800382e-09, -1.45074450e+01]
-
 
     instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
     instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     
-    umin = -10.5
+    umin = -10
     umax = 10
-    ustep = 0.1
+    ustep = 0.5
     wait_settle = 5
     samples_per_step = 1
     
@@ -84,9 +81,9 @@ def HPM_INL():
     instruments["F5700A"].rangelck()
     
     with open('inl.csv', mode='w') as csv_file:
-        fieldnames = ['vref', 'hpm1_counts', 'hpm2_counts']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
+        #fieldnames = ['vref', 'hpm1_counts', 'hpm2_counts']
+        #writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        #writer.writeheader()
 
         for u in numpy.arange(umin, umax+1, ustep):
             instruments["F5700A"].out(str(u)+"V")
@@ -113,14 +110,14 @@ def HPM_INL():
                 hpm2_out = float(instruments["HPM2"].get_read_val())
                 logging.debug('main hpm2 reporting '+str(hpm2_out))
                 
-                #MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
-                #MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
-                #MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+                MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
+                MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
+                MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
-                #MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
-                #MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)    
+                MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
+                MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)    
 
-                writer.writerow({'vref': calibrator_out, 'hpm1_counts': hpm1_out, 'hpm2_counts': hpm2_out})
+                #writer.writerow({'vref': calibrator_out, 'hpm1_counts': hpm1_out, 'hpm2_counts': hpm2_out})
             
 
         
