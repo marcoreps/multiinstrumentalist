@@ -184,3 +184,9 @@ class HPM7177_temp:
         
     def is_readable(self):
         return self.output_q.full()
+        
+    def is_measuring(self):
+        return False
+        
+    def measure(self):
+        pass
