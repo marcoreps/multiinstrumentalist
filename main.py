@@ -66,24 +66,24 @@ def HPM_test():
 def HPM_INL():
 
 
-    instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
-    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
+    instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=2000, title='HPM7177 Unit 1')
+    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=2000, title='HPM7177 Unit 2')
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     
     umin = -10
     umax = 10
     ustep = 0.5
     wait_settle = 5
-    samples_per_step = 1
+    samples_per_step = 100
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
     
-    with open('inl.csv', mode='w') as csv_file:
-        #fieldnames = ['vref', 'hpm1_counts', 'hpm2_counts']
-        #writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        #writer.writeheader()
+    with open('csv/HPM_inl_rawcounts_100samples.csv', mode='w') as csv_file:
+        fieldnames = ['vref', 'hpm1_counts', 'hpm2_counts']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
 
         for u in numpy.arange(umin, umax+1, ustep):
             instruments["F5700A"].out(str(u)+"V")
@@ -117,7 +117,7 @@ def HPM_INL():
                 MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
                 MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)    
 
-                #writer.writerow({'vref': calibrator_out, 'hpm1_counts': hpm1_out, 'hpm2_counts': hpm2_out})
+                writer.writerow({'vref': calibrator_out, 'hpm1_counts': hpm1_out, 'hpm2_counts': hpm2_out})
             
 
         
