@@ -94,6 +94,9 @@ def HPM_INL():
             instruments["F5700A"].out(str(u)+"V")
             logging.debug('main setting source to '+str(u)+'V')
             time.sleep(wait_settle)
+            instruments["HPM1"].measure()
+            instruments["HPM2"].measure()
+            
 
             for j in range(samples_per_step):
 
