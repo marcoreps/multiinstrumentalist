@@ -95,11 +95,6 @@ def HPM_INL():
             logging.debug('main setting source to '+str(u)+'V')
             time.sleep(wait_settle)
 
-            for j in range(samples_per_step):
-                for i in instruments.values():
-                    if not i.is_measuring():
-                        i.measure()
-                time.sleep(0.1)
 
                 MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
                 MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
