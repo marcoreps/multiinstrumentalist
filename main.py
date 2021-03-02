@@ -66,7 +66,7 @@ def HPM_test():
 def HPM_INL():
 
     instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
-    instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
+    #instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=10000, title='HPM7177 Unit 2')
     #instruments["HPM1_PSU_TEMP"]=HPM7177_temp(onewire_lock, "00000cc5bc07", title='HPM7177 Unit 1 PSU Temperature sensor')
     #instruments["HPM2_PSU_TEMP"]=HPM7177_temp(onewire_lock, "00000cc5bc14", title='HPM7177 Unit 2 PSU Temperature sensor')
     #instruments["HPM1_MEZ_TEMP"]=HPM7177_temp(onewire_lock, "00000c7454a1", title='HPM7177 Unit 1 Mezzanine Temperature sensor')
@@ -79,14 +79,14 @@ def HPM_INL():
     umax = 10
     ustep = 0.5
     wait_settle = 4
-    samples_per_step = 100
+    samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
     
-    with open('csv/HPM_inl_rawcounts_100samples.csv', mode='w') as csv_file:
-        fieldnames = ['vref', 'hpm1_counts', 'hpm2_counts']
+    with open('csv/HPM1_formula2.csv', mode='w') as csv_file:
+        fieldnames = ['vref', 'hpm1_counts']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -95,7 +95,7 @@ def HPM_INL():
             logging.debug('main setting source to '+str(u)+'V')
             time.sleep(wait_settle)
             instruments["HPM1"].measure()
-            instruments["HPM2"].measure()
+            #instruments["HPM2"].measure()
             
 
             for j in range(samples_per_step):
@@ -110,19 +110,19 @@ def HPM_INL():
                 hpm1_out = float(instruments["HPM1"].get_read_val())
                 logging.debug('main hpm1 reporting '+str(hpm1_out))
                 
-                while not instruments["HPM2"].is_readable():
-                    time.sleep(0.1)
-                hpm2_out = float(instruments["HPM2"].get_read_val())
-                logging.debug('main hpm2 reporting '+str(hpm2_out))
+                #while not instruments["HPM2"].is_readable():
+                #    time.sleep(0.1)
+                #hpm2_out = float(instruments["HPM2"].get_read_val())
+                #logging.debug('main hpm2 reporting '+str(hpm2_out))
                 
                 MySeriesHelper(instrument_name=instruments["HPM1"].get_title(), value=hpm1_out)
-                MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
+                #MySeriesHelper(instrument_name=instruments["HPM2"].get_title(), value=hpm2_out)
                 MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
                 MySeriesHelper(instrument_name="hpm1 ppm", value=(hpm1_out-calibrator_out)/0.00001)
-                MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)    
+                #MySeriesHelper(instrument_name="hpm2 ppm", value=(hpm2_out-calibrator_out)/0.00001)    
 
-                writer.writerow({'vref': calibrator_out, 'hpm1_counts': hpm1_out, 'hpm2_counts': hpm2_out})
+                writer.writerow({'vref': calibrator_out, 'hpm1_counts': hpm1_out})
             
 
         
