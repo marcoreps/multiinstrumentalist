@@ -79,7 +79,7 @@ def HPM_INL():
     umax = 10
     ustep = 0.5
     wait_settle = 4
-    samples_per_step = 50
+    samples_per_step = 100
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
