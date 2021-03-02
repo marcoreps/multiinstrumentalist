@@ -99,7 +99,7 @@ def HPM_INL():
                 for i in instruments.values():
                     if not i.is_measuring():
                         i.measure()
-                time.sleep(1)
+                time.sleep(0.1)
 
                 MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
                 MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
