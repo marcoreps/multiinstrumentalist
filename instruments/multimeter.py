@@ -502,12 +502,12 @@ class HPM7177(multimeter):
 
 
     def get_read_val(self):
-        #return self.polyfunc(self.output_q.get())
-        #return self.output_q.get()
-        x1=self.output_q.get()
-        HMP1_fit1=6.763004812273380e-09*x1-1.452321344215639e+01
-        HMP1_fit2=1.02782955913447e-6+3.04254972897816e-6*math.sin(0.00322438501023585*x1)-2.54617098552864e-6*math.cos(2.41476535668804+0.00322438496390789*x1+1.47267948257617*math.sin(0.0211347361227292+0.00322438501023585*x1))
-        return HMP1_fit1+HMP1_fit2
+        return self.polyfunc(self.output_q.get())
+        return self.output_q.get()
+        #x1=self.output_q.get()
+        #HMP1_fit1=6.763004812273380e-09*x1-1.452321344215639e+01
+        #HMP1_fit2=1.02782955913447e-6+3.04254972897816e-6*math.sin(0.00322438501023585*x1)-2.54617098552864e-6*math.cos(2.41476535668804+0.00322438496390789*x1+1.47267948257617*math.sin(0.0211347361227292+0.00322438501023585*x1))
+        #return HMP1_fit1+HMP1_fit2
 
         
     def measure(self):
