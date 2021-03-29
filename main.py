@@ -149,36 +149,36 @@ def INL_34401():
     instruments["F5700A"].rangelck()
     
     with open('csv/34401A_INL.csv', mode='w') as csv_file:
-    fieldnames = ['vref', '34401A_volt']
-    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    writer.writeheader()
+        fieldnames = ['vref', '34401A_volt']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
 
-    for u in numpy.arange(umin, umax+1, ustep):
-        instruments["F5700A"].out(str(u)+"V")
-        logging.debug('main setting source to '+str(u)+'V')
-        time.sleep(wait_settle)
-        instruments["HP34401A"].measure()
-
-
-        for j in range(samples_per_step):
+        for u in numpy.arange(umin, umax+1, ustep):
+            instruments["F5700A"].out(str(u)+"V")
+            logging.debug('main setting source to '+str(u)+'V')
+            time.sleep(wait_settle)
+            instruments["HP34401A"].measure()
 
 
-            MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
-            MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
-            calibrator_out = u
-            
-            while not instruments["HP34401A"].is_readable():
-                time.sleep(0.1)
-            HP34401A_out = float(instruments["HP34401A"].get_read_val())
-            logging.debug('main HP34401A reporting '+str(HP34401A_out))
+            for j in range(samples_per_step):
 
-            
-            MySeriesHelper(instrument_name=instruments["HP34401A"].get_title(), value=HP34401A_out)
-            MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+
+                MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+                MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
+                calibrator_out = u
                 
-            MySeriesHelper(instrument_name="HP34401A ppm", value=(HP34401A_out-calibrator_out)/0.00001)
+                while not instruments["HP34401A"].is_readable():
+                    time.sleep(0.1)
+                HP34401A_out = float(instruments["HP34401A"].get_read_val())
+                logging.debug('main HP34401A reporting '+str(HP34401A_out))
 
-            writer.writerow({'vref': calibrator_out, '34401A_volt': HP34401A_out})
+                
+                MySeriesHelper(instrument_name=instruments["HP34401A"].get_title(), value=HP34401A_out)
+                MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+                    
+                MySeriesHelper(instrument_name="HP34401A ppm", value=(HP34401A_out-calibrator_out)/0.00001)
+
+                writer.writerow({'vref': calibrator_out, '34401A_volt': HP34401A_out})
             
 
         
@@ -186,4 +186,3 @@ def INL_34401():
                 
 #HPM_INL()
 #HPM_test()
-INL_34401()
