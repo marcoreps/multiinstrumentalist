@@ -38,6 +38,8 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
 #instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=gpiblock, title="Bench K237")
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
+#instruments["HP34401A"]=HP34401A(ip=vxi_ip, gpib_address=4, lock=gpiblock, title="Bench 34401A")
+#instruments["HP34401A"].config_10DCV_6digit_fast()
 
 
 hpm1_poly = [2.71693612e-105,-6.18663036e-095,6.15667772e-085,-3.51535638e-075,1.27108774e-065,-3.03035855e-056,4.80713857e-047,-4.99468673e-038,3.24643372e-029,-1.19312049e-020,6.76492263e-009,-1.45232376e+001]
@@ -127,6 +129,61 @@ def HPM_INL():
 
         
     MySeriesHelper.commit()
+    
+    
+    
+    
+def INL_34401():
+    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
+    instruments["HP34401A"]=HP34401A(ip=vxi_ip, gpib_address=4, lock=gpiblock, title="Bench 34401A")
+    instruments["HP34401A"].config_10DCV_6digit_fast()
+    
+    umin = -10
+    umax = 10
+    ustep = 0.1
+    wait_settle = 5
+    samples_per_step = 1
+    
+    instruments["F5700A"].out(str(umin)+"V")
+    instruments["F5700A"].oper()
+    instruments["F5700A"].rangelck()
+    
+        with open('csv/34401A_INL.csv', mode='w') as csv_file:
+        fieldnames = ['vref', '34401A_volt']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+
+        for u in numpy.arange(umin, umax+1, ustep):
+            instruments["F5700A"].out(str(u)+"V")
+            logging.debug('main setting source to '+str(u)+'V')
+            time.sleep(wait_settle)
+            instruments["HP34401A"].measure()
+
+
+            for j in range(samples_per_step):
+
+
+                MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+                MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
+                calibrator_out = u
+                
+                while not instruments["HP34401A"].is_readable():
+                    time.sleep(0.1)
+                HP34401A_out = float(instruments["HP34401A"].get_read_val())
+                logging.debug('main HP34401A reporting '+str(HP34401A_out))
+
+                
+                MySeriesHelper(instrument_name=instruments["HP34401A"].get_title(), value=HP34401A_out)
+                MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
+                    
+                MySeriesHelper(instrument_name="HP34401A ppm", value=(HP34401A_out-calibrator_out)/0.00001)
+
+                writer.writerow({'vref': calibrator_out, '34401A_volt': HP34401A_out})
+            
+
+        
+    MySeriesHelper.commit()
                 
 #HPM_INL()
-HPM_test()
+#HPM_test()
+INL_34401()

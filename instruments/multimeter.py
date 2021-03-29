@@ -513,3 +513,58 @@ class HPM7177(multimeter):
     def measure(self):
         self.serial_q.get()
         self.output_q.get()
+        
+
+class HP34401A(multimeter):
+
+    def __init__(self, ip, gpib_address, lock, title='HP 34401A'):
+        self.read_val = 0
+        self.title = title
+        self.lock = lock
+        logging.debug(self.title+' init started')
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.lock.acquire()
+        try:
+            self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+            self.instr.clear()
+            logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+            self.instr.close()
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+        
+        
+    def config_10DCV_6digit_fast(self):
+        self.connect()
+        try:
+            self.instr.write("*RST")
+            self.instr.write("SYSTem:BEEPer")
+            self.instr.write("CONFigure:VOLTage:DC 10, MAX")
+            self.instr.close()
+        except:
+            logging.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+
+
+    def measure(self):
+        logging.debug(self.title+' measure started')
+        self.measuring = True
+        self.connect()
+        try:
+            self.read_val = self.instr.write("READ?")
+            self.instr.close()
+        except:
+            logging.error("Error in %s measure" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def is_ready_to_read(self):
+        self.read_stb()
+        ready = self.stb & 0b00010000
+        return ready
