@@ -542,7 +542,7 @@ class HP34401A(multimeter):
         try:
             self.instr.write("*RST")
             self.instr.write("SYSTem:BEEPer")
-            self.instr.write("CONFigure:VOLTage:DC 10, MAX")
+            self.instr.write("CONFigure:VOLTage:DC 10, MIN")
             self.instr.close()
         except:
             logging.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)

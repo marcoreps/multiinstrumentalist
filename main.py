@@ -167,8 +167,8 @@ def INL_34401():
                 MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
                 calibrator_out = u
                 
-                while not instruments["HP34401A"].is_readable():
-                    time.sleep(0.1)
+                #while not instruments["HP34401A"].is_readable():
+                #    time.sleep(0.1)
                 HP34401A_out = float(instruments["HP34401A"].get_read_val())
                 logging.debug('main HP34401A reporting '+str(HP34401A_out))
 
