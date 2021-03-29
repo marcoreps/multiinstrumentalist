@@ -177,6 +177,7 @@ def INL_34401():
                 MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
                 MySeriesHelper(instrument_name="HP34401A ppm", value=(HP34401A_out-calibrator_out)/0.00001)
+                MySeriesHelper(instrument_name="HP34401A", value=(HP34401A_out))
 
                 writer.writerow({'vref': calibrator_out, '34401A_volt': HP34401A_out})
             
