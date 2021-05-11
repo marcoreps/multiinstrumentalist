@@ -572,13 +572,14 @@ class HP34401A(multimeter):
         
 class HP3458A(multimeter):
 
-    def __init__(self, ip, gpib_address, lock, title='HP 34401A'):
+    def __init__(self, ip, gpib_address, lock, title='HP 3458A'):
         self.read_val = 0
         self.title = title
         self.lock = lock
         logging.debug(self.title+' init started')
         self.ip = ip
         self.gpib_address = gpib_address
+        self.int_temp = 0
         self.lock.acquire()
         try:
             self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
@@ -620,3 +621,6 @@ class HP3458A(multimeter):
         ready = self.stb & 0b10000000
         return ready
             
+            
+    def get_int_temp(self):
+        return self.instr.ask("TEMP?")

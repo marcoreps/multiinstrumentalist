@@ -190,3 +190,27 @@ class HPM7177_temp:
         
     def measure(self):
         pass
+        
+class HP3458A_temp:
+    
+    def __init__(self, HP3458A, title='HP3458A Int Temp Sensor'):
+        self.title = title
+        self.HP3458A = HP3458A
+        
+        
+    def get_title(self):
+        logging.debug(self.title+' get_title started')
+        return self.title
+        
+    def get_read_val(self):
+        return self.HP3458A.get_int_temp()
+        
+    def is_ready_to_read(self):
+        return True
+        
+    def is_measuring(self):
+        return False
+        
+    def measure(self):
+        pass
+        
