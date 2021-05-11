@@ -583,7 +583,7 @@ class HP3458A(multimeter):
         try:
             self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
             self.instr.clear()
-            logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+            logging.debug("ID? -> "+self.instr.ask("ID?"))
             self.instr.close()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
