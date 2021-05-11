@@ -197,7 +197,6 @@ class HP3458A_temp:
         self.title = title
         self.HP3458A = HP3458A
         
-        
     def get_title(self):
         logging.debug(self.title+' get_title started')
         return self.title
@@ -205,7 +204,7 @@ class HP3458A_temp:
     def get_read_val(self):
         return self.HP3458A.get_int_temp()
         
-    def is_ready_to_read(self):
+    def is_readable(self):
         return True
         
     def is_measuring(self):
