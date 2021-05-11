@@ -600,7 +600,7 @@ class HP3458A(multimeter):
             self.instr.write("OFORMAT ASCII")
             self.instr.write("BEEP")
             self.instr.write("DCV 10")
-            self.instr.write("TARM HOLD")
+            self.instr.write("TARM AUTO")
             self.instr.write("TRIG AUTO")
             self.instr.write("NPLC 200")
             self.instr.write("NRDGS 1,AUTO")
