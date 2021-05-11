@@ -40,6 +40,7 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
 #instruments["HP34401A"]=HP34401A(ip=vxi_ip, gpib_address=4, lock=gpiblock, title="Bench 34401A")
 #instruments["HP34401A"].config_10DCV_6digit_fast()
+#instruments["3458A"]=3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
 
 
 hpm1_poly = [2.71693612e-105,-6.18663036e-095,6.15667772e-085,-3.51535638e-075,1.27108774e-065,-3.03035855e-056,4.80713857e-047,-4.99468673e-038,3.24643372e-029,-1.19312049e-020,6.76492263e-009,-1.45232376e+001]
@@ -186,11 +187,17 @@ def INL_34401():
     MySeriesHelper.commit()
           
 
-
-
+def test_3458A():
+    instruments["3458A"]=3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    while True:
+        for i in instruments.values():
+            if i.is_readable():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        time.sleep(0.1)
 
 
           
 #HPM_INL()
 #HPM_test()
-INL_34401()
+#INL_34401()
+test_3458A()

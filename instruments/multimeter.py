@@ -568,3 +568,53 @@ class HP34401A(multimeter):
         self.read_stb()
         ready = self.stb & 0b00010000
         return ready
+        
+        
+class HP3458A(multimeter):
+
+    def __init__(self, ip, gpib_address, lock, title='HP 34401A'):
+        self.read_val = 0
+        self.title = title
+        self.lock = lock
+        logging.debug(self.title+' init started')
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.lock.acquire()
+        try:
+            self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+            self.instr.clear()
+            logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+            self.instr.close()
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+        
+        
+    def config_10DCV_9digit_filtered(self):
+        self.connect()
+        try:
+            self.instr.write("PRESET NORM")
+            self.instr.write("OFORMAT ASCII")
+            self.instr.write("BEEP")
+            self.instr.write("DCV 10")
+            self.instr.write("TARM HOLD")
+            self.instr.write("TRIG AUTO")
+            self.instr.write("NPLC 200")
+            self.instr.write("NRDGS 1,AUTO")
+            self.instr.write("MEM OFF")
+            self.instr.write("END ALWAYS")
+            self.instr.write("NDIG 9")
+            self.instr.write("DISP OFF")
+        except:
+            logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def is_readable(self):
+        self.read_stb()
+        ready = self.stb & 0b00010000
+        return ready
+            
