@@ -189,6 +189,7 @@ def INL_34401():
 def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit_filtered()
+    instruments["HP3458A_temp"]=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     #instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=gpiblock, title="Bench R6581T")
     #instruments["R6581T"].config_10DCV_9digit_filtered()
 
