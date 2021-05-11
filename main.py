@@ -39,7 +39,6 @@ instruments["temp_long"]=TMP117(address=0x49, title="Long Temp Sensor")
 #instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=gpiblock, title="Bench K237")
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
 #instruments["HP34401A"]=HP34401A(ip=vxi_ip, gpib_address=4, lock=gpiblock, title="Bench 34401A")
-#instruments["HP34401A"].config_10DCV_6digit_fast()
 #instruments["3458A"]=3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
 
 
@@ -188,7 +187,10 @@ def INL_34401():
           
 
 def test_3458A():
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=gpiblock, title="Bench R6581T")
+    instruments["R6581T"].config_10DCV_9digit_filtered()
+
     while True:
         for i in instruments.values():
             if i.is_readable():
