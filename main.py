@@ -188,7 +188,7 @@ def INL_34401():
           
 
 def test_3458A():
-    instruments["3458A"]=3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     while True:
         for i in instruments.values():
             if i.is_readable():
