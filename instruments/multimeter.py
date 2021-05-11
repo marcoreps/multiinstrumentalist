@@ -607,7 +607,6 @@ class HP3458A(multimeter):
             self.instr.write("MEM OFF")
             self.instr.write("END ALWAYS")
             self.instr.write("NDIG 9")
-            self.instr.write("DISP OFF")
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
@@ -617,6 +616,7 @@ class HP3458A(multimeter):
     def is_readable(self):
         logging.debug(self.title+' is_readable')
         self.read_stb()
-        ready = self.stb & 0b00010000
-        return ready
+        print self.stb
+        #ready = self.stb & 0b00010000
+        return False
             
