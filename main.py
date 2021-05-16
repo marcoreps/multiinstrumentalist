@@ -231,7 +231,7 @@ def INL_3458A():
 
             for j in range(samples_per_step):
             
-                while i.is_ready_to_read() == False for i in instruments:
+                while any(i.is_ready_to_read() == False for i in instruments):
                     time.sleep(0.5)
 
                 MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
