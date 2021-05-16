@@ -157,8 +157,8 @@ class K2001(multimeter):
         
         
     def config_20DCV_9digit_fast(self):
-        self.connect()
         try:
+            self.connect()
             self.instr.write("*RST")
             self.instr.write(":SYST:AZER:TYPE SYNC")
             self.instr.write(":SYST:LSYN:STAT ON")
@@ -176,8 +176,8 @@ class K2001(multimeter):
         
         
     def config_20DCV_9digit_filtered(self):
-        self.connect()
         try:
+            self.connect()
             self.instr.write("*RST")
             self.instr.write(":SYST:AZER:TYPE SYNC")
             self.instr.write(":SYST:LSYN:STAT ON")
@@ -198,8 +198,8 @@ class K2001(multimeter):
             self.lock.release()
             
     def config_2ADC_9digit_filtered(self):
-        self.connect()
         try:
+            self.connect()
             self.instr.write("*RST")
             self.instr.write(":SYST:AZER:TYPE SYNC")
             self.instr.write(":SYST:LSYN:STAT ON")
@@ -222,8 +222,8 @@ class K2001(multimeter):
 
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.connect()
         try:
+            self.connect()
             self.read_val = self.instr.write("READ?")
             self.instr.close()
         except:
@@ -271,8 +271,8 @@ class R6581T(multimeter):
         
         
     def config_10DCV_9digit_fast(self):
-        self.connect()
         try:
+            self.connect()
             logging.debug(self.title+' config_10DCV_9digit_fast started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -294,8 +294,8 @@ class R6581T(multimeter):
         
         
     def config_10DCV_9digit_filtered(self):
-        self.connect()
         try:
+            self.connect()
             logging.debug(self.title+' config_10DCV_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -319,8 +319,8 @@ class R6581T(multimeter):
             
             
     def config_100k4W_9digit_filtered(self):
-        self.connect()
         try:
+            self.connect()
             logging.debug(self.title+' config_100k4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -346,8 +346,8 @@ class R6581T(multimeter):
             
             
     def config_10k4W_9digit_filtered(self):
-        self.connect()
         try:
+            self.connect()
             logging.debug(self.title+' config_10k4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -373,8 +373,8 @@ class R6581T(multimeter):
         
         
     def config_10R4W_9digit_filtered(self):
-        self.connect()
         try:
+            self.connect()
             logging.debug(self.title+' config_10R4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -401,8 +401,8 @@ class R6581T(multimeter):
         
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.connect()
         try:
+            self.connect()
             self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
             self.instr.write("READ?")
             self.instr.close()
@@ -525,8 +525,8 @@ class HP34401A(multimeter):
         
         
     def config_10DCV_6digit_fast(self):
-        self.connect()
         try:
+            self.connect()
             self.instr.write("*RST")
             self.instr.write("SYSTem:BEEPer")
             self.instr.write("CONFigure:VOLTage:DC 10, MIN")
@@ -540,8 +540,8 @@ class HP34401A(multimeter):
 
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.connect()
         try:
+            self.connect()
             self.read_val = self.instr.write("READ?")
             self.instr.close()
         except:
