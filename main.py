@@ -210,14 +210,15 @@ def INL_3458A():
     umin = -10
     umax = 10
     ustep = 0.5
-    wait_settle = 5
+    wait_settle = 15
     samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
+    time.sleep(180)
     
-    with open('csv/3458A_INL_run2.csv', mode='w') as csv_file:
+    with open('csv/3458A_INL_run3.csv', mode='w') as csv_file:
         fieldnames = ['vref', '3458A_volt', '7081_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -249,8 +250,6 @@ def INL_3458A():
                 MySeriesHelper(instrument_name="7081 ppm", value=(S7081_out-calibrator_out)/0.00001)
 
                 writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '7081_volt': S7081_out})
-            
-
         
     MySeriesHelper.commit()
 
