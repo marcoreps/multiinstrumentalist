@@ -217,12 +217,12 @@ def INL_3458A():
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
     
-    with open('csv/3458A_INL.csv', mode='w') as csv_file:
+    with open('csv/3458A_INL_run2.csv', mode='w') as csv_file:
         fieldnames = ['vref', '3458A_volt', '7081_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
-        for u in numpy.arange(umin, umax+1, ustep):
+        for u in numpy.arange(umin, umax, ustep):
             instruments["F5700A"].out(str(u)+"V")
             logging.debug('main setting source to '+str(u)+'V')
             time.sleep(wait_settle)
