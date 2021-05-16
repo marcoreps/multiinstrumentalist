@@ -19,7 +19,6 @@ class multimeter:
     read_val = 0
     title = ""
 
-    measuring = False
     readable = False
     
     def is_readable(self):
@@ -40,7 +39,6 @@ class multimeter:
         try:
             self.read_val = self.instr.read()
             self.instr.close()
-            self.measuring = False
         except:
             logging.error("Error in %s get_read_val" % self.title, exc_info=True)
             pass
@@ -61,11 +59,6 @@ class multimeter:
         finally:
             self.lock.release()
             
-            
-    def is_measuring(self):
-        return self.measuring
-
-
 
 class S7081(multimeter):
 
@@ -120,7 +113,6 @@ class S7081(multimeter):
 
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.measuring = True
         self.connect()
         try:
             self.instr.write("MEAsure, SIGLE")
@@ -130,11 +122,8 @@ class S7081(multimeter):
             pass
         finally:
             self.lock.release()
-            
-            
         
-        
-    def is_ready_to_read(self):
+    def is_readable(self):
         self.read_stb()
         ready = self.stb == 24
         return ready
@@ -233,7 +222,6 @@ class K2001(multimeter):
 
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.measuring = True
         self.connect()
         try:
             self.read_val = self.instr.write("READ?")
@@ -246,7 +234,7 @@ class K2001(multimeter):
             
         
         
-    def is_ready_to_read(self):
+    def is_readable(self):
         self.read_stb()
         ready = self.stb & 0b00010000
         return ready
@@ -413,7 +401,6 @@ class R6581T(multimeter):
         
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.measuring = True
         self.connect()
         try:
             self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
@@ -430,7 +417,7 @@ class R6581T(multimeter):
         return self.int_temp
         
         
-    def is_ready_to_read(self):
+    def is_readable(self):
         self.read_stb()
         ready = self.stb == 16
         return ready
@@ -553,7 +540,6 @@ class HP34401A(multimeter):
 
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.measuring = True
         self.connect()
         try:
             self.read_val = self.instr.write("READ?")
@@ -594,27 +580,39 @@ class HP3458A(multimeter):
             self.lock.release()
         
         
-    def config_10DCV_9digit_filtered(self):
+    def config_10DCV_9digit(self):
         self.connect()
         try:
             self.instr.write("PRESET NORM")
             self.instr.write("OFORMAT ASCII")
             self.instr.write("BEEP")
             self.instr.write("DCV 10")
-            self.instr.write("TARM AUTO")
+            self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
             self.instr.write("NPLC 200")
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
-            self.instr.write("END ALWAYS")
             self.instr.write("NDIG 9")
             self.instr.write("DISP MSG,\"                 \"")
             self.instr.write("DISP ON")
         except:
-            logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
+            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
+            
+    def measure(self):
+        logging.debug(self.title+' measure started')
+        self.connect()
+        try:
+            self.instr.write("TARM SGL,1")
+            self.instr.close()
+        except:
+            logging.error("Error in %s measure" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+
             
     def is_readable(self):
         self.read_stb()
