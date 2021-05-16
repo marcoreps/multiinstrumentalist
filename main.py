@@ -226,7 +226,7 @@ def INL_3458A():
             instruments["F5700A"].out(str(u)+"V")
             logging.debug('main setting source to '+str(u)+'V')
             time.sleep(wait_settle)
-            for i in instruments:
+            for i in instruments.values():
                 i.measure()
 
             for j in range(samples_per_step):
