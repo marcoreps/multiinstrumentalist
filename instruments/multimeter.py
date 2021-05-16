@@ -601,7 +601,7 @@ class HP3458A(multimeter):
         finally:
             self.lock.release()
             
-    def config_10DCV_9digit(self):
+    def config_continuous_sampling(self):
         try:
             self.connect()
             self.instr.write("TARM AUTO")
