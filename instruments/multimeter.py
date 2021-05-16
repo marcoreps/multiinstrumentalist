@@ -35,8 +35,8 @@ class multimeter:
         
         
     def get_read_val(self):
-        self.connect()
         try:
+            self.connect()
             self.read_val = self.instr.read()
             self.instr.close()
         except:
@@ -49,8 +49,8 @@ class multimeter:
         
         
     def read_stb(self):
-        self.connect()
         try:
+            self.connect()
             self.stb = self.instr.read_stb()
             self.instr.close()
         except:
@@ -86,8 +86,8 @@ class S7081(multimeter):
             self.lock.release()
             
     def config_10DCV_9digit(self):
-        self.connect()
         try:
+            self.connect()
             self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=VDC: RANge=10: NInes=8")
             self.instr.close()
@@ -98,8 +98,8 @@ class S7081(multimeter):
             self.lock.release()
             
     def config_10k_9digit(self):
-        self.connect()
         try:
+            self.connect()
             #self.instr.write("DRIFT,ON")
             self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=KOHM: RANge=10: NInes=8")
@@ -113,8 +113,8 @@ class S7081(multimeter):
 
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.connect()
         try:
+            self.connect()
             self.instr.write("MEAsure, SIGLE")
             self.instr.close()
         except:
@@ -581,8 +581,8 @@ class HP3458A(multimeter):
         
         
     def config_10DCV_9digit(self):
-        self.connect()
         try:
+            self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("OFORMAT ASCII")
             self.instr.write("BEEP")
@@ -603,8 +603,8 @@ class HP3458A(multimeter):
             
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.connect()
         try:
+            self.connect()
             self.instr.write("TARM SGL,1")
             self.instr.close()
         except:

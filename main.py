@@ -210,7 +210,7 @@ def INL_3458A():
     umin = -10
     umax = 10
     ustep = 0.5
-    wait_settle = 10
+    wait_settle = 5
     samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
@@ -222,7 +222,7 @@ def INL_3458A():
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
-        for u in numpy.arange(umin, umax, ustep):
+        for u in numpy.arange(umin, umax+0.01, ustep):
             instruments["F5700A"].out(str(u)+"V")
             logging.debug('main setting source to '+str(u)+'V')
             time.sleep(wait_settle)
