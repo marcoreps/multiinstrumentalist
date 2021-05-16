@@ -601,6 +601,16 @@ class HP3458A(multimeter):
         finally:
             self.lock.release()
             
+    def config_10DCV_9digit(self):
+        try:
+            self.connect()
+            self.instr.write("TARM AUTO")
+        except:
+            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
     def measure(self):
         logging.debug(self.title+' measure started')
         try:

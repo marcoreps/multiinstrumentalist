@@ -130,65 +130,12 @@ def HPM_INL():
         
     MySeriesHelper.commit()
     
-    
-    
-    
-def INL_34401():
-    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
-    instruments["HP34401A"]=HP34401A(ip=vxi_ip, gpib_address=4, lock=gpiblock, title="Bench 34401A")
-    instruments["HP34401A"].config_10DCV_6digit_fast()
-    
-    umin = -10
-    umax = 10
-    ustep = 0.1
-    wait_settle = 5
-    samples_per_step = 1
-    
-    instruments["F5700A"].out(str(umin)+"V")
-    instruments["F5700A"].oper()
-    instruments["F5700A"].rangelck()
-    
-    with open('csv/34401A_INL.csv', mode='w') as csv_file:
-        fieldnames = ['vref', '34401A_volt']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-
-        for u in numpy.arange(umin, umax+1, ustep):
-            instruments["F5700A"].out(str(u)+"V")
-            logging.debug('main setting source to '+str(u)+'V')
-            time.sleep(wait_settle)
-            instruments["HP34401A"].measure()
-
-
-            for j in range(samples_per_step):
-
-
-                MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
-                MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
-                calibrator_out = u
-                
-                #while not instruments["HP34401A"].is_readable():
-                #    time.sleep(0.1)
-                HP34401A_out = float(instruments["HP34401A"].get_read_val())
-                logging.debug('main HP34401A reporting '+str(HP34401A_out))
-
-                
-                MySeriesHelper(instrument_name=instruments["HP34401A"].get_title(), value=HP34401A_out)
-                MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
-                    
-                MySeriesHelper(instrument_name="HP34401A ppm", value=(HP34401A_out-calibrator_out)/0.00001)
-                MySeriesHelper(instrument_name="HP34401A", value=(HP34401A_out))
-
-                writer.writerow({'vref': calibrator_out, '34401A_volt': HP34401A_out})
-            
-
-        
-    MySeriesHelper.commit()
-          
+     
 
 def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"].config_continuous_sampling()
     #instruments["HP3458A_temp"]=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     #instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=gpiblock, title="Bench R6581T")
     #instruments["R6581T"].config_10DCV_9digit_filtered()
@@ -258,5 +205,5 @@ def INL_3458A():
 #HPM_INL()
 #HPM_test()
 #INL_34401()
-#test_3458A()
-INL_3458A()
+test_3458A()
+#INL_3458A()
