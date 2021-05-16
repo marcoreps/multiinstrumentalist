@@ -550,7 +550,7 @@ class HP34401A(multimeter):
         finally:
             self.lock.release()
             
-    def is_ready_to_read(self):
+    def is_readable(self):
         self.read_stb()
         ready = self.stb & 0b00010000
         return ready
