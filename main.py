@@ -144,7 +144,7 @@ def test_3458A():
 
     while True:
         now = datetime.datetime.now()
-        if not(now.minute % 2):
+        if now.minute % 2 == 0 and now.second % 59 == 0:
             MySeriesHelper(instrument_name=instruments["HP3458A_temp"].get_title(), value=float(instruments["HP3458A_temp"].get_read_val()))
         
         for i in instruments.values():
