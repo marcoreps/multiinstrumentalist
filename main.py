@@ -6,6 +6,8 @@ import logging
 import time
 import numpy
 from multiprocessing import Process, Lock
+import datetime
+
 
 
 
@@ -136,11 +138,15 @@ def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].config_continuous_sampling()
-    #instruments["HP3458A_temp"]=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    instruments["HP3458A_temp"]=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     #instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=gpiblock, title="Bench R6581T")
     #instruments["R6581T"].config_10DCV_9digit_filtered()
 
     while True:
+        now = datetime.datetime.now()
+        if not(now.minute % 15):
+            MySeriesHelper(instrument_name=instruments["HP3458A_temp"].get_title(), value=float(instruments["HP3458A_temp"].get_read_val()))
+        
         for i in instruments.values():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
