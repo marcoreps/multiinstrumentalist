@@ -144,7 +144,7 @@ def test_3458A():
 
     while True:
         now = datetime.datetime.now()
-        if not(now.minute % 15):
+        if not(now.minute % 2):
             MySeriesHelper(instrument_name=instruments["HP3458A_temp"].get_title(), value=float(instruments["HP3458A_temp"].get_read_val()))
         
         for i in instruments.values():
