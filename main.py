@@ -144,7 +144,7 @@ def test_3458A():
 
     while True:
         now = datetime.datetime.now()
-        if not(now.minute % 10) and not(now.second % 58):
+        if not(time.time() % 600):
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
             time.sleep(1)
         
