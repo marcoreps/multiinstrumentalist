@@ -607,7 +607,7 @@ class HP3458A(multimeter):
             self.instr.write("PRESET NORM")
             self.instr.write("OFORMAT ASCII")
             self.instr.write("BEEP")
-            self.instr.write("OHMF 1E3")
+            self.instr.write("OHMF 1E4")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
             self.instr.write("NPLC 200")
