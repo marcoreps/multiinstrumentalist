@@ -614,8 +614,8 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            self.instr.write("DISP MSG,\"                 \"")
-            self.instr.write("DISP ON")
+            #self.instr.write("DISP MSG,\"                 \"")
+            #self.instr.write("DISP ON")
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
