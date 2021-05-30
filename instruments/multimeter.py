@@ -614,8 +614,29 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            #self.instr.write("DISP MSG,\"                 \"")
-            #self.instr.write("DISP ON")
+            self.instr.write("DISP MSG,\"                 \"")
+            self.instr.write("DISP ON")
+        except:
+            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def config_1OHMF_9digit(self):
+        try:
+            self.connect()
+            self.instr.write("PRESET NORM")
+            self.instr.write("OFORMAT ASCII")
+            self.instr.write("BEEP")
+            self.instr.write("OHMF 1E4")
+            self.instr.write("TARM HOLD")
+            self.instr.write("TRIG AUTO")
+            self.instr.write("NPLC 200")
+            self.instr.write("NRDGS 1,AUTO")
+            self.instr.write("MEM OFF")
+            self.instr.write("NDIG 9")
+            self.instr.write("DISP MSG,\"                 \"")
+            self.instr.write("DISP ON")
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
