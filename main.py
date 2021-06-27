@@ -218,11 +218,41 @@ def INL_3458A():
                 writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '7081_volt': S7081_out})
         
     MySeriesHelper.commit()
+    
+    
+def temperature_sweep():
+
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_10DCV_9digit()
+    #instruments["3458A"].config_1OHMF_9digit()
+    instruments["3458A"].config_continuous_sampling()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB2', baud=38400, title='Arroyo TECSource')
+    
+    tmin = 30
+    tmax = 90
+    tstep = 1
+    wait_settle = 60
+    samples_per_step = 1
+    
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
+        instruments["arroyo"].out(t)
+        time.sleep(wait_settle)
+        now = datetime.datetime.now()
+        if not(now.minute % 10) and not(now.second):
+            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+            time.sleep(1)
+        
+        for i in instruments.values():
+            if i.is_readable():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        time.sleep(0.5)
 
 
           
 #HPM_INL()
 #HPM_test()
 #INL_34401()
-test_3458A()
+#test_3458A()
 #INL_3458A()
+temperature_sweep()

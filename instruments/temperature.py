@@ -128,7 +128,7 @@ class Arroyo:
             pass
 
         
-    def is_ready_to_read(self):
+    def is_readable(self):
         return True
         
     def is_measuring(self):
