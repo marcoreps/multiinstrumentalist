@@ -142,7 +142,7 @@ def test_3458A():
     #instruments["3458A"].config_1OHMF_9digit()
     instruments["3458A"].config_continuous_sampling()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
-    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB2', baud=38400, title='Arroyo TECSource')
+    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     #instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=100000, title='HPM7177 Unit 1')
     #instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=100000, title='HPM7177 Unit 2')
