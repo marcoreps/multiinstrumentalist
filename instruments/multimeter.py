@@ -630,13 +630,13 @@ class HP3458A(multimeter):
         finally:
             self.lock.release()
             
-    def config_1OHMF_9digit(self):
+    def config_10OHMF_9digit(self):
         try:
             self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("OFORMAT ASCII")
             self.instr.write("BEEP")
-            self.instr.write("OHMF 1")
+            self.instr.write("OHMF 10")
             self.instr.write("OCOMP ON")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
