@@ -140,7 +140,7 @@ def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_1OHMF_9digit()
-    instruments["3458B"].blank_display()
+    instruments["3458A"].blank_display()
     instruments["3458A"].config_continuous_sampling()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
