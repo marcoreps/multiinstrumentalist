@@ -35,6 +35,23 @@ combineSwitch = {"chip" : 0x4, "port" : 1, "pin" : 2, "comPin" : 1, "pcbIndex" :
 
 
 class takovsky_scanner:
+    def __init__(self, title="Scanner"):
+        i2c   =  smbus.SMBus(1)
+        for port in range(2):
+            self.switchingGpioSetOutput(0x00, port, 0x00)
+            self.switchingGpioSetOutput(0x04, port, 0x00)
+            self.switchingGpioSetMode(0x00, port, 0x00)
+            self.switchingGpioSetMode(0x04, port, 0x00)
+
+        # Reset relay state
+        self.switchingOpenRelay(combineSwitch)
+        time.sleep(DEBOUNCE_TIME/1000)
+
+        for i in range(16):
+            self.switchingOpenRelay(channels[i])
+
+        g_closedChannel = 0
+        g_fwireEnabled = 0
         
         
     def switchingGpioSetOutput(subaddress, port, pins):
@@ -57,24 +74,6 @@ class takovsky_scanner:
         switchingGpioSetOutput(relay["chip"], relay["port"], 0xFF & relay["pin"])
         time.sleep(SWITCHING_TIME/1000)
         switchingGpioSetOutput(relay["chip"], relay["port"], 0)
-        
-    def __init__(self, title="Scanner"):
-        i2c   =  smbus.SMBus(1)
-        for port in range(2):
-            switchingGpioSetOutput(0x00, port, 0x00)
-            switchingGpioSetOutput(0x04, port, 0x00)
-            switchingGpioSetMode(0x00, port, 0x00)
-            switchingGpioSetMode(0x04, port, 0x00)
-
-        # Reset relay state
-        switchingOpenRelay(combineSwitch)
-        time.sleep(DEBOUNCE_TIME/1000)
-
-        for i in range(16):
-            switchingOpenRelay(channels[i])
-
-        g_closedChannel = 0
-        g_fwireEnabled = 0
         
         
 scanner=takovsky_scanner()
