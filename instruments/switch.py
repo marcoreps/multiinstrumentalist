@@ -60,7 +60,7 @@ class takovsky_scanner:
         else:
             reg = EXPANDER_REG_OUTPUT0
         address = subaddress|0x20
-        self.i2c.Write_byte_data(address,reg,pins)
+        self.i2c.write_byte_data(address,reg,pins)
 
     def switchingGpioSetMode(self, subaddress, port, inputPins):
         if port:
@@ -68,7 +68,7 @@ class takovsky_scanner:
         else:
             reg = EXPANDER_REG_CONFIG0
         address = subaddress|0x20
-        self.i2c.Write_byte_data(address,reg,pins)
+        self.i2c.write_byte_data(address,reg,pins)
         
     def switchingOpenRelay(self, relay):
         switchingGpioSetOutput(relay["chip"], relay["port"], 0xFF & relay["pin"])
