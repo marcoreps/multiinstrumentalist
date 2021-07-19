@@ -71,9 +71,9 @@ class takovsky_scanner:
         self.i2c.write_byte_data(address,reg,pins)
         
     def switchingOpenRelay(self, relay):
-        switchingGpioSetOutput(relay["chip"], relay["port"], 0xFF & relay["pin"])
+        self.switchingGpioSetOutput(relay["chip"], relay["port"], 0xFF & relay["pin"])
         time.sleep(SWITCHING_TIME/1000)
-        switchingGpioSetOutput(relay["chip"], relay["port"], 0)
+        self.switchingGpioSetOutput(relay["chip"], relay["port"], 0)
         
         
 scanner=takovsky_scanner()
