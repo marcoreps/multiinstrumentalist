@@ -35,8 +35,8 @@ combineSwitch = {"chip" : 0x4, "port" : 1, "pin" : 2, "comPin" : 1, "pcbIndex" :
 
 
 class takovsky_scanner:
+    i2c   =  smbus.SMBus(1)
     def __init__(self, title="Scanner"):
-        self.i2c   =  smbus.SMBus(1)
         for port in range(2):
             self.switchingGpioSetOutput(0x00, port, 0x00)
             self.switchingGpioSetOutput(0x04, port, 0x00)
