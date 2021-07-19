@@ -36,7 +36,7 @@ combineSwitch = {"chip" : 0x4, "port" : 1, "pin" : 2, "comPin" : 1, "pcbIndex" :
 
 class takovsky_scanner:
     def __init__(self, title="Scanner"):
-        i2c   =  smbus.SMBus(1)
+        self.i2c   =  smbus.SMBus(1)
         for port in range(2):
             self.switchingGpioSetOutput(0x00, port, 0x00)
             self.switchingGpioSetOutput(0x04, port, 0x00)
@@ -60,7 +60,7 @@ class takovsky_scanner:
         else:
             reg = EXPANDER_REG_OUTPUT0
         address = subaddress|0x20
-        i2c.Write_byte_data(address,reg,pins)
+        self.i2c.Write_byte_data(address,reg,pins)
 
     def switchingGpioSetMode(self, subaddress, port, inputPins):
         if port:
@@ -68,7 +68,7 @@ class takovsky_scanner:
         else:
             reg = EXPANDER_REG_CONFIG0
         address = subaddress|0x20
-        i2c.Write_byte_data(address,reg,pins)
+        self.i2c.Write_byte_data(address,reg,pins)
         
     def switchingOpenRelay(self, relay):
         switchingGpioSetOutput(relay["chip"], relay["port"], 0xFF & relay["pin"])
