@@ -114,7 +114,6 @@ class takovsky_scanner:
             self.switchingOpenCurrent()
 
         self.g_closedChannel = channels[channelId]
-    }
         
         
 scanner=takovsky_scanner()
