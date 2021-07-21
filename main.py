@@ -294,7 +294,7 @@ def scanner():
         now = datetime.datetime.now()
         if now.minute - internal_timer > 10:
             internal_timer = now.minute
-            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+            MySeriesHelper(instrument_name=HP3458_temperature.get_title(), value=float(HP3458_temperature.get_read_val()))
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             
         for i in instruments.values():
