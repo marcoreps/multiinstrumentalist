@@ -52,16 +52,10 @@ class takovsky_scanner:
         self.switchingOpenRelay(combineSwitch)
         time.sleep(DEBOUNCE_TIME/1000)
 
-        while True:
-            for i in range(16):
-                self.switchingOpenRelay(channels[i])
-                
-            time.sleep(0.5)
-            
-            for i in range(16):
-                self.switchingCloseRelay(channels[i])
-                
-            time.sleep(0.5)
+
+        for i in range(16):
+            self.switchingOpenRelay(channels[i])
+
         
         
     def switchingGpioSetOutput(self, subaddress, port, pins):
