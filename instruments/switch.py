@@ -100,7 +100,7 @@ class takovsky_scanner:
         if(self.g_closedChannel and self.g_closedChannel["index"] == channelId):
             return
 
-        if(!self.g_mbbEnabled):
+        if not self.g_mbbEnabled:
             self.switchingOpenCurrent()
             time.sleep(DEBOUNCE_TIME/1000)
 
