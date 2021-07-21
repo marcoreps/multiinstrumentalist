@@ -16,7 +16,7 @@ import threading
 
 from influxdb_interface import MySeriesHelper
 
-from instruments.temperature import *
+from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
 

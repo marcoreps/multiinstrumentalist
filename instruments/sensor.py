@@ -6,9 +6,34 @@ import serial
 from w1thermsensor import W1ThermSensor, Sensor
 from multiprocessing import Process, Queue
 import time
+import qwiic_ccs811
 
-
+class ccs811:
+    readable = True
+    mySensor = qwiic_ccs811.QwiicCcs811()
+    mySensor.begin()
     
+    def is_readable(self):
+        return self.readable
+
+    def __init__(self, address, title):
+        self.title = title
+        logging.debug(self.title+' init started')
+        	if mySensor.isConnected() == False:
+		print("The Qwiic CCS811 device isn't connected to the system. Please check your connection", \
+			file=sys.stderr)
+		return
+        self.mySensor.begin()
+        
+    def get_title(self):
+        return self.title
+        
+    def get_read_val(self):
+        mySensor.readAlgorithmResults()
+        
+        
+        
+        
 class TMP117:
     
     i2c_ch = 1
