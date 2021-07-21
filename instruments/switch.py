@@ -54,7 +54,7 @@ class takovsky_scanner:
             time.sleep(0.5)
             
             for i in range(16):
-                self.switchingOpenRelay(channels[i])
+                self.switchingCloseRelay(channels[i])
                 
             time.sleep(0.5)
 
