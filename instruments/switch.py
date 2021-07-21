@@ -47,8 +47,16 @@ class takovsky_scanner:
         self.switchingOpenRelay(combineSwitch)
         time.sleep(DEBOUNCE_TIME/1000)
 
-        for i in range(16):
-            self.switchingOpenRelay(channels[i])
+        while(True):
+            for i in range(16):
+                self.switchingOpenRelay(channels[i])
+                
+            time.sleep(0.5)
+            
+            for i in range(16):
+                self.switchingOpenRelay(channels[i])
+                
+            time.sleep(0.5)
 
         g_closedChannel = 0
         g_fwireEnabled = 0
