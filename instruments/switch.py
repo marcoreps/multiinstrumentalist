@@ -157,4 +157,3 @@ class takovsky_scanner:
         return self.g_fwireEnabled
         
         
-scanner=takovsky_scanner()

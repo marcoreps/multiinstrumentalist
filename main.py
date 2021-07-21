@@ -19,6 +19,7 @@ from influxdb_interface import MySeriesHelper
 from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
+from instruments.scanner import *
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
@@ -258,12 +259,38 @@ def temperature_sweep():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(0.5)
+        
 
+
+def scanner():
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"].blank_display()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_10DCV_9digit()
+    instruments["3458B"].blank_display()
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    
+    switch=takovsky_scanner()
+    
+    while True:
+        now = datetime.datetime.now()
+        if not(now.minute % 10) and not(now.second):
+            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            time.sleep(1)
+        
+        switch.switchingCloseRelay(channels[0])
+        time.sleep(1)
+        switch.switchingOpenRelay(channels[0])
 
           
 #HPM_INL()
 #HPM_test()
 #INL_34401()
-test_3458A()
+#test_3458A()
 #INL_3458A()
 #temperature_sweep()
+scanner()
