@@ -274,6 +274,7 @@ def scanner():
 # GrW   P   channels[15] 3458B
 
     switch_delay = 5
+    internal_timer = 0
 
     HP3458=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     HP3458.config_10DCV_9digit()
@@ -291,10 +292,10 @@ def scanner():
     
     while True:
         now = datetime.datetime.now()
-        if not(now.minute % 10) and not(now.second):
+        if now.minute - internal_timer > 10:
+            internal_timer = now.minute
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
-            time.sleep(1)
             
         for i in instruments.values():
             if i.is_readable():
