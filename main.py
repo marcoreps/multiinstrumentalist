@@ -19,7 +19,7 @@ from influxdb_interface import MySeriesHelper
 from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
-from instruments.scanner import *
+from instruments.switch import *
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
