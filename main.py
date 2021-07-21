@@ -273,15 +273,17 @@ def scanner():
 # Gr    N   channels[15] 3458B
 # GrW   P   channels[15] 3458B
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_10DCV_9digit()
-    instruments["3458A"].blank_display()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    switch_delay = 5
+
+    HP3458A=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    HP3458A.config_10DCV_9digit()
+    #HP3458A.blank_display()
+    HP3458A_temperature=HP3458A_temp(HP3458A=HP3458A, title="HP3458A Int Temp Sensor")
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    instruments["3458B"].config_10DCV_9digit()
-    instruments["3458B"].blank_display()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    K3458B=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    K3458B.config_10DCV_9digit()
+    #K3458B.blank_display()
+    HP3458B_temperature=HP3458A_temp(HP3458A=K3458B, title="HP3458B Int Temp Sensor")
     
     switch=takovsky_scanner()
     
@@ -293,26 +295,45 @@ def scanner():
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
+            
+        for i in instruments.values():
+            if i.is_readable():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         
         # Measure 732A with 3458A
         switch.switchingCloseRelay(channels[12])
-        
-        time.sleep(1)
+        time.sleep(switch_delay)
+        HP3458A.measure()
+        while not HP3458A.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="732A 3458A", value=float(HP3458A.get_read_val()))
         switch.switchingOpenRelay(channels[14])
         
         # Measure 732A with 3458B
         switch.switchingCloseRelay(channels[15])
-        time.sleep(1)
+        time.sleep(switch_delay)
+        K3458B.measure()
+        while not K3458B.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="732A 3458B", value=float(K3458B.get_read_val()))
         switch.switchingOpenRelay(channels[12])
         
         # Measure LTZmu with 3458B
         switch.switchingCloseRelay(channels[13])
-        time.sleep(1)
+        time.sleep(switch_delay)
+        K3458B.measure()
+        while not K3458B.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="LTZmu 3458B", value=float(K3458B.get_read_val()))
         switch.switchingOpenRelay(channels[15])
         
         # Measure LTZmu with 3458A
         switch.switchingCloseRelay(channels[14])
-        time.sleep(1)
+        time.sleep(switch_delay)
+        HP3458A.measure()
+        while not HP3458A.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458A.get_read_val()))
         switch.switchingOpenRelay(channels[13])
         
         
