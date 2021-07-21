@@ -84,7 +84,7 @@ class takovsky_scanner:
         self.switchingGpioSetOutput(relay["chip"], relay["port"], 0)
         
     def switchingCloseRelay(self, relay):
-        switchingGpioSetOutput(relay["chip"], relay["port"], relay["pin"])
+        self.switchingGpioSetOutput(relay["chip"], relay["port"], relay["pin"])
         time.sleep(SWITCHING_TIME/1000)
         self.switchingGpioSetOutput(relay["chip"], relay["port"], 0)
         
