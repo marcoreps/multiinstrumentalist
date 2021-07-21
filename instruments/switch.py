@@ -94,10 +94,10 @@ class takovsky_scanner:
         if(channelId >= 16):
             return
         
-        if(self.g_fwireEnabled && channelId >= 16 / 2):
+        if(self.g_fwireEnabled and channelId >= 16 / 2):
             channelId = channelId / 2
 
-        if(self.g_closedChannel && self.g_closedChannel["index"] == channelId):
+        if(self.g_closedChannel and self.g_closedChannel["index"] == channelId):
             return
 
         if(!self.g_mbbEnabled):
