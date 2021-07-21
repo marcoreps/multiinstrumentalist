@@ -31,7 +31,7 @@ channels = [
      {"chip" : 0x0, "port" : 1, "pin" : 1 << 7, "compin" : 1 << 3, "pcbIndex" : 4, "index" : 15}]
 
 
-combineSwitch = {"chip" : 0x4, "port" : 1, "pin" : 2, "comPin" : 1, "pcbIndex" : 0}
+combineSwitch = [{"chip" : 0x4, "port" : 1, "pin" : 2, "comPin" : 1, "pcbIndex" : 0}]
 
 
 class takovsky_scanner:
@@ -52,7 +52,7 @@ class takovsky_scanner:
         self.switchingOpenRelay(combineSwitch)
         time.sleep(DEBOUNCE_TIME/1000)
 
-        while(True):
+        while True:
             for i in range(16):
                 self.switchingOpenRelay(channels[i])
                 
@@ -91,29 +91,70 @@ class takovsky_scanner:
         self.switchingGpioSetOutput(relay["chip"], relay["port"], 0)
         
     def switchingSwitchChannel(self, channelId):
-        if(channelId >= 16):
+        if channelId >= 16:
             return
         
-        if(self.g_fwireEnabled and channelId >= 16 / 2):
+        if self.g_fwireEnabled and channelId >= 16 / 2:
             channelId = channelId / 2
 
-        if(self.g_closedChannel and self.g_closedChannel["index"] == channelId):
+        if self.g_closedChannel and self.g_closedChannel["index"] == channelId:
             return
 
         if not self.g_mbbEnabled:
             self.switchingOpenCurrent()
             time.sleep(DEBOUNCE_TIME/1000)
 
-        if(self.g_fwireEnabled):
+        if self.g_fwireEnabled:
             self.switchingCloseRelay(channels[channelId + 8])
 
         self.switchingCloseRelay(channels[channelId])
 
-        if(self.g_mbbEnabled):
+        if self.g_mbbEnabled:
             time.sleep(DEBOUNCE_TIME)
             self.switchingOpenCurrent()
 
         self.g_closedChannel = channels[channelId]
+        
+    def switchingOpenCurrent(self):
+        if not self.g_closedChannel:
+            return
+
+        self.switchingOpenRelay(self.g_closedChannel)
+
+        if g_fwireEnabled:
+            switchingOpenRelay(channels[g_closedChannel["index"] + 8])
+
+        g_closedChannel = 0
+
+
+    def switchingGetClosedChannel(self):
+        if g_closedChannel:
+            return g_closedChannel["index"]
+
+    def switchingSetMakeBeforeBreak(self, enabled):
+        self.g_mbbEnabled = enabled
+
+    def switchingGetMakeBeforeBreak(self):
+        return self.g_mbbEnabled
+
+    def switchingSet4Wire(self, enabled):
+
+        if enabled == self.g_fwireEnabled:
+            return
+
+        self.switchingOpenCurrent()
+        time.sleep(DEBOUNCE_TIME/1000)
+
+        self.g_fwireEnabled = enabled
+
+        if enabled:
+            self.switchingCloseRelay(combineSwitch[0])
+        else:
+            self.switchingOpenRelay(combineSwitch[0])
+
+
+    def switchingGet4Wire(self):
+        return self.g_fwireEnabled
         
         
 scanner=takovsky_scanner()
