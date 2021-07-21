@@ -263,6 +263,16 @@ def temperature_sweep():
 
 
 def scanner():
+
+# Br    N   channels[12] 732A
+# BrW   P   channels[12] 732A
+# Or    N   channels[13] LTZmu
+# OrW   P   channels[13] LTZmu
+# Bl    N   channels[14] 3458A
+# BlW   P   channels[14] 3458A
+# Gr    N   channels[15] 3458B
+# GrW   P   channels[15] 3458B
+
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].blank_display()
@@ -275,6 +285,8 @@ def scanner():
     
     switch=takovsky_scanner()
     
+    switch.switchingCloseRelay(channels[14])
+    
     while True:
         now = datetime.datetime.now()
         if not(now.minute % 10) and not(now.second):
@@ -282,11 +294,28 @@ def scanner():
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
         
-        switch.switchingCloseRelay(channels[0])
+        # Measure 732A with 3458A
+        switch.switchingCloseRelay(channels[12])
+        
         time.sleep(1)
-        switch.switchingOpenRelay(channels[0])
-
-          
+        switch.switchingOpenRelay(channels[14])
+        
+        # Measure 732A with 3458B
+        switch.switchingCloseRelay(channels[15])
+        time.sleep(1)
+        switch.switchingOpenRelay(channels[12])
+        
+        # Measure LTZmu with 3458B
+        switch.switchingCloseRelay(channels[13])
+        time.sleep(1)
+        switch.switchingOpenRelay(channels[15])
+        
+        # Measure LTZmu with 3458A
+        switch.switchingCloseRelay(channels[14])
+        time.sleep(1)
+        switch.switchingOpenRelay(channels[13])
+        
+        
 #HPM_INL()
 #HPM_test()
 #INL_34401()
