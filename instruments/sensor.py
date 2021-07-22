@@ -26,7 +26,7 @@ class CCS811:
         self.sensor = qwiic_ccs811.QwiicCcs811()
 
 
-        mySensor.begin()
+        self.sensor.begin()
         
     def measure(self):
         pass
