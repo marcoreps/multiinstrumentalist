@@ -293,7 +293,7 @@ def scanner():
     while True:
         now = datetime.datetime.now()
         delta = now - internal_timer
-        if delta.total_minutes() > 10:
+        if delta.total_seconds() > 600:
             internal_timer = now
             MySeriesHelper(instrument_name=HP3458_temperature.get_title(), value=float(HP3458_temperature.get_read_val()))
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
