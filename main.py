@@ -340,8 +340,8 @@ def scanner():
         switch.switchingOpenRelay(channels[13])
         
 if __name__ == '__main__':
-	try:
-		#HPM_INL()
+    try:
+        #HPM_INL()
         #HPM_test()
         #INL_34401()
         #test_3458A()
@@ -349,6 +349,6 @@ if __name__ == '__main__':
         #temperature_sweep()
         scanner()
         
-	except (KeyboardInterrupt, SystemExit) as exErr:
-		print("\nkthxbye")
-		sys.exit(0)
+    except (KeyboardInterrupt, SystemExit) as exErr:
+        print("\nkthxbye")
+        sys.exit(0)
