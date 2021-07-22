@@ -6,12 +6,47 @@ import serial
 from w1thermsensor import W1ThermSensor, Sensor
 from multiprocessing import Process, Queue
 import time
+import qwiic_ccs811
 
 
 
+
+
+class CCS811:
+
+    readable = True
+    
+    def is_readable(self):
+        return self.sensor.data_available():
+
+    def __init__(self, title, co2_tvoc="co2"):
+        self.title = title
+        self.co2_tvoc = co2_tvoc
+        logging.debug(self.title+' init started')
+        self.sensor = qwiic_ccs811.QwiicCcs811()
+        if self.sensor.isConnected() == False:
+            print("The Qwiic CCS811 device isn't connected to the system. Please check your connection", file=sys.stderr)
+            return
+
+        mySensor.begin()
+        
+    def measure(self):
+        pass
         
         
+    def get_title(self):
+        return self.title
         
+    def get_read_val(self):
+        self.sensor.read_algorithm_results()
+        if self.co2_tvoc == "co2":
+            return self.sensor.CO2
+        else:
+            return self.sensor.TVOC
+
+        
+    def is_measuring(self):
+        return False
         
 class TMP117:
     
@@ -48,9 +83,6 @@ class TMP117:
         temp_c = (val[0] << 8) | (val[1] )
         temp_c = temp_c * 0.0078125
         return temp_c
-        
-    def is_ready_to_read(self):
-        return True
 
         
     def is_measuring(self):

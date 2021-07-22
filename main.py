@@ -34,6 +34,7 @@ vxi_ip = "192.168.178.88"
 instruments = dict()
 instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x48, title="Long Temp Sensor")
+instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
 #instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
 #instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, lock=gpiblock, title="2002")
 #instruments["2002"].config_2ADC_9digit_filtered()
@@ -278,12 +279,12 @@ def scanner():
 
     HP3458=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     HP3458.config_10DCV_9digit()
-    #HP3458.blank_display()
+    HP3458.blank_display()
     HP3458_temperature=HP3458A_temp(HP3458A=HP3458, title="HP3458A Int Temp Sensor")
     
     K3458B=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     K3458B.config_10DCV_9digit()
-    #K3458B.blank_display()
+    K3458B.blank_display()
     HP3458B_temperature=HP3458A_temp(HP3458A=K3458B, title="HP3458B Int Temp Sensor")
     
     switch=takovsky_scanner()
@@ -338,11 +339,16 @@ def scanner():
         MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[13])
         
+if __name__ == '__main__':
+	try:
+		#HPM_INL()
+        #HPM_test()
+        #INL_34401()
+        #test_3458A()
+        #INL_3458A()
+        #temperature_sweep()
+        scanner()
         
-#HPM_INL()
-#HPM_test()
-#INL_34401()
-#test_3458A()
-#INL_3458A()
-#temperature_sweep()
-scanner()
+	except (KeyboardInterrupt, SystemExit) as exErr:
+		print("\nkthxbye")
+		sys.exit(0)
