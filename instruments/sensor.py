@@ -17,7 +17,7 @@ class CCS811:
     readable = True
     
     def is_readable(self):
-        return self.sensor.data_available():
+        return self.sensor.data_available()
 
     def __init__(self, title, co2_tvoc="co2"):
         self.title = title
