@@ -24,9 +24,7 @@ class CCS811:
         self.co2_tvoc = co2_tvoc
         logging.debug(self.title+' init started')
         self.sensor = qwiic_ccs811.QwiicCcs811()
-        if self.sensor.isConnected() == False:
-            print("The Qwiic CCS811 device isn't connected to the system. Please check your connection", file=sys.stderr)
-            return
+
 
         mySensor.begin()
         
