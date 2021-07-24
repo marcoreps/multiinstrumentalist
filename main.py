@@ -267,14 +267,14 @@ def temperature_sweep():
 
 def scanner():
 
-# Br    N   channels[12] 732A
-# BrW   P   channels[12] 732A
-# Or    N   channels[13] LTZmu
-# OrW   P   channels[13] LTZmu
-# Bl    N   channels[14] 3458A
-# BlW   P   channels[14] 3458A
-# Gr    N   channels[15] 3458B
-# GrW   P   channels[15] 3458B
+# Br    N   channels[12] 732A -
+# BrW   P   channels[12] 732A +
+# Or    N   channels[13] LTZmu -
+# OrW   P   channels[13] LTZmu +
+# Bl    N   channels[14] 3458A -
+# BlW   P   channels[14] 3458A +
+# Gr    N   channels[15] 3458B -
+# GrW   P   channels[15] 3458B +
 
     switch_delay = 5
     internal_timer = datetime.datetime.now()
@@ -346,10 +346,10 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        #scanner()
+        scanner()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
