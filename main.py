@@ -151,8 +151,8 @@ def test_3458A():
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    #instruments["3458B"].config_10DCV_9digit()
-    instruments["3458B"].config_10OHMF_9digit()
+    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_continuous_sampling()
@@ -347,10 +347,10 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        scanner()
+        #scanner()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
