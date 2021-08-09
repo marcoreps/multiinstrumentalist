@@ -10,12 +10,7 @@ import datetime
 import threading
 import sys
 
-
-
-
-
-
-from influxdb_interface import MySeriesHelper
+from influxdb_interface import Writer
 
 from instruments.sensor import *
 from instruments.multimeter import *
@@ -299,12 +294,12 @@ def scanner():
         delta = now - internal_timer
         if delta.total_seconds() > 600:
             internal_timer = now
-            MySeriesHelper(instrument_name=HP3458_temperature.get_title(), value=float(HP3458_temperature.get_read_val()))
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            Writer.write(tag=HP3458.get_title(), field="internal_temperature", val=float(HP3458_temperature.get_read_val()))
+            Writer.write(tag=K3458B.get_title(), field="internal_temperature", val=float(HP3458B_temperature.get_read_val()))
             
         for i in instruments.values():
             if i.is_readable():
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                Writer.write(tag=i.get_title(), field="reading", val=float(i.get_read_val()))
         
         # Measure 732A with 3458A
         switch.switchingCloseRelay(channels[12])
@@ -312,7 +307,7 @@ def scanner():
         HP3458.measure()
         while not HP3458.is_readable():
             time.sleep(0.1)
-        MySeriesHelper(instrument_name="732A 3458A", value=float(HP3458.get_read_val()))
+        Writer.write(tag=HP3458.get_title(), field="reading 732A", val=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[14])
         
         # Measure 732A with 3458B
@@ -321,7 +316,7 @@ def scanner():
         K3458B.measure()
         while not K3458B.is_readable():
             time.sleep(0.1)
-        MySeriesHelper(instrument_name="732A 3458B", value=float(K3458B.get_read_val()))
+        Writer.write(tag=K3458B.get_title(), field="reading 732A", val=float(K3458B.get_read_val()))
         switch.switchingOpenRelay(channels[12])
         
         # Measure LTZmu with 3458B
@@ -330,7 +325,7 @@ def scanner():
         K3458B.measure()
         while not K3458B.is_readable():
             time.sleep(0.1)
-        MySeriesHelper(instrument_name="LTZmu 3458B", value=float(K3458B.get_read_val()))
+        Writer.write(tag=K3458B.get_title(), field="reading LTZmu", val=float(K3458B.get_read_val()))
         switch.switchingOpenRelay(channels[15])
         
         # Measure LTZmu with 3458A
@@ -339,7 +334,7 @@ def scanner():
         HP3458.measure()
         while not HP3458.is_readable():
             time.sleep(0.1)
-        MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458.get_read_val()))
+        Writer.write(tag=HP3458.get_title(), field="reading LTZmu", val=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[13])
         
 if __name__ == '__main__':
