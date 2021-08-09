@@ -27,6 +27,8 @@ onewire_lock = Lock()
 
 vxi_ip = "192.168.178.88"
 
+Writer = Writer()
+
 instruments = dict()
 instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x48, title="Long Temp Sensor")
