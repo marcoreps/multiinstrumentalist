@@ -16,7 +16,7 @@ class Writer():
         self.write_api = client.write_api(write_options=SYNCHRONOUS)
 
 
-    def write(self, tag, field, val, time=datetime.utcnow()):
-        point = Point("mem").tag("device", tag).field(field, val).time(time, WritePrecision.NS)
+    def write(self, tag, field, val):
+        point = Point("mem").tag("device", tag).field(field, val).time(datetime.utcnow(), WritePrecision.NS)
 
         self.write_api.write(self.bucket, self.org, point)
