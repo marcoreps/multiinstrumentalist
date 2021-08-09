@@ -3,7 +3,7 @@
 import smbus
 import logging
 import serial
-from w1thermsensor import W1ThermSensor, Sensor
+#from w1thermsensor import W1ThermSensor, Sensor
 from multiprocessing import Process, Queue
 import time
 import qwiic_ccs811
