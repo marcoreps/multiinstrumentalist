@@ -9,7 +9,7 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 class Writer():
 
     def __init__(self):
-        self.token = " "
+        token = " "
         self.org = "reps"
         self.bucket = "ppm"
         self.client = InfluxDBClient(url="http://localhost:8086", token=token)
