@@ -12,7 +12,7 @@ class Writer():
         token = " "
         self.org = "reps"
         self.bucket = "ppm"
-        self.client = InfluxDBClient(url="http://localhost:8086", token=token)
+        client = InfluxDBClient(url="http://localhost:8086", token=token)
         self.write_api = client.write_api(write_options=SYNCHRONOUS)
 
 
