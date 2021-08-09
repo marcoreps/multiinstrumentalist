@@ -19,4 +19,4 @@ class Writer():
     def write(self, tag, field, val, time=datetime.utcnow()):
         point = Point("mem").tag("device", tag).field(field, val).time(time, WritePrecision.NS)
 
-        self.write_api.write(bucket, org, point)
+        self.write_api.write(self.bucket, self.org, point)
