@@ -123,7 +123,7 @@ class Arroyo:
         self.title = title
         try:
             self.serial = serial.Serial(self.dev, self.baud)
-            self.serial.write('CLS\r'.encode())
+            #self.serial.write('CLS\r'.encode())
             self.serial.write('*IDN?\r'.encode())
             logging.debug(self.serial.readline().rstrip())
             self.serial.close()
