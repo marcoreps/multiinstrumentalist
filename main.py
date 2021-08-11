@@ -255,7 +255,7 @@ def temperature_sweep():
     tmin = 30
     tmax = 90
     tstep = 1
-    wait_settle = 6
+    wait_settle = 60
     samples_per_step = 1
     
     for t in numpy.arange(tmin, tmax+0.01, tstep):
