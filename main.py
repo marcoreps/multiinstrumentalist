@@ -252,7 +252,7 @@ def temperature_sweep():
     instruments["3458B"].config_continuous_sampling()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
-    tmin = 30
+    tmin = 50
     tmax = 90
     tstep = 1
     wait_settle = 60
