@@ -253,9 +253,9 @@ def temperature_sweep():
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     tmin = 50
-    tmax = 90
+    tmax = 100
     tstep = 1
-    wait_settle = 60
+    wait_settle = 40
     samples_per_step = 1
     
     for t in numpy.arange(tmin, tmax+0.01, tstep):
@@ -272,7 +272,7 @@ def temperature_sweep():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(0.5)
-        
+    MySeriesHelper.commit()
 
 
 def scanner():
