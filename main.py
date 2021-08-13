@@ -272,7 +272,7 @@ def temperature_sweep():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(0.5)
-    MySeriesHelper.commit()
+        MySeriesHelper.commit()
 
 
 def scanner():
