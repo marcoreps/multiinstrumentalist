@@ -252,8 +252,8 @@ def temperature_sweep():
     instruments["3458B"].config_continuous_sampling()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
-    tmin = 40
-    tmax = 100
+    tmin = 30
+    tmax = 80
     tstep = 1
     wait_settle = 30
     samples_per_step = 1
@@ -356,9 +356,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
