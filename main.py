@@ -277,14 +277,23 @@ def temperature_sweep():
 
 def scanner():
 
-# Br    N   channels[12] 732A -
-# BrW   P   channels[12] 732A +
-# Or    N   channels[13] LTZmu -
-# OrW   P   channels[13] LTZmu +
-# Bl    N   channels[14] 3458A -
-# BlW   P   channels[14] 3458A +
-# Gr    N   channels[15] 3458B -
-# GrW   P   channels[15] 3458B +
+# III   Br    N   channels[0] 732A -
+# III   BrW   P   channels[0] 732A +
+# III   Or    N   channels[1] LTZmu -
+# III   OrW   P   channels[1] LTZmu +
+# III   Bl    N   channels[2] 3458A -
+# III   BlW   P   channels[2] 3458A +
+# III   Gr    N   channels[3] 3458B -
+# III   GrW   P   channels[3] 3458B +
+
+# IV    Br    N   channels[4] Wavetek -
+# IV    BrW   P   channels[4] Wavetek +
+# IV    Or    N   channels[5] 
+# IV    OrW   P   channels[5] 
+# IV    Bl    N   channels[6] 
+# IV    BlW   P   channels[6] 
+# IV    Gr    N   channels[7] 
+# IV    GrW   P   channels[7] 
 
     switch_delay = 5
     internal_timer = datetime.datetime.now()
@@ -301,7 +310,7 @@ def scanner():
     
     switch=takovsky_scanner()
     
-    switch.switchingCloseRelay(channels[14])
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
     
     while True:
         now = datetime.datetime.now()
@@ -316,50 +325,70 @@ def scanner():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         
         # Measure 732A with 3458A
-        switch.switchingCloseRelay(channels[12])
+        switch.switchingCloseRelay(channels[0]) # Close 732A
         time.sleep(switch_delay)
         HP3458.measure()
         while not HP3458.is_readable():
             time.sleep(0.1)
         MySeriesHelper(instrument_name="732A 3458A", value=float(HP3458.get_read_val()))
-        switch.switchingOpenRelay(channels[14])
+        switch.switchingOpenRelay(channels[2]) # Open 3458A
         
         # Measure 732A with 3458B
-        switch.switchingCloseRelay(channels[15])
+        switch.switchingCloseRelay(channels[3]) # Close 3458B
         time.sleep(switch_delay)
         K3458B.measure()
         while not K3458B.is_readable():
             time.sleep(0.1)
         MySeriesHelper(instrument_name="732A 3458B", value=float(K3458B.get_read_val()))
-        switch.switchingOpenRelay(channels[12])
+        switch.switchingOpenRelay(channels[0]) # Open 732A
         
         # Measure LTZmu with 3458B
-        switch.switchingCloseRelay(channels[13])
+        switch.switchingCloseRelay(channels[1]) # Close LTZmu
         time.sleep(switch_delay)
         K3458B.measure()
         while not K3458B.is_readable():
             time.sleep(0.1)
         MySeriesHelper(instrument_name="LTZmu 3458B", value=float(K3458B.get_read_val()))
-        switch.switchingOpenRelay(channels[15])
+        switch.switchingOpenRelay(channels[3]) # Open 3458B
         
         # Measure LTZmu with 3458A
-        switch.switchingCloseRelay(channels[14])
+        switch.switchingCloseRelay(channels[2]) # Close 3458A
         time.sleep(switch_delay)
         HP3458.measure()
         while not HP3458.is_readable():
             time.sleep(0.1)
         MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458.get_read_val()))
-        switch.switchingOpenRelay(channels[13])
+        switch.switchingOpenRelay(channels[1]) # Open LTZmu
+        
+        # Measure Wavetek with 3458A
+        switch.switchingCloseRelay(channels[4]) # Close Wavetek
+        time.sleep(switch_delay)
+        HP3458.measure()
+        while not HP3458.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="Wavetek 3458A", value=float(HP3458.get_read_val()))
+        switch.switchingOpenRelay(channels[2]) # Open 3458A
+        
+        # Measure Wavetek with 3458B
+        switch.switchingCloseRelay(channels[3]) # Close 3458B
+        time.sleep(switch_delay)
+        HP3458.measure()
+        while not HP3458.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="LTZmu 3458B", value=float(HP3458.get_read_val()))
+        switch.switchingOpenRelay(channels[3]) # Open 3458B
+        switch.switchingOpenRelay(channels[4]) # Open Wavetek
+        switch.switchingCloseRelay(channels[2]) # Close 3458A
         
 if __name__ == '__main__':
     try:
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        #scanner()
+        scanner()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
