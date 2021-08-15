@@ -286,10 +286,10 @@ def scanner():
 # III   Gr    N   channels[3] 3458B -
 # III   GrW   P   channels[3] 3458B +
 
-# IV    Br    N   channels[4] Wavetek -
-# IV    BrW   P   channels[4] Wavetek +
-# IV    Or    N   channels[5] 
-# IV    OrW   P   channels[5] 
+# IV    Br    N   channels[4] Wavetek 10 -
+# IV    BrW   P   channels[4] Wavetek 10 +
+# IV    Or    N   channels[5] Wavetek 7 -
+# IV    OrW   P   channels[5] Wavetek 7 +
 # IV    Bl    N   channels[6] 
 # IV    BlW   P   channels[6] 
 # IV    Gr    N   channels[7] 
@@ -360,25 +360,43 @@ def scanner():
         MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[1]) # Open LTZmu
         
-        # Measure Wavetek with 3458A
-        switch.switchingCloseRelay(channels[4]) # Close Wavetek
+        # Measure Wavetek 10 with 3458A
+        switch.switchingCloseRelay(channels[4]) # Close Wavetek 10
         time.sleep(switch_delay)
         HP3458.measure()
         while not HP3458.is_readable():
             time.sleep(0.1)
-        MySeriesHelper(instrument_name="Wavetek 3458A", value=float(HP3458.get_read_val()))
+        MySeriesHelper(instrument_name="Wavetek 10 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[2]) # Open 3458A
         
-        # Measure Wavetek with 3458B
+        # Measure Wavetek 10 with 3458B
         switch.switchingCloseRelay(channels[3]) # Close 3458B
         time.sleep(switch_delay)
         K3458B.measure()
         while not K3458B.is_readable():
             time.sleep(0.1)
-        MySeriesHelper(instrument_name="Wavetek 3458B", value=float(K3458B.get_read_val()))
+        MySeriesHelper(instrument_name="Wavetek 10 3458B", value=float(K3458B.get_read_val()))
+        switch.switchingOpenRelay(channels[4]) # Open Wavetek 10
+
+        
+        # Measure Wavetek 7 with 3458B
+        switch.switchingCloseRelay(channels[5]) # Close Wavetek 7
+        time.sleep(switch_delay)
+        K3458B.measure()
+        while not K3458B.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="Wavetek 7 3458B", value=float(K3458B.get_read_val()))
         switch.switchingOpenRelay(channels[3]) # Open 3458B
-        switch.switchingOpenRelay(channels[4]) # Open Wavetek
+        
+        # Measure Wavetek 7 with 3458A
         switch.switchingCloseRelay(channels[2]) # Close 3458A
+        time.sleep(switch_delay)
+        HP3458.measure()
+        while not HP3458.is_readable():
+            time.sleep(0.1)
+        MySeriesHelper(instrument_name="Wavetek 7 3458A", value=float(HP3458.get_read_val()))
+        switch.switchingOpenRelay(channels[5]) # Open Wavetek 7
+
         
 if __name__ == '__main__':
     try:
