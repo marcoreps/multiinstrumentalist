@@ -142,7 +142,7 @@ def HPM_INL():
 
 def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"].config_10DCV_fast()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].blank_display()
     instruments["3458A"].config_continuous_sampling()
@@ -150,13 +150,13 @@ def test_3458A():
     
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    #instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].blank_display()
-    instruments["3458B"].config_continuous_sampling()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    #instruments["3458B"].config_continuous_sampling()
+    #HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     #instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=100000, title='HPM7177 Unit 1')
     #instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=100000, title='HPM7177 Unit 2')
@@ -403,10 +403,10 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        scanner()
+        #scanner()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
