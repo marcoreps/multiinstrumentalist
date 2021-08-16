@@ -405,8 +405,8 @@ if __name__ == '__main__':
         #INL_34401()
         #test_3458A()
         #INL_3458A()
-        temperature_sweep()
-        #scanner()
+        #temperature_sweep()
+        scanner()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
