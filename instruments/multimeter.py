@@ -608,7 +608,7 @@ class HP3458A(multimeter):
             self.instr.write("DCV 10")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
-            self.instr.write("NPLC 100")
+            self.instr.write("NPLC 10")
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
