@@ -360,7 +360,7 @@ def scanner():
             time.sleep(1)
         MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[1]) # Open LTZmu
-        
+"""        
         # Measure Wavetek 10 with 3458A
         switch.switchingCloseRelay(channels[4]) # Close Wavetek 10
         time.sleep(switch_delay)
@@ -397,7 +397,7 @@ def scanner():
             time.sleep(1)
         MySeriesHelper(instrument_name="Wavetek 7 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[5]) # Open Wavetek 7
-
+"""
         
 if __name__ == '__main__':
     try:
