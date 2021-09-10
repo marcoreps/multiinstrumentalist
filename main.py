@@ -291,8 +291,8 @@ def scanner():
 # IV    BrW   P   channels[4] Wavetek 10 +
 # IV    Or    N   channels[5] Wavetek 7 -
 # IV    OrW   P   channels[5] Wavetek 7 +
-# IV    Bl    N   channels[6] 
-# IV    BlW   P   channels[6] 
+# IV    Bl    N   channels[6] Fluke 5700A -
+# IV    BlW   P   channels[6] Fluke 5700A +
 # IV    Gr    N   channels[7] 
 # IV    GrW   P   channels[7] 
 
@@ -311,8 +311,6 @@ def scanner():
     
     switch=takovsky_scanner()
     
-    switch.switchingCloseRelay(channels[2]) # Close 3458A
-    
     while True:
         now = datetime.datetime.now()
         delta = now - internal_timer
@@ -326,6 +324,7 @@ def scanner():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         
         # Measure 732A with 3458A
+        switch.switchingCloseRelay(channels[2]) # Close 3458A
         switch.switchingCloseRelay(channels[0]) # Close 732A
         time.sleep(switch_delay)
         HP3458.measure()
@@ -360,6 +359,27 @@ def scanner():
             time.sleep(1)
         MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[1]) # Open LTZmu
+        
+        # Measure 5700A with 3458A
+        switch.switchingCloseRelay(channels[6]) # Close 5700A
+        time.sleep(switch_delay)
+        HP3458.measure()
+        while not HP3458.is_readable():
+            time.sleep(1)
+        MySeriesHelper(instrument_name="5700A 3458A", value=float(HP3458.get_read_val()))
+        switch.switchingOpenRelay(channels[2]) # Open 3458A
+        
+        # Measure 5700A with 3458B
+        switch.switchingCloseRelay(channels[3]) # Close 3458B
+        time.sleep(switch_delay)
+        K3458B.measure()
+        while not K3458B.is_readable():
+            time.sleep(1)
+        MySeriesHelper(instrument_name="5700A 3458B", value=float(K3458B.get_read_val()))
+        switch.switchingOpenRelay(channels[3]) # Open 3458B
+        switch.switchingOpenRelay(channels[6]) # Open 3458B
+        
+        
 """        
         # Measure Wavetek 10 with 3458A
         switch.switchingCloseRelay(channels[4]) # Close Wavetek 10
