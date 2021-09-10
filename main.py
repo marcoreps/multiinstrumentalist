@@ -153,8 +153,8 @@ def test_3458A():
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     #instruments["3458B"].config_10DCV_9digit()
-    #instruments["3458B"].config_10OHMF_9digit()
-    instruments["3458B"].config_10kOHMF_9digit()
+    instruments["3458B"].config_10OHMF_9digit()
+    #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_continuous_sampling()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
