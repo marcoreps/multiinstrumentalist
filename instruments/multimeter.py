@@ -571,6 +571,8 @@ class HP3458A(multimeter):
             self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
             self.instr.clear()
             self.instr.write("END ALWAYS")
+            self.instr.write("OFORMAT ASCII")
+            self.instr.write("BEEP")
             logging.debug("ID? -> "+self.instr.ask("ID?"))
             self.instr.close()
         except:
@@ -584,8 +586,6 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("PRESET NORM")
-            self.instr.write("OFORMAT ASCII")
-            self.instr.write("BEEP")
             self.instr.write("DCV 10")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
@@ -604,8 +604,6 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("PRESET NORM")
-            self.instr.write("OFORMAT ASCII")
-            self.instr.write("BEEP")
             self.instr.write("DCV 10")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
@@ -636,8 +634,6 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("PRESET NORM")
-            self.instr.write("OFORMAT ASCII")
-            self.instr.write("BEEP")
             self.instr.write("OHMF 1E4")
             self.instr.write("OCOMP ON")
             self.instr.write("TARM HOLD")
@@ -657,8 +653,6 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("PRESET NORM")
-            self.instr.write("OFORMAT ASCII")
-            self.instr.write("BEEP")
             self.instr.write("OHMF 10")
             self.instr.write("OCOMP ON")
             self.instr.write("TARM HOLD")
