@@ -44,7 +44,7 @@ HP3458B = [row[1] for row in arrb]
 PPMdeviationb = [(F5700A[x]-HP3458B[x])/(10/1000000) for x in range(len(HP3458B))]
 
 figb, axb = plt.subplots()
-axb.plot(F5700A, PPMdeviationa, label='absolute')
+axb.plot(F5700A, PPMdeviationb, label='absolute')
 axb.set_xlabel('Calibrator Vout')
 axb.set_ylabel('PPM of 10V range')
 axb.set_title("3458B INL test")
@@ -57,7 +57,7 @@ termsb = np.polyfit(F5700B, PPMdeviationb, 1)
 # Create a function with the terms we just generated
 polyfunctionb = np.poly1d(termsb)
 
-bestfitb = [PPMdeviationb[x]-polyfunction(F5700B[x]) for x in range(len(HP3458B))]
+bestfitb = [PPMdeviationb[x]-polyfunctionb(F5700B[x]) for x in range(len(HP3458B))]
 
 # Plot a little test
 axb.plot(F5700B, bestfitb, label='best fit')
