@@ -613,6 +613,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
+            self.instr.close()
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
@@ -624,6 +625,7 @@ class HP3458A(multimeter):
             self.connect()
             self.instr.write("DISP MSG,\"                 \"")
             self.instr.write("DISP ON")
+            self.instr.close()
         except:
             logging.error("Error in %s blank_display" % self.title, exc_info=True)
             pass
@@ -644,6 +646,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
+            self.instr.close()
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
@@ -664,18 +667,31 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
+            self.instr.close()
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
             
-    def config_continuous_sampling(self):
+    def config_trigger_auto(self):
         try:
             self.connect()
             self.instr.write("TARM AUTO")
+            self.instr.close()
         except:
-            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
+            logging.error("Error in %s config_trigger_auto" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def config_trigger_hold(self):
+        try:
+            self.connect()
+            self.instr.write("TARM HOLD")
+            self.instr.close()
+        except:
+            logging.error("Error in %s config_trigger_hold" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()

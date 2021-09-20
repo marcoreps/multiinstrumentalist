@@ -188,19 +188,21 @@ def INL_3458A():
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    instruments["3458A"].config_10DCV_9digit()
-    instruments["3458B"].config_10DCV_9digit()
+    instruments["3458A"].config_10DCV_fast()
+    instruments["3458B"].config_10DCV_fast()
+    instruments["3458A"].config_trigger_auto()
+    instruments["3458B"].config_trigger_auto()
     
     umin = -10
     umax = 10
     ustep = 0.5
-    wait_settle = 15
+    wait_settle = 3
     samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
-    time.sleep(180)
+    time.sleep(60)
     
     with open('csv/'+timestr+'3458A_3458B__parallel_INL.csv', mode='w') as csv_file:
         fieldnames = ['vref', '3458A_volt', '3458B_volt']
@@ -210,7 +212,15 @@ def INL_3458A():
         for u in numpy.arange(umin, umax+0.01, ustep):
             instruments["F5700A"].out(str(u)+"V")
             logging.debug('main setting source to '+str(u)+'V')
+            instruments["3458A"].config_10DCV_fast()
+            instruments["3458B"].config_10DCV_fast()
+            instruments["3458A"].config_trigger_auto()
+            instruments["3458B"].config_trigger_auto()
             time.sleep(wait_settle)
+            instruments["3458A"].config_10DCV_9digit()
+            instruments["3458B"].config_10DCV_9digit()
+
+            
             for i in instruments.values():
                 i.measure()
 
