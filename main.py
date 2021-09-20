@@ -152,12 +152,12 @@ def test_3458A():
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="732A 3458B")
-    #instruments["3458B"].config_10DCV_9digit()
-    instruments["3458B"].config_10OHMF_9digit()
+    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].blank_display()
-    instruments["3458B"].config_continuous_sampling()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    #instruments["3458B"].config_continuous_sampling()
+    #HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     #instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=100000, title='HPM7177 Unit 1')
     #instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=100000, title='HPM7177 Unit 2')
@@ -174,7 +174,7 @@ def test_3458A():
         now = datetime.datetime.now()
         if not(now.minute % 10) and not(now.second):
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            #MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
         
         for i in instruments.values():
@@ -187,10 +187,10 @@ def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_10DCV_9digit()
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458A"].config_10DCV_9digit()
     instruments["3458B"].config_10DCV_9digit()
-    #time.sleep(30)
+    time.sleep(10)
     
     umin = -10
     umax = 10
@@ -203,8 +203,8 @@ def INL_3458A():
     instruments["F5700A"].rangelck()
     time.sleep(180)
     
-    with open('csv/'+timestr+'3458B_INL.csv', mode='w') as csv_file:
-        fieldnames = ['vref', '3458B_volt']
+    with open('csv/'+timestr+'3458A_3458B__parallel_INL.csv', mode='w') as csv_file:
+        fieldnames = ['vref', '3458A_volt', '3458B_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -224,14 +224,17 @@ def INL_3458A():
                 MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
                 calibrator_out = u
                 
-                HP3458A_out = float(instruments["3458B"].get_read_val())
+                HP3458A_out = float(instruments["3458A"].get_read_val())
+                HP3458B_out = float(instruments["3458B"].get_read_val())
 
-                MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=HP3458A_out)
+                MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=HP3458A_out)
+                MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=HP3458B_out)
                 MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
-                MySeriesHelper(instrument_name="3458B ppm", value=(HP3458A_out-calibrator_out)/0.00001)
+                MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
+                MySeriesHelper(instrument_name="3458B ppm", value=(HP3458B_out-calibrator_out)/0.00001)
 
-                writer.writerow({'vref': calibrator_out, '3458B_volt': HP3458A_out})
+                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out})
         
     MySeriesHelper.commit()
     
