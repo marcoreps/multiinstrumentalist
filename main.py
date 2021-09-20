@@ -145,7 +145,7 @@ def test_3458A():
     #instruments["3458A"].config_10DCV_fast()
     instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
-    instruments["3458A"].blank_display()
+    #instruments["3458A"].blank_display()
     instruments["3458A"].config_continuous_sampling()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
@@ -155,7 +155,7 @@ def test_3458A():
     #instruments["3458B"].config_10DCV_9digit()
     instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
-    instruments["3458B"].blank_display()
+    #instruments["3458B"].blank_display()
     instruments["3458B"].config_continuous_sampling()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
@@ -184,11 +184,10 @@ def test_3458A():
         
         
 def INL_3458A():
+    timestr = time.strftime("%Y%m%d-%H%M%S_")
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
-    instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
-    instruments["S7081"].config_10DCV_9digit()
     
     umin = -10
     umax = 10
@@ -201,8 +200,8 @@ def INL_3458A():
     instruments["F5700A"].rangelck()
     time.sleep(180)
     
-    with open('csv/3458A_INL_run3.csv', mode='w') as csv_file:
-        fieldnames = ['vref', '3458A_volt', '7081_volt']
+    with open('csv/'+timestr+'3458A_INL.csv', mode='w') as csv_file:
+        fieldnames = ['vref', '3458A_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -223,16 +222,13 @@ def INL_3458A():
                 calibrator_out = u
                 
                 HP3458A_out = float(instruments["3458A"].get_read_val())
-                S7081_out = float(instruments["S7081"].get_read_val())
 
                 MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=HP3458A_out)
-                MySeriesHelper(instrument_name=instruments["S7081"].get_title(), value=S7081_out)
                 MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
                 MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
-                MySeriesHelper(instrument_name="7081 ppm", value=(S7081_out-calibrator_out)/0.00001)
 
-                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '7081_volt': S7081_out})
+                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out})
         
     MySeriesHelper.commit()
     
@@ -424,8 +420,8 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
-        #INL_3458A()
+        #test_3458A()
+        INL_3458A()
         #temperature_sweep()
         #scanner()
         
