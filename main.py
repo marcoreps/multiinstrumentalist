@@ -219,7 +219,8 @@ def INL_3458A():
             time.sleep(wait_settle)
             instruments["3458A"].config_10DCV_9digit()
             instruments["3458B"].config_10DCV_9digit()
-
+            instruments["3458A"].config_trigger_hold()
+            instruments["3458B"].config_trigger_hold()
             
             for i in instruments.values():
                 i.measure()
