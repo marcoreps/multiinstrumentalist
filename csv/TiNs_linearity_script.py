@@ -13,9 +13,9 @@ fluke.write("*IDN?")
 print ("Source detected = %s" % fluke.read())
 
 dmm = vxi11.Instrument("192.168.178.88", "gpib0,22")# Keysight 3458A, GPIB Address = 22
-dmm = timeout = 30*1000
+dmm.timeout = 30*1000
 dmm2 = vxi11.Instrument("192.168.178.88", "gpib0,23")# Keysight 3458A, GPIB Address = 22
-dmm2 = timeout = 30*1000
+dmm2.timeout = 30*1000
 dmm.clear()
 dmm.write("ID?")
 print ("DUT1 detected = %s" % dmm.read())
