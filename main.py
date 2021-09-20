@@ -190,7 +190,6 @@ def INL_3458A():
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458B"].config_10DCV_9digit()
-    time.sleep(10)
     
     umin = -10
     umax = 10
