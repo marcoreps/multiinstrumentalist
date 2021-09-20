@@ -196,7 +196,7 @@ def INL_3458A():
     umin = -10
     umax = 10
     ustep = 0.5
-    wait_settle = 3
+    wait_settle = 16
     samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
