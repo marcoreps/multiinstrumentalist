@@ -212,13 +212,13 @@ def INL_3458A():
         for u in numpy.arange(umin, umax+0.01, ustep):
             instruments["F5700A"].out(str(u)+"V")
             logging.debug('main setting source to '+str(u)+'V')
-            instruments["3458A"].config_10DCV_fast()
-            instruments["3458B"].config_10DCV_fast()
+            instruments["3458A"].config_NPLC10()
+            instruments["3458B"].config_NPLC10()
             instruments["3458A"].config_trigger_auto()
             instruments["3458B"].config_trigger_auto()
             time.sleep(wait_settle)
-            instruments["3458A"].config_10DCV_9digit()
-            instruments["3458B"].config_10DCV_9digit()
+            instruments["3458A"].config_NPLC20()
+            instruments["3458B"].config_NPLC20()
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
             
