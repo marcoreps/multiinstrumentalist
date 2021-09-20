@@ -186,7 +186,9 @@ def test_3458A():
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458A"].config_10DCV_9digit()
     instruments["3458B"].config_10DCV_9digit()
     
     umin = -10
@@ -200,8 +202,8 @@ def INL_3458A():
     instruments["F5700A"].rangelck()
     time.sleep(180)
     
-    with open('csv/'+timestr+'3458B_INL.csv', mode='w') as csv_file:
-        fieldnames = ['vref', '3458B_volt']
+    with open('csv/'+timestr+'3458A_3458B__parallel_INL.csv', mode='w') as csv_file:
+        fieldnames = ['vref', '3458A_volt', '3458B_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -221,14 +223,17 @@ def INL_3458A():
                 MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
                 calibrator_out = u
                 
-                HP3458A_out = float(instruments["3458B"].get_read_val())
+                HP3458A_out = float(instruments["3458A"].get_read_val())
+                HP3458B_out = float(instruments["3458B"].get_read_val())
 
-                MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=HP3458A_out)
+                MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=HP3458A_out)
+                MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=HP3458B_out)
                 MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
-                MySeriesHelper(instrument_name="3458B ppm", value=(HP3458A_out-calibrator_out)/0.00001)
+                MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
+                MySeriesHelper(instrument_name="3458B ppm", value=(HP3458B_out-calibrator_out)/0.00001)
 
-                writer.writerow({'vref': calibrator_out, '3458B_volt': HP3458A_out})
+                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out})
         
     MySeriesHelper.commit()
     
