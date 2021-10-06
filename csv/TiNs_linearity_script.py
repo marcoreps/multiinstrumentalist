@@ -75,7 +75,7 @@ dmm2.close()
 print ("DUTs is nulled to MFC zero")
 
 with open(log_name, 'a') as dile:
-    dile.write ("date;source;duta;dutb;dutc;dutd;sdev;sdev2;sdev3;sdev4;temp;temp2\r\n")
+    dile.write ("date;source;duta;dutb;sdev;sdev2;temp;temp2\r\n")
 dile.close()
 
 vcnt = 0 # temporary counter
@@ -131,9 +131,7 @@ for i in range(-109,110,1):
     if abs(float(i) / 10) >= 0.0005:
         dev1 = ((median / set_value - 1) * 1e6)
         dev2 = ((median2 /set_value - 1) * 1e6)
-        dev3 = ((median3 /set_value - 1) * 1e6)
-        dev4 = ((median4 /set_value - 1) * 1e6)
-        print("\033[32;1mSRC %.4f \033[33;1mA %.9f, sdev5 = %.3f uV, med5 = %.8f\033[35;1mB %.9f, sdev5 = %.3f uV, med5 = %.8f \033[34;1m Delta %.4f ppm \033[37;1mC %.9f, sdev5 = %.3f uV, med5 = %.8f\033[32;1m D %.9f, sdev5 = %.3f uV, med5 = %.8f\033[39;0m" % (set_value, val, sdev*1e6, median, val2,sdev2*1e6, median2, (dev1 - dev2),0,0,0,0,0,0 ))
+        print("\033[32;1mSRC %.4f \033[33;1mA %.9f, sdev5 = %.3f uV, med5 = %.8f\033[35;1mB %.9f, sdev5 = %.3f uV, med5 = %.8f \033[34;1m Delta %.4f ppm" % (set_value, val, sdev*1e6, median, val2,sdev2*1e6, median2, (dev1 - dev2) ))
         dmm.open()
         dmm.write("DISP MSG,'%5.3f %2.1fV" % (dev1,set_value ))
         dmm.close()
@@ -149,7 +147,7 @@ for i in range(-109,110,1):
     temp2 = float(dmm2.read())
     dmm2.close()
     with open(log_name, 'a') as dile:
-        dile.write (time.strftime("%m%d%Y-%H:%M:%S;") + ("%.9f;%.9f;%.9f;%.9f;%.9f;%.6g;%.6g;%.6g;%.6g;%.1f;%.1f\r\n" % (set_value, median, median2, 0, 0, sdev, sdev2, 0, 0, temp, temp2)))
+        dile.write (time.strftime("%m%d%Y-%H:%M:%S;") + ("%.9f;%.9f;%.9f;%.6g;%.6g;%.1f;%.1f\r\n" % (set_value, median, median2, sdev, sdev2, temp, temp2)))
     dile.close()
 
 fluke.open()
