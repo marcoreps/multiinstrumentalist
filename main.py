@@ -153,8 +153,8 @@ def test_3458A():
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="732A 3458B")
     #instruments["3458B"].config_10DCV_9digit()
-    instruments["3458B"].config_10OHMF_9digit()
-    #instruments["3458B"].config_10kOHMF_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
+    instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_NPLC20()
     instruments["3458B"].config_trigger_auto()
