@@ -640,6 +640,17 @@ class HP3458A(multimeter):
         finally:
             self.lock.release()
             
+    def config_NPLC100(self):
+        try:
+            self.connect()
+            self.instr.write("NPLC 100")
+            self.instr.close()
+        except:
+            logging.error("Error in %s config_NPLC100" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
     def blank_display(self):
         try:
             self.connect()
@@ -660,7 +671,6 @@ class HP3458A(multimeter):
             self.instr.write("OCOMP ON")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
-            self.instr.write("NPLC 200")
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
@@ -679,7 +689,6 @@ class HP3458A(multimeter):
             self.instr.write("OCOMP ON")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
-            self.instr.write("NPLC 200")
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")

@@ -141,24 +141,25 @@ def HPM_INL():
      
 
 def test_3458A():
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="LTZmu 3458A")
-    #instruments["3458A"].config_10DCV_fast()
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADR1727 PRND1446 3458A")
     instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
-    #instruments["3458A"].blank_display()
+    instruments["3458A"].config_NPLC100()
+    instruments["3458A"].blank_display()
     instruments["3458A"].config_trigger_auto()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="732A 3458B")
-    #instruments["3458B"].config_10DCV_9digit()
-    instruments["3458B"].config_10OHMF_9digit()
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADR2108 PRND1446 3458B")
+    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
-    #instruments["3458B"].blank_display()
-    instruments["3458B"].config_NPLC20()
+    instruments["3458A"].config_NPLC100()
+    instruments["3458B"].blank_display()
+    instruments["3458A"].config_NPLC100()
     instruments["3458B"].config_trigger_auto()
-    #HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     #instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=100000, title='HPM7177 Unit 1')
     #instruments["HPM2"]=HPM7177(seriallock, hpm2_poly, dev='/dev/ttyUSB1', baud=921600, nfilter=100000, title='HPM7177 Unit 2')
@@ -175,7 +176,7 @@ def test_3458A():
         now = datetime.datetime.now()
         if not(now.minute % 10) and not(now.second):
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            #MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
         
         for i in instruments.values():
