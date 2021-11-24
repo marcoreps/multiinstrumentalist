@@ -431,16 +431,48 @@ def scanner():
         MySeriesHelper(instrument_name="Wavetek 7 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[5]) # Open Wavetek 7
 """
+
+
+def auto_ACAL_3458A():
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
+    #instruments["3458B"].config_10kOHMF_9digit()
+    instruments["3458B"].config_NPLC100()
+    instruments["3458B"].blank_display()
+    instruments["3458B"].config_trigger_auto()
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    last_temp = instruments["temp_short"].get_read_val()
+    
+
+    while True:
+        now = datetime.datetime.now()
+        if not(now.minute % 10) and not(now.second):
+            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            time.sleep(1)
+        
+        if abs(last_temp - instruments["temp_short"].get_read_val()) > 1:
+            instruments["3458B"].acal_DCV()
+            time.sleep(1)
+        
+        for i in instruments.values():
+            if i.is_readable():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        time.sleep(1)
+        
+        
         
 if __name__ == '__main__':
     try:
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner()
+        auto_ACAL_3458A()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")

@@ -589,7 +589,6 @@ class HP3458A(multimeter):
             self.instr.write("DCV 10")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
-            self.instr.write("NPLC 20")
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
@@ -607,7 +606,6 @@ class HP3458A(multimeter):
             self.instr.write("DCV 10")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
-            self.instr.write("NPLC 10")
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
@@ -669,6 +667,7 @@ class HP3458A(multimeter):
             self.instr.write("PRESET NORM")
             self.instr.write("OHMF 1E4")
             self.instr.write("OCOMP ON")
+            self.instr.write("DELAY 1")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
             self.instr.write("NRDGS 1,AUTO")
@@ -686,6 +685,7 @@ class HP3458A(multimeter):
             self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("OHMF 10")
+            self.instr.write("DELAY 1")
             self.instr.write("OCOMP ON")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
@@ -729,6 +729,18 @@ class HP3458A(multimeter):
             self.instr.close()
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def acal_DCV(self):
+        logging.debug(self.title+' ACAL DCV started')
+        try:
+            self.connect()
+            self.instr.write("ACAL DCV")
+            self.instr.close()
+        except:
+            logging.error("Error in %s acal_DCV" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
