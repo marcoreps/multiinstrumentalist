@@ -454,7 +454,8 @@ def auto_ACAL_3458A():
         
         if abs(last_temp - instruments["temp_short"].get_read_val()) > 1:
             instruments["3458B"].acal_DCV()
-            time.sleep(1)
+            time.sleep(60)
+            last_temp = instruments["temp_short"].get_read_val()
         
         for i in instruments.values():
             if i.is_readable():
