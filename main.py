@@ -448,7 +448,7 @@ def auto_ACAL_3458A():
 
     while True:
         now = datetime.datetime.now()
-        if not(now.minute % 10) and not(now.second):
+        if not(now.minute % 10) and not(now.second) and instruments["3458B"].is_readable():
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
         temperature = instruments["temp_short"].get_read_val()
