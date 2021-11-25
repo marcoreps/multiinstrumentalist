@@ -451,19 +451,18 @@ def auto_ACAL_3458A():
         if not(now.minute % 10) and not(now.second):
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
-        
-        if abs(last_temp - instruments["temp_short"].get_read_val()) > 1:
+        temperature = instruments["temp_short"].get_read_val()
+         logging.debug("Actual Temp = %s   Last ACAL temp = %s" % (temperature, last_temp))
+        if abs(last_temp - temperature) > 1:
             instruments["3458B"].acal_DCV()
-            time.sleep(60)
+            time.sleep(80)
             last_temp = instruments["temp_short"].get_read_val()
         
         for i in instruments.values():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(1)
-        
-        
-        
+
 if __name__ == '__main__':
     try:
         #HPM_INL()
