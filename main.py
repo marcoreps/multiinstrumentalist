@@ -452,7 +452,7 @@ def auto_ACAL_3458A():
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
         temperature = instruments["temp_short"].get_read_val()
-         logging.debug("Actual Temp = %s   Last ACAL temp = %s" % (temperature, last_temp))
+        logging.debug("Actual Temp = %s   Last ACAL temp = %s" % (temperature, last_temp))
         if abs(last_temp - temperature) > 1:
             instruments["3458B"].acal_DCV()
             time.sleep(80)
