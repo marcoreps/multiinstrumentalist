@@ -462,6 +462,35 @@ def auto_ACAL_3458A():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(1)
+        
+def scanner2():
+
+# III   Br    N   channels[0] 732A -
+# III   BrW   P   channels[0] 732A +
+# III   Or    N   channels[1] LTZmu -
+# III   OrW   P   channels[1] LTZmu +
+# III   Bl    N   channels[2] 3458A -
+# III   BlW   P   channels[2] 3458A +
+# III   Gr    N   channels[3] 3458B -
+# III   GrW   P   channels[3] 3458B +
+
+# IV    Br    N   channels[4] Wavetek 10 -
+# IV    BrW   P   channels[4] Wavetek 10 +
+# IV    Or    N   channels[5] Wavetek 7 -
+# IV    OrW   P   channels[5] Wavetek 7 +
+# IV    Bl    N   channels[6] Fluke 5700A -
+# IV    BlW   P   channels[6] Fluke 5700A +
+# IV    Gr    N   channels[7] 
+# IV    GrW   P   channels[7]
+
+    switch=takovsky_scanner()
+    while True:
+        switch.switchingCloseRelay(channels[4])
+        switch.switchingCloseRelay(channels[5])
+        time.sleep(10)
+        switch.switchingOpenRelay(channels[4])
+        switch.switchingOpenRelay(channels[5])
+        time.sleep(3)
 
 if __name__ == '__main__':
     try:
@@ -471,8 +500,8 @@ if __name__ == '__main__':
         #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        #scanner()
-        auto_ACAL_3458A()
+        scanner2()
+        #auto_ACAL_3458A()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
