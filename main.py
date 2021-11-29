@@ -500,8 +500,8 @@ if __name__ == '__main__':
         #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        scanner2()
-        #auto_ACAL_3458A()
+        #scanner2()
+        auto_ACAL_3458A()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
