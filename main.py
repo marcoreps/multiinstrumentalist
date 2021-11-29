@@ -33,8 +33,8 @@ onewire_lock = Lock()
 vxi_ip = "192.168.178.88"
 
 instruments = dict()
-#instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-#instruments["temp_long"]=TMP117(address=0x48, title="Long Temp Sensor")
+instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
+instruments["temp_long"]=TMP117(address=0x48, title="Long Temp Sensor")
 
 #instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
 #instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
