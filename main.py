@@ -142,12 +142,12 @@ def HPM_INL():
 
 def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADR2108 PRND1446 3458A")
-    instruments["3458B"].config_10DCV_9digit()
-    instruments["3458B"].config_10OHMF_9digit()
-    instruments["3458B"].config_10kOHMF_9digit()
-    instruments["3458B"].config_NPLC100()
-    instruments["3458B"].blank_display()
-    instruments["3458B"].config_trigger_auto()
+    instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"].config_10OHMF_9digit()
+    instruments["3458A"].config_10kOHMF_9digit()
+    instruments["3458A"].config_NPLC100()
+    instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_auto()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
