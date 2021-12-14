@@ -141,7 +141,7 @@ def HPM_INL():
      
 
 def test_3458A():
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADR2108 PRND1446 3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="LTZmu 3458A with RoHS ADC")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].config_10OHMF_9digit()
     instruments["3458A"].config_10kOHMF_9digit()
