@@ -515,6 +515,7 @@ def log_3458A_calparams():
         if not(now.minute % 5) and instruments["3458A"].is_readable() and instruments["3458B"].is_readable():
             instruments["3458A"].acal_DCV()
             instruments["3458B"].acal_DCV()
+            time.sleep(5)
             while not instruments["3458A"].is_readable():
                 time.sleep(2)
             MySeriesHelper(instrument_name="3458A CAL?72", value=float(instruments["3458A"].get_cal_72()))
