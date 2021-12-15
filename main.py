@@ -512,7 +512,7 @@ def log_3458A_calparams():
             time.sleep(1)
             
         #if not(now.hour % 2) and not(now.minute) and not(now.second) and instruments["3458B"].is_readable():
-        if not(now.minute % 5) and not(now.second) and instruments["3458B"].is_readable():
+        if not(now.minute % 5) and instruments["3458A"].is_readable() and instruments["3458B"].is_readable():
             instruments["3458A"].acal_DCV()
             instruments["3458B"].acal_DCV()
             while not instruments["3458A"].is_readable():
