@@ -481,17 +481,67 @@ def scanner2():
         switch.switchingOpenRelay(channels[4])
         switch.switchingOpenRelay(channels[5])
         time.sleep(3)
+        
+        
+def log_3458A_calparams():
+
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_10DCV_9digit()
+    #instruments["3458A"].config_10OHMF_9digit()
+    #instruments["3458A"].config_10kOHMF_9digit()
+    instruments["3458A"].config_NPLC100()
+    #instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_auto()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
+    #instruments["3458B"].config_10kOHMF_9digit()
+    instruments["3458B"].config_NPLC100()
+    #instruments["3458B"].blank_display()
+    instruments["3458B"].config_trigger_auto()
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+
+    while True:
+        now = datetime.datetime.now()
+        if not(now.minute % 5) and not(now.second) and instruments["3458B"].is_readable():
+            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+            time.sleep(1)
+            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            time.sleep(1)
+            
+        #if not(now.hour % 2) and not(now.minute) and not(now.second) and instruments["3458B"].is_readable():
+        if not(now.minute % 5) and not(now.second) and instruments["3458B"].is_readable():
+            instruments["3458A"].acal_DCV()
+            instruments["3458B"].acal_DCV()
+            while not instruments["3458A"].is_readable():
+                time.sleep(2)
+            MySeriesHelper(instrument_name="3458A CAL?72", value=float(instruments["3458A"].get_cal_72()))
+            MySeriesHelper(instrument_name="3458A CAL?73", value=float(instruments["3458A"].get_cal_73()))
+            MySeriesHelper(instrument_name="3458A CAL?175", value=float(instruments["3458A"].get_cal_175()))
+            while not instruments["3458B"].is_readable():
+                time.sleep(2)
+            MySeriesHelper(instrument_name="3458B CAL?72", value=float(instruments["3458B"].get_cal_72()))
+            MySeriesHelper(instrument_name="3458B CAL?73", value=float(instruments["3458B"].get_cal_73()))
+            MySeriesHelper(instrument_name="3458B CAL?175", value=float(instruments["3458B"].get_cal_175()))
+
+        for i in instruments.values():
+            if i.is_readable():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        time.sleep(1)
 
 if __name__ == '__main__':
     try:
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
+        log_3458A_calparams()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         print("\nkthxbye")
