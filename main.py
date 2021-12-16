@@ -487,7 +487,7 @@ def scanner2():
         
         
         
-def read_inst(sch, interval, priority, action, arguments=()):
+def read_inst(sch, interval, priority, action, argument=()):
     sch.enter(interval, priority, read_inst, argument)
     MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         
@@ -512,8 +512,8 @@ def log_3458A_calparams():
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(sch, 1, 10, read_inst, arguments=(instruments["3458A"], ))
-    sch.enter(sch, 1, 10, read_inst, arguments=(instruments["3458B"], ))
+    sch.enter(sch, 1, 10, read_inst, argument=(instruments["3458A"], ))
+    sch.enter(sch, 1, 10, read_inst, argument=(instruments["3458B"], ))
     sch.run()
     
 """
