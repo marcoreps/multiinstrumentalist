@@ -492,6 +492,10 @@ def read_inst(sch, interval, priority, inst):
     if inst.is_readable():
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
         
+def acal_inst(sch, interval, priority, inst):
+    sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
+    inst.acal_DCV()
+        
 def log_3458A_calparams():
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
@@ -517,18 +521,16 @@ def log_3458A_calparams():
     sch.enter(1, 10, read_inst, argument=(sch, 1, 10, instruments["3458B"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
-    sch.enter(10, 9, read_inst, argument=(sch, 10, 9, HP3458A_temperature))
-    sch.enter(10, 9, read_inst, argument=(sch, 10, 9, HP3458B_temperature))
+    #sch.enter(600, 9, read_inst, argument=(sch, 600, 9, HP3458A_temperature))
+    #sch.enter(600, 9, read_inst, argument=(sch, 600, 9, HP3458B_temperature))
+    sch.enter(60, 8, acal_inst, argument=(sch, 60, 8, instruments["3458A"]))
+    sch.enter(60, 8, acal_inst, argument=(sch, 60, 8, instruments["3458B"]))
     sch.run()
     
 """
     while True:
         now = datetime.datetime.now()
-        if not(now.minute % 11) and not(now.second) and instruments["3458B"].is_readable():
-            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            time.sleep(1)
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
-            time.sleep(1)
+
             
         if not(now.hour % 1) and not(now.minute) and not(now.second) and instruments["3458A"].is_readable() and instruments["3458B"].is_readable():
             instruments["3458A"].acal_DCV()
