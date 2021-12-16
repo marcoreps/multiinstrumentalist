@@ -26,6 +26,7 @@ from instruments.switch import *
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.info("Starting ...")
 
 gpiblock = Lock()
 seriallock = Lock()
@@ -556,5 +557,5 @@ if __name__ == '__main__':
         log_3458A_calparams()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
-        print("\nkthxbye")
+        logging.info("kthxbye")
         sys.exit(0)
