@@ -491,8 +491,6 @@ def read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
-    else:
-        logging.info("%s was not ready for read_inst." % (inst.get_title()))
         
 def read_cal_params(inst):
     time.sleep(3)
@@ -534,8 +532,8 @@ def log_3458A_calparams():
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(4, 10, read_inst, argument=(sch, 4, 10, instruments["3458A"]))
-    sch.enter(4, 10, read_inst, argument=(sch, 4, 10, instruments["3458B"]))
+    sch.enter(1, 10, read_inst, argument=(sch, 1, 10, instruments["3458A"]))
+    sch.enter(1, 10, read_inst, argument=(sch, 1, 10, instruments["3458B"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
     sch.enter(60*10, 9, read_inst, argument=(sch, 60*10, 9, HP3458A_temperature))
