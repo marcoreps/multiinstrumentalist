@@ -239,7 +239,7 @@ class HP3458A_temp:
         return self.HP3458A.get_int_temp()
         
     def is_readable(self):
-        return True
+        return self.HP3458A.is_readable()
         
     def is_measuring(self):
         return False
