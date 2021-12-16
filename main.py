@@ -9,6 +9,7 @@ from multiprocessing import Process, Lock
 import datetime
 import threading
 import sys
+import sched
 
 
 
@@ -483,6 +484,12 @@ def scanner2():
         time.sleep(3)
         
         
+        
+        
+        
+def read_inst(i):
+    MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        
 def log_3458A_calparams():
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
@@ -502,7 +509,12 @@ def log_3458A_calparams():
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_auto()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
-
+    
+    sch = sched.scheduler(time.time, time.sleep)
+    sch.enter(1, 10, read_inst, argument=(instruments["3458A"]))
+    sch.enter(1, 10, read_inst, argument=(instruments["3458B"]))
+    
+"""
     while True:
         now = datetime.datetime.now()
         if not(now.minute % 11) and not(now.second) and instruments["3458B"].is_readable():
@@ -530,6 +542,7 @@ def log_3458A_calparams():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(1)
+"""
 
 if __name__ == '__main__':
     try:
