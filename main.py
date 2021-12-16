@@ -494,24 +494,21 @@ def read_inst(sch, interval, priority, inst):
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
         
 def read_cal_params(inst):
-    time.sleep(3)
-    if inst.is_readable():
-        MySeriesHelper(instrument_name=inst.get_title()+" CAL? 72", value=float(inst.get_cal_72()))
-        MySeriesHelper(instrument_name=inst.get_title()+" CAL? 73", value=float(inst.get_cal_73()))
-        MySeriesHelper(instrument_name=inst.get_title()+" CAL? 175", value=float(inst.get_cal_175()))
-    else:
+    while not inst.is_readable():
         logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
+        time.sleep(1)
+    MySeriesHelper(instrument_name=inst.get_title()+" CAL? 72", value=float(inst.get_cal_72()))
+    MySeriesHelper(instrument_name=inst.get_title()+" CAL? 73", value=float(inst.get_cal_73()))
+    MySeriesHelper(instrument_name=inst.get_title()+" CAL? 175", value=float(inst.get_cal_175()))
         
 def acal_inst(sch, interval, priority, inst):
-    time.sleep(3)
+    while not inst.is_readable():
+        logging.info("%s was not ready for acal_inst." % (inst.get_title()))
+        time.sleep(1)
     sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
-    sch.enter(60*10, priority-1, read_cal_params, argument=(inst, ))
-    if inst.is_readable():
-        inst.acal_DCV()
-    else:
-        logging.info("%s was not ready for acal_DCV." % (inst.get_title()))
-    time.sleep(1)
-        
+    sch.enter(60*4, priority-1, read_cal_params, argument=(inst, ))
+    inst.acal_DCV()
+
 def log_3458A_calparams():
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
@@ -539,8 +536,8 @@ def log_3458A_calparams():
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
     sch.enter(60*10, 9, read_inst, argument=(sch, 60*10, 9, HP3458A_temperature))
     sch.enter(60*10, 9, read_inst, argument=(sch, 60*10, 9, HP3458B_temperature))
-    sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458A"]))
-    sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458B"]))
+    sch.enter(60*20, 8, acal_inst, argument=(sch, 60*20, 8, instruments["3458A"]))
+    sch.enter(60*20, 8, acal_inst, argument=(sch, 60*20, 8, instruments["3458B"]))
     sch.run()
     
 
