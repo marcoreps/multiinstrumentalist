@@ -489,7 +489,8 @@ def scanner2():
         
 def read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, read_inst, argument=(sch, interval, priority, inst))
-    MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
+    if inst.is_readable():
+        MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
         
 def log_3458A_calparams():
 
@@ -514,6 +515,10 @@ def log_3458A_calparams():
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, read_inst, argument=(sch, 1, 10, instruments["3458A"]))
     sch.enter(1, 10, read_inst, argument=(sch, 1, 10, instruments["3458B"]))
+    sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
+    sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
+    sch.enter(10, 9, read_inst, argument=(sch, 10, 9, HP3458A_temperature))
+    sch.enter(10, 9, read_inst, argument=(sch, 10, 9, HP3458B_temperature))
     sch.run()
     
 """
@@ -539,11 +544,6 @@ def log_3458A_calparams():
             MySeriesHelper(instrument_name="3458B CAL?72", value=float(instruments["3458B"].get_cal_72()))
             MySeriesHelper(instrument_name="3458B CAL?73", value=float(instruments["3458B"].get_cal_73()))
             MySeriesHelper(instrument_name="3458B CAL?175", value=float(instruments["3458B"].get_cal_175()))
-
-        for i in instruments.values():
-            if i.is_readable():
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-        time.sleep(1)
 """
 
 if __name__ == '__main__':
