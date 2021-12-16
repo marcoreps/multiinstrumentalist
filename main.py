@@ -25,7 +25,7 @@ from instruments.switch import *
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 
 gpiblock = Lock()
 seriallock = Lock()
@@ -491,18 +491,24 @@ def read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
+    else:
+        logging.info("%s was not ready for read_inst." % (inst.get_title()))
         
 def read_cal_params(inst):
     if inst.is_readable():
         MySeriesHelper(instrument_name=inst.get_title()+" CAL? 72", value=float(inst.get_cal_72()))
         MySeriesHelper(instrument_name=inst.get_title()+" CAL? 73", value=float(inst.get_cal_73()))
         MySeriesHelper(instrument_name=inst.get_title()+" CAL? 175", value=float(inst.get_cal_175()))
+    else:
+        logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
         
 def acal_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
     sch.enter(60*10, priority-1, read_cal_params, argument=(inst, ))
     if inst.is_readable():
         inst.acal_DCV()
+    else:
+        logging.info("%s was not ready for acal_DCV." % (inst.get_title()))
     time.sleep(1)
         
 def log_3458A_calparams():
