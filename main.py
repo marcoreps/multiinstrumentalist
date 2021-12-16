@@ -520,12 +520,12 @@ def log_3458A_calparams():
                 time.sleep(2)
             MySeriesHelper(instrument_name="3458A CAL?72", value=float(instruments["3458A"].get_cal_72()))
             MySeriesHelper(instrument_name="3458A CAL?73", value=float(instruments["3458A"].get_cal_73()))
-            #MySeriesHelper(instrument_name="3458A CAL?175", value=float(instruments["3458A"].get_cal_175()))
+            MySeriesHelper(instrument_name="3458A CAL?175", value=float(instruments["3458A"].get_cal_175()))
             while not instruments["3458B"].is_readable():
                 time.sleep(2)
             MySeriesHelper(instrument_name="3458B CAL?72", value=float(instruments["3458B"].get_cal_72()))
             MySeriesHelper(instrument_name="3458B CAL?73", value=float(instruments["3458B"].get_cal_73()))
-            #MySeriesHelper(instrument_name="3458B CAL?175", value=float(instruments["3458B"].get_cal_175()))
+            MySeriesHelper(instrument_name="3458B CAL?175", value=float(instruments["3458B"].get_cal_175()))
 
         for i in instruments.values():
             if i.is_readable():

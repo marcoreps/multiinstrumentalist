@@ -769,7 +769,7 @@ class HP3458A(multimeter):
         cal72 = 0
         try:
             self.connect()
-            cal72 = self.instr.ask("CAL?72")
+            cal72 = self.instr.ask("CAL? 72")
             self.instr.close()
         except:
             logging.error("Error in %s get_cal_72" % self.title, exc_info=True)
@@ -782,7 +782,7 @@ class HP3458A(multimeter):
         cal73 = 0
         try:
             self.connect()
-            cal73 = self.instr.ask("CAL?73")
+            cal73 = self.instr.ask("CAL? 73")
             self.instr.close()
         except:
             logging.error("Error in %s get_cal_73" % self.title, exc_info=True)
@@ -795,7 +795,7 @@ class HP3458A(multimeter):
         cal175 = 0
         try:
             self.connect()
-            cal175 = self.instr.ask("CAL?175")
+            cal175 = self.instr.ask("CAL? 175")
             self.instr.close()
         except:
             logging.error("Error in %s get_cal_175" % self.title, exc_info=True)
@@ -808,7 +808,7 @@ class HP3458A(multimeter):
         cal59 = 0
         try:
             self.connect()
-            cal59 = self.instr.ask("CAL?59")
+            cal59 = self.instr.ask("CAL? 59")
             self.instr.close()
         except:
             logging.error("Error in %s get_cal_59" % self.title, exc_info=True)
@@ -821,7 +821,7 @@ class HP3458A(multimeter):
         cal_2_1 = 0
         try:
             self.connect()
-            cal_2_1 = self.instr.ask("CAL?2,1")
+            cal_2_1 = self.instr.ask("CAL? 2,1")
             self.instr.close()
         except:
             logging.error("Error in %s get_cal_2_1" % self.title, exc_info=True)
@@ -834,7 +834,7 @@ class HP3458A(multimeter):
         cal_1_1 = 0
         try:
             self.connect()
-            cal_1_1 = self.instr.ask("CAL?1,1")
+            cal_1_1 = self.instr.ask("CAL? 1,1")
             self.instr.close()
         except:
             logging.error("Error in %s get_cal_1_1" % self.title, exc_info=True)
