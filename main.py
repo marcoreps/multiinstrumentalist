@@ -491,14 +491,12 @@ def scanner2():
 def read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
-        logging.info("%s reading inst" % (inst.get_title()))
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
         
 def read_cal_params(inst):
     while not inst.is_readable():
         logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
         time.sleep(1)
-    logging.info("%s reading cal params" % (inst.get_title()))
     MySeriesHelper(instrument_name=inst.get_title()+" CAL? 72", value=float(inst.get_cal_72()))
     MySeriesHelper(instrument_name=inst.get_title()+" CAL? 73", value=float(inst.get_cal_73()))
     MySeriesHelper(instrument_name=inst.get_title()+" CAL? 175", value=float(inst.get_cal_175()))
@@ -509,7 +507,6 @@ def acal_inst(sch, interval, priority, inst):
         time.sleep(1)
     sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
     sch.enter(60*4, priority-1, read_cal_params, argument=(inst, ))
-    logging.info("%s acal_inst started" % (inst.get_title()))
     inst.acal_DCV()
     time.sleep(1)
 
