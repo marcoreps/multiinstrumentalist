@@ -495,6 +495,7 @@ def read_inst(sch, interval, priority, inst):
 def acal_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
     inst.acal_DCV()
+    time.sleep(1)
         
 def log_3458A_calparams():
 
@@ -521,8 +522,8 @@ def log_3458A_calparams():
     sch.enter(1, 10, read_inst, argument=(sch, 1, 10, instruments["3458B"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
-    #sch.enter(600, 9, read_inst, argument=(sch, 600, 9, HP3458A_temperature))
-    #sch.enter(600, 9, read_inst, argument=(sch, 600, 9, HP3458B_temperature))
+    sch.enter(600, 9, read_inst, argument=(sch, 600, 9, HP3458A_temperature))
+    sch.enter(600, 9, read_inst, argument=(sch, 600, 9, HP3458B_temperature))
     sch.enter(60, 8, acal_inst, argument=(sch, 60, 8, instruments["3458A"]))
     sch.enter(60, 8, acal_inst, argument=(sch, 60, 8, instruments["3458B"]))
     sch.run()
