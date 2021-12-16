@@ -511,6 +511,7 @@ def acal_inst(sch, interval, priority, inst):
     sch.enter(60*4, priority-1, read_cal_params, argument=(inst, ))
     logging.info("%s acal_inst started" % (inst.get_title()))
     inst.acal_DCV()
+    time.sleep(1)
 
 def log_3458A_calparams():
 
