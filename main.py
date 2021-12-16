@@ -492,9 +492,17 @@ def read_inst(sch, interval, priority, inst):
     if inst.is_readable():
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
         
+def read_cal_params(inst):
+    if inst.is_readable():
+        MySeriesHelper(instrument_name=inst.get_title()+" CAL? 72", value=float(inst.get_cal_72()))
+        MySeriesHelper(instrument_name=inst.get_title()+" CAL? 73", value=float(inst.get_cal_73()))
+        MySeriesHelper(instrument_name=inst.get_title()+" CAL? 175", value=float(inst.get_cal_175()))
+        
 def acal_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
-    inst.acal_DCV()
+    sch.enter(120, priority-1, read_cal_params, argument=(inst, ))
+    if inst.is_readable():
+        inst.acal_DCV()
     time.sleep(1)
         
 def log_3458A_calparams():
@@ -528,26 +536,6 @@ def log_3458A_calparams():
     sch.enter(60, 8, acal_inst, argument=(sch, 60, 8, instruments["3458B"]))
     sch.run()
     
-"""
-    while True:
-        now = datetime.datetime.now()
-
-            
-        if not(now.hour % 1) and not(now.minute) and not(now.second) and instruments["3458A"].is_readable() and instruments["3458B"].is_readable():
-            instruments["3458A"].acal_DCV()
-            instruments["3458B"].acal_DCV()
-            time.sleep(5)
-            while not instruments["3458A"].is_readable():
-                time.sleep(2)
-            MySeriesHelper(instrument_name="3458A CAL?72", value=float(instruments["3458A"].get_cal_72()))
-            MySeriesHelper(instrument_name="3458A CAL?73", value=float(instruments["3458A"].get_cal_73()))
-            MySeriesHelper(instrument_name="3458A CAL?175", value=float(instruments["3458A"].get_cal_175()))
-            while not instruments["3458B"].is_readable():
-                time.sleep(2)
-            MySeriesHelper(instrument_name="3458B CAL?72", value=float(instruments["3458B"].get_cal_72()))
-            MySeriesHelper(instrument_name="3458B CAL?73", value=float(instruments["3458B"].get_cal_73()))
-            MySeriesHelper(instrument_name="3458B CAL?175", value=float(instruments["3458B"].get_cal_175()))
-"""
 
 if __name__ == '__main__':
     try:
