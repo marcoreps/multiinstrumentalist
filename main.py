@@ -505,14 +505,13 @@ def log_3458A_calparams():
 
     while True:
         now = datetime.datetime.now()
-        if not(now.minute % 5) and not(now.second) and instruments["3458B"].is_readable():
+        if not(now.minute % 11) and not(now.second) and instruments["3458B"].is_readable():
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
             time.sleep(1)
             MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
             
-        #if not(now.hour % 2) and not(now.minute) and not(now.second) and instruments["3458B"].is_readable():
-        if not(now.minute % 5) and instruments["3458A"].is_readable() and instruments["3458B"].is_readable():
+        if not(now.hour % 1) and not(now.minute) and not(now.second) and instruments["3458A"].is_readable() and instruments["3458B"].is_readable():
             instruments["3458A"].acal_DCV()
             instruments["3458B"].acal_DCV()
             time.sleep(5)
