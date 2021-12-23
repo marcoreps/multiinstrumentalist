@@ -703,7 +703,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("PRESET NORM")
-            self.instr.write("DCI 10E-3")
+            self.instr.write("DCI 1E-3")
             self.instr.write("TARM HOLD")
             self.instr.write("TRIG AUTO")
             self.instr.write("NRDGS 1,AUTO")
