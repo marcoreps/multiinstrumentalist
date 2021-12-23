@@ -143,10 +143,11 @@ def HPM_INL():
      
 
 def test_3458A():
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="LTZmu 3458A with RoHS ADC")
-    instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="5700A 1mA 3458A")
+    #instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
+    instruments["3458A"].config_1mA_9digit()
     instruments["3458A"].config_NPLC100()
     #instruments["3458A"].blank_display()
     instruments["3458A"].config_trigger_auto()
@@ -154,10 +155,11 @@ def test_3458A():
     
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="LTZmu 3458B with old ADC")
-    instruments["3458B"].config_10DCV_9digit()
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="5700A 1mA 3458B")
+    #instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
+    instruments["3458A"].config_1mA_9digit()
     instruments["3458B"].config_NPLC100()
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_auto()
@@ -547,12 +549,12 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
-        log_3458A_calparams()
+        #log_3458A_calparams()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
