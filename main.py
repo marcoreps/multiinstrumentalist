@@ -159,7 +159,7 @@ def test_3458A():
     #instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
-    instruments["3458A"].config_1mA_9digit()
+    instruments["3458B"].config_1mA_9digit()
     instruments["3458B"].config_NPLC100()
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_auto()
