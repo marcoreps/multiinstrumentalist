@@ -144,10 +144,10 @@ def HPM_INL():
 
 def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="5700A 1mA 3458A")
-    #instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
-    instruments["3458A"].config_1mA_9digit()
+    #instruments["3458A"].config_1mA_9digit()
     instruments["3458A"].config_NPLC100()
     #instruments["3458A"].blank_display()
     instruments["3458A"].config_trigger_auto()
@@ -156,10 +156,10 @@ def test_3458A():
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="5700A 1mA 3458B")
-    #instruments["3458B"].config_10DCV_9digit()
+    instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
-    instruments["3458B"].config_1mA_9digit()
+    #instruments["3458B"].config_1mA_9digit()
     instruments["3458B"].config_NPLC100()
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_auto()
