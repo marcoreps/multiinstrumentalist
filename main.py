@@ -547,7 +547,7 @@ def log_3458A_calparams():
     
 def noise_3458A():
 
-    seconds_per_step=60*10
+    seconds_per_step=60*20
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
@@ -567,7 +567,7 @@ def noise_3458A():
     instruments["3458B"].config_trigger_auto()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
-    NPLCs = [1, 10, 50, 100, 300, 600]
+    NPLCs = [0.1, 1, 10, 50, 100, 500, 1000]
     
     with open('csv/3458A_vs_B_noise.csv', mode='w') as csv_file:
         fieldnames = ['NPLC', '3458A_reading', '3458B_reading']
@@ -582,19 +582,15 @@ def noise_3458A():
             deltat = datetime.datetime.now() - start
             while deltat.seconds < seconds_per_step:
                 while not instruments["3458A"].is_readable():
-                    time.sleep(0.5)
+                    time.sleep(0.1)
                 readingA = instruments["3458A"].get_read_val()
-                MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=float(readingA))
                 while not instruments["3458B"].is_readable():
-                    time.sleep(0.5)
+                    time.sleep(0.1)
                 readingB = instruments["3458B"].get_read_val()
-                MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=float(readingB))
                 logging.debug( str(NPLC) + "," + str(readingA) + "," + str(readingB) )
                 writer.writerow({'NPLC': NPLC, '3458A_reading': readingA, '3458B_reading': readingB})
                 deltat = datetime.datetime.now() - start
                 
-            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
     
 
         
