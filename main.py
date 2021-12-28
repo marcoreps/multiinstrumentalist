@@ -571,7 +571,7 @@ def noise_3458A():
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458B"].config_NPLC(NPLC)
     
-    for s in range(time_per_step/powerline_period*NPLC):
+    for s in range(int(time_per_step/powerline_period*NPLC)):
         for i in instruments.values():
             while not i.is_readable():
                 logging.info("waiting")
