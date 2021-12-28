@@ -547,7 +547,7 @@ def log_3458A_calparams():
     
 def noise_3458A():
 
-    minutes_per_step=1
+    seconds_per_step=60
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
@@ -574,11 +574,13 @@ def noise_3458A():
         instruments["3458A"].config_NPLC(NPLC)
         instruments["3458B"].config_NPLC(NPLC)
         start = datetime.datetime.now()
-        while datetime.datetime.now().minute < start.minute+minutes_per_step:
+        deltat = datetime.datetime.now() - start
+        while deltat.second < seconds_per_step:
             for i in instruments.values():
                 while not i.is_readable():
                     time.sleep(0.5)
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+            deltat = datetime.datetime.now() - start
             
         MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
         MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
