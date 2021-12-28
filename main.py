@@ -547,7 +547,7 @@ def log_3458A_calparams():
     
 def noise_3458A():
 
-    seconds_per_step=60
+    seconds_per_step=60*10
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
