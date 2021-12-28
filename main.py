@@ -581,11 +581,11 @@ def noise_3458A():
             start = datetime.datetime.now()
             deltat = datetime.datetime.now() - start
             while deltat.seconds < seconds_per_step:
-                while not instruments["3458A"].is_readable():
-                    time.sleep(0.1)
+                #while not instruments["3458A"].is_readable():
+                    #time.sleep(0.1)
                 readingA = instruments["3458A"].get_read_val()
-                while not instruments["3458B"].is_readable():
-                    time.sleep(0.1)
+                #while not instruments["3458B"].is_readable():
+                    #time.sleep(0.1)
                 readingB = instruments["3458B"].get_read_val()
                 logging.debug( str(NPLC) + "," + str(readingA) + "," + str(readingB) )
                 writer.writerow({'NPLC': NPLC, '3458A_reading': readingA, '3458B_reading': readingB})
