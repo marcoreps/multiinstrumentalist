@@ -575,7 +575,7 @@ def noise_3458A():
         instruments["3458B"].config_NPLC(NPLC)
         start = datetime.datetime.now()
         deltat = datetime.datetime.now() - start
-        while deltat.second < seconds_per_step:
+        while deltat.seconds < seconds_per_step:
             for i in instruments.values():
                 while not i.is_readable():
                     time.sleep(0.5)
