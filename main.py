@@ -35,8 +35,8 @@ onewire_lock = Lock()
 vxi_ip = "192.168.178.88"
 
 instruments = dict()
-#instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-#instruments["temp_long"]=TMP117(address=0x48, title="Long Temp Sensor")
+instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
+instruments["temp_long"]=TMP117(address=0x48, title="Long Temp Sensor")
 
 #instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
 #instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
@@ -570,7 +570,7 @@ def noise_3458A():
     NPLCs = [1, 10, 50, 100, 300, 600]
     
     with open('csv/3458A_vs_B_noise.csv', mode='w') as csv_file:
-        fieldnames = ['meter', 'NPLC', 'reading']
+        fieldnames = ['NPLC', '3458A_reading', '3458B_reading']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         
@@ -581,12 +581,15 @@ def noise_3458A():
             start = datetime.datetime.now()
             deltat = datetime.datetime.now() - start
             while deltat.seconds < seconds_per_step:
-                for i in instruments.values():
-                    while not i.is_readable():
-                        time.sleep(0.5)
-                    reading = i.get_read_val()
-                    MySeriesHelper(instrument_name=i.get_title(), value=float(reading))
-                    writer.writerow({'meter': i.get_title(), 'NPLC': NPLC, 'reading': reading})
+                while not instruments["3458A"].is_readable():
+                    time.sleep(0.5)
+                readingA = instruments["3458A"].get_read_val()
+                MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=float(readingA))
+                while not instruments["3458B"].is_readable():
+                    time.sleep(0.5)
+                readingB = instruments["3458B"].get_read_val()
+                MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=float(readingB))
+                writer.writerow({'NPLC': NPLC, '3458A_reading': readingA, '3458B_reading': readingB})
                 deltat = datetime.datetime.now() - start
                 
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
