@@ -25,7 +25,7 @@ from instruments.switch import *
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -547,7 +547,7 @@ def log_3458A_calparams():
     
 def noise_3458A():
 
-    time_per_step=60*10
+    time_per_step=60*1
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
@@ -570,6 +570,7 @@ def noise_3458A():
     NPLCs = [1, 10, 50, 100, 300, 600]
     
     for NPLC in NPLCs:
+        logging.info("NPLC "+NPLC)
         instruments["3458A"].config_NPLC(NPLC)
         instruments["3458B"].config_NPLC(NPLC)
         start = datetime.datetime.now()
