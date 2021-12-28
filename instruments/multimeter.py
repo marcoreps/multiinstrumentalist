@@ -619,7 +619,7 @@ class HP3458A(multimeter):
     def config_NPLC(self, NPLC):
         try:
             self.connect()
-            self.instr.write("NPLC "+NPLC)
+            self.instr.write("NPLC "+str(NPLC))
             self.instr.close()
         except:
             logging.error("Error in %s config_NPLC10" % self.title, exc_info=True)
