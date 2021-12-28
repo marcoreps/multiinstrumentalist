@@ -570,7 +570,7 @@ def noise_3458A():
     NPLCs = [1, 10, 50, 100, 300, 600]
     
     for NPLC in NPLCs:
-        logging.info("NPLC "+NPLC)
+        logging.info("NPLC "+str(NPLC))
         instruments["3458A"].config_NPLC(NPLC)
         instruments["3458B"].config_NPLC(NPLC)
         start = datetime.datetime.now()
