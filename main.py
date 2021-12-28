@@ -3,7 +3,7 @@
 
 import csv
 import logging
-import time
+from time import time
 import numpy
 from multiprocessing import Process, Lock
 import datetime
