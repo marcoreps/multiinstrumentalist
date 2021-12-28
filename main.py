@@ -589,6 +589,7 @@ def noise_3458A():
                     time.sleep(0.5)
                 readingB = instruments["3458B"].get_read_val()
                 MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=float(readingB))
+                logging.info(str(NPLC)+","+str(readingA)","+str(readingB))
                 writer.writerow({'NPLC': NPLC, '3458A_reading': readingA, '3458B_reading': readingB})
                 deltat = datetime.datetime.now() - start
                 
