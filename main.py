@@ -546,6 +546,8 @@ def log_3458A_calparams():
     
     
 def noise_3458A():
+
+    
     powerline_period=1/50
     time_per_step=60*10
 
@@ -567,19 +569,20 @@ def noise_3458A():
     instruments["3458B"].config_trigger_auto()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
-    NPLC=1
-    instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458B"].config_NPLC(NPLC)
+    NPLCs = [1, 10, 50, 100, 300, 600]
     
-    for s in range(int(time_per_step/powerline_period*NPLC)):
-        for i in instruments.values():
-            while not i.is_readable():
-                logging.info("waiting")
-                time.sleep(0.5)
-            MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-        
-    MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-    MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+    for NPLC in NPLCs:
+        instruments["3458A"].config_NPLC(NPLC)
+        instruments["3458B"].config_NPLC(NPLC)
+        end = time() + time_per_step
+        while time() < end:
+            for i in instruments.values():
+                while not i.is_readable():
+                    time.sleep(0.5)
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+            
+        MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+        MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
     
 
         
