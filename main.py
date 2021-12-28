@@ -544,18 +544,61 @@ def log_3458A_calparams():
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458B"]))
     sch.run()
     
+    
+def noise_3458A():
+    powerline_period=1/50
+    time_per_step=60*10
+
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_10DCV_9digit()
+    #instruments["3458A"].config_10OHMF_9digit()
+    #instruments["3458A"].config_10kOHMF_9digit()
+    #instruments["3458A"].config_1mA_9digit()
+    instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_auto()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    
+    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
+    #instruments["3458B"].config_10kOHMF_9digit()
+    #instruments["3458B"].config_1mA_9digit()
+    instruments["3458B"].blank_display()
+    instruments["3458B"].config_trigger_auto()
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    
+    NPLC=1
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458B"].config_NPLC(NPLC)
+    
+    for s in range(time_per_step/powerline_period*NPLC):
+        for i in instruments.values():
+            while not i.is_readable():
+                time.sleep(0.5)
+            MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        
+    MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+    MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+    
+
+        
+
+    
 
 if __name__ == '__main__':
     try:
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
+        noise_3458A()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
