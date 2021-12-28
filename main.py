@@ -576,6 +576,7 @@ def noise_3458A():
     for s in range(time_per_step/powerline_period*NPLC):
         for i in instruments.values():
             while not i.is_readable():
+                logging.info("waiting")
                 time.sleep(0.5)
             MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         
