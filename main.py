@@ -547,8 +547,6 @@ def log_3458A_calparams():
     
 def noise_3458A():
 
-    
-    powerline_period=1/50
     time_per_step=60*10
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
@@ -574,8 +572,8 @@ def noise_3458A():
     for NPLC in NPLCs:
         instruments["3458A"].config_NPLC(NPLC)
         instruments["3458B"].config_NPLC(NPLC)
-        end = time() + time_per_step
-        while time() < end:
+        start = datetime.datetime.now()
+        while datetime.datetime.now().second < start.second+time_per_step:
             for i in instruments.values():
                 while not i.is_readable():
                     time.sleep(0.5)
