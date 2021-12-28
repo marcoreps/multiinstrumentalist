@@ -547,7 +547,7 @@ def log_3458A_calparams():
     
 def noise_3458A():
 
-    seconds_per_step=60*10
+    seconds_per_step=60
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
@@ -569,21 +569,28 @@ def noise_3458A():
     
     NPLCs = [1, 10, 50, 100, 300, 600]
     
-    for NPLC in NPLCs:
-        logging.info("NPLC "+str(NPLC))
-        instruments["3458A"].config_NPLC(NPLC)
-        instruments["3458B"].config_NPLC(NPLC)
-        start = datetime.datetime.now()
-        deltat = datetime.datetime.now() - start
-        while deltat.seconds < seconds_per_step:
-            for i in instruments.values():
-                while not i.is_readable():
-                    time.sleep(0.5)
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+    with open('csv/3458A_vs_B_noise.csv', mode='w') as csv_file:
+        fieldnames = ['meter', 'NPLC', 'reading']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        
+        for NPLC in NPLCs:
+            logging.info("NPLC "+str(NPLC))
+            instruments["3458A"].config_NPLC(NPLC)
+            instruments["3458B"].config_NPLC(NPLC)
+            start = datetime.datetime.now()
             deltat = datetime.datetime.now() - start
-            
-        MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-        MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            while deltat.seconds < seconds_per_step:
+                for i in instruments.values():
+                    while not i.is_readable():
+                        time.sleep(0.5)
+                    reading = i.get_read_val()
+                    MySeriesHelper(instrument_name=i.get_title(), value=float(reading))
+                    writer.writerow({'meter': i.get_title(), 'NPLC': NPLC, 'reading': reading})
+                deltat = datetime.datetime.now() - start
+                
+            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
     
 
         
