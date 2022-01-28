@@ -638,9 +638,9 @@ def pt100_scanner():
                 switch.switchingOpenRelay(channels[i-1])
             switch.switchingCloseRelay(channels[i])
 
-        time.sleep(switch_delay)
-        instruments["3458B"].trigger_once()
-        MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
+            time.sleep(switch_delay)
+            instruments["3458B"].trigger_once()
+            MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
     
 
