@@ -634,7 +634,7 @@ def pt100_scanner():
         for i in range(10):
             if i == 0:
                 switch.switchingOpenRelay(channels[10])
-            else
+            else:
                 switch.switchingOpenRelay(channels[i-1])
             switch.switchingCloseRelay(channels[i])
 
