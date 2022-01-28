@@ -631,7 +631,7 @@ def pt100_scanner():
     switch.switchingCloseRelay(channels[11]) # Connect 3458B    
     
     while True:
-        for i in range(10):
+        for i in range(11):
             if i == 0:
                 switch.switchingOpenRelay(channels[10])
             else:
