@@ -654,7 +654,7 @@ class HP3458A(multimeter):
             self.instr.write("NDIG 9")
             self.instr.close()
         except:
-            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
+            logging.error("Error in %s config_10kOHMF_9digit" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -673,7 +673,27 @@ class HP3458A(multimeter):
             self.instr.write("NDIG 9")
             self.instr.close()
         except:
-            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
+            logging.error("Error in %s config_10OHMF_9digit" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def config_PT100_2W(self):
+        try:
+            self.connect()
+            self.instr.write("PRESET NORM")
+            self.instr.write("OHM 100")
+            self.instr.write("MATH CRTD85")
+            self.instr.write("DELAY 1")
+            self.instr.write("OCOMP ON")
+            self.instr.write("TARM HOLD")
+            self.instr.write("TRIG AUTO")
+            self.instr.write("NRDGS 1,AUTO")
+            self.instr.write("MEM OFF")
+            self.instr.write("NDIG 9")
+            self.instr.close()
+        except:
+            logging.error("Error in %s config_PT1002W" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
@@ -713,6 +733,17 @@ class HP3458A(multimeter):
             self.instr.close()
         except:
             logging.error("Error in %s config_trigger_hold" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def trigger_once(self):
+        try:
+            self.connect()
+            self.instr.write("TARM SGL")
+            self.instr.close()
+        except:
+            logging.error("Error in %s trigger_once" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()

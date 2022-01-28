@@ -591,9 +591,56 @@ def noise_3458A():
                 writer.writerow({'NPLC': NPLC, '3458A_reading': readingA, '3458B_reading': readingB})
                 deltat = datetime.datetime.now() - start
                 
-    
+def pt100_scanner():
 
-        
+    # III   Br    N   channels[0] CH1
+    # III   BrW   P   channels[0] CH1
+    # III   Or    N   channels[1] CH2
+    # III   OrW   P   channels[1] CH2
+    # III   Bl    N   channels[2] CH3
+    # III   BlW   P   channels[2] CH3
+    # III   Gr    N   channels[3] CH4
+    # III   GrW   P   channels[3] CH4
+
+    # IV    Br    N   channels[4] CH5
+    # IV    BrW   P   channels[4] CH5
+    # IV    Or    N   channels[5] CH6
+    # IV    OrW   P   channels[5] CH6
+    # IV    Bl    N   channels[6] CH7
+    # IV    BlW   P   channels[6] CH7
+    # IV    Gr    N   channels[7] CH8
+    # IV    GrW   P   channels[7] CH8
+    
+    # IV    Br    N   channels[8] CH9
+    # IV    BrW   P   channels[8] CH9
+    # IV    Or    N   channels[9] CH10
+    # IV    OrW   P   channels[9] CH10
+    # IV    Bl    N   channels[10] CH11
+    # IV    BlW   P   channels[10] CH11
+    # IV    Gr    N   channels[11] 3458B
+    # IV    GrW   P   channels[11] 3458B
+    
+    switch_delay=2
+
+    switch=takovsky_scanner()
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_PT100_2W()
+    instruments["3458B"].config_trigger_hold()
+    
+    switch.switchingCloseRelay(channels[11]) # Connect 3458B    
+    
+    while True:
+        for i in range(10):
+            if i == 0:
+                switch.switchingOpenRelay(channels[10])
+            else
+                switch.switchingOpenRelay(channels[i-1])
+            switch.switchingCloseRelay(channels[i])
+
+        time.sleep(switch_delay)
+        instruments["3458B"].trigger_once()
+        MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
     
 
@@ -608,7 +655,8 @@ if __name__ == '__main__':
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
-        noise_3458A()
+        #noise_3458A()
+        pt100_scanner()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
