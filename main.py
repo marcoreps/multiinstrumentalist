@@ -620,7 +620,7 @@ def pt100_scanner():
     # IV    Gr    N   channels[11] 3458B
     # IV    GrW   P   channels[11] 3458B
     
-    switch_delay=2
+    switch_delay=1
 
     switch=takovsky_scanner()
     
