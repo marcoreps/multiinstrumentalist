@@ -1,5 +1,6 @@
 import smbus
 import time
+import logging
 
 
 
@@ -75,11 +76,13 @@ class takovsky_scanner:
         self.i2c.write_byte_data(address,reg,pins)
         
     def switchingOpenRelay(self, relay):
+        logging.debug('opening relay '+str(relay))
         self.switchingGpioSetOutput(relay["chip"], relay["port"], 0xFF & ~relay["pin"])
         time.sleep(SWITCHING_TIME/1000)
         self.switchingGpioSetOutput(relay["chip"], relay["port"], 0)
         
     def switchingCloseRelay(self, relay):
+        logging.debug('closing relay '+str(relay))
         self.switchingGpioSetOutput(relay["chip"], relay["port"], relay["pin"])
         time.sleep(SWITCHING_TIME/1000)
         self.switchingGpioSetOutput(relay["chip"], relay["port"], 0)
