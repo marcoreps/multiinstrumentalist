@@ -156,7 +156,7 @@ def test_3458A():
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu1 3458B")
-    instruments["3458B"].config_10DCV_9digit()
+    instruments["3458B"].config_100DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].config_1mA_9digit()
