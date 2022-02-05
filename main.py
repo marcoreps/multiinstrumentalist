@@ -250,19 +250,19 @@ def temperature_sweep():
 
     internal_timer = datetime.datetime.now()
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_10DCV_fast()
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A Vce")
+    instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"].config_NPLC(20)
     #instruments["3458A"].config_1OHMF_9digit()
-    instruments["3458A"].config_continuous_sampling()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    instruments["3458A"].config_trigger_auto()
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    instruments["3458B"].config_10DCV_fast()
-    instruments["3458B"].config_continuous_sampling()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B Vz")
+    instruments["3458B"].config_10DCV_9digit()
+    instruments["3458B"].config_NPLC(20)
+    instruments["3458B"].config_trigger_auto()
     
-    tmin = 50
+    tmin = 40
     tmax = 80
     tstep = 1
     wait_settle = 45
@@ -270,13 +270,7 @@ def temperature_sweep():
     
     for t in numpy.arange(tmin, tmax+0.01, tstep):
         instruments["arroyo"].out(t)
-#        time.sleep(wait_settle)
-#        now = datetime.datetime.now()
-#        delta = now - internal_timer
-#        if delta.total_seconds() > 600:
-#            internal_timer = now
-#            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-#            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+        time.sleep(wait_settle)
         for s in range(samples_per_step):
             for i in instruments.values():
                 if i.is_readable():
@@ -649,9 +643,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()

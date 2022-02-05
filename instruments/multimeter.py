@@ -617,23 +617,6 @@ class HP3458A(multimeter):
         finally:
             self.lock.release()
             
-    def config_10DCV_fast(self):
-        try:
-            self.connect()
-            self.instr.write("PRESET NORM")
-            self.instr.write("DCV 10")
-            self.instr.write("TARM HOLD")
-            self.instr.write("TRIG AUTO")
-            self.instr.write("NRDGS 1,AUTO")
-            self.instr.write("MEM OFF")
-            self.instr.write("NDIG 9")
-            self.instr.close()
-        except:
-            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
-            pass
-        finally:
-            self.lock.release()
-            
     def config_NPLC(self, NPLC):
         try:
             self.connect()
