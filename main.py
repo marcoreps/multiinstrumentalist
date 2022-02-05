@@ -250,7 +250,7 @@ def temperature_sweep():
 
     internal_timer = datetime.datetime.now()
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A Vce")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A ADRmu 10V")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].config_NPLC(20)
     instruments["3458A"].config_trigger_auto()
@@ -261,8 +261,8 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(20)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 40
-    tmax = 80
+    tmin = 15
+    tmax = 40
     tstep = 1
     wait_settle = 1
     samples_per_step = 100
