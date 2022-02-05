@@ -265,10 +265,10 @@ def temperature_sweep():
     tmax = 35
     tstep = 1
     wait_settle = 1
-    samples_per_step = 100
+    samples_per_step = 50
     
-    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
-    #for t in numpy.arange(tmin, tmax+0.01, tstep):
+    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
         instruments["arroyo"].out(t)
         time.sleep(wait_settle)
         for s in range(samples_per_step):
