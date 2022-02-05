@@ -253,7 +253,6 @@ def temperature_sweep():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A Vce")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].config_NPLC(20)
-    #instruments["3458A"].config_1OHMF_9digit()
     instruments["3458A"].config_trigger_auto()
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
@@ -265,8 +264,8 @@ def temperature_sweep():
     tmin = 40
     tmax = 80
     tstep = 1
-    wait_settle = 45
-    samples_per_step = 50
+    wait_settle = 1
+    samples_per_step = 100
     
     for t in numpy.arange(tmin, tmax+0.01, tstep):
         instruments["arroyo"].out(t)
