@@ -257,22 +257,31 @@ def temperature_sweep():
     #instruments["3458B"].config_NPLC(20)
     #instruments["3458B"].config_trigger_auto()
     
-    tmin = 15
-    tmax = 35
+    tmin = 20
+    tmax = 30
     tstep = 1
     wait_settle = 1
-    samples_per_step = 50
+    samples_per_step = 10
     
-    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
-    for t in numpy.arange(tmin, tmax+0.01, tstep):
-        instruments["arroyo"].out(t)
-        time.sleep(wait_settle)
-        for s in range(samples_per_step):
-            for i in instruments.values():
-                if i.is_readable():
-                    MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-            time.sleep(0.5)
-            MySeriesHelper.commit()
+    while True:
+        for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+            instruments["arroyo"].out(t)
+            time.sleep(wait_settle)
+            for s in range(samples_per_step):
+                for i in instruments.values():
+                    if i.is_readable():
+                        MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                time.sleep(0.5)
+                MySeriesHelper.commit()
+        for t in numpy.arange(tmin, tmax+0.01, tstep):
+            instruments["arroyo"].out(t)
+            time.sleep(wait_settle)
+            for s in range(samples_per_step):
+                for i in instruments.values():
+                    if i.is_readable():
+                        MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                time.sleep(0.5)
+                MySeriesHelper.commit()
 
 def scanner():
 
@@ -632,9 +641,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
