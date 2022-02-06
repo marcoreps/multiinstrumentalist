@@ -140,8 +140,6 @@ def HPM_INL():
         
     MySeriesHelper.commit()
     
-     
-
 def test_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu1 3458A")
     instruments["3458A"].config_10DCV_9digit()
@@ -155,15 +153,15 @@ def test_3458A():
     
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu1 3458B")
-    instruments["3458B"].config_100DCV_9digit()
+    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu1 3458B")
+    #instruments["3458B"].config_100DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].config_1mA_9digit()
-    instruments["3458B"].config_NPLC(200)
-    instruments["3458B"].blank_display()
-    instruments["3458B"].config_trigger_auto()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    #instruments["3458B"].config_NPLC(200)
+    #instruments["3458B"].blank_display()
+    #instruments["3458B"].config_trigger_auto()
+    #HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     
 
@@ -171,15 +169,14 @@ def test_3458A():
         now = datetime.datetime.now()
         if not(now.minute % 10) and not(now.second):
             MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            #MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
         
         for i in instruments.values():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(1)
-        
-        
+             
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
@@ -245,7 +242,6 @@ def INL_3458A():
         
     MySeriesHelper.commit()
     
-    
 def temperature_sweep():
 
     internal_timer = datetime.datetime.now()
@@ -277,7 +273,6 @@ def temperature_sweep():
                     MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
             time.sleep(0.5)
             MySeriesHelper.commit()
-
 
 def scanner():
 
@@ -381,8 +376,7 @@ def scanner():
         MySeriesHelper(instrument_name="5700A 3458B", value=float(K3458B.get_read_val()))
         switch.switchingOpenRelay(channels[3]) # Open 3458B
         switch.switchingOpenRelay(channels[6]) # Open 3458B
-        
-        
+            
 """        
         # Measure Wavetek 10 with 3458A
         switch.switchingCloseRelay(channels[4]) # Close Wavetek 10
@@ -421,7 +415,6 @@ def scanner():
         MySeriesHelper(instrument_name="Wavetek 7 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[5]) # Open Wavetek 7
 """
-
 
 def auto_ACAL_3458A():
     
@@ -480,11 +473,7 @@ def scanner2():
         switch.switchingOpenRelay(channels[4])
         switch.switchingOpenRelay(channels[5])
         time.sleep(3)
-        
-        
-        
-        
-        
+     
 def read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
@@ -643,9 +632,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
-        temperature_sweep()
+        #temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
