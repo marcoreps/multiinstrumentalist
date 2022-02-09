@@ -141,7 +141,7 @@ def HPM_INL():
     MySeriesHelper.commit()
     
 def test_3458A():
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu1 3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A ADRmu 10V")
     instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
