@@ -141,15 +141,15 @@ def HPM_INL():
     MySeriesHelper.commit()
     
 def test_3458A():
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A ADRmu 10V")
-    instruments["3458A"].config_10DCV_9digit()
+    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A ADRmu 10V")
+    #instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
     #instruments["3458A"].config_1mA_9digit()
-    instruments["3458A"].config_NPLC(200)
-    instruments["3458A"].blank_display()
-    instruments["3458A"].config_trigger_auto()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    #instruments["3458A"].config_NPLC(200)
+    #instruments["3458A"].blank_display()
+    #instruments["3458A"].config_trigger_auto()
+    #HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
@@ -168,8 +168,8 @@ def test_3458A():
     while True:
         now = datetime.datetime.now()
         if not(now.minute % 10) and not(now.second):
-            MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            #MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            #MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
+            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(1)
         
         for i in instruments.values():
