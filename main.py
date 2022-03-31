@@ -36,7 +36,7 @@ vxi_ip = "192.168.178.88"
 
 instruments = dict()
 instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-instruments["temp_long"]=TMP117(address=0x48, title="Long Temp Sensor")
+instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
 
 #instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
 #instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
@@ -507,6 +507,8 @@ def acal_inst(sch, interval, priority, inst):
 
 def log_3458A_calparams():
 
+    instruments["temp_ADRmu1"]=TMP117(address=0x49, title="ADRmu1 Temp Sensor")
+
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
@@ -530,8 +532,8 @@ def log_3458A_calparams():
     sch.enter(2, 10, read_inst, argument=(sch, 2, 10, instruments["3458B"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
-    sch.enter(60*15, 9, read_inst, argument=(sch, 60*15, 9, HP3458A_temperature))
-    sch.enter(60*15, 9, read_inst, argument=(sch, 60*15, 9, HP3458B_temperature))
+    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458A"]))
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458B"]))
     sch.run()
