@@ -241,7 +241,7 @@ def INL_3458A():
                 writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out})
         
     MySeriesHelper.commit()
-    
+
 def temperature_sweep():
 
     internal_timer = datetime.datetime.now()
@@ -257,31 +257,20 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(20)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 30
+    tmin = 50
     tmax = 100
     tstep = 1
-    wait_settle = 15
-    samples_per_step = 30
-    
-    while True:
-        for t in numpy.arange(tmin, tmax+0.01, tstep):
-            instruments["arroyo"].out(t)
-            time.sleep(wait_settle)
-            for s in range(samples_per_step):
-                for i in instruments.values():
-                    if i.is_readable():
-                        MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-                time.sleep(0.5)
-                MySeriesHelper.commit()
-        for t in numpy.arange(tmin, tmax+0.01, tstep):
-            instruments["arroyo"].out(t)
-            time.sleep(wait_settle)
-            for s in range(samples_per_step):
-                for i in instruments.values():
-                    if i.is_readable():
-                        MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-                time.sleep(0.5)
-                MySeriesHelper.commit()
+    wait_settle = 10
+
+    sch = sched.scheduler(time.time, time.sleep)
+    sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
+    sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458B"]))
+    i=0
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
+        i+=1
+        sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=(t))
+    sch.run()
+
 
 def scanner():
 
@@ -539,8 +528,7 @@ def log_3458A_calparams():
     sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458A"]))
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458B"]))
-    sch.run()
-    
+    sch.run()   
     
 def noise_3458A():
 
