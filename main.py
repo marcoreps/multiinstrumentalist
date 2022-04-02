@@ -257,7 +257,7 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(20)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 40
+    tmin = 30
     tmax = 100
     tstep = 1
     wait_settle = 20
@@ -265,6 +265,7 @@ def temperature_sweep():
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
     sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458B"]))
+    sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
     i=0
     for t in numpy.arange(tmin, tmax+0.01, tstep):
         i+=1
