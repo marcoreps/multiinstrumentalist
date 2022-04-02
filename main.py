@@ -246,22 +246,22 @@ def temperature_sweep():
 
     internal_timer = datetime.datetime.now()
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A ADRmu 10V")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A LTZpin8")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].config_NPLC(20)
     instruments["3458A"].config_trigger_auto()
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B Vz")
-    #instruments["3458B"].config_10DCV_9digit()
-    #instruments["3458B"].config_NPLC(20)
-    #instruments["3458B"].config_trigger_auto()
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B Vz")
+    instruments["3458B"].config_10DCV_9digit()
+    instruments["3458B"].config_NPLC(20)
+    instruments["3458B"].config_trigger_auto()
     
-    tmin = 20
-    tmax = 30
+    tmin = 30
+    tmax = 100
     tstep = 1
-    wait_settle = 1
-    samples_per_step = 100000000
+    wait_settle = 10
+    samples_per_step = 5
     
     while True:
         for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
@@ -648,10 +648,10 @@ if __name__ == '__main__':
         #INL_34401()
         #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
-        log_3458A_calparams()
+        #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         
