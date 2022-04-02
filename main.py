@@ -268,7 +268,7 @@ def temperature_sweep():
     i=0
     for t in numpy.arange(tmin, tmax+0.01, tstep):
         i+=1
-        sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=(t))
+        sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
 
 
