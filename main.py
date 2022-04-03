@@ -160,7 +160,7 @@ def test_3458A():
     #instruments["3458B"].config_1mA_9digit()
     instruments["3458B"].config_NPLC(100)
     #instruments["3458B"].blank_display()
-    #instruments["3458B"].config_trigger_auto()
+    instruments["3458B"].config_trigger_auto()
     #HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     
