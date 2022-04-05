@@ -25,7 +25,7 @@ from instruments.switch import *
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -264,7 +264,7 @@ def temperature_sweep():
     wait_settle = 40
 
     sch = sched.scheduler(time.time, time.sleep)
-    #sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
+    sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
     sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458B"]))
     sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
     i=0
