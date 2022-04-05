@@ -246,10 +246,10 @@ def temperature_sweep():
 
     internal_timer = datetime.datetime.now()
 
-    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A LTZpin8")
-    #instruments["3458A"].config_10DCV_9digit()
-    #instruments["3458A"].config_NPLC(20)
-    #instruments["3458A"].config_trigger_auto()
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A LTZpin8")
+    instruments["3458A"].config_10DCV_9digit()
+    instruments["3458A"].config_NPLC(20)
+    instruments["3458A"].config_trigger_auto()
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B Vz")
@@ -258,9 +258,9 @@ def temperature_sweep():
     instruments["3458B"].config_trigger_auto()
     
     tmin = 20
-    tmax = 40
+    tmax = 60
     tstep = 1
-    wait_settle = 50
+    wait_settle = 40
 
     sch = sched.scheduler(time.time, time.sleep)
     #sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
@@ -636,9 +636,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
