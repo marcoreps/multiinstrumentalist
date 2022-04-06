@@ -258,8 +258,8 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(20)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 30
-    tmax = 80
+    tmin = 26
+    tmax = 50
     tstep = 1
     wait_settle = 40
 
@@ -637,9 +637,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
