@@ -527,7 +527,7 @@ def log_3458A_calparams():
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
     #sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
-    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    #sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458A"]))
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458B"]))
