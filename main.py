@@ -158,7 +158,7 @@ def test_3458A():
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].config_1mA_9digit()
-    instruments["3458B"].config_NPLC(50)
+    instruments["3458B"].config_NPLC(200)
     #instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_auto()
     #HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
@@ -169,7 +169,7 @@ def test_3458A():
         now = datetime.datetime.now()
         if not(now.minute % 10) and not(now.second):
             #MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            #MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
+            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
             time.sleep(0.5)
         
         for i in instruments.values():
@@ -501,18 +501,18 @@ def log_3458A_calparams():
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu2 3458A")
-    instruments["3458A"].config_10DCV_9digit()
+    #instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
-    instruments["3458A"].config_NPLC(200)
-    instruments["3458A"].blank_display()
-    instruments["3458A"].config_trigger_auto()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    #instruments["3458A"].config_NPLC(200)
+    #instruments["3458A"].blank_display()
+    #instruments["3458A"].config_trigger_auto()
+    #HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
-    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu2 3458B")
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu1 3458B")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu2 3458B")
+    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu1 3458B")
     instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
@@ -522,7 +522,7 @@ def log_3458A_calparams():
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(2, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
+    #sch.enter(2, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
     sch.enter(2, 10, read_inst, argument=(sch, 2, 10, instruments["3458B"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
@@ -639,10 +639,10 @@ if __name__ == '__main__':
         #INL_34401()
         #test_3458A()
         #INL_3458A()
-        temperature_sweep()
+        #temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
-        #log_3458A_calparams()
+        log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         
