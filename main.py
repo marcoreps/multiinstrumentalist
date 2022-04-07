@@ -500,7 +500,7 @@ def acal_inst(sch, interval, priority, inst):
 def log_3458A_calparams():
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
-    """
+    
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu2 3458A")
     instruments["3458A"].config_10DCV_9digit()
@@ -510,8 +510,8 @@ def log_3458A_calparams():
     instruments["3458A"].blank_display()
     instruments["3458A"].config_trigger_auto()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
-    """
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu2 3458B")
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu1 3458B")
     instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
@@ -521,14 +521,14 @@ def log_3458A_calparams():
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     sch = sched.scheduler(time.time, time.sleep)
-    #sch.enter(2, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
+    sch.enter(2, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
     sch.enter(2, 10, read_inst, argument=(sch, 2, 10, instruments["3458B"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
     #sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
-    #sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
-    #sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458A"]))
+    sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458A"]))
     sch.enter(60*60, 8, acal_inst, argument=(sch, 60*60, 8, instruments["3458B"]))
     sch.run()   
     
