@@ -739,6 +739,7 @@ class HP3458A(multimeter):
             
     def trigger_once(self):
         try:
+            logging.debug(self.title+' triggered once')
             self.connect()
             self.instr.write("TARM SGL")
             self.instr.close()
