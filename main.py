@@ -335,28 +335,28 @@ def scanner():
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[0],)) # Close ADRmu1
         i = i + switch_delay
         sch.enter(i, 10, instruments["3458A"].trigger_once)
-        i = i + NPLC * 0.04 + 1
+        i = i + NPLC * 0.04
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu1 3458A"))
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[0],)) # Open ADRmu1
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[1],)) # Close ADRmu2
         i = i + switch_delay
         sch.enter(i, 10, instruments["3458A"].trigger_once)
-        i = i + NPLC * 0.04 + 1
+        i = i + NPLC * 0.04
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[2],)) # Open 3458A
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[3],)) # Close 3458B
         i = i + switch_delay
         sch.enter(i, 10, instruments["3458B"].trigger_once)
-        i = i + NPLC * 0.04 + 1
+        i = i + NPLC * 0.04
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu2 3458B"))
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[1],)) # Open ADRmu2
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[0],)) # Close ADRmu1
         i = i + switch_delay
         sch.enter(i, 10, instruments["3458A"].trigger_once)
-        i = i + NPLC * 0.04 + 1
+        i = i + NPLC * 0.04
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu1 3458B"))
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[1],)) # Open ADRmu2
-        sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[3],)) # Open ADRmu2
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[3],)) # Open 3458B
 
 
     
