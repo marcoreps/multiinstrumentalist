@@ -274,55 +274,60 @@ def temperature_sweep():
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
 
+def read_inst_scanner(inst, title):
+    if inst.is_readable():
+        MySeriesHelper(instrument_name=title, value=float(inst.get_read_val()))
 
 def scanner():
 
-# III   Br    N   channels[0] 732A -
-# III   BrW   P   channels[0] 732A +
-# III   Or    N   channels[1] LTZmu -
-# III   OrW   P   channels[1] LTZmu +
-# III   Bl    N   channels[2] 3458A -
-# III   BlW   P   channels[2] 3458A +
-# III   Gr    N   channels[3] 3458B -
-# III   GrW   P   channels[3] 3458B +
+# III   Br    N   channels[0] ADRmu1 +
+# III   BrW   P   channels[0] ADRmu1 -
+# III   Or    N   channels[1] ADRmu2 +
+# III   OrW   P   channels[1] ADRmu2 -
+# III   Bl    N   channels[2] 3458A +
+# III   BlW   P   channels[2] 3458A -
+# III   Gr    N   channels[3] 3458B +
+# III   GrW   P   channels[3] 3458B -
 
-# IV    Br    N   channels[4] Wavetek 10 -
-# IV    BrW   P   channels[4] Wavetek 10 +
-# IV    Or    N   channels[5] Wavetek 7 -
-# IV    OrW   P   channels[5] Wavetek 7 +
-# IV    Bl    N   channels[6] Fluke 5700A -
-# IV    BlW   P   channels[6] Fluke 5700A +
+# IV    Br    N   channels[4] 
+# IV    BrW   P   channels[4] 
+# IV    Or    N   channels[5] 
+# IV    OrW   P   channels[5] 
+# IV    Bl    N   channels[6] 
+# IV    BlW   P   channels[6] 
 # IV    Gr    N   channels[7] 
 # IV    GrW   P   channels[7] 
 
     switch_delay = 5
+    NPLC = 200
     internal_timer = datetime.datetime.now()
 
-    HP3458=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    HP3458.config_10DCV_9digit()
-    HP3458.blank_display()
-    HP3458_temperature=HP3458A_temp(HP3458A=HP3458, title="HP3458A Int Temp Sensor")
+    #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
+    #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
     
-    K3458B=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    K3458B.config_10DCV_9digit()
-    K3458B.blank_display()
-    HP3458B_temperature=HP3458A_temp(HP3458A=K3458B, title="HP3458B Int Temp Sensor")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_10DCV_9digit()
+    #instruments["3458A"].config_10OHMF_9digit()
+    #instruments["3458A"].config_10kOHMF_9digit()
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_hold()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_10DCV_9digit()
+    #instruments["3458B"].config_10OHMF_9digit()
+    #instruments["3458B"].config_10kOHMF_9digit()
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].blank_display()
+    instruments["3458B"].config_trigger_hold()
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+
     switch=takovsky_scanner()
     
-    while True:
-        now = datetime.datetime.now()
-        delta = now - internal_timer
-        if delta.total_seconds() > 600:
-            internal_timer = now
-            MySeriesHelper(instrument_name=HP3458_temperature.get_title(), value=float(HP3458_temperature.get_read_val()))
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
-            
-        for i in instruments.values():
-            if i.is_readable():
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-        
-        # Measure 732A with 3458A
+    sch = sched.scheduler(time.time, time.sleep)
+    
+    # Measure ADRmu1 with 3458A
         switch.switchingCloseRelay(channels[2]) # Close 3458A
         switch.switchingCloseRelay(channels[0]) # Close 732A
         time.sleep(switch_delay)
@@ -332,90 +337,46 @@ def scanner():
         MySeriesHelper(instrument_name="732A 3458A", value=float(HP3458.get_read_val()))
         switch.switchingOpenRelay(channels[2]) # Open 3458A
         
-        # Measure 732A with 3458B
-        switch.switchingCloseRelay(channels[3]) # Close 3458B
-        time.sleep(switch_delay)
-        K3458B.measure()
-        while not K3458B.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="732A 3458B", value=float(K3458B.get_read_val()))
-        switch.switchingOpenRelay(channels[0]) # Open 732A
-        
-        # Measure LTZmu with 3458B
-        switch.switchingCloseRelay(channels[1]) # Close LTZmu
-        time.sleep(switch_delay)
-        K3458B.measure()
-        while not K3458B.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="LTZmu 3458B", value=float(K3458B.get_read_val()))
-        switch.switchingOpenRelay(channels[3]) # Open 3458B
-        
-        # Measure LTZmu with 3458A
-        switch.switchingCloseRelay(channels[2]) # Close 3458A
-        time.sleep(switch_delay)
-        HP3458.measure()
-        while not HP3458.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="LTZmu 3458A", value=float(HP3458.get_read_val()))
-        switch.switchingOpenRelay(channels[1]) # Open LTZmu
-        
-        # Measure 5700A with 3458A
-        switch.switchingCloseRelay(channels[6]) # Close 5700A
-        time.sleep(switch_delay)
-        HP3458.measure()
-        while not HP3458.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="5700A 3458A", value=float(HP3458.get_read_val()))
-        switch.switchingOpenRelay(channels[2]) # Open 3458A
-        
-        # Measure 5700A with 3458B
-        switch.switchingCloseRelay(channels[3]) # Close 3458B
-        time.sleep(switch_delay)
-        K3458B.measure()
-        while not K3458B.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="5700A 3458B", value=float(K3458B.get_read_val()))
-        switch.switchingOpenRelay(channels[3]) # Open 3458B
-        switch.switchingOpenRelay(channels[6]) # Open 3458B
-            
-"""        
-        # Measure Wavetek 10 with 3458A
-        switch.switchingCloseRelay(channels[4]) # Close Wavetek 10
-        time.sleep(switch_delay)
-        HP3458.measure()
-        while not HP3458.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="Wavetek 10 3458A", value=float(HP3458.get_read_val()))
-        switch.switchingOpenRelay(channels[2]) # Open 3458A
-        
-        # Measure Wavetek 10 with 3458B
-        switch.switchingCloseRelay(channels[3]) # Close 3458B
-        time.sleep(switch_delay)
-        K3458B.measure()
-        while not K3458B.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="Wavetek 10 3458B", value=float(K3458B.get_read_val()))
-        switch.switchingOpenRelay(channels[4]) # Open Wavetek 10
+    i = 1
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    while i < 86400:
 
-        
-        # Measure Wavetek 7 with 3458B
-        switch.switchingCloseRelay(channels[5]) # Close Wavetek 7
-        time.sleep(switch_delay)
-        K3458B.measure()
-        while not K3458B.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="Wavetek 7 3458B", value=float(K3458B.get_read_val()))
-        switch.switchingOpenRelay(channels[3]) # Open 3458B
-        
-        # Measure Wavetek 7 with 3458A
-        switch.switchingCloseRelay(channels[2]) # Close 3458A
-        time.sleep(switch_delay)
-        HP3458.measure()
-        while not HP3458.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="Wavetek 7 3458A", value=float(HP3458.get_read_val()))
-        switch.switchingOpenRelay(channels[5]) # Open Wavetek 7
-"""
+        sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[0])) # Close ADRmu1
+        i = i + switch_delay
+        sch.enter(i, 10, instruments["3458A"].trigger_once)
+        i = i + NPLC * 0.02 + 1
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu1 3458A"))
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[0])) # Open ADRmu1
+        sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[1])) # Close ADRmu2
+        i = i + switch_delay
+        sch.enter(i, 10, instruments["3458A"].trigger_once)
+        i = i + NPLC * 0.02 + 1
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[2])) # Open 3458A
+        sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[3])) # Close 3458B
+        i = i + switch_delay
+        sch.enter(i, 10, instruments["3458B"].trigger_once)
+        i = i + NPLC * 0.02 + 1
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu2 3458B"))
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[3])) # Open 3458B
+        sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[2])) # Close 3458A
+        i = i + switch_delay
+        sch.enter(i, 10, instruments["3458A"].trigger_once)
+        i = i + NPLC * 0.02 + 1
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[1])) # Open ADRmu2
+
+
+    
+    sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
+    sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
+    #sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
+    #sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
+    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
+    sch.enter(60*60, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(60*60, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    sch.run()
 
 def auto_ACAL_3458A():
     
@@ -641,9 +602,9 @@ if __name__ == '__main__':
         #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        #scanner2()
+        scanner()
         #auto_ACAL_3458A()
-        log_3458A_calparams()
+        #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         
