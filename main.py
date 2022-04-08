@@ -329,6 +329,24 @@ def scanner():
     
     i = 1
     switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    switch.switchingCloseRelay(channels[2]) # Close 3458A
+    switch.switchingOpenRelay(channels[2]) # Close 3458A
+    
     while i < 86400:
 
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[0])) # Close ADRmu1
