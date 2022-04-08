@@ -352,7 +352,7 @@ def scanner():
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[1],)) # Open ADRmu2
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[0],)) # Close ADRmu1
         i = i + switch_delay
-        sch.enter(i, 10, instruments["3458A"].trigger_once)
+        sch.enter(i, 10, instruments["3458B"].trigger_once)
         i = i + NPLC * 0.04 + 0.1
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu1 3458B"))
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[1],)) # Open ADRmu2
