@@ -327,16 +327,6 @@ def scanner():
     
     sch = sched.scheduler(time.time, time.sleep)
     
-    # Measure ADRmu1 with 3458A
-        switch.switchingCloseRelay(channels[2]) # Close 3458A
-        switch.switchingCloseRelay(channels[0]) # Close 732A
-        time.sleep(switch_delay)
-        HP3458.measure()
-        while not HP3458.is_readable():
-            time.sleep(1)
-        MySeriesHelper(instrument_name="732A 3458A", value=float(HP3458.get_read_val()))
-        switch.switchingOpenRelay(channels[2]) # Open 3458A
-        
     i = 1
     switch.switchingCloseRelay(channels[2]) # Close 3458A
     while i < 86400:
