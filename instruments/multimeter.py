@@ -778,6 +778,11 @@ class HP3458A(multimeter):
         self.read_stb()
         ready = self.stb & 0b10000000
         return ready
+        
+    def is_ready(self):
+        self.read_stb()
+        ready = self.stb & 0b00010000
+        return ready
             
             
     def get_int_temp(self):
