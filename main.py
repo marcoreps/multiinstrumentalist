@@ -434,7 +434,7 @@ def read_inst(sch, interval, priority, inst):
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
         
 def read_cal_params(inst):
-    while not inst.is_readable():
+    while not inst.is_ready():
         logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
         time.sleep(1)
     MySeriesHelper(instrument_name=inst.get_title()+" CAL? 72", value=float(inst.get_cal_72()))
