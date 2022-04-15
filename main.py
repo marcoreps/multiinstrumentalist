@@ -366,8 +366,8 @@ def scanner():
     #sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
-    sch.enter(60*60, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    sch.enter(60*60, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    sch.enter(60*60*6, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(60*60*6, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
     sch.run()
 
 def auto_ACAL_3458A():
