@@ -141,41 +141,52 @@ def HPM_INL():
     MySeriesHelper.commit()
     
 def test_3458A():
-    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu2 3458A")
-    #instruments["3458A"].config_10DCV_9digit()
+
+    NPLC = 200
+
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
     #instruments["3458A"].config_1mA_9digit()
-    #instruments["3458A"].config_NPLC(50)
-    #instruments["3458A"].blank_display()
-    #instruments["3458A"].config_trigger_auto()
-    #HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_auto()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
     #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="ADRmu2 3458B")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     #instruments["3458B"].config_1mA_9digit()
-    instruments["3458B"].config_NPLC(200)
-    #instruments["3458B"].blank_display()
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_auto()
-    #HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
+    sch = sched.scheduler(time.time, time.sleep)
     
-
-    while True:
-        now = datetime.datetime.now()
-        if not(now.minute % 10) and not(now.second):
-            #MySeriesHelper(instrument_name=HP3458A_temperature.get_title(), value=float(HP3458A_temperature.get_read_val()))
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
-            time.sleep(0.5)
+    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
+    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
+    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
+    sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    
+    i = 1
+    while i < 60*60*24:
+        sch.enter(i, 10, instruments["3458A"].trigger_once)
+        sch.enter(i, 10, instruments["3458B"].trigger_once)
+        i = i + NPLC * 0.04 + 0.1
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu1 3458B"))
         
-        for i in instruments.values():
-            if i.is_readable():
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-        time.sleep(1)
+    sch.run()
+        
+
+
              
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
@@ -302,7 +313,6 @@ def scanner():
 
     switch_delay = 5
     NPLC = 200
-    internal_timer = datetime.datetime.now()
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
     #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
@@ -360,12 +370,12 @@ def scanner():
 
 
     
-    sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
-    #sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
-    #sch.enter(1, 11, read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
-    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
-    sch.enter(61*10, 9, read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
+    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
+    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
+    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
     sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
     sch.run()
@@ -428,8 +438,8 @@ def scanner2():
         switch.switchingOpenRelay(channels[5])
         time.sleep(3)
      
-def read_inst(sch, interval, priority, inst):
-    sch.enter(interval, priority, read_inst, argument=(sch, interval, priority, inst))
+def recursive_read_inst(sch, interval, priority, inst):
+    sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
         MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
         
@@ -591,10 +601,10 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        scanner()
+        #scanner()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
