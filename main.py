@@ -180,8 +180,8 @@ def test_3458A():
         sch.enter(i, 10, instruments["3458A"].trigger_once)
         sch.enter(i, 10, instruments["3458B"].trigger_once)
         i = i + NPLC * 0.04 + 0.2
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu1 3458A"))
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu2 3458B"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu1 3458B"))
         i = i+1
         
     sch.run()
