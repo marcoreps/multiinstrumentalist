@@ -258,7 +258,7 @@ def temperature_sweep():
 
     internal_timer = datetime.datetime.now()
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A LTZpin8")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A LTZheater")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].config_NPLC(20)
     instruments["3458A"].config_trigger_auto()
@@ -270,8 +270,8 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(20)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 20
-    tmax = 40
+    tmin = 30
+    tmax = 90
     tstep = 1
     wait_settle = 40
 
@@ -595,36 +595,6 @@ def pt100_scanner():
             instruments["3458B"].trigger_once()
             MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
-
-def testt_3458A():
-
-    NPLC = 200
-
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_10DCV_9digit()
-    #instruments["3458A"].config_10OHMF_9digit()
-    #instruments["3458A"].config_10kOHMF_9digit()
-    #instruments["3458A"].config_1mA_9digit()
-    instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].blank_display()
-    instruments["3458A"].config_trigger_auto()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
-    
-    
-    sch = sched.scheduler(time.time, time.sleep)
-    
-    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
-    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
-    
-    i = 1
-    while i < 60*60*24:
-        sch.enter(i, 10, instruments["3458A"].trigger_once)
-        i = i + NPLC * 0.04 + 0.2
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "wavetek 3458A"))
-        i = i+1
-        
-    sch.run()
     
 
 if __name__ == '__main__':
@@ -632,9 +602,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
