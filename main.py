@@ -72,9 +72,7 @@ def HPM_test():
             if i.is_readable():
                 MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
         time.sleep(0.1)
-                
-                
-                
+
 def HPM_INL():
 
     instruments["HPM1"]=HPM7177(seriallock, hpm1_poly, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177 Unit 1')
@@ -139,7 +137,7 @@ def HPM_INL():
 
         
     MySeriesHelper.commit()
-    
+
 def test_3458A():
 
     NPLC = 200
@@ -185,9 +183,6 @@ def test_3458A():
         i = i+1
         
     sch.run()
-        
-
-
              
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
@@ -276,9 +271,9 @@ def temperature_sweep():
     wait_settle = 40
 
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458A"]))
-    sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["3458B"]))
-    sch.enter(1, 10, read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
+    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"]))
+    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"]))
+    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
     i=0
     #for t in numpy.arange(tmin, tmax+0.01, tstep):
     for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
