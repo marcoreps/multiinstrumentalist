@@ -178,8 +178,8 @@ def test_3458A():
         sch.enter(i, 10, instruments["3458A"].trigger_once)
         sch.enter(i, 10, instruments["3458B"].trigger_once)
         i = i + NPLC * 0.04 + 0.2
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu1 3458B"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "3458A LTZheater"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "3458B Vz"))
         i = i+1
         
     sch.run()
@@ -597,9 +597,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
-        temperature_sweep()
+        #temperature_sweep()
         #scanner()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
