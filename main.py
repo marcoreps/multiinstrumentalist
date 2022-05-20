@@ -274,7 +274,7 @@ def temperature_sweep():
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
 
-def read_inst_scanner(inst, title=inst.get_title()):
+def read_inst_scanner(inst, title):
     if inst.is_readable():
         MySeriesHelper(instrument_name=title, value=float(inst.get_read_val()))
     else:
