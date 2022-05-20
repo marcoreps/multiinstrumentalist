@@ -166,23 +166,16 @@ def test_3458A():
     
     sch = sched.scheduler(time.time, time.sleep)
     
-    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
-    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
-    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
-    sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    
     i = 1
-    while i < 60*60*24:
+    while i < 60*60*24*2:
         sch.enter(i, 10, instruments["3458A"].trigger_once)
-        sch.enter(i, 10, instruments["3458B"].trigger_once)
-        i = i + NPLC * 0.04 + 0.5
+        i = i + NPLC * 0.05 + 0.5
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "3458A LTZheater"))
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "3458B Vz"))
-        i = i+1
+        i = i + 0.5
+
         
     sch.run()
+    
              
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
@@ -281,7 +274,7 @@ def temperature_sweep():
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
 
-def read_inst_scanner(inst, title):
+def read_inst_scanner(inst, title=inst.get_title()):
     if inst.is_readable():
         MySeriesHelper(instrument_name=title, value=float(inst.get_read_val()))
     else:
