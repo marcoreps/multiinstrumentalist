@@ -750,7 +750,8 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s trigger_once" % self.title, exc_info=True)
             pass
-
+        finally:
+            self.lock.release()
             
     def measure(self):
         logging.debug(self.title+' measure started')
