@@ -740,8 +740,8 @@ class HP3458A(multimeter):
     def trigger_once(self):
         try:
             logging.debug(self.title+' triggered once')
-            self.connect()
             if self.is_ready():
+                self.connect()
                 self.instr.write("TARM SGL")
             else:
                 logging.info("%s was not ready for trigger_once." % (self.get_title()))
