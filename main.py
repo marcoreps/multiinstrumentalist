@@ -166,7 +166,7 @@ def test_3458A():
     
     sch = sched.scheduler(time.time, time.sleep)
     
-    i = 0
+    i = 3
     logging.info("Planning ahead: Measurements ...")
     while i < 60*60*24*2:
         sch.enter(i, 10, instruments["3458A"].trigger_once)
@@ -176,21 +176,21 @@ def test_3458A():
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "3458B Vz"))
         i = i + 0.5
         
-    i = 1
+    i = 0
     logging.info("Planning ahead: Temperature sensors ...")
     while i < 60*60*24*2:
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_short"], "Short Temp Sensor"))
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_long"], "Long Temp Sensor"))
         i = i+10
         
-    i = 60*10
+    i = 1
     logging.info("Planning ahead: Internal temp sensors ...")
     while i < 60*60*24*2:
-        sch.enter(i, 10, read_inst_scanner, argument=(HP3458A_temperature))
-        sch.enter(i, 10, read_inst_scanner, argument=(HP3458B_temperature))
+        sch.enter(i, 10, read_inst_scanner, argument=(HP3458A_temperature, ))
+        sch.enter(i, 10, read_inst_scanner, argument=(HP3458B_temperature, ))
         i = i+60*10
         
-    i = 0
+    i = 2
     logging.info("Planning ahead: ACALs ...")
     while i < 60*60*24*2:
         sch.enter(i, 10, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
