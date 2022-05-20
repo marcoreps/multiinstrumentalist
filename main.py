@@ -186,8 +186,8 @@ def test_3458A():
     i = 1
     logging.info("Planning ahead: Internal temp sensors ...")
     while i < 60*60*24*2:
-        sch.enter(i, 10, read_inst_scanner, argument=(HP3458A_temperature, ))
-        sch.enter(i, 10, read_inst_scanner, argument=(HP3458B_temperature, ))
+        sch.enter(i, 10, read_inst_scanner, argument=(HP3458A_temperature, "HP3458A Int Temp Sensor"))
+        sch.enter(i, 10, read_inst_scanner, argument=(HP3458B_temperature, "HP3458B Int Temp Sensor"))
         i = i+60*10
         
     i = 2
