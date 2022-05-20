@@ -305,7 +305,7 @@ def read_inst_scanner(inst, title):
     if inst.is_readable():
         MySeriesHelper(instrument_name=title, value=float(inst.get_read_val()))
     else:
-        logging.error(inst.get_title()+' was not readable')
+        logging.info(inst.get_title()+' was not readable')
 
 def scanner():
 
