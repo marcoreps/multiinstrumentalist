@@ -166,13 +166,44 @@ def test_3458A():
     
     sch = sched.scheduler(time.time, time.sleep)
     
-    i = 1
+    i = 0
     while i < 60*60*24*2:
         sch.enter(i, 10, instruments["3458A"].trigger_once)
+        sch.enter(i, 10, instruments["3458B"].trigger_once)
         i = i + NPLC * 0.05 + 0.5
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "3458A LTZheater"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "3458B Vz"))
         i = i + 0.5
+        
+    i = 1
+    while i < 60*60*24*2:
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_short"], "Short Temp Sensor"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_long"], "Long Temp Sensor"))
+        i = i+10
+        
+    i = 60*10
+    while i < 60*60*24*2:
+        sch.enter(i, 10, read_inst_scanner, argument=(HP3458A_temperature))
+        sch.enter(i, 10, read_inst_scanner, argument=(HP3458B_temperature))
+        i = i+60*10
+        
+    i = 0
+    while i < 60*60*24*2:
+        sch.enter(i, 10, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+        sch.enter(i, 10, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+        i = i+60*5
+        sch.enter(i, 10, read_cal_params, argument=(instruments["3458A"], ))
+        sch.enter(i, 10, read_cal_params, argument=(instruments["3458B"], ))
+        i = i+60*60
 
+
+
+
+    
+
+    i = i + NPLC * 0.05 + 0.5
+
+    i = i+1
         
     sch.run()
     
@@ -444,10 +475,7 @@ def acal_inst(sch, interval, priority, inst):
     while not inst.is_ready():
         logging.info("%s was not ready for acal_inst." % (inst.get_title()))
         time.sleep(1)
-    sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
-    sch.enter(60*5, priority-1, read_cal_params, argument=(inst, ))
     inst.acal_DCV()
-    time.sleep(1)
 
 def log_3458A_calparams():
 
