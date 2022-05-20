@@ -177,7 +177,7 @@ def test_3458A():
     while i < 60*60*24:
         sch.enter(i, 10, instruments["3458A"].trigger_once)
         sch.enter(i, 10, instruments["3458B"].trigger_once)
-        i = i + NPLC * 0.04 + 0.2
+        i = i + NPLC * 0.04 + 0.5
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "3458A LTZheater"))
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "3458B Vz"))
         i = i+1
@@ -452,7 +452,7 @@ def acal_inst(sch, interval, priority, inst):
         logging.info("%s was not ready for acal_inst." % (inst.get_title()))
         time.sleep(1)
     sch.enter(interval, priority, acal_inst, argument=(sch, interval, priority, inst))
-    sch.enter(60*4, priority-1, read_cal_params, argument=(inst, ))
+    sch.enter(60*5, priority-1, read_cal_params, argument=(inst, ))
     inst.acal_DCV()
     time.sleep(1)
 
