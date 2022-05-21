@@ -286,7 +286,7 @@ def temperature_sweep():
     instruments["3458B"].config_trigger_auto()
     
     tmin = 40
-    tmax = 47.7
+    tmax = 45.3
     tstep = 0.1
     wait_settle = 120
 
