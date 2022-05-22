@@ -295,8 +295,8 @@ def temperature_sweep():
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"]))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
     i=0
-    for t in numpy.arange(tmin, tmax+0.01, tstep):
-    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    #for t in numpy.arange(tmin, tmax+0.01, tstep):
+    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=1
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
