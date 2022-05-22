@@ -287,7 +287,7 @@ def temperature_sweep():
     
     tmin = 18
     tmax = 35
-    tstep = 0.1
+    tstep = 0.5
     wait_settle = 60
 
     sch = sched.scheduler(time.time, time.sleep)
@@ -295,8 +295,8 @@ def temperature_sweep():
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"]))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
     i=0
-    #for t in numpy.arange(tmin, tmax+0.01, tstep):
-    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
+    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=1
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
@@ -614,9 +614,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
