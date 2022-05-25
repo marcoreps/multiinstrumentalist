@@ -164,7 +164,7 @@ def test_3458A():
     instruments["3458B"].config_trigger_auto()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
-    instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
+    #instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
     
     sch = sched.scheduler(time.time, time.sleep)
     
@@ -174,15 +174,15 @@ def test_3458A():
         sch.enter(i, 10, instruments["3458A"].trigger_once)
         sch.enter(i, 10, instruments["3458B"].trigger_once)
         i = i + NPLC * 0.05 + 0.5
-        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
-        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu4 3458B"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu4 3458B"))
         i = i + 0.5
         
     i = 0
     logging.info("Planning ahead: Temperature sensors ...")
     while i < 60*60*24*2:
         #sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_short"], "Short Temp Sensor"))
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_ADRmu4"], "ADRmu4 Temp Sensor"))
+        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_ADRmu4"], "ADRmu4 Temp Sensor"))
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_long"], "Long Temp Sensor"))
         i = i+10
         
