@@ -35,7 +35,7 @@ onewire_lock = Lock()
 vxi_ip = "192.168.178.88"
 
 instruments = dict()
-instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
+#instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
 instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
 
 #instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
@@ -164,6 +164,8 @@ def test_3458A():
     instruments["3458B"].config_trigger_auto()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
+    instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
+    
     sch = sched.scheduler(time.time, time.sleep)
     
     i = 3
@@ -172,14 +174,15 @@ def test_3458A():
         sch.enter(i, 10, instruments["3458A"].trigger_once)
         sch.enter(i, 10, instruments["3458B"].trigger_once)
         i = i + NPLC * 0.05 + 0.5
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu4 3458B"))
+        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
+        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu4 3458B"))
         i = i + 0.5
         
     i = 0
     logging.info("Planning ahead: Temperature sensors ...")
     while i < 60*60*24*2:
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_short"], "Short Temp Sensor"))
+        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_short"], "Short Temp Sensor"))
+        sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_ADRmu4"], "ADRmu4 Temp Sensor"))
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_long"], "Long Temp Sensor"))
         i = i+10
         
@@ -332,6 +335,7 @@ def scanner():
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
     #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
+    instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
     
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
