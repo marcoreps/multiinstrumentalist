@@ -142,7 +142,7 @@ def test_3458A():
 
     NPLC = 200
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="3458A FFY00")
     instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
