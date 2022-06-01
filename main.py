@@ -254,7 +254,7 @@ def INL_3458A():
                 while any(i.is_readable() == False for i in instruments.values()):
                     time.sleep(1)
 
-                MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
+                #MySeriesHelper(instrument_name=instruments["temp_short"].get_title(), value=float(instruments["temp_short"].get_read_val()))
                 MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
                 calibrator_out = u
                 
