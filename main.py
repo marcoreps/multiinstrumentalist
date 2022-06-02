@@ -222,8 +222,8 @@ def INL_3458A():
     
     umin = -10
     umax = 10
-    ustep = 0.1
-    wait_settle = 10
+    ustep = 0.5
+    wait_settle = 20
     samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
@@ -232,7 +232,7 @@ def INL_3458A():
     time.sleep(180)
     
     with open('csv/'+timestr+'FFY00_3458A_3458B_INL.csv', mode='w') as csv_file:
-        fieldnames = ['vref', '3458A_volt', '3458B_volt', '3458F_volt']
+        fieldnames = ['vref', '3458B_volt', '3458F_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -246,9 +246,9 @@ def INL_3458A():
             instruments["3458B"].config_trigger_auto()
             instruments["3458F"].config_trigger_auto()
             time.sleep(wait_settle)
-            instruments["3458A"].config_NPLC(10)
-            instruments["3458F"].config_NPLC(10)
-            instruments["3458B"].config_NPLC(10)
+            instruments["3458A"].config_NPLC(100)
+            instruments["3458F"].config_NPLC(100)
+            instruments["3458B"].config_NPLC(100)
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
             instruments["3458F"].config_trigger_hold()
@@ -265,7 +265,7 @@ def INL_3458A():
                 MySeriesHelper(instrument_name=instruments["temp_long"].get_title(), value=float(instruments["temp_long"].get_read_val()))
                 calibrator_out = u
                 
-                HP3458A_out = float(instruments["3458A"].get_read_val())
+                #HP3458A_out = float(instruments["3458A"].get_read_val())
                 HP3458B_out = float(instruments["3458B"].get_read_val())
                 HP3458F_out = float(instruments["3458F"].get_read_val())
 
@@ -276,7 +276,7 @@ def INL_3458A():
                 MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
                 MySeriesHelper(instrument_name="3458B ppm", value=(HP3458B_out-calibrator_out)/0.00001)
 
-                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, '3458F_volt': HP3458F_out})
+                writer.writerow({'vref': calibrator_out, '3458B_volt': HP3458B_out, '3458F_volt': HP3458F_out})
         
     MySeriesHelper.commit()
 
