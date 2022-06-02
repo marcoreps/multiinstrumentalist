@@ -223,13 +223,13 @@ def INL_3458A():
     umin = -10
     umax = 10
     ustep = 0.5
-    wait_settle = 16
+    wait_settle = 20
     samples_per_step = 1
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
-    time.sleep(60)
+    time.sleep(180)
     
     with open('csv/'+timestr+'FFY00_3458A_3458B_INL.csv', mode='w') as csv_file:
         fieldnames = ['vref', '3458A_volt', '3458B_volt', '3458F_volt']
@@ -246,9 +246,9 @@ def INL_3458A():
             instruments["3458B"].config_trigger_auto()
             instruments["3458F"].config_trigger_auto()
             time.sleep(wait_settle)
-            instruments["3458A"].config_NPLC(50)
-            instruments["3458F"].config_NPLC(50)
-            instruments["3458B"].config_NPLC(50)
+            instruments["3458A"].config_NPLC(100)
+            instruments["3458F"].config_NPLC(100)
+            instruments["3458B"].config_NPLC(100)
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
             instruments["3458F"].config_trigger_hold()
