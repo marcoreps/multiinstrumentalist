@@ -222,7 +222,7 @@ def INL_3458A():
     
     umin = -10
     umax = 10
-    ustep = 0.5
+    ustep = 0.25
     wait_settle = 20
     samples_per_step = 1
     
@@ -246,9 +246,9 @@ def INL_3458A():
             instruments["3458B"].config_trigger_auto()
             instruments["3458F"].config_trigger_auto()
             time.sleep(wait_settle)
-            instruments["3458A"].config_NPLC(100)
-            instruments["3458F"].config_NPLC(100)
-            instruments["3458B"].config_NPLC(100)
+            instruments["3458A"].config_NPLC(50)
+            instruments["3458F"].config_NPLC(50)
+            instruments["3458B"].config_NPLC(50)
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
             instruments["3458F"].config_trigger_hold()
