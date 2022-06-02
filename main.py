@@ -210,12 +210,15 @@ def test_3458A():
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458A")
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="3458B")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458F"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="FFY00 3458A")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458B"].config_10DCV_9digit()
+    instruments["3458F"].config_10DCV_9digit()
     instruments["3458A"].config_trigger_auto()
     instruments["3458B"].config_trigger_auto()
+    instruments["3458F"].config_trigger_auto()
     
     umin = -10
     umax = 10
@@ -229,7 +232,7 @@ def INL_3458A():
     time.sleep(60)
     
     with open('csv/'+timestr+'FFY00_3458A_3458B_INL.csv', mode='w') as csv_file:
-        fieldnames = ['vref', '3458A_volt', '3458B_volt']
+        fieldnames = ['vref', '3458A_volt', '3458B_volt', '3458F_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -260,6 +263,7 @@ def INL_3458A():
                 
                 HP3458A_out = float(instruments["3458A"].get_read_val())
                 HP3458B_out = float(instruments["3458B"].get_read_val())
+                HP3458F_out = float(instruments["3458F"].get_read_val())
 
                 MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=HP3458A_out)
                 MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=HP3458B_out)
@@ -268,7 +272,7 @@ def INL_3458A():
                 MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
                 MySeriesHelper(instrument_name="3458B ppm", value=(HP3458B_out-calibrator_out)/0.00001)
 
-                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out})
+                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, '3458F_volt': HP3458F_out})
         
     MySeriesHelper.commit()
 
@@ -618,8 +622,8 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        test_3458A()
-        #INL_3458A()
+        #test_3458A()
+        INL_3458A()
         #temperature_sweep()
         #scanner()
         #auto_ACAL_3458A()
