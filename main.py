@@ -269,11 +269,11 @@ def INL_3458A():
                 HP3458B_out = float(instruments["3458B"].get_read_val())
                 HP3458F_out = float(instruments["3458F"].get_read_val())
 
-                MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=HP3458A_out)
+                #MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=HP3458A_out)
                 MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=HP3458B_out)
                 MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
-                MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
+                #MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
                 MySeriesHelper(instrument_name="3458B ppm", value=(HP3458B_out-calibrator_out)/0.00001)
 
                 writer.writerow({'vref': calibrator_out, '3458B_volt': HP3458B_out, '3458F_volt': HP3458F_out})
