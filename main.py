@@ -241,13 +241,17 @@ def INL_3458A():
             logging.debug('main setting source to '+str(u)+'V')
             instruments["3458A"].config_NPLC(10)
             instruments["3458B"].config_NPLC(10)
+            instruments["3458F"].config_NPLC(10)
             instruments["3458A"].config_trigger_auto()
             instruments["3458B"].config_trigger_auto()
+            instruments["3458F"].config_trigger_auto()
             time.sleep(wait_settle)
             instruments["3458A"].config_NPLC(50)
+            instruments["3458F"].config_NPLC(50)
             instruments["3458B"].config_NPLC(50)
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
+            instruments["3458F"].config_trigger_hold()
             
             for i in instruments.values():
                 i.measure()
