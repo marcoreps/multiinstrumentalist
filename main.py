@@ -6,10 +6,10 @@ import logging
 from time import time
 import numpy
 from multiprocessing import Process, Lock
-import datetime
-import threading
 import sys
 import sched
+import itertools
+
 
 
 
@@ -282,7 +282,6 @@ def INL_3458A():
 
 def temperature_sweep():
 
-    internal_timer = datetime.datetime.now()
 
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A LTZheater")
     instruments["3458A"].config_10DCV_9digit()
