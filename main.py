@@ -339,8 +339,8 @@ def scanner():
 # IV    GrW   P   channels[7] 
 
 
-scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[3], "ADRmu4")]
-scanner_meters = [(channels[4], "3458A"), (channels[5], "3458B")]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[3], "ADRmu4")]
+    scanner_meters = [(channels[4], "3458A"), (channels[5], "3458B")]
 
 
 
