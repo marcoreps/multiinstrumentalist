@@ -389,8 +389,8 @@ def scanner():
         
     seconds = 0
     while seconds < runtime:
-        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"]))
-        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"]))
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
         seconds = seconds + 1
         sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
         sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
