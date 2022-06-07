@@ -339,6 +339,7 @@ def scanner():
 
     switch_delay = 5
     NPLC = 200
+    runtime = 60*60*24*2
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
     #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
@@ -374,7 +375,7 @@ def scanner():
     seconds = 1
     i = 0
 
-    while seconds < 60*60*24*2:
+    while seconds < runtime:
         j = i%len(scanner_permutations)
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][0][0],)) # Close source
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][1][0],)) # Close meter
@@ -385,6 +386,15 @@ def scanner():
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
         i=i+1
+        
+    seconds = 0
+    while seconds < runtime:
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"]))
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"]))
+        seconds = seconds + 1
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+        seconds = seconds + 60*60
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
@@ -392,8 +402,6 @@ def scanner():
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
-    sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
     sch.run()
 
 
@@ -473,6 +481,7 @@ def acal_inst(sch, interval, priority, inst):
         logging.info("%s was not ready for acal_inst." % (inst.get_title()))
         time.sleep(1)
     inst.acal_DCV()
+    read_cal_params
 
 def log_3458A_calparams():
 
