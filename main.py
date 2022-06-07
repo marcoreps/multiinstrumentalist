@@ -337,13 +337,6 @@ def scanner():
 # IV    Gr    N   channels[7] 
 # IV    GrW   P   channels[7] 
 
-
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[3], "ADRmu4")]
-    scanner_meters = [(channels[4], "3458A"), (channels[5], "3458B")]
-
-
-
-
     switch_delay = 5
     NPLC = 200
 
@@ -368,15 +361,31 @@ def scanner():
     instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_hold()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[3], "ADRmu4")]
+    scanner_meters = [(channels[4], instruments["3458A"]), (channels[5], instruments["3458B"])]
 
     switch=takovsky_scanner()
     
     sch = sched.scheduler(time.time, time.sleep)
     
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
-    print(scanner_permutations)
-    
-    
+
+    seconds = 1
+    i = 0
+    while seconds < 60*60*24*2:
+        j = i%len(scanner_permutations)
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][0][0],)) # Close source
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][1][0],)) # Close meter
+        seconds = seconds + switch_delay
+        sch.enter(i, 10, scanner_permutations[j][1][1].trigger_once)
+        seconds = seconds + NPLC * 0.04 + 0.1
+        sch.enter(i, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][0]+" "+scanner_permutations[j][1][1].get_title()))
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
+        i=i+1
+        
+
     """
     i = 1
     while i < 86400:
