@@ -374,10 +374,9 @@ def scanner():
     seconds = 1
     i = 0
     
-    print(scanner_permutations[0][0][1])
     
     
-    """
+
     while seconds < 60*60*24*2:
         j = i%len(scanner_permutations)
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][0][0],)) # Close source
@@ -385,12 +384,12 @@ def scanner():
         seconds = seconds + switch_delay
         sch.enter(i, 10, scanner_permutations[j][1][1].trigger_once)
         seconds = seconds + NPLC * 0.04 + 0.1
-        sch.enter(i, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][0]+" "+scanner_permutations[j][1][1].get_title()))
+        sch.enter(i, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][1]+" "+scanner_permutations[j][1][1].get_title()))
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
         i=i+1
         
-"""
+
     """
     i = 1
     while i < 86400:
