@@ -349,7 +349,7 @@ def scanner():
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
     instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].blank_display()
+    #instruments["3458A"].blank_display()
     instruments["3458A"].config_trigger_hold()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
@@ -358,7 +358,7 @@ def scanner():
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     instruments["3458B"].config_NPLC(NPLC)
-    instruments["3458B"].blank_display()
+    #instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_hold()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
@@ -373,20 +373,17 @@ def scanner():
 
     seconds = 1
     i = 0
-    
-    
-    
 
     while seconds < 60*60*24*2:
         j = i%len(scanner_permutations)
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][0][0],)) # Close source
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][1][0],)) # Close meter
         seconds = seconds + switch_delay
-        sch.enter(i, 10, scanner_permutations[j][1][1].trigger_once)
+        sch.enter(seconds, 10, scanner_permutations[j][1][1].trigger_once)
         seconds = seconds + NPLC * 0.04 + 0.1
-        sch.enter(i, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][1]+" "+scanner_permutations[j][1][1].get_title()))
-        sch.enter(i, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
-        sch.enter(i, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
+        sch.enter(seconds, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][1]+" "+scanner_permutations[j][1][1].get_title()))
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
         i=i+1
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
