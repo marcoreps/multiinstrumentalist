@@ -350,7 +350,7 @@ def scanner():
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
     instruments["3458A"].config_NPLC(NPLC)
-    #instruments["3458A"].blank_display()
+    instruments["3458A"].blank_display()
     instruments["3458A"].config_trigger_hold()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
@@ -359,7 +359,7 @@ def scanner():
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
     instruments["3458B"].config_NPLC(NPLC)
-    #instruments["3458B"].blank_display()
+    instruments["3458B"].blank_display()
     instruments["3458B"].config_trigger_hold()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
@@ -394,7 +394,11 @@ def scanner():
         seconds = seconds + 1
         sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
         sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+        seconds = seconds + 200
+        sch.enter(seconds, 9, instruments["3458A"].blank_display)
+        sch.enter(seconds, 9, instruments["3458B"].blank_display)
         seconds = seconds + 60*60
+        
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
