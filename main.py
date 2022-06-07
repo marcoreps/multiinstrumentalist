@@ -374,7 +374,7 @@ def scanner():
     seconds = 1
     i = 0
     
-    print(scanner_permutations[0][0][0])
+    print(scanner_permutations[0][0][1])
     
     
     """
