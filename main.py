@@ -324,26 +324,33 @@ def scanner():
 # III   BrW   P   channels[0] ADRmu1 -
 # III   Or    N   channels[1] ADRmu2 +
 # III   OrW   P   channels[1] ADRmu2 -
-# III   Bl    N   channels[2] 3458A +
-# III   BlW   P   channels[2] 3458A -
-# III   Gr    N   channels[3] 3458B +
-# III   GrW   P   channels[3] 3458B -
+# III   Bl    N   channels[2] 
+# III   BlW   P   channels[2] 
+# III   Gr    N   channels[3] ADRmu4 +
+# III   GrW   P   channels[3] ADRmu4 -
 
-# IV    Br    N   channels[4] 
-# IV    BrW   P   channels[4] 
-# IV    Or    N   channels[5] 
-# IV    OrW   P   channels[5] 
+# IV    Br    N   channels[4] 3458A +
+# IV    BrW   P   channels[4] 3458A -
+# IV    Or    N   channels[5] 3458B +
+# IV    OrW   P   channels[5] 3458B -
 # IV    Bl    N   channels[6] 
 # IV    BlW   P   channels[6] 
 # IV    Gr    N   channels[7] 
 # IV    GrW   P   channels[7] 
+
+
+scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[3], "ADRmu4")]
+scanner_meters = [(channels[4], "3458A"), (channels[5], "3458B")]
+
+
+
 
     switch_delay = 5
     NPLC = 200
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
     #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
-    instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
+    #instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
     
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
@@ -367,8 +374,14 @@ def scanner():
     
     sch = sched.scheduler(time.time, time.sleep)
     
+    scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
+    print(scanner_permutations)
+    
+    
+    """
     i = 1
     while i < 86400:
+    
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[2],)) # Close 3458A
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[0],)) # Close ADRmu1
         i = i + switch_delay
@@ -381,6 +394,13 @@ def scanner():
         sch.enter(i, 10, instruments["3458A"].trigger_once)
         i = i + NPLC * 0.04 + 0.1
         sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A"))
+        sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[1],)) # Open ADRmu2
+        sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[3],)) # Close ADRmu4
+        i = i + switch_delay
+        sch.enter(i, 10, instruments["3458A"].trigger_once)
+        i = i + NPLC * 0.04 + 0.1
+        
+        
         sch.enter(i, 10, switch.switchingOpenRelay, argument=(channels[2],)) # Open 3458A
         sch.enter(i, 10, switch.switchingCloseRelay, argument=(channels[3],)) # Close 3458B
         i = i + switch_delay
@@ -407,6 +427,7 @@ def scanner():
     sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
     sch.enter(60*60*1, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
     sch.run()
+    """
 
 def auto_ACAL_3458A():
     
@@ -627,9 +648,9 @@ if __name__ == '__main__':
         #HPM_test()
         #INL_34401()
         #test_3458A()
-        INL_3458A()
+        #INL_3458A()
         #temperature_sweep()
-        #scanner()
+        scanner()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
