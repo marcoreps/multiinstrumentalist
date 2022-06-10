@@ -401,7 +401,7 @@ def scanner():
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_long"]))
+    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
@@ -621,7 +621,22 @@ def pt100_scanner():
             instruments["3458B"].trigger_once()
             MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
+def readstb_test():
+
+    NPLC = 200
     
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_10DCV_9digit()
+    #instruments["3458A"].config_10OHMF_9digit()
+    #instruments["3458A"].config_10kOHMF_9digit()
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_hold()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    
+    while True:
+        print(instruments["3458A"].is_ready())
+        time.sleep(0.1)
 
 if __name__ == '__main__':
     try:
@@ -631,11 +646,12 @@ if __name__ == '__main__':
         #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        scanner()
+        #scanner()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
+        readstb_test()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
