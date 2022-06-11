@@ -16,6 +16,8 @@ import math
 
 class multimeter:
 
+
+    instr = 0
     read_val = 0
     title = ""
 
@@ -26,8 +28,11 @@ class multimeter:
     
     
     def connect(self):
+        logging.debug("connecting")
         self.lock.acquire()
+        logging.debug("lock acquired")
         self.instr.open()
+        logging.debug("instr opened")
         
         
     def get_title(self):
@@ -52,11 +57,13 @@ class multimeter:
         try:
             self.connect()
             self.stb = self.instr.read_stb()
+            logging.debug("stb read")
             self.instr.close()
         except:
             logging.error("Error in %s read_stb" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("lock release")
             self.lock.release()
             
 
