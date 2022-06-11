@@ -31,7 +31,8 @@ class multimeter:
         logging.debug("connecting")
         self.lock.acquire()
         logging.debug("lock acquired")
-        #self.instr.open()
+        time.sleep(0.1)
+        self.instr.open()
         logging.debug("instr opened")
         
         
