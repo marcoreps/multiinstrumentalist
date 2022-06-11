@@ -41,7 +41,7 @@ class multimeter:
         
     def get_read_val(self):
         try:
-            self.connect()
+            #self.connect()
             self.read_val = self.instr.read()
             self.instr.close()
         except:
@@ -55,7 +55,7 @@ class multimeter:
         
     def read_stb(self):
         try:
-            self.connect()
+            #self.connect()
             self.stb = self.instr.read_stb()
             logging.debug("stb read")
             self.instr.close()
@@ -94,7 +94,7 @@ class S7081(multimeter):
             
     def config_10DCV_9digit(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=VDC: RANge=10: NInes=8")
             self.instr.close()
@@ -106,7 +106,7 @@ class S7081(multimeter):
             
     def config_10k_9digit(self):
         try:
-            self.connect()
+            #self.connect()
             #self.instr.write("DRIFT,ON")
             self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=KOHM: RANge=10: NInes=8")
@@ -121,7 +121,7 @@ class S7081(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("MEAsure, SIGLE")
             self.instr.close()
         except:
@@ -165,7 +165,7 @@ class K2001(multimeter):
         
     def config_20DCV_9digit_fast(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("*RST")
             self.instr.write(":SYST:AZER:TYPE SYNC")
             self.instr.write(":SYST:LSYN:STAT ON")
@@ -184,7 +184,7 @@ class K2001(multimeter):
         
     def config_20DCV_9digit_filtered(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("*RST")
             self.instr.write(":SYST:AZER:TYPE SYNC")
             self.instr.write(":SYST:LSYN:STAT ON")
@@ -206,7 +206,7 @@ class K2001(multimeter):
             
     def config_2ADC_9digit_filtered(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("*RST")
             self.instr.write(":SYST:AZER:TYPE SYNC")
             self.instr.write(":SYST:LSYN:STAT ON")
@@ -230,7 +230,7 @@ class K2001(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         try:
-            self.connect()
+            #self.connect()
             self.read_val = self.instr.write("READ?")
             self.instr.close()
         except:
@@ -279,7 +279,7 @@ class R6581T(multimeter):
         
     def config_10DCV_9digit_fast(self):
         try:
-            self.connect()
+            #self.connect()
             logging.debug(self.title+' config_10DCV_9digit_fast started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -302,7 +302,7 @@ class R6581T(multimeter):
         
     def config_10DCV_9digit_filtered(self):
         try:
-            self.connect()
+            #self.connect()
             logging.debug(self.title+' config_10DCV_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -327,7 +327,7 @@ class R6581T(multimeter):
             
     def config_100k4W_9digit_filtered(self):
         try:
-            self.connect()
+            #self.connect()
             logging.debug(self.title+' config_100k4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -354,7 +354,7 @@ class R6581T(multimeter):
             
     def config_10k4W_9digit_filtered(self):
         try:
-            self.connect()
+            #self.connect()
             logging.debug(self.title+' config_10k4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -381,7 +381,7 @@ class R6581T(multimeter):
         
     def config_10R4W_9digit_filtered(self):
         try:
-            self.connect()
+            #self.connect()
             logging.debug(self.title+' config_10R4W_9digit_filtered started')
             self.instr.write("*RST")
             #self.instr.ask("*OPC?")
@@ -409,7 +409,7 @@ class R6581T(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         try:
-            self.connect()
+            #self.connect()
             self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
             self.instr.write("READ?")
             self.instr.close()
@@ -533,7 +533,7 @@ class HP34401A(multimeter):
         
     def config_10DCV_6digit_fast(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("*RST")
             self.instr.write("SYSTem:BEEPer")
             self.instr.write("CONFigure:VOLTage:DC 10, MIN")
@@ -548,7 +548,7 @@ class HP34401A(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         try:
-            self.connect()
+            #self.connect()
             self.read_val = self.instr.write("READ?")
             self.instr.close()
         except:
@@ -592,7 +592,7 @@ class HP3458A(multimeter):
         
     def config_10DCV_9digit(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("DCV 10")
             self.instr.write("TARM HOLD")
@@ -609,7 +609,7 @@ class HP3458A(multimeter):
             
     def config_100DCV_9digit(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("DCV 100")
             self.instr.write("TARM HOLD")
@@ -626,7 +626,7 @@ class HP3458A(multimeter):
             
     def config_NPLC(self, NPLC):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("NPLC "+str(NPLC))
             self.instr.close()
         except:
@@ -637,7 +637,7 @@ class HP3458A(multimeter):
             
     def blank_display(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("DISP MSG,\"                 \"")
             self.instr.write("DISP ON")
             self.instr.close()
@@ -649,7 +649,7 @@ class HP3458A(multimeter):
             
     def config_10kOHMF_9digit(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("OHMF 1E4")
             self.instr.write("OCOMP ON")
@@ -668,7 +668,7 @@ class HP3458A(multimeter):
             
     def config_10OHMF_9digit(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("OHMF 10")
             self.instr.write("DELAY 1")
@@ -687,7 +687,7 @@ class HP3458A(multimeter):
             
     def config_PT100_2W(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("OHM 100")
             self.instr.write("MATH CRTD85")
@@ -707,7 +707,7 @@ class HP3458A(multimeter):
             
     def config_1mA_9digit(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("PRESET NORM")
             self.instr.write("DCI 1E-3")
             self.instr.write("TARM HOLD")
@@ -724,7 +724,7 @@ class HP3458A(multimeter):
             
     def config_trigger_auto(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("TARM AUTO")
             self.instr.close()
         except:
@@ -735,7 +735,7 @@ class HP3458A(multimeter):
             
     def config_trigger_hold(self):
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("TARM HOLD")
             self.instr.close()
         except:
@@ -748,10 +748,10 @@ class HP3458A(multimeter):
         try:
             logging.debug(self.title+' triggered once')
             if self.is_ready():
-                self.connect()
+                #self.connect()
                 self.instr.write("TARM SGL")
             else:
-                self.connect()
+                #self.connect()
                 logging.info("%s was not ready for trigger_once." % (self.get_title()))
                 
             self.instr.close()
@@ -764,7 +764,7 @@ class HP3458A(multimeter):
     def measure(self):
         logging.debug(self.title+' measure started')
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("TARM SGL,1")
             self.instr.close()
         except:
@@ -776,7 +776,7 @@ class HP3458A(multimeter):
     def acal_DCV(self):
         logging.debug(self.title+' ACAL DCV started')
         try:
-            self.connect()
+            #self.connect()
             self.instr.write("ACAL DCV")
             self.instr.close()
         except:
@@ -800,7 +800,7 @@ class HP3458A(multimeter):
     def get_int_temp(self):
         temp = 0
         try:
-            self.connect()
+            #self.connect()
             temp = self.instr.ask("TEMP?")
             self.instr.close()
         except:
@@ -813,7 +813,7 @@ class HP3458A(multimeter):
     def get_cal_72(self):
         cal72 = 0
         try:
-            self.connect()
+            #self.connect()
             cal72 = self.instr.ask("CAL? 72")
             self.instr.close()
         except:
@@ -826,7 +826,7 @@ class HP3458A(multimeter):
     def get_cal_73(self):
         cal73 = 0
         try:
-            self.connect()
+            #self.connect()
             cal73 = self.instr.ask("CAL? 73")
             self.instr.close()
         except:
@@ -839,7 +839,7 @@ class HP3458A(multimeter):
     def get_cal_175(self):
         cal175 = 0
         try:
-            self.connect()
+            #self.connect()
             cal175 = self.instr.ask("CAL? 175")
             self.instr.close()
         except:
@@ -852,7 +852,7 @@ class HP3458A(multimeter):
     def get_cal_59(self):
         cal59 = 0
         try:
-            self.connect()
+            #self.connect()
             cal59 = self.instr.ask("CAL? 59")
             self.instr.close()
         except:
@@ -865,7 +865,7 @@ class HP3458A(multimeter):
     def get_cal_2_1(self):
         cal_2_1 = 0
         try:
-            self.connect()
+            #self.connect()
             cal_2_1 = self.instr.ask("CAL? 2,1")
             self.instr.close()
         except:
@@ -878,7 +878,7 @@ class HP3458A(multimeter):
     def get_cal_1_1(self):
         cal_1_1 = 0
         try:
-            self.connect()
+            #self.connect()
             cal_1_1 = self.instr.ask("CAL? 1,1")
             self.instr.close()
         except:
