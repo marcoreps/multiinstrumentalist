@@ -521,7 +521,31 @@ class HP3458A(multimeter):
             self.instr.write("NPLC "+str(NPLC))
             self.close_instr_conn()
         except:
-            logging.error("Error in %s config_NPLC10" % self.title, exc_info=True)
+            logging.error("Error in %s config_NPLC" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def config_NDIG(self, NDIG):
+        try:
+            self.connect()
+            logging.debug(self.title+" config_NDIG")
+            self.instr.write("NDIG "+str(NDIG))
+            self.close_instr_conn()
+        except:
+            logging.error("Error in %s config_NDIG" % self.title, exc_info=True)
+            pass
+        finally:
+            self.lock.release()
+            
+    def config_DCV(self, RANG):
+        try:
+            self.connect()
+            logging.debug(self.title+" config_DCV")
+            self.instr.write("DCV "+str(RANG))
+            self.close_instr_conn()
+        except:
+            logging.error("Error in %s config_DCV" % self.title, exc_info=True)
             pass
         finally:
             self.lock.release()
