@@ -5,8 +5,6 @@ import vxi11
 import time
 import logging
 import serial
-import statistics
-from multiprocessing import Process, Queue
 import numpy as np
 import math
 
@@ -430,86 +428,7 @@ class R6581T(multimeter):
         self.read_stb()
         ready = self.stb == 16
         return ready
-
-
-
-
-class HPM7177(multimeter):
-
-    def __init__(self, seriallock, polyterms, dev='/dev/ttyUSB0', baud=921600, nfilter=10000, title='HPM7177'):
-        self.title = title
-        logging.debug(self.title+' init started')
-        self.seriallock = seriallock
-        self.polyfunc = np.poly1d(polyterms)
-        self.dev = dev
-        self.baud = baud
-        self.nfilter = nfilter
-        self.serial_q = Queue(maxsize=2)
-        self.output_q = Queue(maxsize=1)
-        
-        self.serial_process = Process(target=self.readserial, args=(self.serial_q,))
-        self.serial_process.daemon = True
-        self.serial_process.start()
-        
-        self.convert_process = Process(target=self.convert, args=(self.serial_q,self.output_q,))
-        self.convert_process.daemon = True
-        self.convert_process.start()
-        
-        
-    def readserial(self, q,):
-        s = serial.Serial(self.dev, self.baud)
-        while True:
-            if not q.full():
-                #self.seriallock.acquire()
-                q.put(s.read(100000))
-                #self.seriallock.release()
-            else:
-                time.sleep(0.2)
-        
-        
-    def convert(self,serial_q,output_q):
-        readings = []
-        while True:
-            if not output_q.full() and not serial_q.empty():
-                chunk=serial_q.get()
-                i=chunk.find(b'\xa0\r')
-                while (len(readings)<self.nfilter):
-                    i=i+chunk[i:].find(b'\xa0\r')
-                    j=i+1+chunk[i+1:].find(b'\xa0\r')
-                    if(j-i == 6):
-                        number = int.from_bytes(chunk[i+2:j], byteorder='big', signed=False)
-                        readings.append(number)
-                    else:
-                        logging.debug(self.title+' wrong length line')
-                    i=j
-                    if len(chunk[i:])<10:
-                        chunk=serial_q.get()
-                        i=0
-
-                mean=statistics.mean(readings)
-                output_q.put(mean)
-                readings.clear()
-            else:
-                time.sleep(0.2)
-        
-        
-    def is_readable(self):
-        return self.output_q.full()
-
-
-    def get_read_val(self):
-        return self.polyfunc(self.output_q.get())
-        return self.output_q.get()
-        #x1=self.output_q.get()
-        #HMP1_fit1=6.763004812273380e-09*x1-1.452321344215639e+01
-        #HMP1_fit2=1.02782955913447e-6+3.04254972897816e-6*math.sin(0.00322438501023585*x1)-2.54617098552864e-6*math.cos(2.41476535668804+0.00322438496390789*x1+1.47267948257617*math.sin(0.0211347361227292+0.00322438501023585*x1))
-        #return HMP1_fit1+HMP1_fit2
-
-        
-    def measure(self):
-        self.serial_q.get()
-        self.output_q.get()
-        
+     
 
 class HP34401A(multimeter):
 
