@@ -20,7 +20,7 @@ from instruments.switch import *
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -642,12 +642,12 @@ if __name__ == '__main__':
         #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        #scanner()
+        scanner()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
-        readstb_test()
+        #readstb_test()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
