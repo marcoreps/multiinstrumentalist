@@ -25,9 +25,7 @@ class multimeter:
     def connect(self):
         self.lock.acquire()
         logging.debug("connecting instr")
-        time.sleep(0.1)
         self.instr.open()
-        time.sleep(0.1)
         
         
     def get_title(self):
