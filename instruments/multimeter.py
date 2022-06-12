@@ -24,7 +24,7 @@ class multimeter:
     
     def connect(self):
         self.lock.acquire()
-        logging.debug("lock acquired")
+        logging.debug("connecting instr")
         time.sleep(0.1)
         self.instr.open()
         time.sleep(0.1)
@@ -513,44 +513,11 @@ class HP3458A(multimeter):
         finally:
             self.lock.release()
         
-        
-    def config_10DCV_9digit(self):
-        try:
-            self.connect()
-            self.instr.write("PRESET NORM")
-            self.instr.write("DCV 10")
-            self.instr.write("TARM HOLD")
-            self.instr.write("TRIG AUTO")
-            self.instr.write("NRDGS 1,AUTO")
-            self.instr.write("MEM OFF")
-            self.instr.write("NDIG 9")
-            self.close_instr_conn()
-        except:
-            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
-            pass
-        finally:
-            self.lock.release()
-            
-    def config_100DCV_9digit(self):
-        try:
-            self.connect()
-            self.instr.write("PRESET NORM")
-            self.instr.write("DCV 100")
-            self.instr.write("TARM HOLD")
-            self.instr.write("TRIG AUTO")
-            self.instr.write("NRDGS 1,AUTO")
-            self.instr.write("MEM OFF")
-            self.instr.write("NDIG 9")
-            self.close_instr_conn()
-        except:
-            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
-            pass
-        finally:
-            self.lock.release()
             
     def config_NPLC(self, NPLC):
         try:
             self.connect()
+            logging.debug(self.title+" config_NPLC")
             self.instr.write("NPLC "+str(NPLC))
             self.close_instr_conn()
         except:
@@ -562,6 +529,7 @@ class HP3458A(multimeter):
     def blank_display(self):
         try:
             self.connect()
+            logging.debug(self.title+" blank_display")
             self.instr.write("DISP MSG,\"                 \"")
             self.instr.write("DISP ON")
             self.close_instr_conn()
@@ -570,85 +538,11 @@ class HP3458A(multimeter):
             pass
         finally:
             self.lock.release()
-            
-    def config_10kOHMF_9digit(self):
-        try:
-            self.connect()
-            self.instr.write("PRESET NORM")
-            self.instr.write("OHMF 1E4")
-            self.instr.write("OCOMP ON")
-            self.instr.write("DELAY 1")
-            self.instr.write("TARM HOLD")
-            self.instr.write("TRIG AUTO")
-            self.instr.write("NRDGS 1,AUTO")
-            self.instr.write("MEM OFF")
-            self.instr.write("NDIG 9")
-            self.close_instr_conn()
-        except:
-            logging.error("Error in %s config_10kOHMF_9digit" % self.title, exc_info=True)
-            pass
-        finally:
-            self.lock.release()
-            
-    def config_10OHMF_9digit(self):
-        try:
-            self.connect()
-            self.instr.write("PRESET NORM")
-            self.instr.write("OHMF 10")
-            self.instr.write("DELAY 1")
-            self.instr.write("OCOMP ON")
-            self.instr.write("TARM HOLD")
-            self.instr.write("TRIG AUTO")
-            self.instr.write("NRDGS 1,AUTO")
-            self.instr.write("MEM OFF")
-            self.instr.write("NDIG 9")
-            self.close_instr_conn()
-        except:
-            logging.error("Error in %s config_10OHMF_9digit" % self.title, exc_info=True)
-            pass
-        finally:
-            self.lock.release()
-            
-    def config_PT100_2W(self):
-        try:
-            self.connect()
-            self.instr.write("PRESET NORM")
-            self.instr.write("OHM 100")
-            self.instr.write("MATH CRTD85")
-            self.instr.write("DELAY 1")
-            self.instr.write("OCOMP ON")
-            self.instr.write("TARM HOLD")
-            self.instr.write("TRIG AUTO")
-            self.instr.write("NRDGS 1,AUTO")
-            self.instr.write("MEM OFF")
-            self.instr.write("NDIG 9")
-            self.close_instr_conn()
-        except:
-            logging.error("Error in %s config_PT1002W" % self.title, exc_info=True)
-            pass
-        finally:
-            self.lock.release()
-            
-    def config_1mA_9digit(self):
-        try:
-            self.connect()
-            self.instr.write("PRESET NORM")
-            self.instr.write("DCI 1E-3")
-            self.instr.write("TARM HOLD")
-            self.instr.write("TRIG AUTO")
-            self.instr.write("NRDGS 1,AUTO")
-            self.instr.write("MEM OFF")
-            self.instr.write("NDIG 9")
-            self.close_instr_conn()
-        except:
-            logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
-            pass
-        finally:
-            self.lock.release()
-            
+        
     def config_trigger_auto(self):
         try:
             self.connect()
+            logging.debug(self.title+" config_trigger_auto")
             self.instr.write("TARM AUTO")
             self.close_instr_conn()
         except:
@@ -660,6 +554,7 @@ class HP3458A(multimeter):
     def config_trigger_hold(self):
         try:
             self.connect()
+            logging.debug(self.title+" config_trigger_hold")
             self.instr.write("TARM HOLD")
             self.close_instr_conn()
         except:
@@ -674,11 +569,9 @@ class HP3458A(multimeter):
             if self.is_ready():
                 self.connect()
                 self.instr.write("TARM SGL")
+                self.close_instr_conn()
             else:
-                self.connect()
                 logging.info("%s was not ready for trigger_once." % (self.get_title()))
-                
-            self.close_instr_conn()
         except:
             logging.error("Error in %s trigger_once" % self.title, exc_info=True)
             pass
