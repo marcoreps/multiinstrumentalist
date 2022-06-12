@@ -11,11 +11,6 @@ import sched
 import itertools
 
 
-
-
-
-
-
 from influxdb_interface import MySeriesHelper
 
 from instruments.sensor import *
@@ -25,7 +20,7 @@ from instruments.switch import *
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
