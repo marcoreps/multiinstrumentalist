@@ -593,6 +593,7 @@ class HP3458A(multimeter):
                 self.instr.write("TARM SGL")
                 self.close_instr_conn()
             else:
+                self.connect()
                 logging.info("%s was not ready for trigger_once." % (self.get_title()))
         except:
             logging.error("Error in %s trigger_once" % self.title, exc_info=True)
