@@ -38,7 +38,7 @@ class multimeter:
         try:
             self.connect()
             self.read_val = self.instr.read()
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_read_val" % self.title, exc_info=True)
             pass
@@ -47,13 +47,21 @@ class multimeter:
         logging.debug("%s reading %s" % (self.title, self.read_val))
         return self.read_val
         
+    def close_instr_conn(self):
+        try:
+            logging.debug("Closing instr")
+            self.instr.close()
+        except:
+            logging.error("Error in %s close_instr_conn" % self.title, exc_info=True)
+            pass
+        
         
     def read_stb(self):
         try:
             self.connect()
             self.stb = self.instr.read_stb()
             logging.debug("stb read")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s read_stb" % self.title, exc_info=True)
             pass
@@ -80,7 +88,7 @@ class S7081(multimeter):
             self.instr.write("DELIMITER=END")
             self.instr.write("OUTPUT,GP-IB=ON")
             self.instr.write("FORMAT=ENGINEERING")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
@@ -92,7 +100,7 @@ class S7081(multimeter):
             self.connect()
             self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=VDC: RANge=10: NInes=8")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
@@ -105,7 +113,7 @@ class S7081(multimeter):
             #self.instr.write("DRIFT,ON")
             self.instr.write("DRIFT,OFF")
             self.instr.write("MODe=KOHM: RANge=10: NInes=8")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
@@ -118,7 +126,7 @@ class S7081(multimeter):
         try:
             self.connect()
             self.instr.write("MEAsure, SIGLE")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
@@ -150,7 +158,7 @@ class K2001(multimeter):
             self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
             self.instr.clear()
             logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
@@ -169,7 +177,7 @@ class K2001(multimeter):
             self.instr.write(":SENS:VOLT:DC:AVER:STAT ON")
             self.instr.write(":SENS:VOLT:DC:RANG 20")
             self.instr.write(":FORM:ELEM READ")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
             pass
@@ -192,7 +200,7 @@ class K2001(multimeter):
             self.instr.write(":SENS:VOLT:DC:RANG 20")
             #self.instr.write(":SENS:VOLT:DC:FILT:LPAS:STAT ON")
             self.instr.write(":FORM:ELEM READ")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_20DCV_9digit_filtered" % self.title, exc_info=True)
             pass
@@ -214,7 +222,7 @@ class K2001(multimeter):
             self.instr.write(":SENS:CURRent:DC:AVER:STAT ON")
             #self.instr.write(":SENS:CURRent:DC:FILT:LPAS:STAT ON")
             self.instr.write(":FORM:ELEM READ")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_2ADC_9digit_filtered" % self.title, exc_info=True)
             pass
@@ -227,7 +235,7 @@ class K2001(multimeter):
         try:
             self.connect()
             self.read_val = self.instr.write("READ?")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
@@ -264,7 +272,7 @@ class R6581T(multimeter):
             self.instr.clear()
             logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
             self.int_temp = 0
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
@@ -287,7 +295,7 @@ class R6581T(multimeter):
             
             #self.instr.write(":SENSe:VOLTage:DC:PROTection OFF")
             #self.instr.write(":SENSe:ZERO:AUTO OFF")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit_fast" % self.title, exc_info=True)
             pass
@@ -312,7 +320,7 @@ class R6581T(multimeter):
             self.instr.write(":CALCulate:DFILter:STATe ON")
             self.instr.write(":CALCulate:DFILter AVERage")
             self.instr.write(":CALCulate:DFILter:AVERage 10")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
@@ -339,7 +347,7 @@ class R6581T(multimeter):
             self.instr.write(":CALCulate:DFILter:STATe ON")
             self.instr.write(":CALCulate:DFILter AVERage")
             self.instr.write(":CALCulate:DFILter:AVERage 10")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
@@ -366,7 +374,7 @@ class R6581T(multimeter):
             self.instr.write(":CALCulate:DFILter:STATe ON")
             self.instr.write(":CALCulate:DFILter AVERage")
             self.instr.write(":CALCulate:DFILter:AVERage 10")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
@@ -393,7 +401,7 @@ class R6581T(multimeter):
             self.instr.write(":CALCulate:DFILter:STATe ON")
             self.instr.write(":CALCulate:DFILter AVERage")
             self.instr.write(":CALCulate:DFILter:AVERage 10")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
@@ -407,7 +415,7 @@ class R6581T(multimeter):
             self.connect()
             self.int_temp = self.instr.ask(":SENSe:ITEMperature?")
             self.instr.write("READ?")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
@@ -439,7 +447,7 @@ class HP34401A(multimeter):
             self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
             self.instr.clear()
             logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
@@ -453,7 +461,7 @@ class HP34401A(multimeter):
             self.instr.write("*RST")
             self.instr.write("SYSTem:BEEPer")
             self.instr.write("CONFigure:VOLTage:DC 10, MIN")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
             pass
@@ -466,7 +474,7 @@ class HP34401A(multimeter):
         try:
             self.connect()
             self.read_val = self.instr.write("READ?")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
@@ -498,7 +506,7 @@ class HP3458A(multimeter):
             self.instr.write("OFORMAT ASCII")
             self.instr.write("BEEP")
             logging.debug("ID? -> "+self.instr.ask("ID?"))
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
@@ -516,7 +524,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
@@ -533,7 +541,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
@@ -544,7 +552,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("NPLC "+str(NPLC))
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_NPLC10" % self.title, exc_info=True)
             pass
@@ -556,7 +564,7 @@ class HP3458A(multimeter):
             self.connect()
             self.instr.write("DISP MSG,\"                 \"")
             self.instr.write("DISP ON")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s blank_display" % self.title, exc_info=True)
             pass
@@ -575,7 +583,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10kOHMF_9digit" % self.title, exc_info=True)
             pass
@@ -594,7 +602,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10OHMF_9digit" % self.title, exc_info=True)
             pass
@@ -614,7 +622,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_PT1002W" % self.title, exc_info=True)
             pass
@@ -631,7 +639,7 @@ class HP3458A(multimeter):
             self.instr.write("NRDGS 1,AUTO")
             self.instr.write("MEM OFF")
             self.instr.write("NDIG 9")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_10DCV_9digit" % self.title, exc_info=True)
             pass
@@ -642,7 +650,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("TARM AUTO")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_trigger_auto" % self.title, exc_info=True)
             pass
@@ -653,7 +661,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("TARM HOLD")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s config_trigger_hold" % self.title, exc_info=True)
             pass
@@ -670,7 +678,7 @@ class HP3458A(multimeter):
                 self.connect()
                 logging.info("%s was not ready for trigger_once." % (self.get_title()))
                 
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s trigger_once" % self.title, exc_info=True)
             pass
@@ -682,7 +690,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("TARM SGL,1")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
@@ -694,7 +702,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             self.instr.write("ACAL DCV")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s acal_DCV" % self.title, exc_info=True)
             pass
@@ -718,7 +726,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             temp = self.instr.ask("TEMP?")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_int_temp" % self.title, exc_info=True)
             pass
@@ -731,7 +739,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             cal72 = self.instr.ask("CAL? 72")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_cal_72" % self.title, exc_info=True)
             pass
@@ -744,7 +752,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             cal73 = self.instr.ask("CAL? 73")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_cal_73" % self.title, exc_info=True)
             pass
@@ -757,7 +765,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             cal175 = self.instr.ask("CAL? 175")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_cal_175" % self.title, exc_info=True)
             pass
@@ -770,7 +778,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             cal59 = self.instr.ask("CAL? 59")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_cal_59" % self.title, exc_info=True)
             pass
@@ -783,7 +791,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             cal_2_1 = self.instr.ask("CAL? 2,1")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_cal_2_1" % self.title, exc_info=True)
             pass
@@ -796,7 +804,7 @@ class HP3458A(multimeter):
         try:
             self.connect()
             cal_1_1 = self.instr.ask("CAL? 1,1")
-            self.instr.close()
+            self.close_instr_conn()
         except:
             logging.error("Error in %s get_cal_1_1" % self.title, exc_info=True)
             pass
