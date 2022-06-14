@@ -390,7 +390,7 @@ def scanner():
         seconds = seconds + 200
         sch.enter(seconds, 9, instruments["3458A"].blank_display)
         sch.enter(seconds, 9, instruments["3458B"].blank_display)
-        seconds = seconds + 60*60
+        seconds = seconds + 60*60*2
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
