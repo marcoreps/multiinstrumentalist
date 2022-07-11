@@ -318,8 +318,8 @@ def scanner():
 # III   BrW   P   channels[0] ADRmu1 -
 # III   Or    N   channels[1] ADRmu2 +
 # III   OrW   P   channels[1] ADRmu2 -
-# III   Bl    N   channels[2] 
-# III   BlW   P   channels[2] 
+# III   Bl    N   channels[2] ADRmu3 +
+# III   BlW   P   channels[2] ADRmu3 -
 # III   Gr    N   channels[3] ADRmu4 +
 # III   GrW   P   channels[3] ADRmu4 -
 
@@ -356,7 +356,7 @@ def scanner():
     instruments["3458B"].config_trigger_hold()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[3], "ADRmu4")]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4")]
     scanner_meters = [(channels[4], instruments["3458A"]), (channels[5], instruments["3458B"])]
 
     switch=takovsky_scanner()
