@@ -292,10 +292,10 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(50)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 19
+    tmin = 18
     tmax = 35
     tstep = 1
-    wait_settle = 180
+    wait_settle = 120
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"]))
@@ -435,32 +435,92 @@ def auto_ACAL_3458A():
         
 def scanner2():
 
-# III   Br    N   channels[0] 732A -
-# III   BrW   P   channels[0] 732A +
-# III   Or    N   channels[1] LTZmu -
-# III   OrW   P   channels[1] LTZmu +
-# III   Bl    N   channels[2] 3458A -
-# III   BlW   P   channels[2] 3458A +
-# III   Gr    N   channels[3] 3458B -
-# III   GrW   P   channels[3] 3458B +
+# III   Br    N   channels[0] ADRmu1 +
+# III   BrW   P   channels[0] ADRmu1 -
+# III   Or    N   channels[1] ADRmu2 +
+# III   OrW   P   channels[1] ADRmu2 -
+# III   Bl    N   channels[2] ADRmu3 +
+# III   BlW   P   channels[2] ADRmu3 -
+# III   Gr    N   channels[3] ADRmu4 +
+# III   GrW   P   channels[3] ADRmu4 -
 
-# IV    Br    N   channels[4] Wavetek 10 -
-# IV    BrW   P   channels[4] Wavetek 10 +
-# IV    Or    N   channels[5] Wavetek 7 -
-# IV    OrW   P   channels[5] Wavetek 7 +
-# IV    Bl    N   channels[6] Fluke 5700A -
-# IV    BlW   P   channels[6] Fluke 5700A +
+# IV    Br    N   channels[4] 3458A +
+# IV    BrW   P   channels[4] 3458A -
+# IV    Or    N   channels[5] 3458B +
+# IV    OrW   P   channels[5] 3458B -
+# IV    Bl    N   channels[6] 
+# IV    BlW   P   channels[6] 
 # IV    Gr    N   channels[7] 
-# IV    GrW   P   channels[7]
+# IV    GrW   P   channels[7] 
+
+    switch_delay = 10
+    NPLC = 200
+    runtime = 60*60*24*4
+
+    #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
+    #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
+    #instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
+    
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_DCV(10)
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_hold()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].blank_display()
+    instruments["3458B"].config_trigger_hold()
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4")]
+    scanner_meters = [(channels[4], instruments["3458A"]), (channels[5], instruments["3458B"])]
 
     switch=takovsky_scanner()
-    while True:
-        switch.switchingCloseRelay(channels[4])
-        switch.switchingCloseRelay(channels[5])
-        time.sleep(10)
-        switch.switchingOpenRelay(channels[4])
-        switch.switchingOpenRelay(channels[5])
-        time.sleep(3)
+    
+    sch = sched.scheduler(time.time, time.sleep)
+    
+    scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
+
+    seconds = 1
+    i = 0
+
+    while seconds < runtime:
+        j = i%len(scanner_permutations)
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][0][0],)) # Close source
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][1][0],)) # Close meter
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, scanner_permutations[j][1][1].trigger_once)
+        seconds = seconds + NPLC * 0.04 + 0.1
+        sch.enter(seconds, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][1]+" "+scanner_permutations[j][1][1].get_title()))
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
+        i=i+1
+        
+    seconds = 0
+    while seconds < runtime:
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+        seconds = seconds + 1
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+        seconds = seconds + 200
+        sch.enter(seconds, 9, instruments["3458A"].blank_display)
+        sch.enter(seconds, 9, instruments["3458B"].blank_display)
+        seconds = seconds + 60*60*2
+        
+    
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
+    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
+    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
+    sch.run()
      
 def recursive_read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst))
@@ -641,8 +701,9 @@ if __name__ == '__main__':
         #INL_34401()
         #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
-        scanner()
+        temperature_sweep()
+        #scanner()
+        #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
