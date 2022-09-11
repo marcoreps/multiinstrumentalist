@@ -207,7 +207,7 @@ def INL_3458A():
     instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=10, lock=gpiblock, title="PTB 5700A")
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="Reps 3458B")
-    instruments["3458F"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="PTB 3458A")
+    instruments["3458P"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="PTB 3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_trigger_auto()
@@ -216,9 +216,9 @@ def INL_3458A():
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_trigger_auto()
     
-    instruments["3458F"].config_DCV(10)
-    instruments["3458F"].config_NDIG(9)
-    instruments["3458F"].config_trigger_auto()
+    instruments["3458P"].config_DCV(10)
+    instruments["3458P"].config_NDIG(9)
+    instruments["3458P"].config_trigger_auto()
     
     umin = -10
     umax = 10
@@ -232,7 +232,7 @@ def INL_3458A():
     time.sleep(180)
     
     with open('csv/'+timestr+'PTB5700A_PTB3458A_3458A_3458B_INL.csv', mode='w') as csv_file:
-        fieldnames = ['vref', '3458B_volt', '3458F_volt']
+        fieldnames = ['vref', '3458A_volt', '3458B_volt', '3458P_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -241,17 +241,17 @@ def INL_3458A():
             logging.debug('main setting source to '+str(u)+'V')
             instruments["3458A"].config_NPLC(10)
             instruments["3458B"].config_NPLC(10)
-            instruments["3458F"].config_NPLC(10)
+            instruments["3458P"].config_NPLC(10)
             instruments["3458A"].config_trigger_auto()
             instruments["3458B"].config_trigger_auto()
-            instruments["3458F"].config_trigger_auto()
+            instruments["3458P"].config_trigger_auto()
             time.sleep(wait_settle)
             instruments["3458A"].config_NPLC(100)
-            instruments["3458F"].config_NPLC(100)
+            instruments["3458P"].config_NPLC(100)
             instruments["3458B"].config_NPLC(100)
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
-            instruments["3458F"].config_trigger_hold()
+            instruments["3458P"].config_trigger_hold()
             
             for i in instruments.values():
                 i.measure()
@@ -267,16 +267,18 @@ def INL_3458A():
                 
                 HP3458A_out = float(instruments["3458A"].get_read_val())
                 HP3458B_out = float(instruments["3458B"].get_read_val())
-                HP3458F_out = float(instruments["3458F"].get_read_val())
+                HP3458P_out = float(instruments["3458P"].get_read_val())
 
                 MySeriesHelper(instrument_name=instruments["3458A"].get_title(), value=HP3458A_out)
                 MySeriesHelper(instrument_name=instruments["3458B"].get_title(), value=HP3458B_out)
+                MySeriesHelper(instrument_name=instruments["3458P"].get_title(), value=HP3458P_out)
                 MySeriesHelper(instrument_name=instruments["F5700A"].get_title(), value=calibrator_out)
                     
                 MySeriesHelper(instrument_name="3458A ppm", value=(HP3458A_out-calibrator_out)/0.00001)
                 MySeriesHelper(instrument_name="3458B ppm", value=(HP3458B_out-calibrator_out)/0.00001)
+                MySeriesHelper(instrument_name="3458P ppm", value=(HP3458P_out-calibrator_out)/0.00001)
 
-                writer.writerow({'vref': calibrator_out, '3458B_volt': HP3458B_out, '3458F_volt': HP3458F_out})
+                writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, '3458P_volt': HP3458P_out})
         
     MySeriesHelper.commit()
 
