@@ -208,7 +208,6 @@ def INL_3458A():
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="Reps 3458B")
     instruments["3458F"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="PTB 3458A")
-    instruments["3458A"].config_10DCV_9digit()
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_trigger_auto()
