@@ -204,7 +204,7 @@ def test_3458A():
              
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=10, lock=gpiblock, title="PTB 5700A")
+    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="PTB 5700A")
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="Reps 3458B")
     instruments["3458P"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="PTB 3458A")
