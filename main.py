@@ -231,7 +231,7 @@ def INL_3458A():
     instruments["F5700A"].rangelck()
     time.sleep(180)
     
-    with open('csv/'+timestr+'PTB5700A_PTB3458A_3458A_3458B_INL.csv', mode='w') as csv_file:
+    with open('csv/'+timestr+'REPS5700A_PTB3458A_3458A_3458B_INL.csv', mode='w') as csv_file:
         fieldnames = ['vref', '3458A_volt', '3458B_volt', '3458P_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
