@@ -204,10 +204,10 @@ def test_3458A():
              
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    instruments["3458F"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="FFY00 3458A")
+    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=10, lock=gpiblock, title="PTB 5700A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="Reps 3458B")
+    instruments["3458F"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="PTB 3458A")
     instruments["3458A"].config_10DCV_9digit()
     instruments["3458B"].config_10DCV_9digit()
     instruments["3458F"].config_10DCV_9digit()
@@ -226,7 +226,7 @@ def INL_3458A():
     instruments["F5700A"].rangelck()
     time.sleep(180)
     
-    with open('csv/'+timestr+'FFY00_3458A_3458B_INL.csv', mode='w') as csv_file:
+    with open('csv/'+timestr+'PTB5700A_PTB3458A_3458A_3458B_INL.csv', mode='w') as csv_file:
         fieldnames = ['vref', '3458B_volt', '3458F_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -700,8 +700,8 @@ if __name__ == '__main__':
         #HPM_test()
         #INL_34401()
         #test_3458A()
-        #INL_3458A()
-        temperature_sweep()
+        INL_3458A()
+        #temperature_sweep()
         #scanner()
         #scanner2()
         #auto_ACAL_3458A()
