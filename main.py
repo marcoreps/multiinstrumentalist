@@ -347,6 +347,7 @@ def scanner():
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
     #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
+    #instruments["temp_ADRmu3"]=TMP117(address=0x4A, title="ADRmu3 Temp Sensor")
     #instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
     
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
@@ -707,9 +708,9 @@ if __name__ == '__main__':
         #HPM_test()
         #INL_34401()
         #test_3458A()
-        INL_3458A()
+        #INL_3458A()
         #temperature_sweep()
-        #scanner()
+        scanner()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
