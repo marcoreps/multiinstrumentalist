@@ -500,6 +500,8 @@ class HP3458A(multimeter):
             self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
             self.instr.timeout = 60
             self.instr.clear()
+            self.instr.write("RESET")
+            time.sleep(5)
             self.instr.write("END ALWAYS")
             self.instr.write("OFORMAT ASCII")
             self.instr.write("BEEP")
