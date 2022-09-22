@@ -499,16 +499,17 @@ def scanner2():
     i = 0
 
     while seconds < runtime:
-        j = i%len(scanner_permutations)
-        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][0][0],)) # Close source
-        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(scanner_permutations[j][1][0],)) # Close meter
-        seconds = seconds + switch_delay
-        sch.enter(seconds, 10, scanner_permutations[j][1][1].trigger_once)
-        seconds = seconds + NPLC * 0.04 + 0.1
-        sch.enter(seconds, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][1]+" "+scanner_permutations[j][1][1].get_title()))
-        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
-        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
-        i=i+60*60*3
+        for perm in scanner_permutations:
+            sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
+            sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[1][0],)) # Close meter
+            seconds = seconds + switch_delay
+            sch.enter(seconds, 10, perm[1][1].trigger_once)
+            seconds = seconds + NPLC * 0.04 + 0.1
+            sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]+" "+perm[1][1].get_title()))
+            sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
+            sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
+        MySeriesHelper.commit()
+        seconds = seconds + 60*60*5
         
     seconds = 0
     while seconds < runtime:
@@ -520,7 +521,7 @@ def scanner2():
         seconds = seconds + 1
         sch.enter(seconds, 9, instruments["3458A"].blank_display)
         sch.enter(seconds, 9, instruments["3458B"].blank_display)
-        seconds = seconds + 60*60*3
+        seconds = seconds + 60*60*5
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
