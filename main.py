@@ -452,14 +452,14 @@ def scanner2():
 # III   Gr    N   channels[3] ADRmu4 +
 # III   GrW   P   channels[3] ADRmu4 -
 
-# IV    Br    N   channels[4] 3458A +
-# IV    BrW   P   channels[4] 3458A -
-# IV    Or    N   channels[5] 3458B +
-# IV    OrW   P   channels[5] 3458B -
-# IV    Bl    N   channels[6] 
-# IV    BlW   P   channels[6] 
-# IV    Gr    N   channels[7] 
-# IV    GrW   P   channels[7] 
+# IV    Br    N   channels[4] 
+# IV    BrW   P   channels[4] 
+# IV    Or    N   channels[5] 
+# IV    OrW   P   channels[5] 
+# IV    Bl    N   channels[6] 3458A +
+# IV    BlW   P   channels[6] 3458A -
+# IV    Gr    N   channels[7] 3458B +
+# IV    GrW   P   channels[7] 3458B -
 
     switch_delay = 5
     NPLC = 1000
@@ -487,7 +487,7 @@ def scanner2():
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4")]
-    scanner_meters = [(channels[4], instruments["3458A"]), (channels[5], instruments["3458B"])]
+    scanner_meters = [(channels[6], instruments["3458A"]), (channels[7], instruments["3458B"])]
 
     switch=takovsky_scanner()
     
@@ -508,7 +508,7 @@ def scanner2():
         sch.enter(seconds, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][1]+" "+scanner_permutations[j][1][1].get_title()))
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
-        i=i+60*60*5
+        i=i+60*60*3
         
     seconds = 0
     while seconds < runtime:
@@ -520,7 +520,7 @@ def scanner2():
         seconds = seconds + 1
         sch.enter(seconds, 9, instruments["3458A"].blank_display)
         sch.enter(seconds, 9, instruments["3458B"].blank_display)
-        seconds = seconds + 60*60*5
+        seconds = seconds + 60*60*3
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
