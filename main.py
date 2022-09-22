@@ -508,7 +508,6 @@ def scanner2():
             sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]+" "+perm[1][1].get_title()))
             sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
             sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
-        MySeriesHelper.commit()
         seconds = seconds + 60*60*5
         
     seconds = 0
