@@ -461,12 +461,13 @@ def scanner2():
 # IV    Gr    N   channels[7] 
 # IV    GrW   P   channels[7] 
 
-    switch_delay = 10
-    NPLC = 200
-    runtime = 60*60*24*4
+    switch_delay = 5
+    NPLC = 1000
+    runtime = 60*60*24*7
 
     #instruments["temp_ADRmu1"]=TMP117(address=0x48, title="ADRmu1 Temp Sensor")
     #instruments["temp_ADRmu2"]=TMP117(address=0x4B, title="ADRmu2 Temp Sensor")
+    #instruments["temp_ADRmu3"]=TMP117(address=0x4A, title="ADRmu3 Temp Sensor")
     #instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
     
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
@@ -494,7 +495,7 @@ def scanner2():
     
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
 
-    seconds = 1
+    seconds = 60*5
     i = 0
 
     while seconds < runtime:
@@ -507,27 +508,27 @@ def scanner2():
         sch.enter(seconds, 10, read_inst_scanner, argument=(scanner_permutations[j][1][1], scanner_permutations[j][0][1]+" "+scanner_permutations[j][1][1].get_title()))
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(scanner_permutations[j][1][0],)) # Open meter
-        i=i+1
+        i=i+60*60*5
         
     seconds = 0
     while seconds < runtime:
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+        seconds = seconds + 300
         sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
         sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
         seconds = seconds + 1
-        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-        seconds = seconds + 200
         sch.enter(seconds, 9, instruments["3458A"].blank_display)
         sch.enter(seconds, 9, instruments["3458B"].blank_display)
-        seconds = seconds + 60*60*2
+        seconds = seconds + 60*60*5
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
     sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
-    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
-    sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
+    #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.run()
      
 def recursive_read_inst(sch, interval, priority, inst):
@@ -710,8 +711,8 @@ if __name__ == '__main__':
         #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        scanner()
-        #scanner2()
+        #scanner()
+        scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
