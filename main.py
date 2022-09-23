@@ -495,7 +495,7 @@ def scanner2():
     
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
 
-    seconds = 60*5
+    seconds = 60*5+60*60*4
     i = 0
 
     while seconds < runtime:
@@ -508,9 +508,9 @@ def scanner2():
             sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]+" "+perm[1][1].get_title()))
             sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
             sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
-        seconds = seconds + 60*60*5
+        seconds = seconds + 60*60*24
         
-    seconds = 0
+    seconds = 60*60*4
     while seconds < runtime:
         sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
         sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
@@ -520,7 +520,7 @@ def scanner2():
         seconds = seconds + 1
         sch.enter(seconds, 9, instruments["3458A"].blank_display)
         sch.enter(seconds, 9, instruments["3458B"].blank_display)
-        seconds = seconds + 60*60*5
+        seconds = seconds + 60*60*24
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
