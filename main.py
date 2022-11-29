@@ -299,10 +299,10 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(50)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 40
-    tmax = 70
+    tmin = 15
+    tmax = 40
     tstep = 0.1
-    wait_settle = 6
+    wait_settle = 10
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"]))
@@ -710,8 +710,8 @@ if __name__ == '__main__':
         #INL_34401()
         #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
-        scanner2()
+        temperature_sweep()
+        #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
