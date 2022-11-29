@@ -137,69 +137,18 @@ def test_3458A():
 
     NPLC = 200
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=24, lock=gpiblock, title="3458A FFY00")
-    instruments["3458A"].config_10DCV_9digit()
-    #instruments["3458A"].config_10OHMF_9digit()
-    #instruments["3458A"].config_10kOHMF_9digit()
-    #instruments["3458A"].config_1mA_9digit()
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu5 3458A")
+    instruments["3458A"].config_DCV(10)
+    instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].blank_display()
     instruments["3458A"].config_trigger_auto()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
-    #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
-    
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    instruments["3458B"].config_10DCV_9digit()
-    #instruments["3458B"].config_10OHMF_9digit()
-    #instruments["3458B"].config_10kOHMF_9digit()
-    #instruments["3458B"].config_1mA_9digit()
-    instruments["3458B"].config_NPLC(NPLC)
-    instruments["3458B"].blank_display()
-    instruments["3458B"].config_trigger_auto()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
-    
-    #instruments["temp_ADRmu4"]=TMP117(address=0x49, title="ADRmu4 Temp Sensor")
-    
-    sch = sched.scheduler(time.time, time.sleep)
-    
-    i = 3
-    logging.info("Planning ahead: Measurements ...")
-    while i < 60*60*24*2:
-        sch.enter(i, 10, instruments["3458A"].trigger_once)
-        sch.enter(i, 10, instruments["3458B"].trigger_once)
-        i = i + NPLC * 0.05 + 0.5
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458A"], "ADRmu2 3458A FFY00"))
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["3458B"], "ADRmu4 3458B"))
-        i = i + 0.5
-        
-    i = 0
-    logging.info("Planning ahead: Temperature sensors ...")
-    while i < 60*60*24*2:
-        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_short"], "Short Temp Sensor"))
-        #sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_ADRmu4"], "ADRmu4 Temp Sensor"))
-        sch.enter(i, 10, read_inst_scanner, argument=(instruments["temp_long"], "Long Temp Sensor"))
-        i = i+10
-        
-    i = 1
-    logging.info("Planning ahead: Internal temp sensors ...")
-    while i < 60*60*24*2:
-        sch.enter(i, 10, read_inst_scanner, argument=(HP3458A_temperature, "HP3458A Int Temp Sensor"))
-        sch.enter(i, 10, read_inst_scanner, argument=(HP3458B_temperature, "HP3458B Int Temp Sensor"))
-        i = i+60*10
-        
-    i = 2
-    logging.info("Planning ahead: ACALs ...")
-    while i < 60*60*24*2:
-        sch.enter(i, 10, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-        sch.enter(i, 10, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-        i = i+60*5
-        sch.enter(i, 10, read_cal_params, argument=(instruments["3458A"], ))
-        sch.enter(i, 10, read_cal_params, argument=(instruments["3458B"], ))
-        i = i+60*60
-        
-    logging.info("Starting schedule ...")
-    sch.run()
+    while True:
+        for i in instruments.values():
+            if i.is_readable():
+                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+        time.sleep(0.1)
     
              
 def INL_3458A():
@@ -708,9 +657,9 @@ if __name__ == '__main__':
         #HPM_INL()
         #HPM_test()
         #INL_34401()
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
-        temperature_sweep()
+        #temperature_sweep()
         #scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
