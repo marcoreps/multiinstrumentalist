@@ -248,7 +248,7 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(50)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 60
+    tmin = 30
     tmax = 80
     tstep = 1
     wait_settle = 20
