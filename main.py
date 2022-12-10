@@ -165,16 +165,16 @@ def temperature_sweep():
     
     tmin = 15
     tmax = 35
-    tstep = 1
-    wait_settle = 20
+    tstep = 0.1
+    wait_settle = 10
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"]))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"]))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
     i=0
-    for t in numpy.arange(tmin, tmax+0.01, tstep):
-    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    #for t in numpy.arange(tmin, tmax+0.01, tstep):
+    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=1
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
@@ -325,7 +325,7 @@ def scanner2():
 # IV    Gr    N   channels[7] 3458B +
 # IV    GrW   P   channels[7] 3458B -
 
-    switch_delay = 5
+    switch_delay = 10
     NPLC = 1000
     runtime = 60*60*24*7
 
@@ -572,8 +572,8 @@ if __name__ == '__main__':
 
         #test_3458A()
         #INL_3458A()
-        temperature_sweep()
-        #scanner2()
+        #temperature_sweep()
+        scanner2()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
