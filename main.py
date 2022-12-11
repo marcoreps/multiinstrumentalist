@@ -52,7 +52,7 @@ def test_3458A():
 
     NPLC = 200
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu5 3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu107 3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
@@ -316,8 +316,8 @@ def scanner2():
 # III   Gr    N   channels[3] ADRmu4 +
 # III   GrW   P   channels[3] ADRmu4 -
 
-# IV    Br    N   channels[4] 
-# IV    BrW   P   channels[4] 
+# IV    Br    N   channels[4] ADRmu107 +
+# IV    BrW   P   channels[4] ADRmu107 -
 # IV    Or    N   channels[5] 
 # IV    OrW   P   channels[5] 
 # IV    Bl    N   channels[6] 3458A +
@@ -350,7 +350,7 @@ def scanner2():
     instruments["3458B"].config_trigger_hold()
     HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4")]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4"), (channels[4], "ADRmu107")]
     scanner_meters = [(channels[6], instruments["3458A"]), (channels[7], instruments["3458B"])]
 
     switch=takovsky_scanner()
