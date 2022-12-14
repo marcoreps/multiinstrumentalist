@@ -394,7 +394,87 @@ def scanner2():
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.run()
-     
+    
+def scanner_once():
+
+# III   Br    N   channels[0] ADRmu1 +
+# III   BrW   P   channels[0] ADRmu1 -
+# III   Or    N   channels[1] ADRmu2 +
+# III   OrW   P   channels[1] ADRmu2 -
+# III   Bl    N   channels[2] ADRmu3 +
+# III   BlW   P   channels[2] ADRmu3 -
+# III   Gr    N   channels[3] ADRmu4 +
+# III   GrW   P   channels[3] ADRmu4 -
+
+# IV    Br    N   channels[4] ADRmu107 +
+# IV    BrW   P   channels[4] ADRmu107 -
+# IV    Or    N   channels[5] 
+# IV    OrW   P   channels[5] 
+# IV    Bl    N   channels[6] 3458A +
+# IV    BlW   P   channels[6] 3458A -
+# IV    Gr    N   channels[7] 3458B +
+# IV    GrW   P   channels[7] 3458B -
+
+    switch_delay = 10
+    NPLC = 1000
+    
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_DCV(10)
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].blank_display()
+    instruments["3458A"].config_trigger_hold()
+    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].blank_display()
+    instruments["3458B"].config_trigger_hold()
+    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
+    
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4"), (channels[4], "ADRmu107")]
+    scanner_meters = [(channels[6], instruments["3458A"]), (channels[7], instruments["3458B"])]
+
+    switch=takovsky_scanner()
+    
+    sch = sched.scheduler(time.time, time.sleep)
+    
+    scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
+        
+    seconds = 10
+    while seconds < runtime:
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+        sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+        seconds = seconds + 200
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+        sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+        seconds = seconds + 1
+        sch.enter(seconds, 9, instruments["3458A"].blank_display)
+        sch.enter(seconds, 9, instruments["3458B"].blank_display)
+        seconds = seconds + 60
+        
+    for perm in scanner_permutations:
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[1][0],)) # Close meter
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, perm[1][1].trigger_once)
+        seconds = seconds + NPLC * 0.04 + 0.1
+        sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]+" "+perm[1][1].get_title()))
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
+        
+    
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
+    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
+    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
+    #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
+    #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
+    sch.run()
+  
+  
 def recursive_read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
@@ -570,10 +650,11 @@ def readstb_test():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
+        scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
