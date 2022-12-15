@@ -470,6 +470,7 @@ def scanner_once():
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.run()
+    MySeriesHelper.commit()
   
   
 def recursive_read_inst(sch, interval, priority, inst):
