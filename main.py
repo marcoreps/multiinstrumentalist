@@ -51,11 +51,11 @@ instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
 def test_3458A():
 
     switch=takovsky_scanner()
-    switch.switchingCloseRelay(channels[2])
+    switch.switchingCloseRelay(channels[3])
     switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu3 3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu4 3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
