@@ -3,7 +3,6 @@
 from smbus2 import SMBus
 import logging
 import serial
-from w1thermsensor import W1ThermSensor, Sensor
 from multiprocessing import Process, Queue
 import time
 import qwiic_ccs811
@@ -171,60 +170,7 @@ class Arroyo:
     def measure(self):
         pass
         
-        
-        
-class HPM7177_temp:
-    
-    def __init__(self, lock, sn, title='HPM7177 Int Temp Sensor'):
-        self.title = title
-        self.lock = lock
-        self.sn = sn
-        self.sensor = W1ThermSensor(Sensor.DS18B20, sn)
-        
-        self.ready_to_read = False
-        self.measuring = False
-        self.read_val = 0
-        
-        self.output_q = Queue(maxsize=1)
-        
-        self.serial_process = Process(target=self.read_temperature, args=(self.lock, self.output_q,))
-        self.serial_process.daemon = True
-        self.serial_process.start()
-        
-    def read_temperature(self, l, q):
-        while True:
-            if not q.full():
-                l.acquire()
-                try:
-                    logging.debug(self.title+' reading now')
-                    readval = self.sensor.get_temperature()
-                    logging.debug(self.title+' '+str(readval))
-                    q.put(readval)
-                except Exception:
-                    pass
-                finally:
-                    l.release()
-            else:
-                time.sleep(0.1)
-        
-    def get_title(self):
-        logging.debug(self.title+' get_title started')
-        return self.title
-        
-    def get_read_val(self):
-        readval = self.output_q.get()
-        logging.debug(self.title+' reading '+str(readval))
-        return readval
-        
-    def is_readable(self):
-        return self.output_q.full()
-        
-    def is_measuring(self):
-        return False
-        
-    def measure(self):
-        pass
-        
+
 class HP3458A_temp:
     
     def __init__(self, HP3458A, title='HP3458A Int Temp Sensor'):
