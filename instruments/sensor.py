@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import smbus
+from smbus2 import SMBus
 import logging
 import serial
 from w1thermsensor import W1ThermSensor, Sensor
@@ -51,7 +51,7 @@ class TMP117:
     i2c_ch = 1
     reg_temp = 0x00
     reg_config = 0x01
-    bus = smbus.SMBus(i2c_ch)
+    bus = SMBus(i2c_ch)
     readable = True
     read_val = 0.0
     
