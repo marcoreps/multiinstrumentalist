@@ -68,7 +68,7 @@ def test_3458A():
             if i.is_readable():
                 logging.debug('is readable: '+i.get_title())
                 writer.write("ADRmu107", i.get_title(), i.get_read_val())
-        time.sleep(0.1)
+        time.sleep(2)
     
              
 def INL_3458A():
