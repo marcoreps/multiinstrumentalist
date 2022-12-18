@@ -1,42 +1,20 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import argparse
+import configparser
 
-from influxdb import InfluxDBClient
-from influxdb import SeriesHelper
+from influxdb_client import InfluxDBClient
+
+config = configparser.ConfigParser()
+config.read('influx_login.ini')
+
+# create someting like this as influx_login.ini
+# [DEFAULT]
+# url = http://localhost:8086
+# bucket = PPMhub
+# org = RPG
+# token = changemechangemechangemechangeme
 
 
-host = 'localhost'
-port = 8086
-user = 'grafana'
-password = 'grafana'
-dbname = 'home'
+client = InfluxDBClient(url=config['DEFAULT']['url'], token=config['DEFAULT']['token'], org=config['DEFAULT']['org'])
 
-myclient = InfluxDBClient(host, port, user, password, dbname)
-
-class MySeriesHelper(SeriesHelper):
-    """Instantiate SeriesHelper to write points to the backend."""
-
-    class Meta:
-        """Meta class stores time series helper configuration."""
-
-        # The client should be an instance of InfluxDBClient.
-        client = myclient
-
-        # The series name must be a string. Add dependent fields/tags
-        # in curly brackets.
-        series_name = '{instrument_name}'
-
-        # Defines all the fields in this time series.
-        fields = ['value']
-
-        # Defines all the tags for the series.
-        tags = ['instrument_name']
-
-        # Defines the number of data points to store prior to writing
-        # on the wire.
-        bulk_size = 10
-
-        # autocommit must be set to True when using bulk_size
-        autocommit = True
