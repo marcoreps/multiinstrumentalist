@@ -66,7 +66,7 @@ def test_3458A():
     while True:
         for i in instruments.values():
             if i.is_readable():
-                writer.write("ADRmu107", "3458A", i.get_read_val()):
+                writer.write("ADRmu107", "3458A", i.get_read_val())
         time.sleep(0.1)
     
              
