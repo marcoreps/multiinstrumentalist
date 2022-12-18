@@ -3,7 +3,7 @@
 
 import configparser
 from datetime import datetime
-from influxdb_client import InfluxDBClient, Point
+from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
 config = configparser.ConfigParser()
@@ -26,6 +26,6 @@ class influx_writer:
         self.client = InfluxDBClient(url=url, token=token, org=org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         
-    def write(self, measurement, field, val):
-        p = Point(measurement).field(field, float(val))
+    def write(self, measurement, field, val, timestamp=datetime.utcnow()):
+        p = Point(measurement).field(field, float(val)).time(timestamp, WritePrecision.MS)
         self.write_api.write(bucket, record=p)
