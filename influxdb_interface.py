@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import configparser
-
+from datetime import datetime
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 
