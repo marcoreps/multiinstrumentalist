@@ -1,6 +1,8 @@
 # multiinstrumentalist
 Multi instrument datalogging platform
 
+Not yet cleaned up for external use, good luck!
+
 sudo apt-get update
 
 sudo apt-get install python3-pip i2c-tools
