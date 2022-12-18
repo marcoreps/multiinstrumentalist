@@ -20,8 +20,8 @@ from influxdb_interface import influx_writer
 writer=influx_writer()
 
 
-logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-#logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
+#logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -32,7 +32,7 @@ vxi_ip = "192.168.0.88"
 
 instruments = dict()
 #instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-#instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
+instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
 
 #instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
 #instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
@@ -56,7 +56,7 @@ def test_3458A():
     switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu107 3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
@@ -66,7 +66,8 @@ def test_3458A():
     while True:
         for i in instruments.values():
             if i.is_readable():
-                writer.write("ADRmu107", "3458A", i.get_read_val())
+                logging.debug('is readable: '+i.get_title())
+                writer.write("ADRmu107", i.get_title(), i.get_read_val())
         time.sleep(0.1)
     
              

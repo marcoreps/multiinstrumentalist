@@ -28,4 +28,5 @@ class influx_writer:
         
     def write(self, measurement, field, val, timestamp=datetime.utcnow()):
         p = Point(measurement).field(field, float(val)).time(timestamp, WritePrecision.MS)
+        logging.debug('writing point to influxdb: '+str(p))
         self.write_api.write(bucket, record=p)
