@@ -27,5 +27,5 @@ class influx_writer:
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         
     def write(self, measurement, field, val, tags={}):
-        p = Point(measurement).tag(tags)field.(field, val).time(datetime.utcnow(), WritePrecision.MS)
+        p = Point(measurement).tag(tags).field(field, val).time(datetime.utcnow(), WritePrecision.MS)
         self.write_api.write(bucket, record=p)
