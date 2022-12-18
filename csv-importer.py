@@ -7,6 +7,6 @@ from influxdb_interface import influx_writer
 
 with open("import.csv", "r") as f:
     reader = csv.reader(f, delimiter="\t")
-    next(csvreader)
+    next(reader)
     for i, line in enumerate(reader):
         print(line[0])
