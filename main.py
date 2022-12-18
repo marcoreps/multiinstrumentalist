@@ -10,18 +10,18 @@ import sys
 import sched
 import itertools
 
-#from instruments.sensor import *
+from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
-#from instruments.switch import *
+from instruments.switch import *
 
 from influxdb_interface import influx_writer
 
 writer=influx_writer()
 
 
-logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-#logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
+#logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -51,9 +51,9 @@ instruments = dict()
 
 def test_3458A():
 
-    #switch=takovsky_scanner()
-    #switch.switchingCloseRelay(channels[4])
-    #switch.switchingCloseRelay(channels[6])
+    switch=takovsky_scanner()
+    switch.switchingCloseRelay(channels[4])
+    switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu107 3458A")
