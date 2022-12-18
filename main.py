@@ -21,7 +21,7 @@ writer=influx_writer()
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -186,6 +186,7 @@ def temperature_sweep():
 def read_inst_scanner(inst, title):
     if inst.is_readable():
         MySeriesHelper(instrument_name=title, value=float(inst.get_read_val()))
+        writer.write(inst.get_title(), inst.get_title(), inst.get_read_val())
     else:
         logging.info(inst.get_title()+' was not readable')
 
@@ -373,7 +374,7 @@ def scanner2():
             seconds = seconds + switch_delay
             sch.enter(seconds, 10, perm[1][1].trigger_once)
             seconds = seconds + NPLC * 0.04 + 0.1
-            sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]+" "+perm[1][1].get_title()))
+            sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
             sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
             sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
         seconds = seconds + 60*60*24
@@ -392,7 +393,7 @@ def scanner2():
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
+    #sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
@@ -483,9 +484,8 @@ def read_cal_params(inst):
     while not inst.is_ready():
         logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
         time.sleep(1)
-    MySeriesHelper(instrument_name=inst.get_title()+" CAL? 72", value=float(inst.get_cal_72()))
-    MySeriesHelper(instrument_name=inst.get_title()+" CAL? 73", value=float(inst.get_cal_73()))
-    MySeriesHelper(instrument_name=inst.get_title()+" CAL? 175", value=float(inst.get_cal_175()))
+    writer.write(inst.get_title(), "CAL? 72", inst.get_cal_72())
+    writer.write(inst.get_title(), "CAL? 175", inst.get_cal_175())
         
 def acal_inst(sch, interval, priority, inst):
     while not inst.is_ready():
@@ -649,10 +649,10 @@ def readstb_test():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        #scanner2()
+        scanner2()
         #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
