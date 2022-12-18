@@ -185,7 +185,6 @@ def temperature_sweep():
 
 def read_inst_scanner(inst, title):
     if inst.is_readable():
-        MySeriesHelper(instrument_name=title, value=float(inst.get_read_val()))
         writer.write(inst.get_title(), inst.get_title(), inst.get_read_val())
     else:
         logging.info(inst.get_title()+' was not readable')
