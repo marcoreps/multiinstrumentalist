@@ -10,10 +10,10 @@ import sys
 import sched
 import itertools
 
-from instruments.sensor import *
+#from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
-from instruments.switch import *
+#from instruments.switch import *
 
 from influxdb_interface import influx_writer
 

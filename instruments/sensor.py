@@ -50,7 +50,7 @@ class TMP117:
     i2c_ch = 1
     reg_temp = 0x00
     reg_config = 0x01
-    #bus = SMBus(i2c_ch)
+    bus = SMBus(i2c_ch)
     readable = True
     read_val = 0.0
     
