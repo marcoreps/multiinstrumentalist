@@ -5,6 +5,7 @@ import configparser
 from datetime import datetime
 from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
+import logging
 
 config = configparser.ConfigParser()
 config.read('influx_login.ini')
