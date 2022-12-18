@@ -13,4 +13,4 @@ with open("import.csv", "r") as f:
     for i, line in enumerate(reader):
         datetime_object = datetime.datetime.strptime(line[0], '%Y-%m-%d %H:%M:%S')
         utc=datetime_object.astimezone(datetime.timezone.utc)
-        writer.write("ADRmu107", "3458A", line[1], utc)
+        writer.write("ADRmu107", "3458A", line[1].strip(), utc)
