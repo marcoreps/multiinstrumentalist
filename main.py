@@ -10,13 +10,14 @@ import sys
 import sched
 import itertools
 
-
-from influxdb_interface import MySeriesHelper
-
 from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
 from instruments.switch import *
+
+from influxdb_interface import influx_writer
+
+writer=influx_writer()
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
@@ -31,7 +32,7 @@ vxi_ip = "192.168.0.88"
 
 instruments = dict()
 #instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
+#instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
 
 #instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
 #instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
@@ -65,7 +66,7 @@ def test_3458A():
     while True:
         for i in instruments.values():
             if i.is_readable():
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
+                writer.write("ADRmu107", "3458A", i.get_read_val()):
         time.sleep(0.1)
     
              
@@ -648,11 +649,11 @@ def readstb_test():
 if __name__ == '__main__':
     try:
 
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
