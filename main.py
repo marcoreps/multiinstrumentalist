@@ -51,9 +51,9 @@ instruments = dict()
 
 def test_3458A():
 
-    switch=takovsky_scanner()
-    switch.switchingCloseRelay(channels[4])
-    switch.switchingCloseRelay(channels[6])
+    #switch=takovsky_scanner()
+    #switch.switchingCloseRelay(channels[4])
+    #switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="ADRmu107 3458A")
