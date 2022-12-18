@@ -428,14 +428,12 @@ def scanner_once():
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_hold()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4"), (channels[4], "ADRmu107")]
     scanner_meters = [(channels[6], instruments["3458A"]), (channels[7], instruments["3458B"])]
@@ -460,7 +458,7 @@ def scanner_once():
         seconds = seconds + switch_delay
         sch.enter(seconds, 10, perm[1][1].trigger_once)
         seconds = seconds + NPLC * 0.04 + 0.1
-        sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]+" "+perm[1][1].get_title()))
+        sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
         
@@ -472,7 +470,6 @@ def scanner_once():
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.run()
-    MySeriesHelper.commit()
   
   
 def recursive_read_inst(sch, interval, priority, inst):
@@ -652,8 +649,8 @@ if __name__ == '__main__':
         #test_3458A()
         #INL_3458A()
         #temperature_sweep()
-        scanner2()
-        #scanner_once()
+        #scanner2()
+        scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
