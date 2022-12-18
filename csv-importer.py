@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import re
 import datetime
 import csv
 from influxdb_interface import influx_writer
@@ -13,4 +13,4 @@ with open("import.csv", "r") as f:
     for i, line in enumerate(reader):
         datetime_object = datetime.datetime.strptime(line[0], '%Y-%m-%d %H:%M:%S')
         utc=datetime_object.astimezone(datetime.timezone.utc)
-        writer.write("ADRmu107", "3458A", line[1].strip(), utc)
+        writer.write("ADRmu107", "3458A", re.sub(' V', '', line[1]), utc)
