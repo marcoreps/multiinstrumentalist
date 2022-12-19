@@ -604,7 +604,9 @@ class HP3458A(multimeter):
 
             
     def is_readable(self):
+        logging.debug(self.title+' is_readable() started')
         self.read_stb()
+        logging.debug(self.title+' stb is '+str(self.stb))
         ready = self.stb & 0b10000000
         return ready
         
