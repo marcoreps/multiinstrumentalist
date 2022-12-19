@@ -8,14 +8,14 @@ from influxdb_client.client.write_api import SYNCHRONOUS
 import logging
 
 config = configparser.ConfigParser()
-config.read('influx_login.ini')
-url = config['DEFAULT']['url']
-bucket = config['DEFAULT']['bucket']
-org = config['DEFAULT']['org']
-token = config['DEFAULT']['token']
+config.read('conf.ini')
+influx_url = config['INFLUX']['url']
+influx_bucket = config['INFLUX']['bucket']
+influx_org = config['INFLUX']['org']
+influx_token = config['INFLUX']['token']
 
-# create someting like this as influx_login.ini
-# [DEFAULT]
+# create someting like this as conf.ini
+# [INFLUX]
 # url = http://localhost:8086
 # bucket = PPMhub
 # org = RPG
@@ -27,7 +27,7 @@ class influx_writer:
         self.client = InfluxDBClient(url=url, token=token, org=org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         
-    def write(self, measurement, field, val, bucket=bucket, timestamp=None):
+    def write(self, measurement, field, val, bucket=influx_bucket, timestamp=None):
         if not timestamp:
             timestamp = datetime.utcnow()
         p = Point(measurement).field(field, float(val)).time(timestamp, WritePrecision.MS)
