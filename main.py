@@ -471,7 +471,6 @@ def scanner_once():
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.run()
   
-  
 def recursive_read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
@@ -646,11 +645,11 @@ def readstb_test():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        #scanner_once()
+        scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
