@@ -41,9 +41,6 @@ class multimeter:
         except:
             logging.error("Error in %s get_read_val" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
         logging.debug("%s reading %s" % (self.title, self.read_val))
         return self.read_val
         
@@ -68,9 +65,7 @@ class multimeter:
         except:
             logging.error("Error in %s read_stb" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
             
 
 class S7081(multimeter):
@@ -95,8 +90,7 @@ class S7081(multimeter):
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
     def config_10DCV_9digit(self):
         try:
@@ -107,8 +101,7 @@ class S7081(multimeter):
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
     def config_10k_9digit(self):
         try:
@@ -120,8 +113,7 @@ class S7081(multimeter):
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
 
     def measure(self):
@@ -133,8 +125,7 @@ class S7081(multimeter):
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
     def is_readable(self):
         self.read_stb()
@@ -165,8 +156,7 @@ class K2001(multimeter):
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
         
     def config_20DCV_9digit_fast(self):
@@ -184,8 +174,7 @@ class K2001(multimeter):
         except:
             logging.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
         
     def config_20DCV_9digit_filtered(self):
@@ -207,8 +196,7 @@ class K2001(multimeter):
         except:
             logging.error("Error in %s config_20DCV_9digit_filtered" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
     def config_2ADC_9digit_filtered(self):
         try:
@@ -229,8 +217,7 @@ class K2001(multimeter):
         except:
             logging.error("Error in %s config_2ADC_9digit_filtered" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
 
 
     def measure(self):
@@ -242,8 +229,7 @@ class K2001(multimeter):
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
         
         
@@ -279,8 +265,7 @@ class R6581T(multimeter):
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
         
     def config_10DCV_9digit_fast(self):
@@ -302,8 +287,7 @@ class R6581T(multimeter):
         except:
             logging.error("Error in %s config_10DCV_9digit_fast" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
         
     def config_10DCV_9digit_filtered(self):
@@ -327,8 +311,7 @@ class R6581T(multimeter):
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
             
     def config_100k4W_9digit_filtered(self):
@@ -354,8 +337,7 @@ class R6581T(multimeter):
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
             
     def config_10k4W_9digit_filtered(self):
@@ -381,8 +363,7 @@ class R6581T(multimeter):
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
         
     def config_10R4W_9digit_filtered(self):
@@ -408,8 +389,7 @@ class R6581T(multimeter):
         except:
             logging.error("Error in %s config_10DCV_9digit_filtered" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
         
     def measure(self):
@@ -422,8 +402,7 @@ class R6581T(multimeter):
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
         
     def get_int_temp(self):
@@ -454,8 +433,7 @@ class HP34401A(multimeter):
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
         
         
     def config_10DCV_6digit_fast(self):
@@ -468,8 +446,7 @@ class HP34401A(multimeter):
         except:
             logging.error("Error in %s config_20DCV_9digit_fast" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
 
 
     def measure(self):
@@ -481,8 +458,7 @@ class HP34401A(multimeter):
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
     def is_readable(self):
         self.read_stb()
@@ -514,10 +490,10 @@ class HP3458A(multimeter):
             self.close_instr_conn()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
-            pass
-        finally:
+            self.close_instr_conn()
             logging.debug("emergency lock release")
             self.lock.release()
+            pass
         
             
     def config_NPLC(self, NPLC):
@@ -528,10 +504,10 @@ class HP3458A(multimeter):
             self.close_instr_conn()
         except:
             logging.error("Error in %s config_NPLC" % self.title, exc_info=True)
-            pass
-        finally:
             logging.debug("emergency lock release")
             self.lock.release()
+            pass
+
             
     def config_NDIG(self, NDIG):
         try:
@@ -542,9 +518,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s config_NDIG" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
             
     def config_DCV(self, RANG):
         try:
@@ -555,9 +529,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s config_DCV" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
             
     def blank_display(self):
         try:
@@ -569,9 +541,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s blank_display" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
         
     def config_trigger_auto(self):
         try:
@@ -582,8 +552,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s config_trigger_auto" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
+
             
     def config_trigger_hold(self):
         try:
@@ -594,9 +563,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s config_trigger_hold" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
             
     def trigger_once(self):
         try:
@@ -611,9 +578,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s trigger_once" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
             
     def measure(self):
         logging.debug(self.title+' measure started')
@@ -624,9 +589,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
             
     def acal_DCV(self):
         logging.debug(self.title+' ACAL DCV started')
@@ -637,9 +600,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s acal_DCV" % self.title, exc_info=True)
             pass
-        finally:
-            logging.debug("emergency lock release")
-            self.lock.release()
+
 
             
     def is_readable(self):
@@ -662,9 +623,6 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_int_temp" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
-            return temp
         
     def get_cal_72(self):
         cal72 = 0
@@ -675,9 +633,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_72" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
-            return cal72
+
         
     def get_cal_73(self):
         cal73 = 0
@@ -688,9 +644,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_73" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
-            return cal73
+
             
     def get_cal_175(self):
         cal175 = 0
@@ -701,9 +655,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_175" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
-            return cal175
+
             
     def get_cal_59(self):
         cal59 = 0
@@ -714,9 +666,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_59" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
-            return cal59
+
             
     def get_cal_2_1(self):
         cal_2_1 = 0
@@ -727,9 +677,7 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_2_1" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
-            return cal_2_1
+
 
     def get_cal_1_1(self):
         cal_1_1 = 0
@@ -740,6 +688,3 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_1_1" % self.title, exc_info=True)
             pass
-        finally:
-            self.lock.release()
-            return cal_1_1
