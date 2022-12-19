@@ -24,7 +24,7 @@ influx_token = config['INFLUX']['token']
 class influx_writer:
 
     def __init__(self):
-        self.client = InfluxDBClient(url=url, token=token, org=org)
+        self.client = InfluxDBClient(url=influx_url, token=influx_token, org=influx_org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         
     def write(self, measurement, field, val, bucket=influx_bucket, timestamp=None):
