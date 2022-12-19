@@ -636,6 +636,8 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_72" % self.title, exc_info=True)
             pass
+        finally:
+            return cal72
 
         
     def get_cal_73(self):
@@ -658,6 +660,8 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_175" % self.title, exc_info=True)
             pass
+        finally:
+            return cal175
 
             
     def get_cal_59(self):
@@ -669,6 +673,8 @@ class HP3458A(multimeter):
         except:
             logging.error("Error in %s get_cal_59" % self.title, exc_info=True)
             pass
+        finally:
+            return cal59
 
             
     def get_cal_2_1(self):
