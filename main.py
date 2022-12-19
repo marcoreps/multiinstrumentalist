@@ -67,6 +67,7 @@ def test_3458A():
             if i.is_readable():
                 logging.debug('is readable: '+i.get_title())
                 writer.write("ADRmu107", i.get_title(), i.get_read_val())
+                logging.debug(i.get_title()+' read '+str(i.get_read_val()))
         time.sleep(2)
     
              
