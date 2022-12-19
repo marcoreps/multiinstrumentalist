@@ -27,7 +27,7 @@ class influx_writer:
         self.client = InfluxDBClient(url=url, token=token, org=org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         
-    def write(self, measurement, field, val, timestamp=None):
+    def write(self, measurement, field, val, bucket=bucket, timestamp=None):
         if not timestamp:
             timestamp = datetime.utcnow()
         p = Point(measurement).field(field, float(val)).time(timestamp, WritePrecision.MS)
