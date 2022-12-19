@@ -625,10 +625,13 @@ class HP3458A(multimeter):
             pass
         
     def get_cal_72(self):
+        logging.debug(self.title+' get_cal_72() called')
         cal72 = 0
         try:
             self.connect()
+            logging.debug(self.title+' connected')
             cal72 = self.instr.ask("CAL? 72")
+            logging.debug(self.title+' CAL? 72 = '+str(cal72))
             self.close_instr_conn()
         except:
             logging.error("Error in %s get_cal_72" % self.title, exc_info=True)
