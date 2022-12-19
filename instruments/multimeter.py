@@ -48,7 +48,7 @@ class multimeter:
         try:
             logging.debug("Closing instr")
             self.instr.close()
-            time.sleep(0.1)
+            time.sleep(0.5)
             logging.debug("regular lock release")
             self.lock.release()
         except:
