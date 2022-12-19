@@ -23,6 +23,7 @@ class multimeter:
     
     
     def connect(self):
+        logging.debug("acquiring lock")
         self.lock.acquire()
         logging.debug("connecting instr")
         self.instr.open()
@@ -41,6 +42,7 @@ class multimeter:
             logging.error("Error in %s get_read_val" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
         logging.debug("%s reading %s" % (self.title, self.read_val))
         return self.read_val
@@ -49,6 +51,9 @@ class multimeter:
         try:
             logging.debug("Closing instr")
             self.instr.close()
+            time.sleep(0.1)
+            logging.debug("regular lock release")
+            self.lock.release()
         except:
             logging.error("Error in %s close_instr_conn" % self.title, exc_info=True)
             pass
@@ -64,7 +69,7 @@ class multimeter:
             logging.error("Error in %s read_stb" % self.title, exc_info=True)
             pass
         finally:
-            logging.debug("lock release")
+            logging.debug("emergency lock release")
             self.lock.release()
             
 
@@ -511,6 +516,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
         
             
@@ -524,6 +530,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s config_NPLC" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
             
     def config_NDIG(self, NDIG):
@@ -536,6 +543,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s config_NDIG" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
             
     def config_DCV(self, RANG):
@@ -548,6 +556,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s config_DCV" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
             
     def blank_display(self):
@@ -561,6 +570,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s blank_display" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
         
     def config_trigger_auto(self):
@@ -585,6 +595,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s config_trigger_hold" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
             
     def trigger_once(self):
@@ -601,6 +612,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s trigger_once" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
             
     def measure(self):
@@ -613,6 +625,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s measure" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
             
     def acal_DCV(self):
@@ -625,6 +638,7 @@ class HP3458A(multimeter):
             logging.error("Error in %s acal_DCV" % self.title, exc_info=True)
             pass
         finally:
+            logging.debug("emergency lock release")
             self.lock.release()
 
             
