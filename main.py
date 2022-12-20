@@ -461,6 +461,7 @@ def scanner_once():
         sch.enter(seconds, 10, perm[1][1].trigger_once)
         seconds = seconds + NPLC * 0.04 + 0.1
         sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
+        logging.debug('read_inst_scanner() terminated')
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
         
