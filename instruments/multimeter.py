@@ -11,6 +11,8 @@ import math
 
 class multimeter:
 
+    title="Multimeter"
+
     def is_readable(self):
         return self.readable
     
