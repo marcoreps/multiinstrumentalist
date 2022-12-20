@@ -191,7 +191,6 @@ def read_inst_scanner(inst, dut):
         logging.debug('debug step')
     else:
         logging.info(inst.get_title()+' was not readable')
-        logging.debug(inst.get_title()+' was not readable')
 
 def scanner():
 
@@ -448,12 +447,12 @@ def scanner_once():
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
         
     seconds = 10
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    #seconds = seconds + 200
-    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
-    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
-    #seconds = seconds + 60
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    seconds = seconds + 200
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+    seconds = seconds + 60
         
     for perm in scanner_permutations:
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
