@@ -188,10 +188,10 @@ def read_inst_scanner(inst, dut):
     logging.debug("Reading inst with title %s after a measurement of %s" % (inst.get_title(), dut))
     if inst.is_readable():
         writer.write(dut, inst.get_title(), inst.get_read_val())
-        logging.DEBUG('debug step')
+        logging.debug('debug step')
     else:
         logging.info(inst.get_title()+' was not readable')
-        logging.DEBUG(inst.get_title()+' was not readable')
+        logging.debug(inst.get_title()+' was not readable')
 
 def scanner():
 
