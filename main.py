@@ -21,7 +21,7 @@ writer=influx_writer()
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -65,8 +65,7 @@ def test_3458A():
     while True:
         for i in instruments.values():
             if i.is_readable():
-                logging.debug('is readable: '+i.get_title())
-                #writer.write("ADRmu107", i.get_title(), i.get_read_val())
+                writer.write("ADRmu107", i.get_title(), i.get_read_val())
                 logging.debug(i.get_title()+' read '+str(i.get_read_val()))
         time.sleep(1)
     
@@ -648,11 +647,11 @@ def readstb_test():
 if __name__ == '__main__':
     try:
 
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
