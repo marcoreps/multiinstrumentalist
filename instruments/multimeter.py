@@ -36,6 +36,7 @@ class multimeter:
         logging.debug("close_instr_conn() Closing instr")
         self.instr.close()
         logging.debug("close_instr_conn() regular lock release")
+        time.sleep(0.5)
         self.lock.release()
         
         
