@@ -22,17 +22,15 @@ class multimeter:
         logging.debug("connect() connecting instr")
         self.instr.open()
         
-        
     def get_title(self):
         return self.title
-        
         
     def get_read_val(self):
         self.connect()
         read_val = self.instr.read()
         logging.debug("get_read_val() reading "+str(read_val))
         self.close_instr_conn()
-        return self.read_val
+        return read_val
         
     def close_instr_conn(self):
         logging.debug("close_instr_conn() Closing instr")
