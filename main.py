@@ -32,7 +32,7 @@ vxi_ip = "192.168.178.88"
 
 instruments = dict()
 #instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-instruments["temp_long"]=TMP117(address=0x4A, title="Long Temp Sensor")
+instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
 
 #instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
 #instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
@@ -466,7 +466,7 @@ def scanner_once():
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
+    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["long_tmp117"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
@@ -476,7 +476,7 @@ def scanner_once():
 def recursive_read_inst(sch, interval, priority, inst):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
-        MySeriesHelper(instrument_name=inst.get_title(), value=float(inst.get_read_val()))
+        writer.write("Ambient Temp", inst.get_title(), inst.get_read_val(), bucket="lab_sensors")
         
 def read_cal_params(inst):
     while not inst.is_ready():
