@@ -187,7 +187,7 @@ def temperature_sweep():
 def read_inst_scanner(inst, dut):
     logging.debug("Reading inst with title %s after a measurement of %s" % (inst.get_title(), dut))
     if inst.is_readable():
-        #writer.write(dut, inst.get_title(), inst.get_read_val())
+        writer.write(dut, inst.get_title(), inst.get_read_val())
         logging.info(dut+" with instrument "+inst.get_title()+" read "+str(inst.get_read_val()))
     else:
         logging.info(inst.get_title()+' was not readable')
@@ -447,12 +447,12 @@ def scanner_once():
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
         
     seconds = 10
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    #seconds = seconds + 200
-    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
-    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
-    #seconds = seconds + 60
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    seconds = seconds + 200
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+    seconds = seconds + 60
         
     for perm in scanner_permutations:
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
@@ -466,7 +466,7 @@ def scanner_once():
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    #sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
+    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["temp_long"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
