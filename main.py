@@ -153,7 +153,7 @@ def INL_3458A():
 def temperature_sweep():
 
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A LTZheater")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(50)
@@ -161,7 +161,7 @@ def temperature_sweep():
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B Vz")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(50)
@@ -173,12 +173,12 @@ def temperature_sweep():
     wait_settle = 10
 
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"]))
-    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"]))
-    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"]))
+    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Heater"))
+    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"], "Vz"))
+    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"], "Chamber Temp"))
     i=0
-    #for t in numpy.arange(tmin, tmax+0.01, tstep):
-    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
+    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=1
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
@@ -473,10 +473,10 @@ def scanner_once():
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     sch.run()
   
-def recursive_read_inst(sch, interval, priority, inst):
+def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst))
     if inst.is_readable():
-        writer.write("Ambient Temp", inst.get_title(), inst.get_read_val(), bucket="lab_sensors")
+        writer.write(name, inst.get_title(), inst.get_read_val(), bucket)
         
 def read_cal_params(inst):
     while not inst.is_ready():
@@ -649,9 +649,9 @@ if __name__ == '__main__':
 
         #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
