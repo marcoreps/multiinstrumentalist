@@ -1,4 +1,4 @@
-import smbus
+from smbus2 import SMBus
 import time
 import logging
 
@@ -36,7 +36,7 @@ combineSwitch = {"chip" : 0x4, "port" : 1, "pin" : 2, "comPin" : 1, "pcbIndex" :
 
 
 class takovsky_scanner:
-    i2c   =  smbus.SMBus(1)
+    i2c   =  SMBus(1)
     g_closedChannel = 0
     g_fwireEnabled = 0
     g_mbbEnabled = 0;
