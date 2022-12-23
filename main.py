@@ -474,7 +474,7 @@ def scanner_once():
     sch.run()
   
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
-    sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst))
+    sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
     if inst.is_readable():
         writer.write(name, inst.get_title(), inst.get_read_val(), bucket)
         
