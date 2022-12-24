@@ -466,7 +466,7 @@ def scanner_once():
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["long_tmp117"]))
+    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["long_tmp117"], "Ambient Temp", bucket="lab_sensors"))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
