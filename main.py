@@ -649,9 +649,9 @@ if __name__ == '__main__':
 
         #test_3458A()
         #INL_3458A()
-        temperature_sweep()
+        #temperature_sweep()
         #scanner2()
-        #scanner_once()
+        scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
