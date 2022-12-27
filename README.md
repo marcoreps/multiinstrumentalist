@@ -9,7 +9,7 @@ sudo apt-get update
 
 sudo apt-get install python3-pip i2c-tools git
 
-pip install python-vxi11 numpy smbus2 sparkfun-qwiic-ccs811 influxdb-client
+pip install python-vxi11 numpy smbus2 sparkfun-qwiic-ccs811 influxdb-client pyserial
 
 git clone https://github.com/marcoreps/multiinstrumentalist.git
 
