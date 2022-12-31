@@ -648,7 +648,7 @@ def k182():
     instruments["k182"]=K182_xdevs(ip=vxi_ip, gpib_address=8, lock=gpiblock)
     instruments["k182"].default()
     while True:
-        print(instruments["k182"].get_data())
+        writer.write("PPMhub", "ADRmu2 - ADRmu1", inst.get_title(), instruments["k182"].get_data())
     
 
 
