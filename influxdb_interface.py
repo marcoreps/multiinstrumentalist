@@ -12,7 +12,7 @@ class influx_writer:
         self.client = InfluxDBClient(url=url, token=token, org=org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         
-    def write(self, measurement, field, val, timestamp=None):
+    def write(self, bucket, measurement, field, val, timestamp=None):
         if not timestamp:
             timestamp = datetime.utcnow()
         logging.debug('writing point to influxdb: measurement=%s field=%s val=%s'%(str(measurement),str(field),str(val)))
