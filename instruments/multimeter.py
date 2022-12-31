@@ -7,6 +7,7 @@ import logging
 import serial
 import numpy as np
 import math
+import signal
 
 
 class multimeter:
