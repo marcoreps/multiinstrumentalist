@@ -9,6 +9,7 @@ from multiprocessing import Process, Lock
 import sys
 import sched
 import itertools
+import configparser
 
 from instruments.sensor import *
 from instruments.multimeter import *
@@ -17,7 +18,13 @@ from instruments.switch import *
 
 from influxdb_interface import influx_writer
 
-writer=influx_writer()
+config = configparser.ConfigParser()
+config.read('conf.ini')
+influx_url = config['INFLUX']['url']
+influx_token = config['INFLUX']['token']
+influx_org = config['INFLUX']['org']
+
+writer=influx_writer(influx_url, influx_token, influx_org)
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
@@ -34,13 +41,6 @@ instruments = dict()
 #instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
 instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
 
-#instruments["CCS811_co2"]=CCS811(title="CCS811_co2", co2_tvoc="co2")
-#instruments["S7081"]=S7081(ip=vxi_ip, gpib_address=2, lock=gpiblock, title="Bench S7081")
-#instruments["2002"]=K2002(ip=vxi_ip, gpib_address=5, lock=gpiblock, title="2002")
-#instruments["2002"].config_2ADC_9digit_filtered()
-#instruments["2002"].config_20DCV_9digit_filtered()
-#instruments["R6581T"]=R6581T(ip=vxi_ip, gpib_address=3, lock=gpiblock, title="Bench R6581T")
-#instruments["temp_R6581T"]=R6581T_temp(r6581t=instruments["R6581T"], title="R6581T Int Temp Sensor")
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
 #instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=gpiblock, title="Bench K237")
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
@@ -644,6 +644,14 @@ def readstb_test():
         print(instruments["3458A"].is_ready())
         time.sleep(0.1)
 
+def k182():
+    instruments["k182"]=K182_xdevs(ip=vxi_ip, gpib_address=8, lock=gpiblock)
+    instruments["k182"].default()
+    while True:
+        print(instruments["k182"].get_data())
+    
+
+
 if __name__ == '__main__':
     try:
 
@@ -651,12 +659,13 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
+        k182()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")

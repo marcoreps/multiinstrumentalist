@@ -161,3 +161,56 @@ class HP3458A(multimeter):
         cal175 = self.instr.ask("CAL? 175")
         self.close_instr_conn()
         return cal175
+
+
+class K182_xdevs(multimeter):
+
+    def __init__(self, ip, gpib_address, lock, title='Keithley 182'):
+        logging.debug(self.title+' init started')
+        self.title = title
+        self.lock = lock
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.lock.acquire()
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.instr.timeout = 60
+        self.instr.clear()
+        self.close_instr_conn()
+        
+    def default(self):
+        self.instr.write("B1X")     # 6.5 digit resolution
+        self.instr.write("F0G0X")   # Latest A/D reading, reading without prefix
+        self.instr.write("O0P0N0W0X") # Enabled analog filter, medium dig filter, disabled
+        self.instr.write("R0X")     # Autorange
+        self.instr.write("S2X")     # NPLC 5
+        self.instr.write("T4X")     # Trigger on X multiple
+        
+    def read_data(self,cmd):
+        data_float = 0.0
+        data_str = ""
+        self.instr.write(cmd)
+        try:
+            with Timeout(20):
+                data_str = self.instr.read()
+        except Timeout.Timeout:
+            print ("Timeout exception from dmm %s on read_data() instr.read()\n" % self.name)
+            return (0,float(0))
+        #print ("Reading from dmm %s = %s" % (self.name,data_str))
+        try:
+            data_float = float(data_str)
+        except ValueError:
+            print("Exception thrown by dmm %s on read_data() - ValueError = %s\n" % (self.name,data_str))
+            return (0,float(0)) # Exception on float conversion, 0 = error
+        return (1,data_float) # Good read, 1 = converted to float w/o exception
+
+    def get_data(self):
+        self.status_flag,data = self.read_data("X")
+        time.sleep(0.1)
+        self.status_flag,data = self.read_data("X")
+        time.sleep(0.1)
+        if (self.status_flag):
+            self.data = data
+        return self.data
+
+
+        
