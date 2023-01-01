@@ -183,10 +183,10 @@ def temperature_sweep():
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
 
-def read_inst_scanner(inst, dut):
+def read_inst_scanner(inst, dut, bucket="PPMhub"):
     logging.debug("Reading inst with title %s after a measurement of %s" % (inst.get_title(), dut))
     if inst.is_readable():
-        writer.write(dut, inst.get_title(), inst.get_read_val())
+        writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
         logging.debug('debug step')
     else:
         logging.info(inst.get_title()+' was not readable')
@@ -482,8 +482,8 @@ def read_cal_params(inst):
     while not inst.is_ready():
         logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
         time.sleep(1)
-    writer.write(inst.get_title(), "CAL? 72", inst.get_cal_72())
-    writer.write(inst.get_title(), "CAL? 175", inst.get_cal_175())
+    writer.write("PPMhub", inst.get_title(), "CAL? 72", inst.get_cal_72())
+    writer.write("PPMhub", inst.get_title(), "CAL? 175", inst.get_cal_175())
         
 def acal_inst(sch, interval, priority, inst):
     while not inst.is_ready():
