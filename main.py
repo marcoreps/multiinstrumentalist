@@ -476,7 +476,7 @@ def scanner_once():
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
     if inst.is_readable():
-        writer.write(name, inst.get_title(), inst.get_read_val(), bucket)
+        writer.write(bucket, name, inst.get_title(), inst.get_read_val())
         
 def read_cal_params(inst):
     while not inst.is_ready():
