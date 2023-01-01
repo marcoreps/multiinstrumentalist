@@ -648,7 +648,7 @@ def k182():
     instruments["k182"]=K182_xdevs(ip=vxi_ip, gpib_address=8, lock=gpiblock)
     instruments["k182"].default()
     while True:
-        writer.write("PPMhub", "ADRmu2 - ADRmu1", instruments["k182"].get_title(), instruments["k182"].get_data())
+        writer.write("PPMhub", "ADRmu3 - ADRmu1", instruments["k182"].get_title(), instruments["k182"].get_data())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         
     
@@ -661,13 +661,13 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
-        #k182()
+        k182()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
