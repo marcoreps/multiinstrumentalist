@@ -661,13 +661,13 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
-        #k182()
+        k182()
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
