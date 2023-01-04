@@ -651,6 +651,17 @@ def k182():
         writer.write("PPMhub", "ADRmu2 - ADRmu1", instruments["k182"].get_title(), instruments["k182"].get_data())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         
+def hp3458A_diff():
+    NPLC = 100
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].config_trigger_auto()
+    
+    while True:
+        writer.write("PPMhub", "ADRmu2 - ADRmu1", instruments["3458A"].get_title(), instruments["3458A"].get_data())
+        writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
+        
     
 
 
@@ -667,7 +678,9 @@ if __name__ == '__main__':
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
-        k182()
+        #k182()
+        hp3458A_diff()
+
         
     except (KeyboardInterrupt, SystemExit) as exErr:
         logging.info("kthxbye")
