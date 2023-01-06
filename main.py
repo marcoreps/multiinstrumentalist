@@ -659,10 +659,9 @@ def hp3458A_diff():
     instruments["3458A"].config_trigger_auto()
     
     while True:
-        for i in instruments.values():
-            if i.is_readable():
+        if instruments["3458A"].is_readable():
                 writer.write("PPMhub", "ADRmu3 - ADRmu1", i.get_title(), i.get_read_val())
-                logging.debug(i.get_title()+' read '+str(i.get_read_val()))
+        writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         time.sleep(1)
         
     
