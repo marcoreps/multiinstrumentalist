@@ -12,11 +12,13 @@ class influx_writer:
         self.client = InfluxDBClient(url=url, token=token, org=org)
         self.write_api = self.client.write_api(write_options=SYNCHRONOUS)
         
-    def write(self, bucket, measurement, field, val, timestamp=None):
+    def write(self, bucket, measurement, field, val, timestamp=None, tags=None):
         if not timestamp:
             timestamp = datetime.utcnow()
         logging.debug('writing point to influxdb: measurement=%s field=%s val=%s'%(str(measurement),str(field),str(val)))
         p = Point(measurement).field(field, float(val)).time(timestamp, WritePrecision.MS)
+        for t in tags:
+            p.tag(t[0], t[1])
         logging.debug('point made')
         self.write_api.write(bucket, record=p)
         logging.debug('point written, writer done')

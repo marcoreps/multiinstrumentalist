@@ -660,7 +660,8 @@ def hp3458A_diff():
     
     while True:
         if instruments["3458A"].is_readable():
-                writer.write("PPMhub", "ADRmu4 - ADRmu3", instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
+                t=[["wiring", "direct"],["guard","open"]]
+                writer.write("PPMhub", "ADRmu2 - ADRmu4", instruments["3458A"].get_title(), instruments["3458A"].get_read_val(), tags=t)
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         time.sleep(1)
         
@@ -674,14 +675,14 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
         #k182()
-        #hp3458A_diff()
+        hp3458A_diff()
 
         
     except (KeyboardInterrupt, SystemExit) as exErr:
