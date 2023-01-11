@@ -414,8 +414,8 @@ def scanner_once():
 
 # IV    Br    N   channels[4] ADRmu107 +
 # IV    BrW   P   channels[4] ADRmu107 -
-# IV    Or    N   channels[5] 
-# IV    OrW   P   channels[5] 
+# IV    Or    N   channels[5] ADRmu9 +
+# IV    OrW   P   channels[5] ADRmu9 -
 # IV    Bl    N   channels[6] 3458A +
 # IV    BlW   P   channels[6] 3458A -
 # IV    Gr    N   channels[7] 3458B +
@@ -436,7 +436,7 @@ def scanner_once():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4"), (channels[4], "ADRmu107")]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4"), (channels[4], "ADRmu107"), (channels[5], "ADRmu9")]
     scanner_meters = [(channels[6], instruments["3458A"]), (channels[7], instruments["3458B"])]
 
     switch=takovsky_scanner()
@@ -675,14 +675,14 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        #scanner_once()
+        scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
         #k182()
-        hp3458A_diff()
+        #hp3458A_diff()
 
         
     except (KeyboardInterrupt, SystemExit) as exErr:
