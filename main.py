@@ -52,7 +52,7 @@ instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
 def test_3458A():
 
     switch=takovsky_scanner()
-    switch.switchingCloseRelay(channels[4])
+    switch.switchingCloseRelay(channels[5])
     switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
@@ -65,7 +65,7 @@ def test_3458A():
     while True:
         for i in instruments.values():
             if i.is_readable():
-                writer.write("ADRmu107", i.get_title(), i.get_read_val())
+                writer.write("PPMhub","ADRmu9", i.get_title(), i.get_read_val())
                 logging.debug(i.get_title()+' read '+str(i.get_read_val()))
         time.sleep(1)
     
@@ -671,11 +671,11 @@ def hp3458A_diff():
 if __name__ == '__main__':
     try:
 
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
