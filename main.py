@@ -167,10 +167,10 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(50)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 21
+    tmin = 46
     tmax = 70
     tstep = 1
-    wait_settle = 50
+    wait_settle = 40
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Heater"))
