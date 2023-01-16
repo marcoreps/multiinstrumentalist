@@ -157,7 +157,6 @@ def temperature_sweep():
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(50)
     instruments["3458A"].config_trigger_auto()
-    instruments["3458A"].blank_display()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
@@ -167,7 +166,7 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(50)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 21
+    tmin = 40
     tmax = 70
     tstep = 1
     wait_settle = 40
