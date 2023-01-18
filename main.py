@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import csv
+import sys
 import logging
 from time import time
 import numpy
@@ -64,7 +65,7 @@ def test_3458A():
     
     while True:
         if instruments["3458A"].is_readable():
-            writer.write("PPMhub","ADRmu1", instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
+            writer.write("PPMhub",str(sys.argv[0]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         time.sleep(1)
     
