@@ -444,7 +444,7 @@ def scanner_once():
     sch = sched.scheduler(time.time, time.sleep)
     
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
-    scanner_permutations = None
+    scanner_permutations = []
         
     seconds = 10
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
