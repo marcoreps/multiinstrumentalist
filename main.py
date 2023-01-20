@@ -65,7 +65,7 @@ def test_3458A():
     
     while True:
         if instruments["3458A"].is_readable():
-            writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
+            writer.write("PPMhub",str(sys.argv[2]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         time.sleep(1)
     
@@ -444,6 +444,7 @@ def scanner_once():
     sch = sched.scheduler(time.time, time.sleep)
     
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
+    scanner_permutations = None
         
     seconds = 10
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
@@ -671,11 +672,11 @@ def hp3458A_diff():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        #scanner_once()
+        scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
