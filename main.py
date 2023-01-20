@@ -62,6 +62,7 @@ def test_3458A():
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_auto()
+    instruments["3458A"].blank_display()
     
     while True:
         if instruments["3458A"].is_readable():
