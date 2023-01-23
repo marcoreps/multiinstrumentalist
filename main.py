@@ -171,15 +171,15 @@ def temperature_sweep():
     tmin = 15
     tmax = 35
     tstep = 0.1
-    wait_settle = 20
+    wait_settle = 15
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Heater"))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"], "Vz"))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"], "Chamber Temp"))
     i=0
-    for t in numpy.arange(tmin, tmax+0.01, tstep):
-    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    #for t in numpy.arange(tmin, tmax+0.01, tstep):
+    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=1
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     sch.run()
