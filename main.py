@@ -168,10 +168,10 @@ def temperature_sweep():
     instruments["3458B"].config_NPLC(50)
     instruments["3458B"].config_trigger_auto()
     
-    tmin = 15
-    tmax = 35
+    tmin = 22
+    tmax = 70
     tstep = 0.1
-    wait_settle = 15
+    wait_settle = 3
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Heater"))
@@ -673,9 +673,9 @@ def hp3458A_diff():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #scanner_once()
         #auto_ACAL_3458A()
