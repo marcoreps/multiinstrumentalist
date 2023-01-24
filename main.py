@@ -178,8 +178,8 @@ def temperature_sweep():
     #sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"], "Vz"))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"], "Chamber Temp"))
     i=0
-    #for t in numpy.arange(tmin, tmax+0.01, tstep):
-    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
+    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=1
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
     
@@ -674,9 +674,9 @@ def hp3458A_diff():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #scanner_once()
         #auto_ACAL_3458A()
