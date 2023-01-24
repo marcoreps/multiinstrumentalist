@@ -168,10 +168,10 @@ def temperature_sweep():
     #instruments["3458B"].config_NPLC(50)
     #instruments["3458B"].config_trigger_auto()
     
-    tmin = 20
+    tmin = 15
     tmax = 35
     tstep = 0.1
-    wait_settle = 5
+    wait_settle = 20
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Vz"))
@@ -182,6 +182,7 @@ def temperature_sweep():
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=1
         sch.enter(i*wait_settle, 9, instruments["arroyo"].out, argument=([t]))
+    
     sch.run()
 
 def read_inst_scanner(inst, dut, bucket="PPMhub"):
