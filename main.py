@@ -171,7 +171,7 @@ def temperature_sweep():
     tmin = 15
     tmax = 35
     tstep = 0.1
-    wait_settle = 20
+    wait_settle = 5
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Vz"))
