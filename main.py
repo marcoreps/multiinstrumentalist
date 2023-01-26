@@ -449,23 +449,23 @@ def scanner_once():
     scanner_permutations = []
         
     seconds = 10
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    #seconds = seconds + 200
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    seconds = seconds + 200
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
     seconds = seconds + 60
         
-    #for perm in scanner_permutations:
-        #sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
-        #sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[1][0],)) # Close meter
-        #seconds = seconds + switch_delay
-        #sch.enter(seconds, 10, perm[1][1].trigger_once)
-        #seconds = seconds + NPLC * 0.04 + 0.2
-        #sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
-        #logging.debug('read_inst_scanner() terminated')
-        #sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
-        #sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
+    for perm in scanner_permutations:
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[1][0],)) # Close meter
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, perm[1][1].trigger_once)
+        seconds = seconds + NPLC * 0.04 + 0.2
+        sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
+        logging.debug('read_inst_scanner() terminated')
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
@@ -674,11 +674,11 @@ def hp3458A_diff():
 if __name__ == '__main__':
     try:
 
-        #test_3458A()
+        test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #log_3458A_calparams()
         #noise_3458A()
