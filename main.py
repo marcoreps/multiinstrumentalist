@@ -11,6 +11,7 @@ import sys
 import sched
 import itertools
 import configparser
+import datetime
 
 from instruments.sensor import *
 from instruments.multimeter import *
@@ -186,7 +187,7 @@ def temperature_sweep():
     for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
         sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
-    
+    logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
     sch.run()
 
 def read_inst_scanner(inst, dut, bucket="PPMhub"):
