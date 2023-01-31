@@ -674,12 +674,24 @@ def hp3458A_diff():
         time.sleep(1)
         
     
-
+def log_cal_params():
+    
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_trigger_hold()
+    instruments["3458A"].blank_display()
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_trigger_hold()
+    instruments["3458B"].blank_display()
+    
+    read_cal_params(instruments["3458A"])
+    read_cal_params(instruments["3458B"])
+ 
 
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
@@ -691,6 +703,7 @@ if __name__ == '__main__':
         #readstb_test()
         #k182()
         #hp3458A_diff()
+        log_cal_params()
 
         
     except (KeyboardInterrupt, SystemExit) as exErr:
