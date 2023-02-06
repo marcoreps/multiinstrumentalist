@@ -171,7 +171,7 @@ def temperature_sweep():
     
     tmin = 20
     tmax = 60
-    tstep = 1
+    tstep = 0.5
     wait_settle = 30
 
     sch = sched.scheduler(time.time, time.sleep)
