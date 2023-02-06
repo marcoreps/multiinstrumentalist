@@ -163,20 +163,20 @@ def temperature_sweep():
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    #instruments["3458B"].config_DCV(10)
-    #instruments["3458B"].config_NDIG(9)
-    #instruments["3458B"].config_NPLC(50)
-    #instruments["3458B"].config_trigger_auto()
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(50)
+    instruments["3458B"].config_trigger_auto()
     
-    tmin = 15
-    tmax = 35
-    tstep = 0.1
-    wait_settle = 20
+    tmin = 20
+    tmax = 60
+    tstep = 1
+    wait_settle = 30
 
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Vz"))
-    #sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"], "Vz"))
+    #sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Vz"))
+    sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"], "Vz"))
     sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"], "Chamber Temp"))
     i=0
     for t in numpy.arange(tmin, tmax+0.01, tstep):
@@ -691,9 +691,9 @@ def log_cal_params():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
+        #test_3458A()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #scanner_once()
         #auto_ACAL_3458A()
