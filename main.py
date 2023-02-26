@@ -701,8 +701,8 @@ def log_cal_params():
 if __name__ == '__main__':
     try:
 
-        #test_3458A()
-        test_W4950()
+        test_3458A()
+        #test_W4950()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
