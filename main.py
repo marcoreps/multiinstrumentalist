@@ -73,11 +73,20 @@ def test_3458A():
         
 def test_W4950():
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
+    NPLC = 200
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_DCV(10)
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].config_trigger_hold()
+    instruments["3458A"].blank_display()
 
     
     while True:
         instruments["W4950"].trigger_once()
         writer.write("PPMhub",str(sys.argv[1]), instruments["W4950"].get_title(), instruments["W4950"].get_read_val())
+        instruments["3458A"].trigger_once()
+        writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
 
     
@@ -701,8 +710,8 @@ def log_cal_params():
 if __name__ == '__main__':
     try:
 
-        test_3458A()
-        #test_W4950()
+        #test_3458A()
+        test_W4950()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()

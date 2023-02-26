@@ -61,7 +61,7 @@ class HP3458A(multimeter):
         self.gpib_address = gpib_address
         self.lock.acquire()
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
-        self.instr.timeout = 60
+        self.instr.timeout = 600
         self.instr.clear()
         self.instr.write("RESET")
         self.instr.write("END ALWAYS")
