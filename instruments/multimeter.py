@@ -67,7 +67,7 @@ class HP3458A(multimeter):
         self.instr.write("END ALWAYS")
         self.instr.write("OFORMAT ASCII")
         self.instr.write("BEEP")
-        logging.debug("ID? -> "+self.instr.ask("ID?"))
+        logging.info("ID? -> "+self.instr.ask("ID?"))
         self.close_instr_conn()
 
         
@@ -233,3 +233,37 @@ class K182_xdevs(multimeter):
 
 
         
+
+
+class W4950(multimeter):
+
+    def __init__(self, ip, gpib_address, lock, title='Wavetek 4950'):
+        logging.debug(self.title+' init started')
+        self.title = title
+        self.lock = lock
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.lock.acquire()
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.instr.timeout = 600
+        self.instr.clear()
+        self.instr.write("*RST")
+        time.sleep(2)
+        self.instr.write("DCV 10,PCENT_100,LCL_GUARD")
+        self.instr.write("TRIG_SRCE EXT")    
+        self.instr.write("ACCURACY HIGH")
+        self.instr.write("CORRECTN CERTIFIED")
+        self.instr.write("BAND OFF")
+        self.instr.write("LCL_GUARD")
+        #self.instr.write("LEAD_NO '0123456789'")
+        logging.info("*IDN? -> "+self.instr.ask("*IDN?"))
+        logging.info("*OPT? -> "+self.instr.ask("*OPT?"))
+        logging.info("DATE? CERTIFIED -> "+self.instr.ask("DATE? CERTIFIED"))
+        logging.info("DATE? BASE -> "+self.instr.ask("DATE? BASE"))
+        self.close_instr_conn()
+        
+    def trigger_once(self):
+        logging.debug(self.title+' triggered once')
+        self.connect()
+        self.instr.write("*TRG;GET;RDG?")
+        self.close_instr_conn()
