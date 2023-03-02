@@ -53,9 +53,9 @@ instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
 
 def test_3458A():
 
-    switch=takovsky_scanner()
-    switch.switchingCloseRelay(channels[5])
-    switch.switchingCloseRelay(channels[6])
+    #switch=takovsky_scanner()
+    #switch.switchingCloseRelay(channels[5])
+    #switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
