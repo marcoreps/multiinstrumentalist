@@ -58,7 +58,7 @@ def test_3458A():
     #switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
@@ -709,7 +709,7 @@ def log_cal_params():
 
 if __name__ == '__main__':
     try:
-        #test_3458A()
+        test_3458A()
         #test_W4950()
         #INL_3458A()
         #temperature_sweep()
@@ -722,7 +722,7 @@ if __name__ == '__main__':
         #readstb_test()
         #k182()
         #hp3458A_diff()
-        log_cal_params()
+        #log_cal_params()
 
         
     except (KeyboardInterrupt, SystemExit) as exErr:
