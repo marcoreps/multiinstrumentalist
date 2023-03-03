@@ -58,7 +58,7 @@ def test_3458A():
     #switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
