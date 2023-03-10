@@ -30,7 +30,7 @@ writer=influx_writer(influx_url, influx_token, influx_org)
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -63,12 +63,12 @@ def test_3458A():
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_auto()
-    #instruments["3458A"].blank_display()
+    instruments["3458A"].blank_display()
     
     while True:
         if instruments["3458A"].is_readable():
             writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
-        #writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
+        writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         time.sleep(1)
         
 def test_W4950():
