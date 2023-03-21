@@ -675,7 +675,7 @@ def k182():
     instruments["k182"]=K182_xdevs(ip=vxi_ip, gpib_address=8, lock=gpiblock)
     instruments["k182"].default()
     while True:
-        writer.write("PPMhub", "ADRmu2 - ADRmu1", instruments["k182"].get_title(), instruments["k182"].get_data())
+        writer.write("PPMhub", str(sys.argv[1]), instruments["k182"].get_title(), instruments["k182"].get_data())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         
 def hp3458A_diff():
@@ -709,7 +709,7 @@ def log_cal_params():
 
 if __name__ == '__main__':
     try:
-        test_3458A()
+        #test_3458A()
         #test_W4950()
         #INL_3458A()
         #temperature_sweep()
@@ -720,7 +720,7 @@ if __name__ == '__main__':
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
-        #k182()
+        k182()
         #hp3458A_diff()
         #log_cal_params()
 
