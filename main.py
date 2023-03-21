@@ -675,7 +675,7 @@ def k182():
     instruments["k182"]=K182_xdevs(ip=vxi_ip, gpib_address=8, lock=gpiblock)
     instruments["k182"].default()
     while True:
-        writer.write("PPMhub", str(sys.argv[1]), instruments["k182"].get_title(), instruments["k182"].get_data())
+        writer.write("PPMhub", "ADRmu2 - ADRmu1", instruments["k182"].get_title(), instruments["k182"].get_data())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         
 def hp3458A_diff():
