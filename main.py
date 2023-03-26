@@ -724,7 +724,7 @@ def log_cal_params():
 
 if __name__ == '__main__':
     try:
-        test_3458A()
+        #test_3458A()
         #test_W4950()
         #INL_3458A()
         #temperature_sweep()
@@ -735,7 +735,7 @@ if __name__ == '__main__':
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
-        #k182()
+        k182()
         #hp3458A_diff()
         #log_cal_params()
         #nplc_3458A()
