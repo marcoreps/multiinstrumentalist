@@ -703,7 +703,7 @@ def hp3458A_diff():
     while True:
         if instruments["3458A"].is_readable():
                 t=[["wiring", "direct"],["guard","open"], ["meter","3458A"]]
-                writer.write("PPMhub", "ADRmu3 - ADRmu2", instruments["3458A"].get_title(), instruments["3458A"].get_read_val(), tags=t)
+                writer.write("PPMhub", str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val(), tags=t)
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         time.sleep(1)
         
@@ -724,7 +724,7 @@ def log_cal_params():
 
 if __name__ == '__main__':
     try:
-        test_3458A()
+        #test_3458A()
         #test_W4950()
         #INL_3458A()
         #temperature_sweep()
@@ -736,7 +736,7 @@ if __name__ == '__main__':
         #pt100_scanner()
         #readstb_test()
         #k182()
-        #hp3458A_diff()
+        hp3458A_diff()
         #log_cal_params()
         #nplc_3458A()
 
