@@ -735,8 +735,8 @@ if __name__ == '__main__':
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
-        #k182()
-        hp3458A_diff()
+        k182()
+        #hp3458A_diff()
         #log_cal_params()
         #nplc_3458A()
 
