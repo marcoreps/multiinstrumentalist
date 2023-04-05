@@ -200,7 +200,7 @@ class K182_xdevs(multimeter):
         self.instr.write("B1X")     # 6.5 digit resolution
         self.instr.write("F0G0X")   # Latest A/D reading, reading without prefix
         self.instr.write("O1P0N1X") # Enabled analog filter, disabled dig filter
-        self.instr.write("R0X")     # Autorange
+        #self.instr.write("R0X")     # Autorange
         self.instr.write("S2X")     # 100msec integration
         self.instr.write("T4X")     # Trigger on X multiple
         
