@@ -193,15 +193,15 @@ class K182_xdevs(multimeter):
         self.lock.acquire()
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 60
-        self.instr.clear()
+        #self.instr.clear()
         self.close_instr_conn()
         
     def default(self):
         self.instr.write("B1X")     # 6.5 digit resolution
         self.instr.write("F0G0X")   # Latest A/D reading, reading without prefix
-        self.instr.write("O0P0N0W0X") # Enabled analog filter, medium dig filter, disabled
+        self.instr.write("O1P0N1X") # Enabled analog filter, disabled dig filter
         self.instr.write("R0X")     # Autorange
-        self.instr.write("S2X")     # NPLC 5
+        self.instr.write("S2X")     # 100msec integration
         self.instr.write("T4X")     # Trigger on X multiple
         
     def read_data(self,cmd):
