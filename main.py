@@ -212,13 +212,13 @@ def temperature_sweep():
     #sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"], "Vz"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"], "Chamber Temp"))
     i=60*10
-    #for t in numpy.arange(tmin, tmax+0.01, tstep):
-    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
+    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
         sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
     i+=10*60
-    for t in numpy.arange(tmin, tmax+0.01, tstep):
-    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    #for t in numpy.arange(tmin, tmax+0.01, tstep):
+    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
         sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
     logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
