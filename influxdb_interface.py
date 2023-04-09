@@ -21,5 +21,10 @@ class influx_writer:
             for t in tags:
                 p.tag(t[0], t[1])
         logging.debug('point made')
-        self.write_api.write(bucket, record=p)
+        try:
+            self.write_api.write(bucket, record=p)
+        except Exception as exc:
+            logging.ERROR(traceback.format_exc())
+            logging.ERROR(exc)
+            pass
         logging.debug('point written, writer done')
