@@ -208,9 +208,9 @@ def temperature_sweep():
     wait_settle = 80
 
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458A"], "Vz"))
-    #sch.enter(1, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["3458B"], "Vz"))
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 2, 10, instruments["arroyo"], "Chamber Temp"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458A"], "Vz"))
+    #sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458B"], "Vz"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
     i=60*10
     for t in numpy.arange(tmin, tmax+0.01, tstep):
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
@@ -518,7 +518,9 @@ def scanner_once():
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
     if inst.is_readable():
+        time.sleep(1)
         writer.write(bucket, name, inst.get_title(), inst.get_read_val())
+        
         
 def read_cal_params(inst):
     while not inst.is_ready():

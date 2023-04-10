@@ -24,7 +24,6 @@ class influx_writer:
         try:
             self.write_api.write(bucket, record=p)
         except Exception as exc:
-            logging.ERROR(traceback.format_exc())
-            logging.ERROR(exc)
+            logging.error(exc)
             pass
         logging.debug('point written, writer done')
