@@ -41,7 +41,7 @@ vxi_ip = "192.168.0.88"
 
 instruments = dict()
 #instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
+#instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
 
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
 #instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=gpiblock, title="Bench K237")
