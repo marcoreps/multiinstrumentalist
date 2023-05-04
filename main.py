@@ -450,17 +450,35 @@ def scanner_once():
 # III   OrW   P   channels[1] ADRmu2 -
 # III   Bl    N   channels[2] ADRmu3 +
 # III   BlW   P   channels[2] ADRmu3 -
-# III   Gr    N   channels[3] ADRmu4 +
-# III   GrW   P   channels[3] ADRmu4 -
+# III   Gr    N   channels[3] ADRmu15 +
+# III   GrW   P   channels[3] ADRmu15 -
 
-# IV    Br    N   channels[4] ADRmu107 +
-# IV    BrW   P   channels[4] ADRmu107 -
-# IV    Or    N   channels[5] ADRmu9 +
-# IV    OrW   P   channels[5] ADRmu9 -
-# IV    Bl    N   channels[6] 3458A +
-# IV    BlW   P   channels[6] 3458A -
-# IV    Gr    N   channels[7] 3458B +
-# IV    GrW   P   channels[7] 3458B -
+# IV    Br    N   channels[4] ADRmu9 +
+# IV    BrW   P   channels[4] ADRmu9 -
+# IV    Or    N   channels[5] ADRmu14 +
+# IV    OrW   P   channels[5] ADRmu14 -
+# IV    Bl    N   channels[6] ADRmu11 +
+# IV    BlW   P   channels[6] ADRmu11 -
+# IV    Gr    N   channels[7] ADRmu12 +
+# IV    GrW   P   channels[7] ADRmu12 -
+
+# II    Br    N   channels[8] F731B +
+# II    BrW   P   channels[8] F731B -
+# II    Or    N   channels[9] 3458A +
+# II    OrW   P   channels[9] 3458A -
+# II    Bl    N   channels[10] 
+# II    BlW   P   channels[10] 
+# II    Gr    N   channels[11]  
+# II    GrW   P   channels[11]  
+
+# II    Br    N   channels[12]  ADRmu6 +
+# II    BrW   P   channels[12]  ADRmu6 -
+# II    Or    N   channels[13]  
+# II    OrW   P   channels[13]  
+# II    Bl    N   channels[14]  
+# II    BlW   P   channels[14]  
+# II    Gr    N   channels[15]  
+# II    GrW   P   channels[15]  
 
     switch_delay = 10
     NPLC = 1000
@@ -477,10 +495,12 @@ def scanner_once():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu4"), (channels[4], "ADRmu107"), (channels[5], "ADRmu9")]
-    scanner_meters = [(channels[6], instruments["3458A"]), (channels[7], instruments["3458B"])]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[5], "ADRmu14"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[8], "F731B"), (channels[12], "ADRmu6"), ]
+    scanner_meters = [(channels[9], instruments["3458A"]), ]
 
     switch=takovsky_scanner()
+    
+    switch.switchingCloseRelay(combineSwitch)
     
     sch = sched.scheduler(time.time, time.sleep)
     
@@ -508,7 +528,7 @@ def scanner_once():
         
     
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["long_tmp117"], "Ambient Temp", "lab_sensors"))
+    #sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["long_tmp117"], "Ambient Temp", "lab_sensors"))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
@@ -726,12 +746,12 @@ def log_cal_params():
 
 if __name__ == '__main__':
     try:
-        test_3458A()
+        #test_3458A()
         #test_W4950()
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        #scanner_once()
+        scanner_once()
         #auto_ACAL_3458A()
         #noise_3458A()
         #pt100_scanner()
