@@ -481,7 +481,8 @@ def scanner_once():
 # II    GrW   P   channels[15]  
 
     switch_delay = 10
-    NPLC = 1000
+    NPLC = 100
+    nmeasurements = 1
     
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_DCV(10)
@@ -505,7 +506,6 @@ def scanner_once():
     sch = sched.scheduler(time.time, time.sleep)
     
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
-    scanner_permutations = []
         
     seconds = 10
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
@@ -519,10 +519,10 @@ def scanner_once():
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[1][0],)) # Close meter
         seconds = seconds + switch_delay
-        sch.enter(seconds, 10, perm[1][1].trigger_once)
-        seconds = seconds + NPLC * 0.04 + 0.2
-        sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
-        logging.debug('read_inst_scanner() terminated')
+        for measurement in nmeasurements:
+            sch.enter(seconds, 10, perm[1][1].trigger_once)
+            seconds = seconds + NPLC * 0.04 + 0.2
+            sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
         
@@ -533,6 +533,7 @@ def scanner_once():
     #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
+    logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
     sch.run()
   
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
