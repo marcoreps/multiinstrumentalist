@@ -32,7 +32,7 @@ channels = [
      {"chip" : 0x0, "port" : 1, "pin" : 1 << 7, "compin" : 1 << 3, "pcbIndex" : 4, "index" : 15}]
 
 
-combineSwitch = {"chip" : 0x4, "port" : 1, "pin" : 2, "comPin" : 1, "pcbIndex" : 0}
+combineSwitch = {"chip" : 0x4, "port" : 1, "pin" : 1 << 2, "comPin" : 1 << 1, "pcbIndex" : 0}
 
 
 class takovsky_scanner:
