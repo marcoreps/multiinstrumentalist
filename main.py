@@ -508,6 +508,8 @@ def scanner_once():
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
     seconds = seconds + 60
+    
+    t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
         
     for perm in scanner_permutations:
         sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
