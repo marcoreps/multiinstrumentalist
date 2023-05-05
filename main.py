@@ -485,12 +485,14 @@ def scanner_once():
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_hold()
+    instruments["3458A"].blank_display()
     
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
+    instruments["3458B"].blank_display()
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[5], "ADRmu14"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[8], "F731B"), (channels[12], "ADRmu6"), ]
     scanner_meters = [(channels[11], instruments["3458A"]), (channels[15], instruments["3458B"]), ]
