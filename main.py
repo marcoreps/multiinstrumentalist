@@ -745,7 +745,7 @@ def log_cal_params():
     read_cal_params(instruments["3458B"])
  
 
-def scanner_once():
+def scanner_test():
     switch=takovsky_scanner()
     while True:
         time.sleep(1)
