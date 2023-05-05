@@ -467,18 +467,18 @@ def scanner_once():
 # II    Or    N   channels[11]  3458A +
 # II    OrW   P   channels[11]  3458A -
 
-# II    Br    N   channels[12]  ADRmu6 +
-# II    BrW   P   channels[12]  ADRmu6 -
-# II    Or    N   channels[13]  
-# II    OrW   P   channels[13]  
-# II    Bl    N   channels[14]  
-# II    BlW   P   channels[14]  
-# II    Gr    N   channels[15]  
-# II    GrW   P   channels[15]  
+# I     Br    N   channels[12]  ADRmu6 +
+# I     BrW   P   channels[12]  ADRmu6 -
+# I     Or    N   channels[13]  
+# I     OrW   P   channels[13]  
+# I     Bl    N   channels[14]  
+# I     BlW   P   channels[14]  
+# I     Gr    N   channels[15]  
+# I     GrW   P   channels[15]  
 
-    switch_delay = 10
+    switch_delay = 60
     NPLC = 100
-    nmeasurements = 1
+    nmeasurements = 20
     
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
     instruments["3458A"].config_DCV(10)
@@ -493,7 +493,7 @@ def scanner_once():
     instruments["3458B"].config_trigger_hold()
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[5], "ADRmu14"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[8], "F731B"), (channels[12], "ADRmu6"), ]
-    scanner_meters = [(channels[11], instruments["3458A"]), ]
+    scanner_meters = [(channels[11], instruments["3458A"]), (channels[15], instruments["3458B"]), ]
 
     switch=takovsky_scanner()
     
