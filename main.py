@@ -464,12 +464,8 @@ def scanner_once():
 
 # II    Br    N   channels[8] F731B +
 # II    BrW   P   channels[8] F731B -
-# II    Or    N   channels[9] 3458A +
-# II    OrW   P   channels[9] 3458A -
-# II    Bl    N   channels[10] 
-# II    BlW   P   channels[10] 
-# II    Gr    N   channels[11]  
-# II    GrW   P   channels[11]  
+# II    Or    N   channels[11]  3458A +
+# II    OrW   P   channels[11]  3458A -
 
 # II    Br    N   channels[12]  ADRmu6 +
 # II    BrW   P   channels[12]  ADRmu6 -
@@ -497,11 +493,9 @@ def scanner_once():
     instruments["3458B"].config_trigger_hold()
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[5], "ADRmu14"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[8], "F731B"), (channels[12], "ADRmu6"), ]
-    scanner_meters = [(channels[9], instruments["3458A"]), ]
+    scanner_meters = [(channels[11], instruments["3458A"]), ]
 
     switch=takovsky_scanner()
-    
-    switch.switchingCloseRelay(combineSwitch)
     
     sch = sched.scheduler(time.time, time.sleep)
     
@@ -745,13 +739,7 @@ def log_cal_params():
     read_cal_params(instruments["3458B"])
  
 
-def scanner_test():
-    switch=takovsky_scanner()
-    while True:
-        time.sleep(1)
-        switch.switchingCloseRelay(combineSwitch)
-        time.sleep(1)
-        switch.switchingOpenRelay(combineSwitch)
+
 
 if __name__ == '__main__':
     try:
@@ -760,7 +748,7 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        #scanner_once()
+        scanner_once()
         #auto_ACAL_3458A()
         #noise_3458A()
         #pt100_scanner()
@@ -769,8 +757,7 @@ if __name__ == '__main__':
         #hp3458A_diff()
         #log_cal_params()
         #nplc_3458A()
-        
-        scanner_test()
+
 
         
     except (KeyboardInterrupt, SystemExit) as exErr:
