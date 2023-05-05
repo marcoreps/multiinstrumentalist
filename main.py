@@ -745,6 +745,14 @@ def log_cal_params():
     read_cal_params(instruments["3458B"])
  
 
+def scanner_once():
+    switch=takovsky_scanner()
+    while True:
+        time.sleep(1)
+        switch.switchingCloseRelay(combineSwitch)
+        time.sleep(1)
+        switch.switchingOpenRelay(combineSwitch)
+
 if __name__ == '__main__':
     try:
         #test_3458A()
@@ -752,7 +760,7 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #noise_3458A()
         #pt100_scanner()
@@ -761,6 +769,8 @@ if __name__ == '__main__':
         #hp3458A_diff()
         #log_cal_params()
         #nplc_3458A()
+        
+        scanner_test()
 
         
     except (KeyboardInterrupt, SystemExit) as exErr:
