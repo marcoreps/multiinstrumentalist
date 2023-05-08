@@ -511,9 +511,6 @@ def scanner_once():
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
     seconds = seconds + 60
     
-    instruments["3458A"].blank_display()
-    instruments["3458B"].blank_display()
-    
     t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
         
     for perm in scanner_permutations:
@@ -537,6 +534,8 @@ def scanner_once():
     #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
     sch.run()
+    instruments["3458A"].blank_display()
+    instruments["3458B"].blank_display()
   
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
