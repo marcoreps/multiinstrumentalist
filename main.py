@@ -487,15 +487,15 @@ def scanner_once():
     instruments["3458A"].config_trigger_hold()
 
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    instruments["3458B"].config_DCV(10)
-    instruments["3458B"].config_NDIG(9)
-    instruments["3458B"].config_NPLC(NPLC)
-    instruments["3458B"].config_trigger_hold()
+    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    #instruments["3458B"].config_DCV(10)
+    #instruments["3458B"].config_NDIG(9)
+    #instruments["3458B"].config_NPLC(NPLC)
+    #instruments["3458B"].config_trigger_hold()
 
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[8], "F731B"), (channels[12], "ADRmu6"), ]
-    scanner_meters = [(channels[11], instruments["3458A"]), (channels[15], instruments["3458B"]), ]
+    scanner_meters = [(channels[11], instruments["3458A"]),  ]
 
     switch=takovsky_scanner()
     
@@ -505,10 +505,10 @@ def scanner_once():
         
     seconds = 10
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
     seconds = seconds + 200
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
-    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
     seconds = seconds + 60
     
     t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
@@ -535,7 +535,7 @@ def scanner_once():
     logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
     sch.run()
     instruments["3458A"].blank_display()
-    instruments["3458B"].blank_display()
+    #instruments["3458B"].blank_display()
   
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
