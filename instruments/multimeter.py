@@ -108,15 +108,12 @@ class HP3458A(multimeter):
         logging.debug(self.title+" config_trigger_auto")
         self.instr.write("TARM AUTO")
         self.close_instr_conn()
-
             
     def config_trigger_hold(self):
         self.connect()
         logging.debug(self.title+" config_trigger_hold")
         self.instr.write("TARM HOLD")
         self.close_instr_conn()
-
-
             
     def trigger_once(self):
         logging.debug(self.title+' triggered once')
@@ -250,7 +247,7 @@ class W4950(multimeter):
         self.instr.write("*RST")
         time.sleep(2)
         self.instr.write("DCV 10,PCENT_100,LCL_GUARD")
-        self.instr.write("TRIG_SRCE EXT")    
+        self.instr.write("TRIG_SRCE EXT")
         self.instr.write("ACCURACY HIGH")
         self.instr.write("CORRECTN CERTIFIED")
         self.instr.write("BAND OFF")
@@ -267,3 +264,16 @@ class W4950(multimeter):
         self.connect()
         self.instr.write("*TRG;GET;RDG?")
         self.close_instr_conn()
+        
+    def config_trigger_auto(self):
+        self.connect()
+        logging.debug(self.title+" config_trigger_auto")
+        self.instr.write("TRIG_SRCE INT")
+        self.close_instr_conn()
+            
+    def config_trigger_hold(self):
+        self.connect()
+        logging.debug(self.title+" config_trigger_hold")
+        self.instr.write("TRIG_SRCE EXT")
+        self.close_instr_conn()
+            
