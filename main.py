@@ -162,7 +162,7 @@ def INL_3458A():
             instruments["W4950"].trigger_once()
             W4950_out = float(instruments["W4950"].get_read_val())
             
-            writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, '3458P_volt': HP3458P_out})
+            writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, 'W4950_volt': W4950_out})
 
 
 def temperature_sweep():
