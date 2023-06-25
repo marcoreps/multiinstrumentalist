@@ -159,7 +159,7 @@ def INL_3458A():
             instruments["3458B"].trigger_once()
             HP3458B_out = float(instruments["3458B"].get_read_val())
             
-            instruments["W4950"].config_trigger_once()
+            instruments["W4950"].trigger_once()
             W4950_out = float(instruments["W4950"].get_read_val())
             
             writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, '3458P_volt': HP3458P_out})
