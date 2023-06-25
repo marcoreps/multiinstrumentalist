@@ -259,7 +259,7 @@ class W4950(multimeter):
         logging.info("DATE? BASE -> "+self.instr.ask("DATE? BASE"))
         self.close_instr_conn()
         
-    def trigger_once(self):
+    def config_trigger_once(self):
         logging.debug(self.title+' triggered once')
         self.connect()
         self.instr.write("*TRG;GET;RDG?")
