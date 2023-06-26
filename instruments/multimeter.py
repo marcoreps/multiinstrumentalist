@@ -276,4 +276,6 @@ class W4950(multimeter):
         logging.debug(self.title+" config_trigger_hold")
         self.instr.write("TRIG_SRCE EXT")
         self.close_instr_conn()
+        
+
             
