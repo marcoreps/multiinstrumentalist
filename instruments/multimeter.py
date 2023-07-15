@@ -195,42 +195,25 @@ class K182(multimeter):
         self.close_instr_conn()
         
     def default(self):
+        self.connect()
         self.instr.write("B1X")     # 6.5 digit resolution
         self.instr.write("G0X")     # Reading without prefix
         self.instr.write("F0X")     # Reading Source: direct ADC
         self.instr.write("O1X")     # Enabled analog filter
-        self.instr.write("P3X")     # Enabled slow dig filter
+        #self.instr.write("P3X")     # Enabled slow dig filter
+        self.instr.write("P0X")     # Disabled dig filter
         self.instr.write("R0X")     # Autorange
         self.instr.write("S2X")     # 100msec integration
         self.instr.write("T4X")     # Trigger on X multiple
         self.instr.write("Z1X")      # Relative readings
+        self.close_instr_conn()
         
-    def read_data(self,cmd):
-        data_float = 0.0
-        data_str = ""
-        self.instr.write(cmd)
-        try:
-            with Timeout(20):
-                data_str = self.instr.read()
-        except Timeout.Timeout:
-            print ("Timeout exception from dmm %s on read_data() instr.read()\n" % self.name)
-            return (0,float(0))
-        #print ("Reading from dmm %s = %s" % (self.name,data_str))
-        try:
-            data_float = float(data_str)
-        except ValueError:
-            print("Exception thrown by dmm %s on read_data() - ValueError = %s\n" % (self.name,data_str))
-            return (0,float(0)) # Exception on float conversion, 0 = error
-        return (1,data_float) # Good read, 1 = converted to float w/o exception
 
     def get_data(self):
-        self.status_flag,data = self.read_data("X")
-        time.sleep(0.1)
-        self.status_flag,data = self.read_data("X")
-        time.sleep(0.1)
-        if (self.status_flag):
-            self.data = data
-        return self.data
+        self.connect()
+        data=float(self.instr.read())
+        self.close_instr_conn()
+        return data
 
 
         
