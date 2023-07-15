@@ -179,7 +179,7 @@ class Timeout():
     raise Timeout.Timeout()
     
 
-class K182_xdevs(multimeter):
+class K182(multimeter):
 
     def __init__(self, ip, gpib_address, lock, title='Keithley 182'):
         logging.debug(self.title+' init started')
@@ -190,16 +190,20 @@ class K182_xdevs(multimeter):
         self.lock.acquire()
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 60
-        #self.instr.clear()
+        self.instr.write("DCLX")      # clear to default settings
+        self.instr.write("RENX")      # Remote mode
         self.close_instr_conn()
         
     def default(self):
         self.instr.write("B1X")     # 6.5 digit resolution
-        self.instr.write("F0G0X")   # Latest A/D reading, reading without prefix
-        self.instr.write("O1P0N1X") # Enabled analog filter, disabled dig filter
-        #self.instr.write("R0X")     # Autorange
+        self.instr.write("G0X")     # Reading without prefix
+        self.instr.write("F0X")     # Reading Source: direct ADC
+        self.instr.write("O1X")     # Enabled analog filter
+        self.instr.write("P3X")     # Enabled slow dig filter
+        self.instr.write("R0X")     # Autorange
         self.instr.write("S2X")     # 100msec integration
         self.instr.write("T4X")     # Trigger on X multiple
+        self.instr.write("Z1X")      # Relative readings
         
     def read_data(self,cmd):
         data_float = 0.0
