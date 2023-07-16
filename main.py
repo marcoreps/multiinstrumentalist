@@ -434,20 +434,20 @@ def scanner_once():
 
 # IV    Br    N   channels[4] ADRmu9 +
 # IV    BrW   P   channels[4] ADRmu9 -
-# IV    Or    N   channels[5] ADRmu14 +
-# IV    OrW   P   channels[5] ADRmu14 -
+# IV    Or    N   channels[5] ADRmu6 +
+# IV    OrW   P   channels[5] ADRmu6 -
 # IV    Bl    N   channels[6] ADRmu11 +
 # IV    BlW   P   channels[6] ADRmu11 -
 # IV    Gr    N   channels[7] ADRmu12 +
 # IV    GrW   P   channels[7] ADRmu12 -
 
-# II    Br    N   channels[8] F731B +
-# II    BrW   P   channels[8] F731B -
+# II    Br    N   channels[8]   3458B +
+# II    BrW   P   channels[8]   3458B -
 # II    Or    N   channels[11]  3458A +
 # II    OrW   P   channels[11]  3458A -
 
-# I     Br    N   channels[12]  ADRmu6 +
-# I     BrW   P   channels[12]  ADRmu6 -
+# I     Br    N   channels[12]  
+# I     BrW   P   channels[12]  
 # I     Or    N   channels[13]  
 # I     OrW   P   channels[13]  
 # I     Bl    N   channels[14]  
@@ -473,8 +473,8 @@ def scanner_once():
     instruments["3458B"].config_trigger_hold()
 
     #scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[8], "F731B"), (channels[12], "ADRmu6"), ]
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[12], "ADRmu6"), ]
-    scanner_meters = [(channels[11], instruments["3458A"]),  (channels[15], instruments["3458B"]), ]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), ]
+    scanner_meters = [(channels[11], instruments["3458A"]),  (channels[8], instruments["3458B"]), ]
 
     switch=takovsky_scanner()
     
@@ -734,12 +734,12 @@ if __name__ == '__main__':
         #INL_3458A()
         #temperature_sweep()
         #scanner2()
-        #scanner_once()
+        scanner_once()
         #auto_ACAL_3458A()
         #noise_3458A()
         #pt100_scanner()
         #readstb_test()
-        k182()
+        #k182()
         #hp3458A_diff()
         #log_cal_params()
         #nplc_3458A()
