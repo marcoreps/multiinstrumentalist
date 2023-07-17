@@ -167,19 +167,19 @@ def INL_3458A():
 
 def temperature_sweep():
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_DCV(10)
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(50)
-    instruments["3458A"].config_trigger_auto()
+    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    #instruments["3458A"].config_DCV(10)
+    #instruments["3458A"].config_NDIG(9)
+    #instruments["3458A"].config_NPLC(50)
+    #instruments["3458A"].config_trigger_auto()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
-    #instruments["3458B"].config_DCV(10)
-    #instruments["3458B"].config_NDIG(9)
-    #instruments["3458B"].config_NPLC(50)
-    #instruments["3458B"].config_trigger_auto()
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(50)
+    instruments["3458B"].config_trigger_auto()
     
     tmin = 19
     tmax = 35
@@ -187,8 +187,8 @@ def temperature_sweep():
     wait_settle = 60
 
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458A"], "Vz"))
-    #sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458B"], "Vz"))
+    #sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458A"], "Vz"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458B"], "Vz"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
     i=60*10
     for t in numpy.arange(tmin, tmax+0.01, tstep):
@@ -729,10 +729,10 @@ def log_cal_params():
 
 if __name__ == '__main__':
     try:
-        test_3458A()
+        #test_3458A()
         #test_W4950()
         #INL_3458A()
-        #temperature_sweep()
+        temperature_sweep()
         #scanner2()
         #scanner_once()
         #auto_ACAL_3458A()
