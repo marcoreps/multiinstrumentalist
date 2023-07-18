@@ -472,7 +472,6 @@ def scanner_once():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
 
-    #scanner_sources = [(channels[0], "ADRmu1"), (channels[1], "ADRmu2"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[8], "F731B"), (channels[12], "ADRmu6"), ]
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[1], "F731B"), ]
     scanner_meters = [(channels[11], instruments["3458A"]),  (channels[8], instruments["3458B"]), ]
 
@@ -515,6 +514,56 @@ def scanner_once():
     sch.run()
     instruments["3458A"].blank_display()
     instruments["3458B"].blank_display()
+    
+    
+def scanner_for_show():
+
+    switch_delay = 0.5
+    NPLC = 1
+    nmeasurements = 1
+    
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_DCV(10)
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].config_trigger_hold()
+
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].config_trigger_hold()
+
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[1], "F731B"), ]
+    scanner_meters = [(channels[11], instruments["3458A"]),  (channels[8], instruments["3458B"]), ]
+
+    switch=takovsky_scanner()
+    
+    sch = sched.scheduler(time.time, time.sleep)
+    
+    scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
+        
+    seconds = 0
+    
+    t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
+        
+    for perm in scanner_permutations:
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[1][0],)) # Close meter
+        seconds = seconds + switch_delay
+        for measurement in range(nmeasurements):
+            sch.enter(seconds, 10, perm[1][1].trigger_once)
+            seconds = seconds + NPLC * 0.04 + 0.2
+            sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
+            seconds = seconds + 1
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
+        
+    
+    logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
+    sch.run()
+
   
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
@@ -732,7 +781,7 @@ if __name__ == '__main__':
         #test_3458A()
         #test_W4950()
         #INL_3458A()
-        temperature_sweep()
+        #temperature_sweep()
         #scanner2()
         #scanner_once()
         #auto_ACAL_3458A()
@@ -743,6 +792,7 @@ if __name__ == '__main__':
         #hp3458A_diff()
         #log_cal_params()
         #nplc_3458A()
+        scanner_for_show()
 
 
         
