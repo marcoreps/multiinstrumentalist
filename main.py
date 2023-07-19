@@ -104,7 +104,6 @@ def test_W4950():
         writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
         writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
 
-    
              
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
