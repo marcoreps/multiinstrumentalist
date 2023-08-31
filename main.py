@@ -107,7 +107,7 @@ def test_W4950():
              
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Reps 5700A")
+    #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Reps 5700A")
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
     instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="Reps 3458B")
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
