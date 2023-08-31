@@ -123,8 +123,8 @@ def INL_3458A():
     umin = -11
     umax = 11
     ustep = 0.25
-    wait_settle = 30
-    samples_per_meter_per_step = 5
+    wait_settle = 20
+    samples_per_meter_per_step = 1
     NPLC = 100
     
     instruments["F5700A"].out(str(umin)+"V")
