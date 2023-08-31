@@ -120,9 +120,9 @@ def INL_3458A():
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_trigger_auto()
     
-    umin = -10
-    umax = 10
-    ustep = 0.5
+    umin = -11
+    umax = 11
+    ustep = 0.25
     wait_settle = 20
     
     instruments["F5700A"].out(str(umin)+"V")
@@ -732,9 +732,9 @@ if __name__ == '__main__':
     try:
         #test_3458A()
         #test_W4950()
-        #INL_3458A()
+        INL_3458A()
         #temperature_sweep()
-        scanner_once()
+        #scanner_once()
         #auto_ACAL_3458A()
         #noise_3458A()
         #pt100_scanner()
