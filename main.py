@@ -124,6 +124,8 @@ def INL_3458A():
     umax = 11
     ustep = 0.25
     wait_settle = 20
+    samples_per_meter_per_step = 5
+    NPLC = 100
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
@@ -131,6 +133,11 @@ def INL_3458A():
     time.sleep(180)
     
     with open('csv/'+timestr+'REPS5700A_3458A_3458B_4950_INL.csv', mode='w') as csv_file:
+        csv_file.write("# INL run")
+        csv_file.write("# wait_settle = "+str(wait_settle))
+        csv_file.write("# samples_per_meter_per_step = "+str(samples_per_meter_per_step))
+        csv_file.write("# NPLC = "+str(NPLC))
+        
         fieldnames = ['vref', '3458A_volt', '3458B_volt', 'W4950_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
@@ -144,22 +151,28 @@ def INL_3458A():
             instruments["3458B"].config_trigger_auto()
             instruments["W4950"].config_trigger_auto()
             time.sleep(wait_settle)
-            instruments["3458A"].config_NPLC(100)
-            instruments["3458B"].config_NPLC(100)
+            instruments["3458A"].config_NPLC(NPLC)
+            instruments["3458B"].config_NPLC(NPLC)
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
             instruments["W4950"].config_trigger_hold()
             
             calibrator_out = u
             
-            instruments["3458A"].trigger_once()
-            HP3458A_out = float(instruments["3458A"].get_read_val())
+            HP3458A_out = 0.0
+            HP3458B_out = 0.0
+            W4950_out = 0.0
             
-            instruments["3458B"].trigger_once()
-            HP3458B_out = float(instruments["3458B"].get_read_val())
+            for n in range (samples_per_meter_per_step):
             
-            instruments["W4950"].trigger_once()
-            W4950_out = float(instruments["W4950"].get_read_val())
+                instruments["3458A"].trigger_once()
+                HP3458A_out += float(instruments["3458A"].get_read_val()) / samples_per_meter_per_step
+                
+                instruments["3458B"].trigger_once()
+                HP3458B_out += float(instruments["3458B"].get_read_val()) / samples_per_meter_per_step
+                
+                instruments["W4950"].trigger_once()
+                W4950_out += float(instruments["W4950"].get_read_val()) / samples_per_meter_per_step
             
             writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, 'W4950_volt': W4950_out})
 
