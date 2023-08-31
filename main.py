@@ -130,7 +130,7 @@ def INL_3458A():
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
-    time.sleep(180)
+    time.sleep(1)
     
     with open('csv/'+timestr+'REPS5700A_3458A_3458B_4950_INL.csv', mode='w') as csv_file:
         csv_file.write("# INL run")
