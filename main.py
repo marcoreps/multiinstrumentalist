@@ -123,14 +123,14 @@ def INL_3458A():
     umin = -11
     umax = 11
     ustep = 0.25
-    wait_settle = 1
-    samples_per_meter_per_step = 1
-    NPLC = 1
+    wait_settle = 30
+    samples_per_meter_per_step = 5
+    NPLC = 100
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
-    time.sleep(1)
+    time.sleep(300)
     
     with open('csv/'+timestr+'REPS5700A_3458A_3458B_4950_INL.csv', mode='w') as csv_file:
         csv_file.write("# INL run")
