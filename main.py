@@ -89,7 +89,7 @@ def nplc_3458A():
 def test_W4950():
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
     instruments["W4950"].config_trigger_auto()
-    instruments["W4950"].config_accuracy("HIGH")
+    instruments["W4950"].config_accuracy("LOW")
     
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     with open('csv/'+timestr+'4950_10V_HIACC_short.csv', mode='w') as csv_file:
@@ -98,7 +98,10 @@ def test_W4950():
         writer.writeheader()
     
         while True:
-            writer.writerow({'time':time.time(), 'W4950_volt': instruments["W4950"].get_read_val()})
+            val = float(instruments["W4950"].get_read_val())
+            print(val)
+            writer.writerow({'time':time.time(), 'W4950_volt': val})
+            
 
              
 def INL_3458A():
