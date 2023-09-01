@@ -88,21 +88,17 @@ def nplc_3458A():
         
 def test_W4950():
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
-    NPLC = 200
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_DCV(10)
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].config_trigger_hold()
-    instruments["3458A"].blank_display()
-
+    instruments["W4950"].config_trigger_auto()
+    instruments["W4950"].config_accuracy("HIGH")
     
-    while True:
-        instruments["W4950"].trigger_once()
-        writer.write("PPMhub",str(sys.argv[1]), instruments["W4950"].get_title(), instruments["W4950"].get_read_val())
-        instruments["3458A"].trigger_once()
-        writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
-        writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
+    timestr = time.strftime("%Y%m%d-%H%M%S_")
+    with open('csv/'+timestr+'4950_10V_HIACC_short.csv', mode='w') as csv_file:
+        fieldnames = ['time', 'W4950_volt']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+    
+        while True:
+            writer.writerow({'time':time.time(), 'W4950_volt': instruments["W4950"].get_read_val()})
 
              
 def INL_3458A():
@@ -123,14 +119,14 @@ def INL_3458A():
     umin = -11
     umax = 11
     ustep = 0.25
-    wait_settle = 0.1
+    wait_settle = 20
     samples_per_meter_per_step = 1
-    NPLC = 10
+    NPLC = 100
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
-    time.sleep(3)
+    time.sleep(300)
     
     with open('csv/'+timestr+'REPS5700A_3458A_3458B_4950_INL.csv', mode='w') as csv_file:
         csv_file.write("# INL run")
@@ -154,7 +150,7 @@ def INL_3458A():
             time.sleep(wait_settle)
             instruments["3458A"].config_NPLC(NPLC)
             instruments["3458B"].config_NPLC(NPLC)
-            instruments["W4950"].config_accuracy("LOW")
+            instruments["W4950"].config_accuracy("HIGH")
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
             instruments["W4950"].config_trigger_hold()
@@ -746,8 +742,8 @@ def log_cal_params():
 if __name__ == '__main__':
     try:
         #test_3458A()
-        #test_W4950()
-        INL_3458A()
+        test_W4950()
+        #INL_3458A()
         #temperature_sweep()
         #scanner_once()
         #auto_ACAL_3458A()
