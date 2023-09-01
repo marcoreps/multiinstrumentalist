@@ -88,7 +88,7 @@ def nplc_3458A():
         
 def test_W4950():
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
-    instruments["3458A"].config_trigger_hold()
+    instruments["W4950"].config_trigger_hold()
     instruments["W4950"].config_accuracy("HIGH")
     
     timestr = time.strftime("%Y%m%d-%H%M%S_")
