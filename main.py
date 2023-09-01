@@ -30,7 +30,7 @@ writer=influx_writer(influx_url, influx_token, influx_org)
 
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 gpiblock = Lock()
@@ -88,8 +88,8 @@ def nplc_3458A():
         
 def test_W4950():
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
-    instruments["W4950"].config_trigger_auto()
-    instruments["W4950"].config_accuracy("LOW")
+    instruments["3458A"].config_trigger_hold()
+    instruments["W4950"].config_accuracy("HIGH")
     
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     with open('csv/'+timestr+'4950_10V_HIACC_short.csv', mode='w') as csv_file:
@@ -98,6 +98,7 @@ def test_W4950():
         writer.writeheader()
     
         while True:
+            instruments["W4950"].trigger_once()
             val = float(instruments["W4950"].get_read_val())
             print(val)
             writer.writerow({'time':time.time(), 'W4950_volt': val})
