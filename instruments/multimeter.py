@@ -264,5 +264,14 @@ class W4950(multimeter):
         self.instr.write("TRIG_SRCE EXT")
         self.close_instr_conn()
         
+    def config_trigger_hold(self, acc):
+        self.connect()
+        logging.debug(self.title+" ACCURACY")
+        if acc == "HIGH":
+            self.instr.write("ACCURACY HIGH")
+        else:
+            self.instr.write("ACCURACY LOW")
+        self.close_instr_conn()
+        
 
             

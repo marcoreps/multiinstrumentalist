@@ -123,14 +123,14 @@ def INL_3458A():
     umin = -11
     umax = 11
     ustep = 0.25
-    wait_settle = 20
-    samples_per_meter_per_step = 1
-    NPLC = 100
+    wait_settle = 1
+    samples_per_meter_per_step = 2
+    NPLC = 10
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
-    time.sleep(300)
+    time.sleep(3)
     
     with open('csv/'+timestr+'REPS5700A_3458A_3458B_4950_INL.csv', mode='w') as csv_file:
         csv_file.write("# INL run")
@@ -147,12 +147,14 @@ def INL_3458A():
             logging.debug('main setting source to '+str(u)+'V')
             instruments["3458A"].config_NPLC(10)
             instruments["3458B"].config_NPLC(10)
+            instruments["W4950"].config_config_accuracy("LOW")
             instruments["3458A"].config_trigger_auto()
             instruments["3458B"].config_trigger_auto()
             instruments["W4950"].config_trigger_auto()
             time.sleep(wait_settle)
             instruments["3458A"].config_NPLC(NPLC)
             instruments["3458B"].config_NPLC(NPLC)
+            instruments["W4950"].config_config_accuracy("LOW")
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
             instruments["W4950"].config_trigger_hold()
