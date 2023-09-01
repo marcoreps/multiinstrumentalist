@@ -28,6 +28,7 @@ class multimeter:
         
     def get_read_val(self):
         self.connect()
+        logging.debug("get_read_val() connected, reading ... ")
         read_val = self.instr.read()
         logging.debug("get_read_val() reading "+str(read_val))
         self.close_instr_conn()
