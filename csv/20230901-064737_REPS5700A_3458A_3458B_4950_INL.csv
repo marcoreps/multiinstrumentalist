@@ -1,4 +1,8 @@
-# INL run# wait_settle = 20# samples_per_meter_per_step = 1# NPLC = 100vref,3458A_volt,3458B_volt,W4950_volt
+# INL run
+# wait_settle = 20
+# samples_per_meter_per_step = 1
+# NPLC = 100
+vref,3458A_volt,3458B_volt,W4950_volt
 -11.0,-10.99996294,-11.00002073,-10.999987
 -10.75,-10.74996374,-10.75002092,-10.749988
 -10.5,-10.49996408,-10.50002112,-10.499988
