@@ -571,24 +571,25 @@ def INL_NNNI():
                 HP3458A_out += float(instruments["3458A"].get_read_val()) / samples_per_meter_per_step
             
             writer.writerow({'NNNI Volt': u, '3458A_volt': HP3458A_out})
-    try:
-        #test_3458A()
-        #test_W4950()
-        #INL_3458A()
-        #temperature_sweep()
-        #scanner_once()
-        #auto_ACAL_3458A()
-        #noise_3458A()
-        #pt100_scanner()
-        #readstb_test()
-        #k182()
-        #hp3458A_diff()
-        #log_cal_params()
-        #nplc_3458A()
-        INL_NNNI()
+    
+    
+#test_3458A()
+#test_W4950()
+#INL_3458A()
+#temperature_sweep()
+#scanner_once()
+#auto_ACAL_3458A()
+#noise_3458A()
+#pt100_scanner()
+#readstb_test()
+#k182()
+#hp3458A_diff()
+#log_cal_params()
+#nplc_3458A()
+INL_NNNI()
 
 
         
-    except (KeyboardInterrupt, SystemExit) as exErr:
-        logging.info("kthxbye")
-        sys.exit(0)
+except (KeyboardInterrupt, SystemExit) as exErr:
+    logging.info("kthxbye")
+    sys.exit(0)
