@@ -591,7 +591,7 @@ try:
     #hp3458A_diff()
     #log_cal_params()
     #nplc_3458A()
-    INL_NNNI()
+    #INL_NNNI()
     NNNI()
 
 except (KeyboardInterrupt, SystemExit) as exErr:
