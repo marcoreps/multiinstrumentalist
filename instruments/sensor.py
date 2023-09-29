@@ -193,22 +193,3 @@ class HP3458A_temp:
     def measure(self):
         pass
         
-        
-class NNNI:
-
-    ready_to_read = False
-    
-    def __init__(self, dev='/dev/ttyACM0', baud=9600, title='NNNI DAC'):
-        self.dev = dev
-        self.baud = baud
-        self.title = title
-        self.serial = serial.Serial(self.dev, self.baud)
-    
-        
-    def out(self, val):
-        try:
-            command = str(val)+'\r'
-            self.serial.write(command.encode())
-        except:
-            logging.error("Error in %s out" % self.title, exc_info=True)
-            pass

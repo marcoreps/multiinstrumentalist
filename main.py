@@ -526,61 +526,14 @@ def log_cal_params():
  
 
 
-def INL_NNNI():
-    timestr = time.strftime("%Y%m%d-%H%M%S_")
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
-    instruments["NNNI"]=NNNI()
     
-    instruments["3458A"].config_DCV(10)
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_trigger_auto()
-    
-    umin = 0
-    umax = 1048575
-    ustep = 16383
-    wait_settle = 5
-    samples_per_meter_per_step = 1
-    NPLC = 50
-    
-    
-    with open('csv/'+timestr+'NNNIDAC_3458A_INL.csv', mode='w') as csv_file:
-        csv_file.write("# INL run")
-        csv_file.write("# wait_settle = "+str(wait_settle))
-        csv_file.write("# samples_per_meter_per_step = "+str(samples_per_meter_per_step))
-        csv_file.write("# NPLC = "+str(NPLC))
-        
-        fieldnames = ['NNNI Volt', '3458A_volt']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-
-        for u in range(umin, umax, ustep):
-            instruments["NNNI"].out(u)
-            instruments["3458A"].config_NPLC(10)
-            instruments["3458A"].config_trigger_auto()
-            time.sleep(wait_settle)
-            instruments["3458A"].config_NPLC(NPLC)
-            instruments["3458A"].config_trigger_hold()
-            
-            HP3458A_out = 0.0
-            
-            for n in range (samples_per_meter_per_step):
-            
-                instruments["3458A"].trigger_once()
-                HP3458A_out += float(instruments["3458A"].get_read_val()) / samples_per_meter_per_step
-            
-            writer.writerow({'NNNI Volt': u, '3458A_volt': HP3458A_out})
-            
-def NNNI():
-    instruments["NNNI"]=NNNI()
-    instruments["NNNI"].out(524287)
-        
     
 try:
     #test_3458A()
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    #scanner_once()
+    scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -589,8 +542,7 @@ try:
     #hp3458A_diff()
     #log_cal_params()
     #nplc_3458A()
-    #INL_NNNI()
-    NNNI()
+
 
 except (KeyboardInterrupt, SystemExit) as exErr:
     logging.info("kthxbye")
