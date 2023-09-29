@@ -572,9 +572,9 @@ def INL_NNNI():
             
             writer.writerow({'NNNI Volt': u, '3458A_volt': HP3458A_out})
             
-    def NNNI():
-        instruments["NNNI"]=NNNI()
-        instruments["NNNI"].out(0)
+def NNNI():
+    instruments["NNNI"]=NNNI()
+    instruments["NNNI"].out(0)
         
     
 try:
