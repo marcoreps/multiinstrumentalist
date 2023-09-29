@@ -574,7 +574,7 @@ def INL_NNNI():
             
     def NNNI():
         instruments["NNNI"]=NNNI()
-        instruments["NNNI"].out(524287)
+        instruments["NNNI"].out(0)
         
     
 try:
