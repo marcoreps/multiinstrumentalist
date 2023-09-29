@@ -528,11 +528,6 @@ def log_cal_params():
  
 
 
-
-if __name__ == '__main__':
-
-
-
 def INL_NNNI():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
