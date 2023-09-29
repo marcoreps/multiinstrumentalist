@@ -540,9 +540,9 @@ def INL_NNNI():
     umin = 0
     umax = 1048575
     ustep = 16383
-    wait_settle = 1
+    wait_settle = 5
     samples_per_meter_per_step = 1
-    NPLC = 10
+    NPLC = 50
     
     
     with open('csv/'+timestr+'NNNIDAC_3458A_INL.csv', mode='w') as csv_file:
