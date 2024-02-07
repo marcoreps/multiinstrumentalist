@@ -217,11 +217,11 @@ def temperature_sweep():
 
 def read_inst_scanner(inst, dut, bucket="PPMhub"):
     logging.debug("Reading inst with title %s after a measurement of %s" % (inst.get_title(), dut))
-    if inst.is_readable():
-        writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
-        logging.debug('debug step')
-    else:
-        logging.info(inst.get_title()+' was not readable')
+    #if inst.is_readable():
+    writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
+    #    logging.debug('debug step')
+    #else:
+    #    logging.info(inst.get_title()+' was not readable')
 
 
 
@@ -259,8 +259,8 @@ def scanner_once():
 
 # III   Br    N   channels[0] ADRmu1 +
 # III   BrW   P   channels[0] ADRmu1 -
-# III   Or    N   channels[1] F731B +
-# III   OrW   P   channels[1] F731B -
+# III   Or    N   channels[1] W4950 +
+# III   OrW   P   channels[1] W4950 -
 # III   Bl    N   channels[2] ADRmu3 +
 # III   BlW   P   channels[2] ADRmu3 -
 # III   Gr    N   channels[3] ADRmu15 +
@@ -309,9 +309,13 @@ def scanner_once():
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
+    
+    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
+    instruments["W4950"].config_accuracy("HIGH")
+    instruments["W4950"].config_trigger_hold()
 
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[1], "F731B"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
-    scanner_meters = [(channels[9], instruments["3458A"]),  (channels[8], instruments["3458B"]), ]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
+    scanner_meters = [(channels[9], instruments["3458A"]),  (channels[8], instruments["3458B"]), (channels[1], "W4950"), ]
 
     switch=takovsky_scanner()
     
