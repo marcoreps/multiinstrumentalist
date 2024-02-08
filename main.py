@@ -293,7 +293,7 @@ def scanner_once():
 # I     Gr    N   channels[15]  
 # I     GrW   P   channels[15]  
 
-    switch_delay = 60
+    switch_delay = 120
     NPLC = 100
     nmeasurements = 20
     
@@ -356,6 +356,7 @@ def scanner_once():
     sch.run()
     instruments["3458A"].blank_display()
     instruments["3458B"].blank_display()
+    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
     
     
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
