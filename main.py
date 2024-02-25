@@ -196,13 +196,13 @@ def temperature_sweep():
     tmin = 19
     tmax = 35
     tstep = 0.1
-    wait_settle = 120
+    wait_settle = 60
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["3458A"], "Vz"))
     #sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458B"], "Vz"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
-    i=60*10
+    i=60*5
     for t in numpy.arange(tmin, tmax+0.01, tstep):
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
@@ -539,8 +539,8 @@ try:
     #test_3458A()
     #test_W4950()
     #INL_3458A()
-    #temperature_sweep()
-    scanner_once()
+    temperature_sweep()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
