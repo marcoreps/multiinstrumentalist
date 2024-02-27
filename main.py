@@ -193,10 +193,10 @@ def temperature_sweep():
     #instruments["3458B"].config_NPLC(50)
     #instruments["3458B"].config_trigger_auto()
     
-    tmin = 19
-    tmax = 35
+    tmin = 18
+    tmax = 21
     tstep = 0.1
-    wait_settle = 60
+    wait_settle = 180
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["3458A"], "Vz"))
