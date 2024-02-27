@@ -196,7 +196,7 @@ def temperature_sweep():
     tmin = 19
     tmax = 35
     tstep = 0.1
-    wait_settle = 120
+    wait_settle = 60
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["3458A"], "Vz"))
@@ -539,8 +539,8 @@ try:
     #test_3458A()
     #test_W4950()
     #INL_3458A()
-    #temperature_sweep()
-    scanner_once()
+    temperature_sweep()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
