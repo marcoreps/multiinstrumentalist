@@ -290,5 +290,11 @@ class W4950(multimeter):
         self.close_instr_conn()
         return readable
         
-        
+    def get_read_val(self):
+        self.connect()
+        logging.debug("get_read_val() connected, reading ... ")
+        read_val = self.instr.ask("GET;RDG?")
+        logging.debug("get_read_val() reading "+str(read_val))
+        self.close_instr_conn()
+        return read_val
             
