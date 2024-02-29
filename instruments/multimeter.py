@@ -234,7 +234,6 @@ class W4950(multimeter):
         self.instr.clear()
         self.instr.write("*RST")
         time.sleep(2)
-        self.instr.write("DCV 10,PCENT_100,LCL_GUARD")
         self.instr.write("TRIG_SRCE EXT")
         self.instr.write("ACCURACY HIGH")
         self.instr.write("CORRECTN CERTIFIED")
@@ -277,18 +276,19 @@ class W4950(multimeter):
     def config_DCV(self, RANG):
         self.connect()
         logging.debug(self.title+" config_DCV")
-        self.instr.write("DCV "+str(RANG))
+        self.instr.write("DCV "+str(RANG)+",PCENT_100")
         self.close_instr_conn()
 
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
         self.connect()
-        mese = int(self.instr.ask("MESE?"))
-        logging.debug(self.title+' MESE is '+str(mese))
+        mese = int(self.instr.ask("MESR?"))
+        logging.debug(self.title+' MESR is '+str(mese))
         readable = mese & 0b10000000
+        if (readable):
+            logging.debug(self.title+' is readable')
         self.close_instr_conn()
-        #return readable
-        return True
+        return readable
         
         
             
