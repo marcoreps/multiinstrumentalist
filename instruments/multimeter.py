@@ -282,10 +282,13 @@ class W4950(multimeter):
 
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
-        self.read_stb()
-        logging.debug(self.title+' stb is '+str(self.stb))
-        readable = self.stb & 0b10000000
-        return readable
+        self.connect()
+        mese = int(self.instr.ask("MESE?"))
+        logging.debug(self.title+' MESE is '+str(mese))
+        readable = mese & 0b10000000
+        self.close_instr_conn()
+        #return readable
+        return True
         
         
             
