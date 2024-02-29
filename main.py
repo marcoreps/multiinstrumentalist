@@ -29,7 +29,7 @@ influx_org = config['INFLUX']['org']
 writer=influx_writer(influx_url, influx_token, influx_org)
 
 
-#logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+#logging.basicConfig(filename='log.INFO', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
@@ -181,10 +181,10 @@ def INL_3458A():
 
 def temperature_sweep():
 
-    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    #instruments["3458A"].config_NDIG(9)
-    #instruments["3458A"].config_NPLC(50)
-    #instruments["3458A"].config_trigger_auto()
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(50)
+    instruments["3458A"].config_trigger_auto()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
@@ -193,10 +193,6 @@ def temperature_sweep():
     #instruments["3458B"].config_NPLC(50)
     #instruments["3458B"].config_trigger_auto()
     
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
-    instruments["W4950"].config_accuracy("HIGH")
-    instruments["W4950"].config_trigger_auto()
-    instruments["W4950"].config_DCV(1)
     
     tmin = 16
     tmax = 24
@@ -204,7 +200,7 @@ def temperature_sweep():
     wait_settle = 180
 
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["W4950"], "Vz"))
+    sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["3458A"], "Vz"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
     i=wait_settle*5
     for t in numpy.arange(tmin, tmax+0.01, tstep):
