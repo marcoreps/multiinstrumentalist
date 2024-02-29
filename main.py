@@ -181,10 +181,10 @@ def INL_3458A():
 
 def temperature_sweep():
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(50)
-    instruments["3458A"].config_trigger_auto()
+    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    #instruments["3458A"].config_NDIG(9)
+    #instruments["3458A"].config_NPLC(50)
+    #instruments["3458A"].config_trigger_auto()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
@@ -192,6 +192,11 @@ def temperature_sweep():
     #instruments["3458B"].config_NDIG(9)
     #instruments["3458B"].config_NPLC(50)
     #instruments["3458B"].config_trigger_auto()
+    
+    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
+    instruments["W4950"].config_accuracy("HIGH")
+    instruments["W4950"].config_trigger_auto()
+    instruments["W4950"].config_DCV(1)
     
     tmin = 16
     tmax = 24

@@ -274,5 +274,9 @@ class W4950(multimeter):
             self.instr.write("ACCURACY LOW")
         self.close_instr_conn()
         
-
+    def config_DCV(self, RANG):
+        self.connect()
+        logging.debug(self.title+" config_DCV")
+        self.instr.write("DCV "+str(RANG))
+        self.close_instr_conn()
             
