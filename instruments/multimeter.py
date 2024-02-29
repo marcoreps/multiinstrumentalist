@@ -228,6 +228,7 @@ class W4950(multimeter):
         self.lock = lock
         self.ip = ip
         self.gpib_address = gpib_address
+        self.readable = True
         self.lock.acquire()
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 600
