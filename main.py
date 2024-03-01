@@ -312,6 +312,7 @@ def scanner_once():
     
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
     instruments["W4950"].config_accuracy("HIGH")
+    instruments["W4950"].config_DCV(10)
     instruments["W4950"].config_trigger_hold()
 
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
