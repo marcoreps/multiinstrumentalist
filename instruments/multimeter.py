@@ -104,7 +104,7 @@ class HP3458A(multimeter):
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
         self.instr.write("ARANGE ON")
-        self.instr.write("LOCAL 7"+str(self.gpib_address))
+        
         self.close_instr_conn()
         
     def config_trigger_auto(self):
@@ -301,3 +301,21 @@ class W4950(multimeter):
         self.close_instr_conn()
         return read_val
             
+class HP34420A(multimeter):
+
+    def __init__(self, ip, gpib_address, lock, title='HP 3458A'):
+        logging.debug(self.title+' init started')
+        self.title = title
+        self.lock = lock
+        self.ip = ip
+        self.gpib_address = gpib_address
+        self.lock.acquire()
+        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
+        self.instr.timeout = 600
+        self.instr.clear()
+        self.instr.write("RESET")
+        self.instr.write("END ALWAYS")
+        self.instr.write("OFORMAT ASCII")
+        self.instr.write("BEEP")
+        logging.info("ID? -> "+self.instr.ask("ID?"))
+        self.close_instr_conn()
