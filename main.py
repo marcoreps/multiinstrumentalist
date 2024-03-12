@@ -44,7 +44,6 @@ instruments = dict()
 #instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
 
 #instruments["A5235"]=Arroyo(title="Arroyo 5235")
-#instruments["K237"]=K237(ip=vxi_ip, gpib_address=8, lock=gpiblock, title="Bench K237")
 #instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
 #instruments["HP34401A"]=HP34401A(ip=vxi_ip, gpib_address=4, lock=gpiblock, title="Bench 34401A")
 #instruments["3458A"]=3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
@@ -325,12 +324,12 @@ def scanner_once():
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
         
     seconds = 10
-    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    seconds = seconds + 200
-    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
-    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
-    seconds = seconds + 60
+    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    #seconds = seconds + 200
+    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+    #seconds = seconds + 60
     
     t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
         
@@ -497,9 +496,10 @@ def readstb_test():
         print(instruments["3458A"].is_ready())
         time.sleep(0.1)
 
-def k182():
-    instruments["k182"]=K182(ip=vxi_ip, gpib_address=8, lock=gpiblock)
-    instruments["k182"].default()
+def test_34420A():
+    instruments["HP34420A"]=K182(ip=vxi_ip, gpib_address=7, lock=gpiblock)
+    instruments["K34420A"]=K182(ip=vxi_ip, gpib_address=8, lock=gpiblock)
+    
     while True:
         writer.write("PPMhub", str(sys.argv[1]), instruments["k182"].get_title(), instruments["k182"].get_data())
         #writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
@@ -546,12 +546,16 @@ try:
     #noise_3458A()
     #pt100_scanner()
     #readstb_test()
-    #k182()
+    #test_34420A()
     #hp3458A_diff()
     #log_cal_params()
     #nplc_3458A()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
+
+    for instrument in instruments:
+        instrument.blank_display()
+        
     logging.info("kthxbye")
     sys.exit(0)

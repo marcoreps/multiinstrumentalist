@@ -48,6 +48,9 @@ class multimeter:
         self.stb = self.instr.read_stb()
         logging.debug("stb read")
         self.close_instr_conn()
+        
+    def blank_display(self):
+        logging.debug("blank_display not implemented for this instrument")
 
 
    
@@ -100,9 +103,9 @@ class HP3458A(multimeter):
         logging.debug(self.title+" blank_display")
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
+        self.instr.write("ARANGE ON")
+        self.instr.write("LOCAL 7"+str(self.gpib_address))
         self.close_instr_conn()
-
-
         
     def config_trigger_auto(self):
         self.connect()
