@@ -356,7 +356,6 @@ def scanner_once():
     sch.run()
     instruments["3458A"].blank_display()
     instruments["3458B"].blank_display()
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
     
     
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
@@ -555,7 +554,7 @@ try:
 except (KeyboardInterrupt, SystemExit) as exErr:
 
     for instrument in instruments:
-        instrument.blank_display()
+        instruments[instrument].blank_display()
         
     logging.info("kthxbye")
     sys.exit(0)
