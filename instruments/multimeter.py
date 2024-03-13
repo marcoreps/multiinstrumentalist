@@ -46,11 +46,12 @@ class multimeter:
         
 class HP3458A(multimeter):
 
-    def __init__(self, resource_manager, resource_name, title='3458A'):
+    def __init__(self, resource_manager, gpib_address, title='3458A'):
         self.title = title
         logging.debug(self.title+' init started')
         self.rm = resource_manager
-        self.rn = resource_name
+        self.gpib_address = gpib_address
+        self.rn = ('GPIB0::' + "% d" + '::INSTR') % self.gpib_address
         self.instr =  self.rm.open_resource(self.rn)
         self.instr.timeout = 20000
         self.instr.clear()
@@ -91,6 +92,7 @@ class HP3458A(multimeter):
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
         self.instr.write("ARANGE ON")
+        self.instr.control_ren(self.gpib_address)
         #self.close_instr_conn()
         
     def config_trigger_auto(self):
