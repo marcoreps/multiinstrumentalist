@@ -179,15 +179,15 @@ class HP34420A(multimeter):
         self.instr.timeout = 20000
         self.instr.clear()
         self.instr.write("*RST")
-        inst.write("*CLS")
+        self.instr.write("*CLS")
         logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         logging.info("SYSTem:VERSion? -> "+self.instr.query("SYSTem:VERSion?"))
         
     def config_DCV(self, RANG):
         logging.debug(self.title+" config_DCV")
         self.instr.write(":CONFigure:VOLTage:DC "+str(RANG)+",MAXimum")
-        inst.write(":SENSe:VOLTage:DC:RANGe 10")
-        inst.write(":SENSe:VOLTage:DC:NPLCycles 100")
+        self.instr.write(":SENSe:VOLTage:DC:RANGe 10")
+        self.instr.write(":SENSe:VOLTage:DC:NPLCycles 100")
         
     def blank_display(self):
         logging.debug(self.title+" blank_display")
