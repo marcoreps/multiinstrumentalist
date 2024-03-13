@@ -277,14 +277,14 @@ def scanner_once():
     NPLC = 10
     nmeasurements = 2
     
-    instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+    instruments["3458A"]=HP3458A(rm, 22, title='3458A')
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_hold()
 
     
-    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    instruments["3458B"]=HP3458A(rm, 23, title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
