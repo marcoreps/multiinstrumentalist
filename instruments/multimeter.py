@@ -20,11 +20,11 @@ class multimeter:
         return self.title
         
     def get_read_val(self):
-        self.connect()
+        #self.connect()
         logging.debug("get_read_val() connected, reading ... ")
         read_val = self.instr.read()
         logging.debug("get_read_val() reading "+str(read_val))
-        self.close_instr_conn()
+        #self.close_instr_conn()
         return read_val
         
     def close_instr_conn(self):
@@ -32,11 +32,11 @@ class multimeter:
         self.instr.close()
         
     def read_stb(self):
-        self.connect()
+        #self.connect()
         logging.debug("read_stb() reading status")
         self.stb = self.instr.read_stb()
         logging.debug("stb read")
-        self.close_instr_conn()
+        #self.close_instr_conn()
         
     def blank_display(self):
         logging.debug("blank_display not implemented for this instrument")
@@ -58,64 +58,64 @@ class HP3458A(multimeter):
         self.instr.write("OFORMAT ASCII")
         self.instr.write("BEEP")
         logging.info("ID? -> "+self.instr.query("ID?"))
-        self.close_instr_conn()
+        #self.close_instr_conn()
 
         
             
     def config_NPLC(self, NPLC):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_NPLC")
         self.instr.write("NPLC "+str(NPLC))
-        self.close_instr_conn()
+        #self.close_instr_conn()
 
 
             
     def config_NDIG(self, NDIG):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_NDIG")
         self.instr.write("NDIG "+str(NDIG))
-        self.close_instr_conn()
+        #self.close_instr_conn()
 
             
     def config_DCV(self, RANG):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_DCV")
         self.instr.write("DCV "+str(RANG))
-        self.close_instr_conn()
+        #self.close_instr_conn()
 
             
     def blank_display(self):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" blank_display")
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
         self.instr.write("ARANGE ON")
         self.instr.write("LOCAL 7"+str(self.gpib_address))
-        self.close_instr_conn()
+        #self.close_instr_conn()
         
     def config_trigger_auto(self):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_trigger_auto")
         self.instr.write("TARM AUTO")
-        self.close_instr_conn()
+        #self.close_instr_conn()
             
     def config_trigger_hold(self):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_trigger_hold")
         self.instr.write("TARM HOLD")
-        self.close_instr_conn()
+        #self.close_instr_conn()
             
     def trigger_once(self):
         logging.debug(self.title+' triggered once')
-        self.connect()
+        #self.connect()
         self.instr.write("TARM SGL")
-        self.close_instr_conn()
+        #self.close_instr_conn()
           
     def acal_DCV(self):
         logging.debug(self.title+' ACAL DCV started')
-        self.connect()
+        #self.connect()
         self.instr.write("ACAL DCV")
-        self.close_instr_conn()
+        #self.close_instr_conn()
         
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
@@ -130,24 +130,24 @@ class HP3458A(multimeter):
         return ready
             
     def get_int_temp(self):
-        self.connect()
+        #self.connect()
         temp = self.instr.query("TEMP?")
-        self.close_instr_conn()
+        #self.close_instr_conn()
         return temp
         
     def get_cal_72(self):
         logging.debug(self.title+' get_cal_72() called')
-        self.connect()
+        #self.connect()
         logging.debug(self.title+' connected')
         cal72 = self.instr.query("CAL? 72")
         logging.debug(self.title+' CAL? 72 = '+str(cal72))
-        self.close_instr_conn()
+        #self.close_instr_conn()
         return cal72
 
     def get_cal_175(self):
-        self.connect()
+        #self.connect()
         cal175 = self.instr.query("CAL? 175")
-        self.close_instr_conn()
+        #self.close_instr_conn()
         return cal175
 
 
@@ -172,58 +172,58 @@ class W4950(multimeter):
         logging.info("*OPT? -> "+self.instr.query("*OPT?"))
         logging.info("DATE? CERTIFIED -> "+self.instr.query("DATE? CERTIFIED"))
         logging.info("DATE? BASE -> "+self.instr.query("DATE? BASE"))
-        self.close_instr_conn()
+        #self.close_instr_conn()
         
     def trigger_once(self):
         logging.debug(self.title+' triggered once')
-        self.connect()
+        #self.connect()
         self.instr.write("*TRG;GET;RDG?")
-        self.close_instr_conn()
+        #self.close_instr_conn()
         
     def config_trigger_auto(self):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_trigger_auto")
         self.instr.write("TRIG_SRCE INT")
-        self.close_instr_conn()
+        #self.close_instr_conn()
             
     def config_trigger_hold(self):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_trigger_hold")
         self.instr.write("TRIG_SRCE EXT")
-        self.close_instr_conn()
+        #self.close_instr_conn()
         
     def config_accuracy(self, acc):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" ACCURACY")
         if acc == "HIGH":
             self.instr.write("ACCURACY HIGH")
         else:
             self.instr.write("ACCURACY LOW")
-        self.close_instr_conn()
+        #self.close_instr_conn()
         
     def config_DCV(self, RANG):
-        self.connect()
+        #self.connect()
         logging.debug(self.title+" config_DCV")
         self.instr.write("DCV "+str(RANG)+",PCENT_100")
-        self.close_instr_conn()
+        #self.close_instr_conn()
 
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
-        self.connect()
+        #self.connect()
         mese = int(self.instr.query("MESR?"))
         logging.debug(self.title+' MESR is '+str(mese))
         readable = mese & 0b10000000
         if (readable):
             logging.debug(self.title+' is readable')
-        self.close_instr_conn()
+        #self.close_instr_conn()
         return readable
         
     def get_read_val(self):
-        self.connect()
+        #self.connect()
         logging.debug("get_read_val() connected, reading ... ")
         read_val = self.instr.query("GET;RDG?")
         logging.debug("get_read_val() reading "+str(read_val))
-        self.close_instr_conn()
+        #self.close_instr_conn()
         return read_val
             
 class HP34420A(multimeter):
@@ -241,4 +241,4 @@ class HP34420A(multimeter):
         self.instr.write("OFORMAT ASCII")
         self.instr.write("BEEP")
         logging.info("ID? -> "+self.instr.query("ID?"))
-        self.close_instr_conn()
+        #self.close_instr_conn()
