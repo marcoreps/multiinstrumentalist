@@ -89,9 +89,12 @@ class HP3458A(multimeter):
     def blank_display(self):
         #self.connect()
         logging.debug(self.title+" blank_display")
+        time.sleep(5)
+        self.instr.write("ARANGE ON")
+        time.sleep(5)
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
-        self.instr.write("ARANGE ON")
+        time.sleep(5)
         self.instr.visalib.sessions[self.instr.session].interface.ibloc()
         #self.close_instr_conn()
         
