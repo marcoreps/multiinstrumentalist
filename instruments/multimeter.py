@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import vxi11
+import pyvisa
 import time
 import logging
 import serial
@@ -11,17 +11,10 @@ import signal
 
 
 class multimeter:
-
-    title="Multimeter"
-
-    def is_readable(self):
-        return self.readable
     
     def connect(self):
-        logging.debug("connect() acquiring lock")
-        self.lock.acquire()
         logging.debug("connect() connecting instr")
-        self.instr.open()
+        self.instr =  self.rm.open_resource(self.rn)
         
     def get_title(self):
         return self.title
@@ -37,10 +30,6 @@ class multimeter:
     def close_instr_conn(self):
         logging.debug("close_instr_conn() Closing instr")
         self.instr.close()
-        logging.debug("close_instr_conn() regular lock release")
-        time.sleep(0.5)
-        self.lock.release()
-        
         
     def read_stb(self):
         self.connect()
@@ -57,21 +46,19 @@ class multimeter:
         
 class HP3458A(multimeter):
 
-    def __init__(self, ip, gpib_address, lock, title='HP 3458A'):
+    def __init__(self, resource_manager, resource_name, title='3458A'):
         logging.debug(self.title+' init started')
         self.title = title
-        self.lock = lock
-        self.ip = ip
-        self.gpib_address = gpib_address
-        self.lock.acquire()
-        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
-        self.instr.timeout = 600
+        self.rm = resource_manager
+        self.rn = resource_name
+        self.instr =  self.rm.open_resource(self.rn)
+
         self.instr.clear()
         self.instr.write("RESET")
         self.instr.write("END ALWAYS")
         self.instr.write("OFORMAT ASCII")
         self.instr.write("BEEP")
-        logging.info("ID? -> "+self.instr.ask("ID?"))
+        logging.info("ID? -> "+self.instr.query("ID?"))
         self.close_instr_conn()
 
         
@@ -104,7 +91,7 @@ class HP3458A(multimeter):
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
         self.instr.write("ARANGE ON")
-        
+        self.instr.write("LOCAL 7"+str(self.gpib_address))
         self.close_instr_conn()
         
     def config_trigger_auto(self):
@@ -145,7 +132,7 @@ class HP3458A(multimeter):
             
     def get_int_temp(self):
         self.connect()
-        temp = self.instr.ask("TEMP?")
+        temp = self.instr.query("TEMP?")
         self.close_instr_conn()
         return temp
         
@@ -153,14 +140,14 @@ class HP3458A(multimeter):
         logging.debug(self.title+' get_cal_72() called')
         self.connect()
         logging.debug(self.title+' connected')
-        cal72 = self.instr.ask("CAL? 72")
+        cal72 = self.instr.query("CAL? 72")
         logging.debug(self.title+' CAL? 72 = '+str(cal72))
         self.close_instr_conn()
         return cal72
 
     def get_cal_175(self):
         self.connect()
-        cal175 = self.instr.ask("CAL? 175")
+        cal175 = self.instr.query("CAL? 175")
         self.close_instr_conn()
         return cal175
 
@@ -183,55 +170,15 @@ class Timeout():
     raise Timeout.Timeout()
     
 
-class K182(multimeter):
-
-    def __init__(self, ip, gpib_address, lock, title='Keithley 182'):
-        logging.debug(self.title+' init started')
-        self.title = title
-        self.lock = lock
-        self.ip = ip
-        self.gpib_address = gpib_address
-        self.lock.acquire()
-        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
-        self.instr.timeout = 60
-        self.instr.write("DCLX")      # clear to default settings
-        self.instr.write("RENX")      # Remote mode
-        self.close_instr_conn()
         
-    def default(self):
-        self.connect()
-        self.instr.write("B1X")     # 6.5 digit resolution
-        self.instr.write("G0X")     # Reading without prefix
-        self.instr.write("F0X")     # Reading Source: direct ADC
-        self.instr.write("O1X")     # Enabled analog filter
-        #self.instr.write("P3X")     # Enabled slow dig filter
-        self.instr.write("P0X")     # Disabled dig filter
-        self.instr.write("R0X")     # Autorange
-        self.instr.write("S2X")     # 100msec integration
-        self.instr.write("T4X")     # Trigger on X multiple
-        self.instr.write("Z1X")      # Relative readings
-        self.close_instr_conn()
-        
-
-    def get_data(self):
-        self.connect()
-        data=float(self.instr.read())
-        self.close_instr_conn()
-        return data
-
-
-        
-
 
 class W4950(multimeter):
 
-    def __init__(self, ip, gpib_address, lock, title='Wavetek 4950'):
+    def __init__(self, ip, gpib_address, title='Wavetek 4950'):
         logging.debug(self.title+' init started')
         self.title = title
-        self.lock = lock
         self.ip = ip
         self.gpib_address = gpib_address
-        self.lock.acquire()
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 600
         self.instr.clear()
@@ -243,10 +190,10 @@ class W4950(multimeter):
         self.instr.write("BAND OFF")
         self.instr.write("LCL_GUARD")
         #self.instr.write("LEAD_NO '0123456789'")
-        logging.info("*IDN? -> "+self.instr.ask("*IDN?"))
-        logging.info("*OPT? -> "+self.instr.ask("*OPT?"))
-        logging.info("DATE? CERTIFIED -> "+self.instr.ask("DATE? CERTIFIED"))
-        logging.info("DATE? BASE -> "+self.instr.ask("DATE? BASE"))
+        logging.info("*IDN? -> "+self.instr.query("*IDN?"))
+        logging.info("*OPT? -> "+self.instr.query("*OPT?"))
+        logging.info("DATE? CERTIFIED -> "+self.instr.query("DATE? CERTIFIED"))
+        logging.info("DATE? BASE -> "+self.instr.query("DATE? BASE"))
         self.close_instr_conn()
         
     def trigger_once(self):
@@ -285,7 +232,7 @@ class W4950(multimeter):
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
         self.connect()
-        mese = int(self.instr.ask("MESR?"))
+        mese = int(self.instr.query("MESR?"))
         logging.debug(self.title+' MESR is '+str(mese))
         readable = mese & 0b10000000
         if (readable):
@@ -296,20 +243,18 @@ class W4950(multimeter):
     def get_read_val(self):
         self.connect()
         logging.debug("get_read_val() connected, reading ... ")
-        read_val = self.instr.ask("GET;RDG?")
+        read_val = self.instr.query("GET;RDG?")
         logging.debug("get_read_val() reading "+str(read_val))
         self.close_instr_conn()
         return read_val
             
 class HP34420A(multimeter):
 
-    def __init__(self, ip, gpib_address, lock, title='HP 3458A'):
+    def __init__(self, ip, gpib_address, title='HP 3458A'):
         logging.debug(self.title+' init started')
         self.title = title
-        self.lock = lock
         self.ip = ip
         self.gpib_address = gpib_address
-        self.lock.acquire()
         self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
         self.instr.timeout = 600
         self.instr.clear()
@@ -317,5 +262,5 @@ class HP34420A(multimeter):
         self.instr.write("END ALWAYS")
         self.instr.write("OFORMAT ASCII")
         self.instr.write("BEEP")
-        logging.info("ID? -> "+self.instr.ask("ID?"))
+        logging.info("ID? -> "+self.instr.query("ID?"))
         self.close_instr_conn()

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import pyvisa
 import csv
-import sys
 import logging
 from time import time
 import numpy
-from multiprocessing import Process, Lock
 import sys
 import sched
 import itertools
@@ -33,22 +32,11 @@ writer=influx_writer(influx_url, influx_token, influx_org)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
-gpiblock = Lock()
-seriallock = Lock()
-onewire_lock = Lock()
-
 vxi_ip = "192.168.0.88"
+'TCPIP::192.168.0.88::INSTR'
 
 instruments = dict()
-#instruments["temp_short"]=TMP117(address=0x49, title="Short Temp Sensor")
-#instruments["long_tmp117"]=TMP117(address=0x4A, title="Long TMP117")
-
-#instruments["A5235"]=Arroyo(title="Arroyo 5235")
-#instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Fluke 5700A")
-#instruments["HP34401A"]=HP34401A(ip=vxi_ip, gpib_address=4, lock=gpiblock, title="Bench 34401A")
-#instruments["3458A"]=3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
-
-
+rm = visa.ResourceManager()
 
 def test_3458A():
 
@@ -57,7 +45,7 @@ def test_3458A():
     #switch.switchingCloseRelay(channels[6])
 
     NPLC = 200
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
@@ -76,7 +64,7 @@ def nplc_3458A():
     #switch.switchingCloseRelay(channels[6])
 
     NPLC = 1
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
@@ -86,7 +74,7 @@ def nplc_3458A():
         writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
         
 def test_W4950():
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
+    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9)
     instruments["W4950"].config_trigger_hold()
     instruments["W4950"].config_accuracy("HIGH")
     
@@ -102,14 +90,12 @@ def test_W4950():
             print(val)
             writer.writerow({'time':time.time(), 'W4950_volt': val})
             
-
-             
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, lock=gpiblock, title="Reps 5700A")
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="Reps 3458A")
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="Reps 3458B")
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
+    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="Reps 5700A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="Reps 3458A")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="Reps 3458B")
+    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9)
     
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
@@ -177,17 +163,16 @@ def INL_3458A():
             
             writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, 'W4950_volt': W4950_out})
 
-
 def temperature_sweep():
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(50)
     instruments["3458A"].config_trigger_auto()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
     #instruments["3458B"].config_NDIG(9)
     #instruments["3458B"].config_NPLC(50)
     #instruments["3458B"].config_trigger_auto()
@@ -226,7 +211,7 @@ def read_inst_scanner(inst, dut, bucket="PPMhub"):
 
 def auto_ACAL_3458A():
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
     instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
@@ -296,20 +281,20 @@ def scanner_once():
     NPLC = 100
     nmeasurements = 20
     
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_hold()
 
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9, lock=gpiblock)
+    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9)
     instruments["W4950"].config_accuracy("HIGH")
     instruments["W4950"].config_DCV(10)
     instruments["W4950"].config_trigger_hold()
@@ -384,7 +369,7 @@ def noise_3458A():
 
     seconds_per_step=60*20
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_10DCV_9digit()
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
@@ -393,7 +378,7 @@ def noise_3458A():
     instruments["3458A"].config_trigger_auto()
     HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
     instruments["3458B"].config_10DCV_9digit()
     #instruments["3458B"].config_10OHMF_9digit()
     #instruments["3458B"].config_10kOHMF_9digit()
@@ -459,7 +444,7 @@ def pt100_scanner():
 
     switch=takovsky_scanner()
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
     instruments["3458B"].config_PT100_2W()
     instruments["3458B"].config_trigger_hold()
     
@@ -481,7 +466,7 @@ def readstb_test():
 
     NPLC = 200
     
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_DCV(10)
     #instruments["3458A"].config_10OHMF_9digit()
     #instruments["3458A"].config_10kOHMF_9digit()
@@ -496,8 +481,8 @@ def readstb_test():
         time.sleep(0.1)
 
 def test_34420A():
-    instruments["HP34420A"]=K182(ip=vxi_ip, gpib_address=7, lock=gpiblock)
-    instruments["K34420A"]=K182(ip=vxi_ip, gpib_address=8, lock=gpiblock)
+    instruments["HP34420A"]=K182(ip=vxi_ip, gpib_address=7)
+    instruments["K34420A"]=K182(ip=vxi_ip, gpib_address=8)
     
     while True:
         writer.write("PPMhub", str(sys.argv[1]), instruments["k182"].get_title(), instruments["k182"].get_data())
@@ -505,7 +490,7 @@ def test_34420A():
         
 def hp3458A_diff():
     NPLC = 100
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_auto()
@@ -520,11 +505,11 @@ def hp3458A_diff():
     
 def log_cal_params():
     
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, lock=gpiblock, title="3458A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
     instruments["3458A"].config_trigger_hold()
     instruments["3458A"].blank_display()
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, lock=gpiblock, title="3458B")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
     instruments["3458B"].config_trigger_hold()
     instruments["3458B"].blank_display()
     
