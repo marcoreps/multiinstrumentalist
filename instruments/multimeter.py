@@ -178,7 +178,7 @@ class HP34420A(multimeter):
         self.instr =  self.rm.open_resource(self.rn)
         self.instr.timeout = 20000
         self.instr.clear()
-        self.inst.write("*RST")
+        self.instr.write("*RST")
         inst.write("*CLS")
         logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         logging.info("SYSTem:VERSion? -> "+self.instr.query("SYSTem:VERSion?"))
