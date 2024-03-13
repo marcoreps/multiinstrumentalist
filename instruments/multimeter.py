@@ -52,7 +52,6 @@ class HP3458A(multimeter):
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
-
         self.instr.clear()
         self.instr.write("RESET")
         self.instr.write("END ALWAYS")
@@ -152,35 +151,14 @@ class HP3458A(multimeter):
         return cal175
 
 
-class Timeout():
-  """Timeout class using ALARM signal"""
-  class Timeout(Exception): pass
-
-  def __init__(self, sec):
-    self.sec = sec
-
-  def __enter__(self):
-    signal.signal(signal.SIGALRM, self.raise_timeout)
-    signal.alarm(self.sec)
-
-  def __exit__(self, *args):
-    signal.alarm(0) # disable alarm
-
-  def raise_timeout(self, *args):
-    raise Timeout.Timeout()
-    
-
-        
-
 class W4950(multimeter):
 
-    def __init__(self, ip, gpib_address, title='Wavetek 4950'):
+    def __init__(self, resource_manager, resource_name, title='Wavetek 4950'):
         logging.debug(self.title+' init started')
         self.title = title
-        self.ip = ip
-        self.gpib_address = gpib_address
-        self.instr =  vxi11.Instrument(self.ip, "gpib0,"+str(self.gpib_address))
-        self.instr.timeout = 600
+        self.rm = resource_manager
+        self.rn = resource_name
+        self.instr =  self.rm.open_resource(self.rn)
         self.instr.clear()
         self.instr.write("*RST")
         time.sleep(2)

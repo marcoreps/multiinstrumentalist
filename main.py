@@ -27,16 +27,12 @@ influx_org = config['INFLUX']['org']
 
 writer=influx_writer(influx_url, influx_token, influx_org)
 
-
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
-vxi_ip = "192.168.0.88"
-'TCPIP::192.168.0.88::INSTR'
-
 instruments = dict()
-rm = visa.ResourceManager()
+rm = pyvisa.ResourceManager()
 
 def test_3458A():
 
@@ -281,14 +277,14 @@ def scanner_once():
     NPLC = 100
     nmeasurements = 20
     
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
+    instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_hold()
 
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
+    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
