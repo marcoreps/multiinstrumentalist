@@ -186,7 +186,7 @@ class HP34420A(multimeter):
     def config_DCV(self, RANG):
         logging.debug(self.title+" config_DCV")
         self.instr.write(":CONFigure:VOLTage:DC "+str(RANG)+",MAXimum")
-        self.instr.write(":SENSe:VOLTage:DC:RANGe 10")
+        self.instr.write(":SENSe:VOLTage:DC:RANGe "+str(RANG))
         self.instr.write(":SENSe:VOLTage:DC:NPLCycles 100")
         
     def blank_display(self):
@@ -198,3 +198,6 @@ class HP34420A(multimeter):
         read_val = self.instr.query("READ?")
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
+        
+    def rel(self):
+        self.instr.write(":SENSe:VOLTage:DC:NULL:STATe ON")
