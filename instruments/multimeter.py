@@ -47,8 +47,8 @@ class multimeter:
 class HP3458A(multimeter):
 
     def __init__(self, resource_manager, resource_name, title='3458A'):
-        logging.debug(self.title+' init started')
         self.title = title
+        logging.debug(self.title+' init started')
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
