@@ -154,8 +154,8 @@ class HP3458A(multimeter):
 class W4950(multimeter):
 
     def __init__(self, resource_manager, resource_name, title='Wavetek 4950'):
-        logging.debug(self.title+' init started')
         self.title = title
+        logging.debug(self.title+' init started')
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
