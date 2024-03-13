@@ -273,9 +273,9 @@ def scanner_once():
 # I     Gr    N   channels[15]  
 # I     GrW   P   channels[15]  
 
-    switch_delay = 120
-    NPLC = 100
-    nmeasurements = 20
+    switch_delay = 12
+    NPLC = 10
+    nmeasurements = 2
     
     instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
     instruments["3458A"].config_DCV(10)
