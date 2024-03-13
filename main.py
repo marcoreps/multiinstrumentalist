@@ -290,7 +290,7 @@ def scanner_once():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9)
+    instruments["W4950"]=W4950(rm, 'GPIB0::9::INSTR')
     instruments["W4950"].config_accuracy("HIGH")
     instruments["W4950"].config_DCV(10)
     instruments["W4950"].config_trigger_hold()
