@@ -52,7 +52,7 @@ class HP3458A(multimeter):
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
-        self.instr.timeout = 10000
+        self.instr.timeout = 20000
         self.instr.clear()
         self.instr.write("RESET")
         self.instr.write("END ALWAYS")
@@ -160,6 +160,7 @@ class W4950(multimeter):
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
+        self.instr.timeout = 20000
         self.instr.clear()
         self.instr.write("*RST")
         time.sleep(2)
