@@ -28,7 +28,7 @@ influx_org = config['INFLUX']['org']
 writer=influx_writer(influx_url, influx_token, influx_org)
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 instruments = dict()
@@ -54,20 +54,6 @@ def test_3458A():
         #writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
         time.sleep(1)
         
-def nplc_3458A():
-    #switch=takovsky_scanner()
-    #switch.switchingCloseRelay(channels[5])
-    #switch.switchingCloseRelay(channels[6])
-
-    NPLC = 1
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458A"].config_DCV(10)
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].config_trigger_auto()
-    
-    while True:
-        writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
         
 def test_W4950():
     instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9)
@@ -273,18 +259,18 @@ def scanner_once():
 # I     Gr    N   channels[15]  
 # I     GrW   P   channels[15]  
 
-    switch_delay = 12
-    NPLC = 10
-    nmeasurements = 2
+    switch_delay = 120
+    NPLC = 100
+    nmeasurements = 20
     
-    instruments["3458A"]=HP3458A(rm, 22, title='3458A')
+    instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_hold()
 
     
-    instruments["3458B"]=HP3458A(rm, 23, title='3458B')
+    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
@@ -305,12 +291,12 @@ def scanner_once():
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
         
     seconds = 10
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    #sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    #seconds = seconds + 200
-    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
-    #sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
-    #seconds = seconds + 60
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    seconds = seconds + 200
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+    seconds = seconds + 60
     
     t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
         
@@ -326,24 +312,10 @@ def scanner_once():
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
         
-    
-    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_short"]))
-    #sch.enter(10, 11, recursive_read_inst, argument=(sch, 10, 11, instruments["long_tmp117"], "Ambient Temp", "lab_sensors"))
-    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu1"]))
-    #sch.enter(1, 11, recursive_read_inst, argument=(sch, 1, 11, instruments["temp_ADRmu2"]))
-    #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458A_temperature))
-    #sch.enter(61*10, 9, recursive_read_inst, argument=(sch, 61*10, 9, HP3458B_temperature))
     logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
     sch.run()
     instruments["3458A"].blank_display()
     instruments["3458B"].blank_display()
-    
-    
-def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
-    sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
-    if inst.is_readable():
-        time.sleep(1)
-        writer.write(bucket, name, inst.get_title(), inst.get_read_val())
         
         
 def read_cal_params(inst):
@@ -458,60 +430,15 @@ def pt100_scanner():
             instruments["3458B"].trigger_once()
             MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
-def readstb_test():
-
-    NPLC = 200
-    
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458A"].config_DCV(10)
-    #instruments["3458A"].config_10OHMF_9digit()
-    #instruments["3458A"].config_10kOHMF_9digit()
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].blank_display()
-    instruments["3458A"].config_trigger_hold()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
-    
-    while True:
-        print(instruments["3458A"].is_ready())
-        time.sleep(0.1)
-
 def test_34420A():
-    instruments["HP34420A"]=K182(ip=vxi_ip, gpib_address=7)
-    instruments["K34420A"]=K182(ip=vxi_ip, gpib_address=8)
+    instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
+    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     
     while True:
-        writer.write("PPMhub", str(sys.argv[1]), instruments["k182"].get_title(), instruments["k182"].get_data())
-        #writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
+        #writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
+        writer.write("PPMhub", "ADRmu4 - ADRmu1", instruments["HP34420A"].get_title(), instruments["HP34420A"].get_read_val())
+        writer.write("PPMhub", "KS Shorting Plug", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
         
-def hp3458A_diff():
-    NPLC = 100
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].config_trigger_auto()
-    
-    while True:
-        if instruments["3458A"].is_readable():
-                t=[["wiring", "direct"],["guard","open"], ["meter","3458A"]]
-                writer.write("PPMhub", str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val(), tags=t)
-        writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
-        time.sleep(1)
-        
-    
-def log_cal_params():
-    
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458A"].config_trigger_hold()
-    instruments["3458A"].blank_display()
-    
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
-    instruments["3458B"].config_trigger_hold()
-    instruments["3458B"].blank_display()
-    
-    read_cal_params(instruments["3458A"])
-    read_cal_params(instruments["3458B"])
- 
 
 
     
@@ -521,15 +448,11 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
-    #readstb_test()
-    #test_34420A()
-    #hp3458A_diff()
-    #log_cal_params()
-    #nplc_3458A()
+    test_34420A()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
