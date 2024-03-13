@@ -536,6 +536,7 @@ except (KeyboardInterrupt, SystemExit) as exErr:
 
     for instrument in instruments:
         instruments[instrument].blank_display()
+        instruments[instrument].control_ren(0)
         
     logging.info("kthxbye")
     sys.exit(0)

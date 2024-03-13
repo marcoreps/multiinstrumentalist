@@ -91,7 +91,6 @@ class HP3458A(multimeter):
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
         self.instr.write("ARANGE ON")
-        self.instr.write("LOCAL 7"+str(self.gpib_address))
         #self.close_instr_conn()
         
     def config_trigger_auto(self):
