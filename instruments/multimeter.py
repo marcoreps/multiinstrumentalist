@@ -92,7 +92,7 @@ class HP3458A(multimeter):
         self.instr.write("DISP MSG,\"                 \"")
         self.instr.write("DISP ON")
         self.instr.write("ARANGE ON")
-        self.instr.control_ren(6)
+        self.instr.visalib.sessions[my_instrument.session].interface.ibloc()
         #self.close_instr_conn()
         
     def config_trigger_auto(self):
