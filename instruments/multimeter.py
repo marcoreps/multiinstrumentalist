@@ -200,4 +200,4 @@ class HP34420A(multimeter):
         return read_val
         
     def rel(self):
-        self.instr.write(":SENSe:VOLTage:DC:NULL:STATe ON")
+        self.instr.write("SENSe:NULL ONCE")
