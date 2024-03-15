@@ -13,7 +13,7 @@ step  = 0b00000000010000000000 # step size 1024, use for fine sweep
 
 NPLC = 100
 soak = 10 # measurement soak time, DAC settles to 0.02% within 1us
-samples_per_meter_per_step = 10
+samples_per_meter_per_step = 5
 
 instr=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
 instr.config_DCV(10)
