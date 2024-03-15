@@ -13,11 +13,11 @@ NPLC = 10
 soak = 1 # measurement soak time, DAC settles to 0.02% within 1us
 samples_per_meter_per_step = 1
 
-instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
-instruments["3458A"].config_DCV(10)
-instruments["3458A"].config_NDIG(9)
-instruments["3458A"].config_NPLC(NPLC)
-instruments["3458A"].config_trigger_hold()
+instr=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+instr.config_DCV(10)
+instr.config_NDIG(9)
+instr.config_NPLC(NPLC)
+instr.config_trigger_hold()
 
 serial = serial.Serial("/dev/ttyACM0", 9600)
 timestr = time.strftime("%Y%m%d-%H%M%S_")
