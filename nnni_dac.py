@@ -20,7 +20,7 @@ instruments["3458A"].config_trigger_hold()
 serial = serial.Serial("/dev/ttyACM0", 9600)
 timestr = time.strftime("%Y%m%d-%H%M%S_")
 
-with open('nnni_csv/'+timestr+'HP3458A_NNNIDAC_INL.csv', mode='w') as csv_file:
+with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     fieldnames = ['dac_counts', '3458A_volt']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
