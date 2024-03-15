@@ -3,6 +3,8 @@ import pyvisa
 import csv
 from instruments.multimeter import *
 
+rm = pyvisa.ResourceManager()
+
 start = 0b00000000000000000000
 stop  = 0b11111100000000000000
 step  = 0b00000100000000000000 # 64 MSBs
