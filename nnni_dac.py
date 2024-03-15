@@ -26,9 +26,9 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     writer.writeheader()
     
     for u in range(start, stop+1, step):
-    serial.write(str(u)+'\r'.encode())
-    time.sleep(soak)
+        serial.write(str(u)+'\r'.encode())
+        time.sleep(soak)
     
-    for n in range(samples_per_meter_per_step):
-        instr.write("TARM SGL")
-        writer.writerow({'dac_counts': u, '3458A_volt': instr.read()})
+        for n in range(samples_per_meter_per_step):
+            instr.write("TARM SGL")
+            writer.writerow({'dac_counts': u, '3458A_volt': instr.read()})
