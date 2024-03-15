@@ -45,5 +45,5 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
         for n in range(samples_per_meter_per_step):
             instr.trigger_once()
             writer.writerow({'dac_counts': u, '3458A_volt': float(instr.get_read_val())})
-        print( "Time left: "+str((datetime.now()-clock)*((stop-u)/step))
+        print( "Time left: "+str((datetime.now()-clock)*((stop-u)/step)))
         clock=datetime.now()
