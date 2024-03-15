@@ -28,7 +28,8 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     writer.writeheader()
     
     for u in range(start, stop+1, step):
-        serial.write(str(u)+'\r'.encode())
+        command=str(u)+'\r'
+        serial.write(command.encode())
         time.sleep(soak)
     
         for n in range(samples_per_meter_per_step):
