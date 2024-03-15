@@ -8,12 +8,12 @@ rm = pyvisa.ResourceManager()
 
 start = 0b00000000000000000000
 stop  = 0b11111100000000000000
-step  = 0b00000100000000000000 # 64 MSBs
-#step  = 0b00000000010000000000 # step size 1024, use for fine sweep
+#step  = 0b00000100000000000000 # 64 MSBs
+step  = 0b00000000010000000000 # step size 1024, use for fine sweep
 
-NPLC = 10
-soak = 1 # measurement soak time, DAC settles to 0.02% within 1us
-samples_per_meter_per_step = 1
+NPLC = 100
+soak = 10 # measurement soak time, DAC settles to 0.02% within 1us
+samples_per_meter_per_step = 10
 
 instr=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
 instr.config_DCV(10)
