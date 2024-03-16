@@ -208,6 +208,9 @@ class HP34420A(multimeter):
         
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
+        self.instr.write("TRIGger:COUNt INFinity")
+        self.instr.write("SAMPle:COUNt MIN")
+        
         
     def config_trigger_hold(self):
         self.instr.write("TRIGger:SOURce EXTernal")
