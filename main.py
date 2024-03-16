@@ -436,6 +436,7 @@ def test_34420A():
     instruments["HP34420A"].rel()
     instruments["HP34420A"].config_trigger_auto()
     clock=datetime.datetime.now()
+    print("Reference time: " + str(clock))
     #instruments["HP34420A"].blank_display()
     
     #instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
@@ -458,9 +459,10 @@ def test_34420A():
             #val = float(instruments["HP34420A"].get_read_val())
             #print(val)
             #writer.writerow({'time':time.time(), '34420a_volt': val})
-        
-        time_per_sample = (datetime.datetime.now()-clock)/int(instruments["HP34420A"].get_points())
+        samples_caught = int(instruments["HP34420A"].get_points())
+        time_per_sample = (datetime.datetime.now()-clock)/samples_caught
         print(str(time_per_sample.seconds/0.02) + " NPLC")
+        time.sleep(10)
 
 
     
