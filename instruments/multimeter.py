@@ -188,7 +188,7 @@ class HP34420A(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write(":CONFigure:VOLTage:DC "+str(RANG)+",MAXimum")
         self.instr.write(":SENSe:VOLTage:DC:RANGe "+str(RANG))
-        self.instr.write(":SENSe:VOLTage:DC:NPLCycles 1")
+        self.instr.write(":SENSe:VOLTage:DC:NPLCycles 100")
         self.instr.write("TRIGger:DELay MIN")
         
     def blank_display(self):
@@ -212,7 +212,7 @@ class HP34420A(multimeter):
         
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
-        self.instr.write("TRIGger:COUNt 20")
+        self.instr.write("TRIGger:COUNt 12")
         self.instr.write("SAMPle:COUNt MIN")
         time.sleep(1)
         self.instr.write("INITiate")
