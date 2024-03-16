@@ -206,6 +206,9 @@ class HP34420A(multimeter):
     def get_points(self):
         return self.instr.query("DATA:POINts?")
         
+    def get_error(self):
+        return self.instr.query("SYSTem:ERRor?")
+        
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
         self.instr.write("TRIGger:COUNt INFinity")
