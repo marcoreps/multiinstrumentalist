@@ -455,17 +455,17 @@ def test_34420A():
     #    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     #    writer.writeheader()
     
-    while True:
+    #while True:
             #val = float(instruments["HP34420A"].get_read_val())
             #print(val)
             #writer.writerow({'time':time.time(), '34420a_volt': val})
-        samples_caught = int(instruments["HP34420A"].get_points())
-        print("samples_caught: " + str(samples_caught))
-        time_passed = datetime.datetime.now()-clock
-        print("time_passed: " + str(time_passed))
-        time_per_sample = time_passed/samples_caught
-        print("time_per_sample: " + str(time_per_sample))
-        print(str((time_per_sample/datetime.timedelta(milliseconds=1))/20) + " NPLC")
+    samples_caught = int(instruments["HP34420A"].get_points())
+    print("samples_caught: " + str(samples_caught))
+    time_passed = datetime.datetime.now()-clock
+    print("time_passed: " + str(time_passed))
+    time_per_sample = time_passed/samples_caught
+    print("time_per_sample: " + str(time_per_sample))
+    print(str((time_per_sample/datetime.timedelta(milliseconds=1))/20) + " NPLC")
         
 
 
