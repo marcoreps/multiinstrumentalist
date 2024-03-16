@@ -461,7 +461,9 @@ def test_34420A():
             #writer.writerow({'time':time.time(), '34420a_volt': val})
     samples_caught = int(instruments["HP34420A"].get_points())
     print("samples_caught: " + str(samples_caught))
-    time_passed = datetime.datetime.now()-clock
+    after = datetime.datetime.now()
+    print(str(after))
+    time_passed = after-clock
     print("time_passed: " + str(time_passed))
     time_per_sample = time_passed/samples_caught
     print("time_per_sample: " + str(time_per_sample))
