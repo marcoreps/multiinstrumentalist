@@ -453,7 +453,7 @@ def test_34420A():
         writer.writeheader()
     
         while True:
-            val = float(instruments["K34420A"].get_read_val())
+            val = float(instruments["HP34420A"].get_read_val())
             print(val)
             writer.writerow({'time':time.time(), '34420a_volt': val})
 
