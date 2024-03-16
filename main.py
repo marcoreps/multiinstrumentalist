@@ -458,7 +458,7 @@ def test_34420A():
             #print(val)
             #writer.writerow({'time':time.time(), '34420a_volt': val})
         
-        time.sleep(1)
+        time.sleep(30)
         print(instruments["HP34420A"].get_points())
 
 
