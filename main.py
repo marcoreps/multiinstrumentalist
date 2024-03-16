@@ -462,7 +462,7 @@ def test_34420A():
     samples_caught = int(instruments["HP34420A"].get_points())
     print("samples_caught: " + str(samples_caught))
     after = datetime.datetime.now()
-    print(str(after))
+    print("after: "+str(after))
     time_passed = after-clock
     print("time_passed: " + str(time_passed))
     time_per_sample = time_passed/samples_caught
