@@ -460,7 +460,11 @@ def test_34420A():
             #print(val)
             #writer.writerow({'time':time.time(), '34420a_volt': val})
         samples_caught = int(instruments["HP34420A"].get_points())
-        time_per_sample = (datetime.datetime.now()-clock)/samples_caught
+        print("samples_caught: " + str(samples_caught))
+        timedelta = datetime.datetime.now()-clock
+        print("timedelta: " + str(timedelta))
+        time_per_sample = timedelta/samples_caught
+        print("time_per_sample: " + str(time_per_sample))
         print(str(time_per_sample.seconds/0.02) + " NPLC")
         time.sleep(10)
 
