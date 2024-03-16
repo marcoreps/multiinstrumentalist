@@ -188,7 +188,7 @@ class HP34420A(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write(":CONFigure:VOLTage:DC "+str(RANG)+",MAXimum")
         self.instr.write(":SENSe:VOLTage:DC:RANGe "+str(RANG))
-        self.instr.write(":SENSe:VOLTage:DC:NPLCycles 100")
+        self.instr.write(":SENSe:VOLTage:DC:NPLCycles 200")
         self.instr.write("TRIGger:DELay MIN")
         
     def blank_display(self):
