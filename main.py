@@ -466,7 +466,7 @@ def test_34420A():
         time_per_sample = time_passed/samples_caught
         print("time_per_sample: " + str(time_per_sample))
         print(str((time_per_sample/datetime.timedelta(milliseconds=1))/20) + " NPLC")
-        time.sleep(10)
+        
 
 
     
