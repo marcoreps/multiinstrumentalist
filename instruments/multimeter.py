@@ -212,8 +212,8 @@ class HP34420A(multimeter):
         
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
-        self.instr.write("TRIGger:COUNt 8")
-        self.instr.write("SAMPle:COUNt MIN")
+        self.instr.write("TRIGger:COUNt MIN")
+        self.instr.write("SAMPle:COUNt 4")
         time.sleep(1)
         self.instr.write("INITiate")
         
