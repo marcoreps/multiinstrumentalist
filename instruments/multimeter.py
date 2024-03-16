@@ -205,3 +205,9 @@ class HP34420A(multimeter):
         
     def get_points(self):
         return self.instr.query("DATA:POINts?")
+        
+    def config_trigger_auto(self):
+        self.instr.write("TRIGger:SOURce IMMediate")
+        
+    def config_trigger_hold(self):
+        self.instr.write("TRIGger:SOURce EXTernal")
