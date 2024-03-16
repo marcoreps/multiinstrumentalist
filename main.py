@@ -431,15 +431,15 @@ def pt100_scanner():
             MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
 def test_34420A():
-    #instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
-    #instruments["HP34420A"].config_DCV(0.01)
-    #instruments["HP34420A"].rel()
-    #instruments["HP34420A"].blank_display()
+    instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
+    instruments["HP34420A"].config_DCV(0.01)
+    instruments["HP34420A"].rel()
+    instruments["HP34420A"].blank_display()
     
-    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV(0.001)
-    instruments["K34420A"].rel()
-    instruments["K34420A"].blank_display()
+    #instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    #instruments["K34420A"].config_DCV(0.001)
+    #instruments["K34420A"].rel()
+    #instruments["K34420A"].blank_display()
     
     #while True:
         #writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
@@ -447,7 +447,7 @@ def test_34420A():
         #writer.write("PPMhub", "KS Shorting Plug", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
         
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    with open('csv/'+timestr+'Keysight_34420A_short_NPLC100.csv', mode='w') as csv_file:
+    with open('csv/'+timestr+'HP_34420A_short_NPLC100.csv', mode='w') as csv_file:
         fieldnames = ['time', '34420a_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
