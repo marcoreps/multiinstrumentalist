@@ -201,3 +201,6 @@ class HP34420A(multimeter):
         
     def rel(self):
         self.instr.write("SENSe:NULL ONCE")
+        
+    def get_points(self):
+        return self.instr.query("DATA:POINts?")
