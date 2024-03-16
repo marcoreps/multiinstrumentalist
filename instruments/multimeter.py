@@ -210,6 +210,7 @@ class HP34420A(multimeter):
         self.instr.write("TRIGger:SOURce IMMediate")
         self.instr.write("TRIGger:COUNt INFinity")
         self.instr.write("SAMPle:COUNt MIN")
+        time.sleep(1)
         self.instr.write("INITiate")
         
         
