@@ -457,8 +457,9 @@ def test_34420A():
             #val = float(instruments["HP34420A"].get_read_val())
             #print(val)
             #writer.writerow({'time':time.time(), '34420a_volt': val})
-        print(instruments["HP34420A"].get_points())
+        
         time.sleep(1)
+        print(instruments["HP34420A"].get_points())
 
 
     
