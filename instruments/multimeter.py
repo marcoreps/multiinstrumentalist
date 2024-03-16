@@ -176,7 +176,8 @@ class HP34420A(multimeter):
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
-        self.instr.timeout = 20000
+        #self.instr.timeout = 20000
+        del self.instr.timeout
         self.instr.clear()
         self.instr.write("*RST")
         self.instr.write("*CLS")
@@ -211,7 +212,7 @@ class HP34420A(multimeter):
         
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
-        self.instr.write("TRIGger:COUNt 7")
+        self.instr.write("TRIGger:COUNt 20")
         self.instr.write("SAMPle:COUNt MIN")
         time.sleep(1)
         self.instr.write("INITiate")
