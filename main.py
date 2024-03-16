@@ -433,11 +433,12 @@ def pt100_scanner():
 def test_34420A():
     instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
     instruments["HP34420A"].config_DCV(0.001)
-    instruments["HP34420A"].rel()
+    #instruments["HP34420A"].rel()
+    instruments["HP34420A"].blank_display()
     instruments["HP34420A"].config_trigger_auto()
     clock=datetime.datetime.now()
     print("Reference time: " + str(clock))
-    instruments["HP34420A"].blank_display()
+    
     
     #instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     #instruments["K34420A"].config_DCV(0.001)
