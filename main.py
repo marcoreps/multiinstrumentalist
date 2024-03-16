@@ -433,7 +433,7 @@ def pt100_scanner():
 def test_34420A():
     instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
     instruments["HP34420A"].config_DCV(0.001)
-    #instruments["HP34420A"].rel()
+    instruments["HP34420A"].rel()
     instruments["HP34420A"].blank_display()
     instruments["HP34420A"].config_trigger_auto()
     clock=datetime.datetime.now()
@@ -451,26 +451,14 @@ def test_34420A():
         #writer.write("PPMhub", "KS Shorting Plug", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
         
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    #with open('csv/'+timestr+'HP_34420A_short_NPLC100.csv', mode='w') as csv_file:
-    #    fieldnames = ['time', '34420a_volt']
-    #    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    #    writer.writeheader()
-    
-    #while True:
-            #val = float(instruments["HP34420A"].get_read_val())
-            #print(val)
-            #writer.writerow({'time':time.time(), '34420a_volt': val})
-    samples_caught = int(instruments["HP34420A"].get_points())
-    print("samples_caught: " + str(samples_caught))
-    after = datetime.datetime.now()
-    print("after: "+str(after))
-    time_passed = after-clock
-    print("time_passed: " + str(time_passed))
-    time_per_sample = time_passed/samples_caught
-    print("time_per_sample: " + str(time_per_sample))
-    print(str((time_per_sample/datetime.timedelta(milliseconds=1))/20) + " NPLC")
-        
-
+    with open('csv/'+timestr+'HP_34420A_short_NPLC100.csv', mode='w') as csv_file:
+        fieldnames = ['time', '34420a_volt']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        while True:
+                val = float(instruments["HP34420A"].get_read_val())
+                print(val)
+                writer.writerow({'time':time.time(), '34420a_volt': val})
 
     
     
