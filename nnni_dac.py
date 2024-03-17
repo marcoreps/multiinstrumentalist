@@ -7,7 +7,7 @@ from datetime import datetime
 rm = pyvisa.ResourceManager()
 
 start = 0b00000000000000000000
-stop  = 0b11111100000000000000
+stop  = 0b11111111111111111111
 #step  = 0b00000100000000000000 # 64 MSBs
 step  = 0b00000000010000000000 # step size 1024, use for fine sweep
 
