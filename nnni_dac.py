@@ -37,7 +37,7 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     
     clock=datetime.now()
     
-    for u in range(start, stop+1, step):
+    for u in range(start, stop+1024, step):
         command=str(u)+'\r'
         serial.write(command.encode())
         time.sleep(soak)
