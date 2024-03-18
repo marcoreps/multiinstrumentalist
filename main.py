@@ -431,19 +431,20 @@ def pt100_scanner():
             MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
 def test_34420A():
-    instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
-    instruments["HP34420A"].config_DCV(0.001)
-    instruments["HP34420A"].rel()
-    instruments["HP34420A"].blank_display()
-    instruments["HP34420A"].config_trigger_auto()
+    #instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
+    #instruments["HP34420A"].config_DCV(0.001)
+    #instruments["HP34420A"].rel()
+    #instruments["HP34420A"].blank_display()
+    #instruments["HP34420A"].config_trigger_auto()
     clock=datetime.datetime.now()
     print("Reference time: " + str(clock))
     
     
-    #instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    #instruments["K34420A"].config_DCV(0.001)
-    #instruments["K34420A"].rel()
-    #instruments["K34420A"].blank_display()
+    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"].config_DCV(0.1)
+    instruments["K34420A"].rel()
+    instruments["K34420A"].blank_display()
+    instruments["K34420A"].config_trigger_auto()
     
     #while True:
         #writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
@@ -456,7 +457,7 @@ def test_34420A():
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         while True:
-                val = float(instruments["HP34420A"].get_read_val())
+                val = float(instruments["K34420A"].get_read_val())
                 print(val)
                 writer.writerow({'time':time.time(), '34420a_volt': val})
 
@@ -467,11 +468,11 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
-    #test_34420A()
+    test_34420A()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
