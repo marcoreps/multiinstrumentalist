@@ -441,7 +441,7 @@ def test_34420A():
     
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV(0.1)
+    instruments["K34420A"].config_DCV(0.001)
     instruments["K34420A"].rel()
     #instruments["K34420A"].blank_display()
     instruments["K34420A"].config_trigger_auto()
