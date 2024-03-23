@@ -468,9 +468,6 @@ def scanner_34420A():
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV(0.001)
-    instruments["K34420A"].rel()
-
-    #instruments["K34420A"].config_trigger_hold()
     
     scanner_sources = [(channels[0], "Ch0"), (channels[2], "Ch2"), (channels[3], "Ch3"), (channels[4], "Ch4"), (channels[6], "Ch6"), (channels[7], "Ch7"), (channels[5], "Ch5"), (channels[10], "Ch10"), (channels[11], "Ch11"), ]
     scanner_meters = [(channels[9], instruments["K34420A"]),   ]
@@ -482,8 +479,8 @@ def scanner_34420A():
         switch.switchingCloseRelay(perm[1][0],) # Close meter
         for measurement in range(nmeasurements):
             read_inst_scanner(perm[1][1], perm[0][1])
-        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
-        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
+        switch.switchingOpenRelay(perm[0][0],) # Open source
+        switch.switchingOpenRelay(perm[1][0],) # Open meter
     
     
 try:
