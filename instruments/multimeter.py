@@ -214,6 +214,7 @@ class HP34420A(multimeter):
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
         
-        
     def config_trigger_hold(self):
-        self.instr.write("TRIGger:SOURce EXTernal")
+        self.instr.write("TRIGger:SOURce BUS")
+        self.instr.write("TRIGger:DELay MIN")
+        
