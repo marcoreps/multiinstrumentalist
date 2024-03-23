@@ -183,7 +183,7 @@ class HP34420A(multimeter):
         self.instr.write("*CLS")
         logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         logging.info("SYSTem:VERSion? -> "+self.instr.query("SYSTem:VERSion?"))
-        logging.info(my_instrument.query('SYSTem:ERRor?'))
+        logging.info(self.instr.query('SYSTem:ERRor?'))
         
     def config_DCV(self, RANG):
         logging.debug(self.title+" config_DCV")
