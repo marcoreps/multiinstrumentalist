@@ -49,6 +49,6 @@ for n in range(number_of_runs):
         
             for n in range(samples_per_meter_per_step):
                 instr.trigger_once()
-                writer.writerow({'dac_counts': u, '3458A_volt': float(instr.get_read_val())})
+                writer.writerow({'dac_counts': v, '3458A_volt': float(instr.get_read_val())})
             print( "Time left: "+str((datetime.now()-clock)*((stop-u)/step)))
             clock=datetime.now()
