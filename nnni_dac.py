@@ -26,7 +26,7 @@ instr.config_trigger_hold()
 
 serial = serial.Serial("/dev/ttyACM0", 9600)
 
-for n in number_of_runs:
+for n in range(number_of_runs):
     print(n)
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
