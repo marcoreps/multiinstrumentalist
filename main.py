@@ -464,7 +464,7 @@ def test_34420A():
 def scanner_34420A():
     switch_delay = 120
     NPLC = 100
-    nmeasurements = 200
+    nmeasurements = 100
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV(0.001)
