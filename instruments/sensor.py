@@ -170,6 +170,17 @@ class Arroyo:
     def measure(self):
         pass
         
+    def enable_output(self, state):
+        logging.debug(self.title+' out enable_output: '+str(state))
+        try:
+            self.serial.open()
+            command = 'TEC:OUTput '+str(state)+'\r'
+            self.serial.write(command.encode())
+            self.serial.close()
+        except:
+            logging.error("Error in %s out" % self.title, exc_info=True)
+            pass
+        
 
 class HP3458A_temp:
     
