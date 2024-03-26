@@ -16,14 +16,13 @@ tempStart = 20
 tempStop  = 40
 tempStep  = 5
 
-tempSoak = 6 # in seconds
+tempSoak = 6 # 600
 
 rm = pyvisa.ResourceManager()
 
-NPLC = 100
-soak = 10 # measurement soak time, DAC settles to 0.02% within 1us
-samples_per_meter_per_step = 5
-number_of_runs = 10
+NPLC = 1 #100
+soak = 1 #10
+samples_per_meter_per_step = 1 #5
 
 instr=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
 instr.config_DCV(10)
