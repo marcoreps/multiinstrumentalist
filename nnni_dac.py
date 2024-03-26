@@ -16,13 +16,13 @@ tempStart = 20
 tempStop  = 40
 tempStep  = 5
 
-tempSoak = 1 # 600
+tempSoak = 600 # 600
 
 rm = pyvisa.ResourceManager()
 
-NPLC = 1 #100
-soak = 1 #10
-samples_per_meter_per_step = 1 #5
+NPLC = 100 #100
+soak = 10 #10
+samples_per_meter_per_step = 5 #5
 
 instr=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
 instr.config_DCV(10)
