@@ -1,6 +1,8 @@
 import serial
 import pyvisa
 import csv
+from time import time
+
 from instruments.multimeter import *
 from instruments.sensor import *
 from datetime import datetime
@@ -33,6 +35,7 @@ dac = serial.Serial("/dev/ttyACM0", 9600)
 
 arroyo=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 
+timestr = time.strftime("%Y%m%d-%H%M%S_")
 with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv_file:
     
     for t in range(tempStart, tempStop + tempStep, tempStep):
