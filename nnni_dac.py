@@ -67,3 +67,6 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv
         t_steps_left = (tempStop + tempStep - t)/tempStep
         print("Time left: "+str(runtime*t_steps_left ))
         clock = datetime.now()
+        
+arroyo.out(20)
+arroyo.enable_output(0)
