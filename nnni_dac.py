@@ -16,7 +16,7 @@ tempStart = 20
 tempStop  = 40
 tempStep  = 5
 
-tempSoak = 6 # 600
+tempSoak = 1 # 600
 
 rm = pyvisa.ResourceManager()
 
@@ -37,6 +37,7 @@ arroyo=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 timestr = time.strftime("%Y%m%d-%H%M%S_")
 with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv_file:
     
+    clock = datetime.now()
     for t in range(tempStart, tempStop + tempStep, tempStep):
         arroyo.out(t)
         time.sleep(tempSoak)
@@ -55,17 +56,14 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv
             command=str(i)+'\n'
             dac.write(command.encode())
             time.sleep(soak)
-            clock = datetime.now()
+            
             for n in range(samples_per_meter_per_step):
                 instr.trigger_once()
                 writer.writerow({'dac_counts': i, '3458A_volt': float(instr.get_read_val()), 'arroyo_temperature': arroyo.get_read_val()})
-                runtime = datetime.now()-clock
-                t_steps_left = (tempStop + tempStep - t)/tempStep
-                print("t_steps_left = "+str(t_steps_left))
-                i_steps_left = (stop - i)/step
-                print("i_steps_left = "+str(i_steps_left))
-                i_steps_per_t = (stop - start)/step
-                print("i_steps_per_t = "+str(i_steps_per_t))
-                print("measurement took "+str(runtime))
-                print("Time left: "+str(runtime*i_steps_left + runtime*i_steps_per_t*t_steps_left))
-                clock = datetime.now()
+                
+                
+                
+        runtime = datetime.now()-clock
+        t_steps_left = (tempStop + tempStep - t)/tempStep
+        print("Time left: "+str(runtime*t_steps_left ))
+        clock = datetime.now()
