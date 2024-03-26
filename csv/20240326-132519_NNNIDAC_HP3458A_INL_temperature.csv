@@ -1,4 +1,0 @@
-# INL run# soak = 1# samples_per_meter_per_step = 1# NPLC = 1# Temp = 20dac_counts,3458A_volt,arroyo_temperature
-0,-10.40394107,25.595
-16384,-10.07883213,25.594
-32768,-9.753723187,25.593
