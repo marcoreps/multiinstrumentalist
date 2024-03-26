@@ -61,7 +61,10 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv
                 writer.writerow({'dac_counts': i, '3458A_volt': float(instr.get_read_val()), 'arroyo_temperature': arroyo.get_read_val()})
                 clock = clock-datetime.now()
                 t_steps_left = (tempStop + tempStep - t)/tempStep
+                print("t_steps_left = "+str(t_steps_left))
                 i_steps_left = (stop - i)/step
+                print("i_steps_left = "+str(i_steps_left))
                 i_steps_per_t = (stop - start)/step
+                print("i_steps_per_t = "+str(i_steps_per_t))
                 print("Time left: "+str(clock*i_steps_left + clock*i_steps_per_t*t_steps_left))
                 clock = datetime.now()
