@@ -66,5 +66,6 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv
                 print("i_steps_left = "+str(i_steps_left))
                 i_steps_per_t = (stop - start)/step
                 print("i_steps_per_t = "+str(i_steps_per_t))
+                print("measurement took "+str(clock))
                 print("Time left: "+str(clock*i_steps_left + clock*i_steps_per_t*t_steps_left))
                 clock = datetime.now()
