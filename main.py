@@ -481,6 +481,34 @@ def scanner_34420A():
             read_inst_scanner(perm[1][1], perm[0][1])
         switch.switchingOpenRelay(perm[0][0],) # Open source
         switch.switchingOpenRelay(perm[1][0],) # Open meter
+        
+        
+def resistance_bridge_temperature_sweep():
+    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"].config_DCV(0.001)
+    
+    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+    
+    tmin = 16
+    tmax = 30
+    tstep = 0.5
+    wait_settle = 60
+
+    sch = sched.scheduler(time.time, time.sleep)
+    sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["K34420A"], "VBridge"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
+    
+    for t in numpy.arange(tmin, tmax+0.01, tstep):
+    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*10
+    #for t in numpy.arange(tmin, tmax+0.01, tstep):
+    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
+    sch.run()
     
     
 try:
@@ -493,7 +521,8 @@ try:
     #noise_3458A()
     #pt100_scanner()
     #test_34420A()
-    scanner_34420A()
+    #scanner_34420A()
+    resistance_bridge_temperature_sweep()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
