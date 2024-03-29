@@ -494,7 +494,7 @@ def resistance_bridge_temperature_sweep():
     
     tmin = 20
     tmax = 60
-    tstep = 0.5
+    tstep = 0.1
     wait_settle = 60
 
     sch = sched.scheduler(time.time, time.sleep)
