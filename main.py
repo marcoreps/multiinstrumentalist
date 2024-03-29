@@ -334,9 +334,7 @@ def acal_inst(sch, interval, priority, inst):
  
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
-    if inst.is_readable():
-        time.sleep(1)
-        writer.write(bucket, name, inst.get_title(), inst.get_read_val())
+    writer.write(bucket, name, inst.get_title(), inst.get_read_val())
     
 def noise_3458A():
 
