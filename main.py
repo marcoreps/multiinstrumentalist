@@ -488,7 +488,7 @@ def scanner_34420A():
         
 def resistance_bridge_temperature_sweep():
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV(0.1)
+    instruments["K34420A"].config_DCV(0.01)
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
