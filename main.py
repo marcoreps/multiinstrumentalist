@@ -492,7 +492,7 @@ def resistance_bridge_temperature_sweep():
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    tmin = 20.9
+    tmin = 21.9
     tmax = 60
     tstep = 1
     wait_settle = 600
