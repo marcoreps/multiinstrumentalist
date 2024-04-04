@@ -8,9 +8,8 @@ from instruments.sensor import *
 from datetime import datetime
 
 start = 0b00000000000000000000
-stop  = 0b11111100000000000000
-#step  = 0b00000100000000000000 # 64 MSBs
- step  = 0b00000111111111111111 # 64 MSBs plus R2R
+stop  = 0b00000010000000000000
+step  = 0b00000000000010000000
 
 tempStart = 20
 tempStop  = 40
