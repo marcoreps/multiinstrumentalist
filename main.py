@@ -519,13 +519,13 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    #scanner_once()
+    scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
     #test_34420A()
     #scanner_34420A()
-    resistance_bridge_temperature_sweep()
+    #resistance_bridge_temperature_sweep()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
