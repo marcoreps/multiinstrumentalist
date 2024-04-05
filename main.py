@@ -492,15 +492,15 @@ def resistance_bridge_temperature_sweep():
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    tmin = 21.9
+    tmin = 20
     tmax = 60
     tstep = 1
-    wait_settle = 600
+    wait_settle = 1000
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["K34420A"], "VBridge"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
-    i=wait_settle
+    i=wait_settle*2
     for t in numpy.arange(tmin, tmax+0.01, tstep):
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
@@ -519,13 +519,13 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
     #test_34420A()
     #scanner_34420A()
-    #resistance_bridge_temperature_sweep()
+    resistance_bridge_temperature_sweep()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
