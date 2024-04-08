@@ -7,9 +7,12 @@ from instruments.multimeter import *
 from instruments.sensor import *
 from datetime import datetime
 
-start = 0b00000000000000000000
-stop  = 0b00000010000000000000
-step  = 0b00000000000010000000
+values = [
+    0, 53248, 104448, 159744, 212992,
+    263168, 315392, 365568, 421888, 472064,
+    524288, 574464, 626688, 671744, 737280,
+    786432, 851968, 885760, 951296, 1048575
+]
 
 tempStart = 20
 tempStop  = 40
@@ -51,7 +54,7 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
-        for i in range(start, stop, step):
+        for i in values:
             command=str(i)+'\n'
             dac.write(command.encode())
             time.sleep(soak)
@@ -59,8 +62,6 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL_temperature.csv', mode='w') as csv
             for n in range(samples_per_meter_per_step):
                 instr.trigger_once()
                 writer.writerow({'dac_counts': i, '3458A_volt': float(instr.get_read_val()), 'arroyo_temperature': arroyo.get_read_val()})
-                
-                
                 
         runtime = datetime.now()-clock
         t_steps_left = (tempStop + tempStep - t)/tempStep
