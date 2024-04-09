@@ -18,7 +18,7 @@ tempStart = 20
 tempStop  = 40
 tempStep  = 5
 
-tempSoak = 1000 # 600
+tempSoak = 1 # 600
 
 rm = pyvisa.ResourceManager()
 
