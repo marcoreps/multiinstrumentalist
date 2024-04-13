@@ -11,6 +11,7 @@ import sched
 import itertools
 import configparser
 import datetime
+import random
 
 from instruments.sensor import *
 from instruments.multimeter import *
