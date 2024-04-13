@@ -159,6 +159,7 @@ class takovsky_scanner:
 class rotary_scanner:
 
     def __init__(self, dev='/dev/ttyACM1', baud=115200, title='Rotary Scanner'):
+        logging.info("Switch is about to initialize. Warning Pinch Points. Moving part can crush or cut. KEEP CLEAR.")
         self.dev = dev
         self.baud = baud
         self.title = title
@@ -170,6 +171,7 @@ class rotary_scanner:
             pass
     
     def switchingCloseRelay(self, relay):
+        logging.info("Switch is about to move.")
         try:
             self.serial.write((str(relay)+'\r').encode())
         except:
