@@ -531,7 +531,7 @@ def test_rotary_scanner():
     
     while True:
         i+=1
-        pos=random.randint(1,12)
+        pos=random.randint(1,11)
         logging.info("Going to switch position "+str(pos))
         switch.switchingCloseRelay(pos)
         time.sleep(20)
