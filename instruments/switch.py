@@ -159,7 +159,7 @@ class takovsky_scanner:
 class rotary_scanner:
 
     def __init__(self, dev='/dev/ttyACM1', baud=115200, title='Rotary Scanner'):
-            self.dev = dev
+        self.dev = dev
         self.baud = baud
         self.title = title
         try:
