@@ -535,7 +535,7 @@ def test_rotary_scanner():
         time.sleep(20)
         switch.switchingCloseRelay(3)
         time.sleep(10)
-        for j in nreadings:
+        for j in range(nreadings):
             writer.write("PPMhub", "EMF", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
             writer.write("PPMhub", "Actuations", switch.get_title(), i)
         
