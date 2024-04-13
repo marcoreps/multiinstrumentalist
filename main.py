@@ -514,6 +514,32 @@ def resistance_bridge_temperature_sweep():
     sch.run()
     
     
+    
+def test_rotary_scanner():
+
+    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"].config_DCV(0.001)
+    instruments["K34420A"].config_trigger_auto()
+    
+    switch=rotary_scanner()
+    
+    time.sleep(20)
+    
+    i=0
+    nreadings=10
+    
+    while True:
+        i+=1
+        switch.switchingCloseRelay(randrange(12)+1)
+        time.sleep(20)
+        switch.switchingCloseRelay(3)
+        time.sleep(10)
+        for j in nreadings:
+            writer.write("PPMhub", "EMF", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
+            writer.write("PPMhub", "Actuations", switch.get_title(), i)
+        
+    
+    
 try:
     #test_3458A()
     #test_W4950()
@@ -525,7 +551,8 @@ try:
     #pt100_scanner()
     #test_34420A()
     #scanner_34420A()
-    resistance_bridge_temperature_sweep()
+    #resistance_bridge_temperature_sweep()
+    test_rotary_scanner()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:

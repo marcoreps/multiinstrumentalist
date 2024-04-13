@@ -1,6 +1,7 @@
 from smbus2 import SMBus
 import time
 import logging
+import serial
 
 
 
@@ -152,5 +153,25 @@ class takovsky_scanner:
 
     def switchingGet4Wire(self):
         return self.g_fwireEnabled
-        
-        
+
+
+
+class rotary_scanner:
+
+    def __init__(self, dev='/dev/ttyACM1', baud=115200, title='Rotary Scanner'):
+            self.dev = dev
+        self.baud = baud
+        self.title = title
+        try:
+            self.serial = serial.Serial(self.dev, self.baud)
+            self.serial.write('rst\r'.encode())
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
+    
+    def switchingCloseRelay(self, relay):
+        try:
+            self.serial.write((str(relay)+'\r').encode())
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
