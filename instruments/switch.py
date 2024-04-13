@@ -165,6 +165,7 @@ class rotary_scanner:
         self.title = title
         try:
             self.serial = serial.Serial(self.dev, self.baud)
+            time.sleep(5)
             logging.info("We have serial obj")
             self.serial.write('rst\r'.encode())
             logging.info("rst sent")

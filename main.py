@@ -531,7 +531,7 @@ def test_rotary_scanner():
     
     while True:
         i+=1
-        switch.switchingCloseRelay(int(random()*12+1))
+        switch.switchingCloseRelay(random.randint(1,12))
         time.sleep(20)
         switch.switchingCloseRelay(3)
         time.sleep(10)
