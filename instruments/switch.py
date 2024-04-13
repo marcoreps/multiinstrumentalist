@@ -166,9 +166,7 @@ class rotary_scanner:
         try:
             self.serial = serial.Serial(self.dev, self.baud)
             time.sleep(5)
-            logging.info("We have serial obj")
             self.serial.write('rst\r'.encode())
-            logging.info("rst sent")
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass

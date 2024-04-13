@@ -531,13 +531,16 @@ def test_rotary_scanner():
     
     while True:
         i+=1
-        switch.switchingCloseRelay(random.randint(1,12))
+        switch=random.randint(1,12)
+        logging.info("Going to switch position "+str(switch))
+        switch.switchingCloseRelay(switch)
         time.sleep(20)
         switch.switchingCloseRelay(3)
+        logging.info("Going to switch position 3")
         time.sleep(10)
         for j in range(nreadings):
             writer.write("PPMhub", "EMF", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
-            writer.write("PPMhub", "Actuations", switch.get_title(), i)
+            writer.write("PPMhub", "Actuations", "Rotary Scanner", i)
         
     
     
