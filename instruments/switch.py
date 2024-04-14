@@ -172,7 +172,6 @@ class rotary_scanner:
             pass
     
     def switchingCloseRelay(self, relay):
-        
         try:
             self.serial.write((str(relay)+'\r').encode())
         except:
@@ -180,6 +179,8 @@ class rotary_scanner:
             pass
             
     def distanceToGo(self):
-        logging.info("Asking for distanceToGo")
         self.serial.write("distanceToGo\r".encode())
         return int(self.serial.readline().rstrip())
+        
+    def home(self):
+        self.serial.write("home\r".encode())
