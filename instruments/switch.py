@@ -183,6 +183,6 @@ class rotary_scanner:
         logging.info("Asking for distanceToGo")
         self.serial.write("distanceToGo".encode())
         logging.info("Asked")
-        answer=self.serial.readline()
+        answer=self.serial.read()
         logging.info(answer)
         return int(self.serial.readline().rstrip())
