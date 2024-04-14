@@ -180,5 +180,6 @@ class rotary_scanner:
             pass
             
     def distanceToGo(self):
+        logging.info("Asking for distanceToGo")
         self.serial.write("distanceToGo".encode())
         return int(self.serial.readline().rstrip())
