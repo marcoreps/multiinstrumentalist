@@ -524,7 +524,7 @@ def test_rotary_scanner():
     
     switch=rotary_scanner()
     
-    time.sleep(10)
+    time.sleep(5)
     
     i=0
     nreadings=10
