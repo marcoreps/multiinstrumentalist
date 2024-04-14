@@ -542,8 +542,8 @@ def test_rotary_scanner():
         switch.home()
         time.sleep(5)
         
-        switch.switchingCloseRelay(6)
-        logging.info("Going to switch position 6")
+        switch.switchingCloseRelay(8)
+        logging.info("Going to switch position 8")
         while (switch.distanceToGo()):
             pass
                 
