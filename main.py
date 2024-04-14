@@ -527,7 +527,7 @@ def test_rotary_scanner():
     time.sleep(5)
     
     i=0
-    nreadings=10
+    nreadings=30
     
     while True:
         for k in range(100):
@@ -537,7 +537,11 @@ def test_rotary_scanner():
             switch.switchingCloseRelay(pos)
             while (switch.distanceToGo()):
                 pass
-            
+        
+        
+        switch.home()
+        time.sleep(5)
+        
         switch.switchingCloseRelay(6)
         logging.info("Going to switch position 6")
         while (switch.distanceToGo()):
