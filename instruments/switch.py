@@ -172,9 +172,13 @@ class rotary_scanner:
             pass
     
     def switchingCloseRelay(self, relay):
-        logging.info("Switch is about to move.")
+        
         try:
             self.serial.write((str(relay)+'\r').encode())
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
+            
+    def distanceToGo(self):
+        self.serial.write("distanceToGo").encode())
+        return int(self.serial.readline().rstrip())
