@@ -546,6 +546,8 @@ def test_rotary_scanner():
         logging.info("Going to switch position 8")
         while (switch.distanceToGo()):
             pass
+            
+        time.sleep(60)
                 
         for j in range(nreadings):
             writer.write("PPMhub", "EMF", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
