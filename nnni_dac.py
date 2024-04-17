@@ -4,6 +4,15 @@ import csv
 from instruments.multimeter import *
 from datetime import datetime
 
+import smbus2
+import bme280
+port = 1
+address = 0x77
+bus = smbus2.SMBus(port)
+calibration_params = bme280.load_calibration_params(bus, address)
+
+
+
 rm = pyvisa.ResourceManager()
 
 start = 0b00000000000000000000
@@ -31,7 +40,7 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     csv_file.write("# samples_per_meter_per_step = "+str(samples_per_meter_per_step))
     csv_file.write("# NPLC = "+str(NPLC))
 
-    fieldnames = ['dac_counts', '3458A_volt']
+    fieldnames = ['dac_counts', '3458A_volt', 'ambient_temp']
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
     
@@ -44,6 +53,8 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     
         for n in range(samples_per_meter_per_step):
             instr.trigger_once()
-            writer.writerow({'dac_counts': u, '3458A_volt': float(instr.get_read_val())})
+            temperature_sensor_data = bme280.sample(bus, address, calibration_params)
+            writer.writerow({'dac_counts': u, '3458A_volt': float(instr.get_read_val()), 'ambient_temp': temperature_sensor_data.temperature})
+            
         print( "Time left: "+str((datetime.now()-clock)*((stop-u)/step)))
         clock=datetime.now()
