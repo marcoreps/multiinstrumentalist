@@ -21,7 +21,7 @@ stop  = 0b11111111111111111111
 step  = 0b00000000010000000000 # step size 1024, use for fine sweep
 
 NPLC = 100
-soak = 10 # measurement soak time, DAC settles to 0.02% within 1us
+soak = 5 # measurement soak time, DAC settles to 0.02% within 1us
 samples_per_meter_per_step = 5
 
 a=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
@@ -60,7 +60,6 @@ with open('csv/'+timestr+'NNNIDAC_HP3458AB_INL.csv', mode='w') as csv_file:
         for n in range(samples_per_meter_per_step):
             a.trigger_once()
             temperature_sensor_data = bme280.sample(bus, address, calibration_params)
-            time.sleep(1)
             b.trigger_once()
             writer.writerow({'dac_counts': u, '3458A_volt': float(a.get_read_val()), '3458B_volt': float(b.get_read_val()), 'ambient_temp': temperature_sensor_data.temperature})
             
