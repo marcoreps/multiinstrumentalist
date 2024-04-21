@@ -46,12 +46,14 @@ for i in range(1, 6, 1):
     command = str(data[0][0]) + '\r'
     serial.write(command.encode())
     # read 0 value from 3458A
+    instr.trigger_once()
     startVolt = float(instr.get_read_val())
     # write stop value to DAC
     command = str(data[0][1023]) + '\r'
     serial.write(command.encode())
     # read stop value from 3458A
-    stopVolt = float(inst.get_read_val())
+    instr.trigger_once()
+    stopVolt = float(instr.get_read_val())
     
     #calculate m and c values, they will be stored later
     m = (stopVolt - startVolt)/(data[0][1023] - data[0][0])
@@ -63,7 +65,8 @@ for i in range(1, 6, 1):
         command = str(data[0][j]) + '\r'
         serial.write(command.encode())
         # write 3458A reading for respective col 0 value
-        data[i].append(float(inst.get_read_val()))
+        instr.trigger_once()
+        data[i].append(float(instr.get_read_val()))
     
     # append m and c to column at the end of each run
     data[i].append(m)
