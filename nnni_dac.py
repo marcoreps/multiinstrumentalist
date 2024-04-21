@@ -83,10 +83,6 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
     
-    clock=datetime.now()
-    
     # 1026 here because of added m and c values in each column
     for i in range(1026):
         writer.writerow({'dac_counts': data[0][i], 'Run 1': data[1][i], 'Run 2': data[2][i], 'Run 3': data[3][i], 'Run 4': data[4][i], 'Run 5': data[5][i]})
-        print( "Time left: "+str((datetime.now()-clock)*((stop-u)/step)))
-        clock=datetime.now()
