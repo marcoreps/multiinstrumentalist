@@ -163,7 +163,12 @@ class rotary_scanner:
         self.dev = dev
         self.baud = baud
         self.title = title
-
+        try:
+            self.serial = serial.Serial(self.dev, self.baud)
+            time.sleep(5)
+        except:
+            logging.error("Error in %s __init__" % self.title, exc_info=True)
+            pass
     
     def switchingCloseRelay(self, relay):
         try:
