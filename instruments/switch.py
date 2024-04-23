@@ -163,25 +163,13 @@ class rotary_scanner:
         self.dev = dev
         self.baud = baud
         self.title = title
-        try:
-            self.serial = serial.Serial(self.dev, self.baud)
-            time.sleep(5)
-            self.serial.write('rst\r'.encode())
-        except:
-            logging.error("Error in %s __init__" % self.title, exc_info=True)
-            pass
+
     
     def switchingCloseRelay(self, relay):
         try:
             self.serial.write((str(relay)+'\r').encode())
-            time.sleep(0.1)
+            time.sleep(5)
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
             
-    def distanceToGo(self):
-        self.serial.write("distanceToGo\r".encode())
-        return int(self.serial.readline().rstrip())
-        
-    def home(self):
-        self.serial.write("home\r".encode())

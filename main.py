@@ -555,6 +555,83 @@ def test_rotary_scanner():
         
     
     
+def test_rotary_scanner_episode_2():
+        
+    switch_delay = 10
+    NPLC = 100
+    nmeasurements = 2
+    
+    instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+    instruments["3458A"].config_DCV(10)
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].config_trigger_hold()
+
+    
+    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].config_trigger_hold()
+    
+    instruments["W4950"]=W4950(rm, 'GPIB0::9::INSTR')
+    instruments["W4950"].config_accuracy("HIGH")
+    instruments["W4950"].config_DCV(10)
+    instruments["W4950"].config_trigger_hold()
+
+    scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu3"), (4, "ADRmu15"), (5, "ADRmu6"), (6, "ADRmu9"), (7, "ADRmu11"), (8, "ADRmu12"), (9, "ADRmu20"), ]
+    scanner_meters = [(9, instruments["3458A"]),  (4, instruments["3458B"]), (2, instruments["W4950"]), ]
+    
+    switch=rotary_scanner()
+        
+    sch = sched.scheduler(time.time, time.sleep)
+    
+    scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
+        
+    seconds = 10
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    seconds = seconds + 200
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+    seconds = seconds + 60
+    
+    t=[["wiring", "rotary_scanner"],["guard","to_lo"], ]
+        
+    for perm in scanner_permutations:
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("a0",)) # Home switch
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("f0",)) # Home switch
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("e0",)) # Home switch
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("c0",)) # Home switch
+        seconds = seconds + switch_delay
+        
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("e"+str(perm[0][0]),)) # Close source
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("c"+str(perm[0][0]),)) # Close source
+        seconds = seconds + switch_delay
+        
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("a"+str(perm[1][0]),)) # Close meter
+        seconds = seconds + switch_delay
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=("f"+str(perm[1][0]),)) # Close meter
+        seconds = seconds + switch_delay
+        
+        for measurement in range(nmeasurements):
+            sch.enter(seconds, 10, perm[1][1].trigger_once)
+            seconds = seconds + NPLC * 0.04 + 0.2
+            sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
+            seconds = seconds + 1
+
+        
+    logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
+    sch.run()
+    instruments["3458A"].blank_display()
+    instruments["3458B"].blank_display()
+        
+    
+    
 try:
     #test_3458A()
     #test_W4950()
@@ -567,7 +644,7 @@ try:
     #test_34420A()
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
-    test_rotary_scanner()
+    test_rotary_scanner_episode_2()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
