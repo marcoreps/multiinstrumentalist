@@ -164,7 +164,7 @@ class rotary_scanner:
         self.baud = baud
         self.title = title
         try:
-            self.serial = serial.Serial(self.dev, self.baud, rtscts=True)
+            self.serial = serial.Serial(self.dev, self.baud)
             time.sleep(20)
             self.serial.flush()
         except:
