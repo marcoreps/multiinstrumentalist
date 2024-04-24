@@ -606,11 +606,11 @@ def test_rotary_scanner_episode_2():
         switch.switchingCloseRelay("a"+str(perm[1][0])) # Close meter
         switch.switchingCloseRelay("f"+str(perm[1][0])) # Close meter
         
-        time.sleep(switch_delay)
+        #time.sleep(switch_delay)
 
         for measurement in range(nmeasurements):
             perm[1][1].trigger_once()
-            read_inst_scanner(perm[1][1], perm[0][1])
+            #read_inst_scanner(perm[1][1], perm[0][1])
 
     instruments["3458A"].blank_display()
     instruments["3458B"].blank_display()
