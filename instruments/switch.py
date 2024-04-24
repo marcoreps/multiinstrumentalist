@@ -166,7 +166,7 @@ class rotary_scanner:
         try:
             self.serial = serial.Serial(self.dev, self.baud)
             time.sleep(20)
-            self.serial.flush()
+            self.reset_input_buffer()
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             pass
