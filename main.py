@@ -559,7 +559,7 @@ def test_rotary_scanner_episode_2():
         
     switch_delay = 10
     NPLC = 100
-    nmeasurements = 2
+    nmeasurements = 10
     
     instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
     instruments["3458A"].config_DCV(10)
@@ -605,6 +605,8 @@ def test_rotary_scanner_episode_2():
         switch.switchingCloseRelay("c"+str(perm[0][0])) # Close source
         switch.switchingCloseRelay("a"+str(perm[1][0])) # Close meter
         switch.switchingCloseRelay("f"+str(perm[1][0])) # Close meter
+        
+        time.sleep(switch_delay)
 
         for measurement in range(nmeasurements):
             perm[1][1].trigger_once()
