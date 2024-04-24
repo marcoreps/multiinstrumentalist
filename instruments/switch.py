@@ -173,6 +173,7 @@ class rotary_scanner:
     
     def switchingCloseRelay(self, relay):
         try:
+            logging.info("asking relay to "+str(relay))
             self.serial.write((str(relay)+'\r').encode())
             logging.info(self.serial.readline().rstrip())
         except:
