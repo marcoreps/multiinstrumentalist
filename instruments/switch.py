@@ -165,6 +165,7 @@ class rotary_scanner:
         self.title = title
         try:
             self.serial = serial.Serial(self.dev, self.baud)
+            self.serial.flush()
             time.sleep(5)
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
