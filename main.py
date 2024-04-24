@@ -586,8 +586,8 @@ def test_rotary_scanner_episode_2():
 
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
         
-    instruments["3458A"]acal_DCV()
-    instruments["3458B"]acal_DCV()
+    instruments["3458A"].acal_DCV()
+    instruments["3458B"].acal_DCV()
     time.sleep(200)
     read_cal_params(instruments["3458A"])
     read_cal_params(instruments["3458B"])
