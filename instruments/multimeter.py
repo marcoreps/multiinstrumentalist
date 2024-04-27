@@ -218,7 +218,7 @@ class HP34420A(multimeter):
     def config_trigger_hold(self):
         self.instr.write("TRIGger:SOURce BUS")
         self.instr.write("TRIGger:DELay:AUTO ON")
-        self.instr.write("TRIGger:DELay:AUTO ON")
+        self.instr.write("INITiate")
         
     def trigger_once(self):
         logging.debug(self.title+' triggered once')
