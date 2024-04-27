@@ -633,7 +633,7 @@ def nbs430():
 
 
     scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu16"), (4, "ADRmu19"),  ]
-    scanner_permutations = list(itertools.product(scanner_sources, scanner_sources))
+    scanner_permutations = set(itertools.combinations(scanner_sources, 4))
     
     for perm in scanner_permutations:
     

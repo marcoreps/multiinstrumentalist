@@ -165,7 +165,7 @@ class rotary_scanner:
         self.title = title
         try:
             self.serial = serial.Serial(self.dev, self.baud)
-            time.sleep(20)
+            time.sleep(10)
             while(self.serial.in_waiting>0):
                 self.serial.read()
         except:
