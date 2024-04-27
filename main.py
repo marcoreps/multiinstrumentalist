@@ -628,6 +628,8 @@ def nbs430():
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
     instruments["K34420A"].config_trigger_hold()
+    
+    switch=rotary_scanner()
 
 
     scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu16"), (4, "ADRmu19"),  ]
