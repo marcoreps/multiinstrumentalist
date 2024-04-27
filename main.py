@@ -633,7 +633,7 @@ def nbs430():
 
 
     scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu16"), (4, "ADRmu19"),  ]
-    scanner_permutations = set(itertools.combinations(scanner_sources, 4))
+    scanner_permutations = set(itertools.combinations(scanner_sources, 2))
     
     for perm in scanner_permutations:
     
@@ -657,7 +657,7 @@ def nbs430():
         
         time.sleep(switch_delay)
         
-        polarity_1_samples = numpy.tile(0.0,1)
+        polarity_1_samples = numpy.tile(0.0,nsamples)
         
         for sample in range(nsamples):
             instruments["K34420A"].trigger_once()
@@ -674,7 +674,7 @@ def nbs430():
         switch.switchingCloseRelay("e"+str(perm[1][0]+5)) # Connect VM + to Source 2 -
         switch.switchingCloseRelay("c"+str(perm[0][0])) # Connect VM - to Source 1 -
         
-        polarity_2_samples = numpy.tile(0.0,1)
+        polarity_2_samples = numpy.tile(0.0,nsamples)
         
         for sample in range(nsamples):
             instruments["K34420A"].trigger_once()
