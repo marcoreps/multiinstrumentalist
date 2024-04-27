@@ -175,7 +175,7 @@ class HP34420A(multimeter):
         logging.debug(self.title+' init started')
         self.rm = resource_manager
         self.rn = resource_name
-        self.instr =  self.rm.open_resource(self.rn)
+        self.instr = self.rm.open_resource(self.rn)
         #self.instr.timeout = 20000
         del self.instr.timeout
         self.instr.clear()
@@ -218,6 +218,7 @@ class HP34420A(multimeter):
     def config_trigger_hold(self):
         self.instr.write("TRIGger:SOURce BUS")
         self.instr.write("TRIGger:DELay:AUTO ON")
+        self.instr.write("TRIGger:COUNt INFinity")
         self.instr.write("INITiate")
         
     def trigger_once(self):
