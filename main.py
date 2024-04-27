@@ -659,7 +659,7 @@ def nbs430():
         
         polarity_1_samples = []
         
-        for sample in nsamples:
+        for sample in range(nsamples):
             sample = instruments["K34420A"].get_read_val()
             polarity_1_samples.append(sample)
             logging.info("In 1 polarity read "+str(sample))
