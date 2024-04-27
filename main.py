@@ -632,7 +632,7 @@ def nbs430():
     switch=rotary_scanner()
 
 
-    scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu16"), (4, "ADRmu19"),  ]
+    scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu6"), (4, "ADRmu9"),  ]
     scanner_permutations = set(itertools.combinations(scanner_sources, 2))
     
     for perm in scanner_permutations:
