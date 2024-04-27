@@ -199,7 +199,7 @@ class HP34420A(multimeter):
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        read_val = self.instr.query("READ?")
+        read_val = self.instr.query("FETCH?")
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
         
@@ -217,5 +217,10 @@ class HP34420A(multimeter):
         
     def config_trigger_hold(self):
         self.instr.write("TRIGger:SOURce BUS")
-        self.instr.write("TRIGger:DELay MIN")
+        self.instr.write("TRIGger:DELay:AUTO ON")
+        self.instr.write("TRIGger:DELay:AUTO ON")
+        
+    def trigger_once(self):
+        logging.debug(self.title+' triggered once')
+        self.instr.write("*TRG")
         
