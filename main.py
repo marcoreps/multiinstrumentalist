@@ -12,6 +12,7 @@ import itertools
 import configparser
 import datetime
 import random
+from statistics import mean 
 
 from instruments.sensor import *
 from instruments.multimeter import *
@@ -615,6 +616,76 @@ def test_rotary_scanner_episode_2():
         
     
     
+    
+    
+    
+    
+def nbs430():
+
+    nsamples = 1
+    switch_delay = 3
+    
+    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"].config_DCV("AUTO")
+    instruments["K34420A"].config_trigger_hold()
+
+
+    scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu16"), (4, "ADRmu19"),  ]
+    scanner_permutations = list(itertools.product(scanner_sources, scanner_sources))
+    
+    for perm in scanner_permutations:
+    
+        logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
+    
+        switch.switchingCloseRelay("a0") # Home switch
+        switch.switchingCloseRelay("b0") # Home switch
+        switch.switchingCloseRelay("c0") # Home switch
+        switch.switchingCloseRelay("d0") # Home switch
+        switch.switchingCloseRelay("f0") # Home switch
+        switch.switchingCloseRelay("e0") # Home switch
+        
+        switch.switchingCloseRelay("a11") # Park + side switches
+        switch.switchingCloseRelay("d11") # Park + side switches
+        
+        switch.switchingCloseRelay("f"+str(perm[0][0])) # Connect Source 1 -
+        switch.switchingCloseRelay("b"+str(perm[1][0])) # to Source 2 -
+        
+        switch.switchingCloseRelay("e"+str(perm[0][0])) # Connect VM + to Source 1 +
+        switch.switchingCloseRelay("c"+str(perm[1][0]+5)) # Connect VM - to Source 2 +
+        
+        time.sleep(switch_delay)
+        
+        polarity_1_samples = []
+        
+        for sample in nsamples:
+            sample = instruments["K34420A"].get_read_val()
+            polarity_1_samples.append(sample)
+            logging.info("In 1 polarity read "+str(sample))
+            
+        switch.switchingCloseRelay("f11") # Park - side switches
+        switch.switchingCloseRelay("b11") # Park - side switches
+        
+        switch.switchingCloseRelay("a"+str(perm[0][0])) # Connect Source 1 +
+        switch.switchingCloseRelay("d"+str(perm[1][0])) # to Source 2 +
+        
+        switch.switchingCloseRelay("e"+str(perm[1][0]+5)) # Connect VM + to Source 2 -
+        switch.switchingCloseRelay("c"+str(perm[0][0]+5)) # Connect VM - to Source 1 +
+        
+        polarity_2_samples = []
+        
+        for sample in nsamples:
+            sample = instruments["K34420A"].get_read_val()
+            polarity_1_samples.append(sample)
+            logging.info("In 2 polarity read "+str(sample))
+            
+        logging.info("Difference looks like "+str((mean(polarity_1_samples)-mean(polarity_1_samples))/2))
+            
+        
+        
+        
+    
+    
+    
 try:
     #test_3458A()
     #test_W4950()
@@ -627,7 +698,8 @@ try:
     #test_34420A()
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
-    test_rotary_scanner_episode_2()
+    #test_rotary_scanner_episode_2()
+    nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:

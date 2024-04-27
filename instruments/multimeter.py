@@ -191,7 +191,7 @@ class HP34420A(multimeter):
         self.instr.write("ROUTe:TERMinals FRONt1")
         self.instr.write("SENSe:VOLTage:DC:NPLCycles 100")
         self.instr.write("INPut:FILTer OFF")
-        self.instr.write("TRIGger:DELay 0")
+        self.instr.write("TRIGger:DELay AUTO")
         
     def blank_display(self):
         logging.debug(self.title+" blank_display")
