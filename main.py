@@ -657,13 +657,13 @@ def nbs430():
         
         time.sleep(switch_delay)
         
-        polarity_1_samples = []
+        polarity_1_samples = numpy.tile(0.0,1)
         
         for sample in range(nsamples):
             instruments["K34420A"].trigger_once()
-            sample = instruments["K34420A"].get_read_val()
-            polarity_1_samples.append(sample)
-            logging.info("In 1 polarity read "+str(sample))
+            reading = instruments["K34420A"].get_read_val()
+            polarity_1_samples[sample]=reading
+            logging.info("In 1 polarity read "+str(reading))
             
         switch.switchingCloseRelay("f11") # Park - side switches
         switch.switchingCloseRelay("b11") # Park - side switches
@@ -674,13 +674,13 @@ def nbs430():
         switch.switchingCloseRelay("e"+str(perm[1][0]+5)) # Connect VM + to Source 2 -
         switch.switchingCloseRelay("c"+str(perm[0][0]+5)) # Connect VM - to Source 1 +
         
-        polarity_2_samples = []
+        polarity_2_samples = numpy.tile(0.0,1)
         
         for sample in range(nsamples):
             instruments["K34420A"].trigger_once()
-            sample = instruments["K34420A"].get_read_val()
-            polarity_1_samples.append(sample)
-            logging.info("In 2 polarity read "+str(sample))
+            reading = instruments["K34420A"].get_read_val()
+            polarity_1_samples[sample]=reading
+            logging.info("In 2 polarity read "+str(reading))
             
         logging.info("Difference looks like "+str((mean(polarity_1_samples)-mean(polarity_1_samples))/2))
             
