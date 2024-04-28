@@ -636,56 +636,60 @@ def nbs430():
     scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu6"), (4, "ADRmu9"),  ]
     scanner_permutations = set(itertools.combinations(scanner_sources, 2))
     
-    for perm in scanner_permutations:
-    
-        logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
-    
-        switch.switchingCloseRelay("a0") # Home switch
-        switch.switchingCloseRelay("b0") # Home switch
-        switch.switchingCloseRelay("c0") # Home switch
-        switch.switchingCloseRelay("d0") # Home switch
-        switch.switchingCloseRelay("f0") # Home switch
-        switch.switchingCloseRelay("e0") # Home switch
+    while True:
         
-        switch.switchingCloseRelay("a11") # Park + side switches
-        switch.switchingCloseRelay("d11") # Park + side switches
+        for perm in scanner_permutations:
         
-        switch.switchingCloseRelay("f"+str(perm[0][0])) # Connect Source 1 -
-        switch.switchingCloseRelay("b"+str(perm[1][0])) # to Source 2 -
+            logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
         
-        switch.switchingCloseRelay("e"+str(perm[0][0])) # Connect VM + to Source 1 +
-        switch.switchingCloseRelay("c"+str(perm[1][0]+5)) # Connect VM - to Source 2 +
-        
-        time.sleep(switch_delay)
-        
-        polarity_1_samples = numpy.tile(0.0,nsamples)
-        
-        for sample in range(nsamples):
-            instruments["K34420A"].trigger_once()
-            reading = instruments["K34420A"].get_read_val()
-            polarity_1_samples[sample]=reading
-            logging.info("In 1 polarity read "+str(reading))
+            switch.switchingCloseRelay("a0") # Home switch
+            switch.switchingCloseRelay("b0") # Home switch
+            switch.switchingCloseRelay("c0") # Home switch
+            switch.switchingCloseRelay("d0") # Home switch
+            switch.switchingCloseRelay("f0") # Home switch
+            switch.switchingCloseRelay("e0") # Home switch
             
-        switch.switchingCloseRelay("f11") # Park - side switches
-        switch.switchingCloseRelay("b11") # Park - side switches
-        
-        switch.switchingCloseRelay("a"+str(perm[0][0])) # Connect Source 1 +
-        switch.switchingCloseRelay("d"+str(perm[1][0])) # to Source 2 +
-        
-        switch.switchingCloseRelay("e"+str(perm[1][0]+5)) # Connect VM + to Source 2 -
-        switch.switchingCloseRelay("c"+str(perm[0][0])) # Connect VM - to Source 1 -
-        
-        polarity_2_samples = numpy.tile(0.0,nsamples)
-        
-        for sample in range(nsamples):
-            instruments["K34420A"].trigger_once()
-            reading = instruments["K34420A"].get_read_val()
-            polarity_2_samples[sample]=reading
-            logging.info("In 2 polarity read "+str(reading))
+            switch.switchingCloseRelay("a11") # Park + side switches
+            switch.switchingCloseRelay("d11") # Park + side switches
             
-        difference = (mean(polarity_1_samples)+mean(polarity_1_samples))/2
-        logging.info("Difference looks like %.*f", 8, difference)
-        writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
+            switch.switchingCloseRelay("f"+str(perm[0][0])) # Connect Source 1 -
+            switch.switchingCloseRelay("b"+str(perm[1][0])) # to Source 2 -
+            
+            switch.switchingCloseRelay("e"+str(perm[0][0])) # Connect VM + to Source 1 +
+            switch.switchingCloseRelay("c"+str(perm[1][0]+5)) # Connect VM - to Source 2 +
+            
+            time.sleep(switch_delay)
+            
+            polarity_1_samples = numpy.tile(0.0,nsamples)
+            
+            for sample in range(nsamples):
+                instruments["K34420A"].trigger_once()
+                reading = instruments["K34420A"].get_read_val()
+                polarity_1_samples[sample]=reading
+                logging.info("In 1 polarity read "+str(reading))
+                
+            switch.switchingCloseRelay("f11") # Park - side switches
+            switch.switchingCloseRelay("b11") # Park - side switches
+            
+            switch.switchingCloseRelay("a"+str(perm[0][0])) # Connect Source 1 +
+            switch.switchingCloseRelay("d"+str(perm[1][0])) # to Source 2 +
+            
+            switch.switchingCloseRelay("e"+str(perm[1][0]+5)) # Connect VM + to Source 2 -
+            switch.switchingCloseRelay("c"+str(perm[0][0])) # Connect VM - to Source 1 -
+            
+            time.sleep(switch_delay)
+            
+            polarity_2_samples = numpy.tile(0.0,nsamples)
+            
+            for sample in range(nsamples):
+                instruments["K34420A"].trigger_once()
+                reading = instruments["K34420A"].get_read_val()
+                polarity_2_samples[sample]=reading
+                logging.info("In 2 polarity read "+str(reading))
+                
+            difference = (mean(polarity_1_samples)+mean(polarity_1_samples))/2
+            logging.info("Difference looks like %.*f", 8, difference)
+            writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
         
         
         
