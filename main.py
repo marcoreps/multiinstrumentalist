@@ -685,7 +685,7 @@ def nbs430():
             
         difference = (mean(polarity_1_samples)+mean(polarity_1_samples))/2
         logging.info("Difference looks like %.*f", 8, difference)
-        writer.write("PPMhub", perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
+        writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
         
         
         
