@@ -623,8 +623,8 @@ def test_rotary_scanner_episode_2():
     
 def nbs430():
 
-    nsamples = 2
-    switch_delay = 3
+    nsamples = 10
+    switch_delay = 30
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
@@ -684,9 +684,8 @@ def nbs430():
             logging.info("In 2 polarity read "+str(reading))
             
         difference = (mean(polarity_1_samples)+mean(polarity_1_samples))/2
-        logging.info("Mean of 1 polarity %.*f", 5, mean(polarity_1_samples))
-        logging.info("Mean of 2 polarity %.*f", 5, mean(polarity_2_samples))
-        logging.info("Difference looks like %.*f", 5, difference)
+        logging.info("Difference looks like %.*f", 8, difference)
+        writer.write("PPMhub", perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
         
         
         
