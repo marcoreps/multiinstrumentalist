@@ -13,6 +13,7 @@ import configparser
 import datetime
 import random
 from statistics import mean 
+from decimal import Decimal
 
 from instruments.sensor import *
 from instruments.multimeter import *
@@ -683,7 +684,7 @@ def nbs430():
             logging.info("In 2 polarity read "+str(reading))
             
         difference = (mean(polarity_1_samples)+mean(polarity_1_samples))/2
-        logging.info("Difference looks like %.*f", 5, difference)
+        logging.info("Difference looks like %.2E".format(Decimal(difference)))
         
         
         
