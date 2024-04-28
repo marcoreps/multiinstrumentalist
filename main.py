@@ -680,7 +680,7 @@ def nbs430():
         for sample in range(nsamples):
             instruments["K34420A"].trigger_once()
             reading = instruments["K34420A"].get_read_val()
-            polarity_1_samples[sample]=reading
+            polarity_2_samples[sample]=reading
             logging.info("In 2 polarity read "+str(reading))
             
         difference = (mean(polarity_1_samples)+mean(polarity_1_samples))/2
