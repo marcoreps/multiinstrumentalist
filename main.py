@@ -684,7 +684,9 @@ def nbs430():
             logging.info("In 2 polarity read "+str(reading))
             
         difference = (mean(polarity_1_samples)+mean(polarity_1_samples))/2
-        logging.info("Difference looks like %.2E", 5, difference)
+        logging.info("Mean of 1 polarity %.*f", 5, mean(polarity_1_samples))
+        logging.info("Mean of 2 polarity %.*f", 5, mean(polarity_2_samples))
+        logging.info("Difference looks like %.*f", 5, difference)
         
         
         
