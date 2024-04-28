@@ -164,7 +164,7 @@ class rotary_scanner:
         self.baud = baud
         self.title = title
         try:
-            self.serial = serial.Serial(self.dev, self.baud)
+            self.serial = serial.Serial(self.dev, self.baud, timeout=30)
             time.sleep(20)
             while(self.serial.in_waiting>0):
                 self.serial.read()
@@ -179,5 +179,8 @@ class rotary_scanner:
             logging.info(self.serial.readline().rstrip())
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
+            logging.error("Scanner sent so far:")
+            while(self.serial.in_waiting>0):
+                logging.error(self.serial.read())
             pass
             
