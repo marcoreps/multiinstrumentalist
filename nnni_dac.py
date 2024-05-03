@@ -7,8 +7,8 @@ from datetime import datetime
 rm = pyvisa.ResourceManager()
 
 start = 0b00000000000000000000
-stop  = 0b11111111111111111111
-step  = 0b00000000010000000000
+stop  = 0b11111100000000000000
+step  = 0b00000100000000000000
 
 # temporary container for data
 data = [[],[],[],[],[],[]]
@@ -49,18 +49,18 @@ for i in range(1, 6, 1):
     instr.trigger_once()
     startVolt = float(instr.get_read_val())
     # write stop value to DAC
-    command = str(data[0][1023]) + '\r'
+    command = str(data[0][63]) + '\r'
     serial.write(command.encode())
     # read stop value from 3458A
     instr.trigger_once()
     stopVolt = float(instr.get_read_val())
     
     #calculate m and c values, they will be stored later
-    m = (stopVolt - startVolt)/(data[0][1023] - data[0][0])
-    c = stopVolt - (m * data[0][1023])
+    m = (stopVolt - startVolt)/(data[0][63] - data[0][0])
+    c = stopVolt - (m * data[0][63])
 
-    # inner loop for 1024 DAC values (indices 0 to 1023)
-    for j in range(1024):
+    # inner loop for 1024 DAC values (indices 0 to 63)
+    for j in range(64):
         # send DAC values from column 0
         command = str(data[0][j]) + '\r'
         serial.write(command.encode())
@@ -83,6 +83,6 @@ with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
     writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
     writer.writeheader()
     
-    # 1026 here because of added m and c values in each column
-    for i in range(1026):
+    # 66 here because of added m and c values in each column
+    for i in range(66):
         writer.writerow({'dac_counts': data[0][i], 'Run 1': data[1][i], 'Run 2': data[2][i], 'Run 3': data[3][i], 'Run 4': data[4][i], 'Run 5': data[5][i]})
