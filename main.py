@@ -674,8 +674,8 @@ def nbs430():
             switch.switchingCloseRelay("a"+str(perm[0][0])) # Connect Source 1 +
             switch.switchingCloseRelay("d"+str(perm[1][0])) # to Source 2 +
             
-            switch.switchingCloseRelay("e"+str(perm[1][0]+5)) # Connect VM + to Source 2 -
-            switch.switchingCloseRelay("c"+str(perm[0][0])) # Connect VM - to Source 1 -
+            switch.switchingCloseRelay("e"+str(perm[0][0]+5)) # Connect VM + to Source 1 -
+            switch.switchingCloseRelay("c"+str(perm[1][0])) # Connect VM - to Source 2 -
             
             time.sleep(switch_delay)
             
