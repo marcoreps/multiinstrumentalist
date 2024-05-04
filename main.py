@@ -624,7 +624,7 @@ def test_rotary_scanner_episode_2():
 def nbs430():
 
     nsamples = 10
-    switch_delay = 30
+    switch_delay = 45
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
@@ -633,7 +633,7 @@ def nbs430():
     switch=rotary_scanner()
 
 
-    scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu6"), (4, "ADRmu9"),  ]
+    scanner_sources = [(1, "ADRmu1"), (2, "ADRmu15"), (3, "ADRmu6"), (4, "ADRmu7"),  (4, "ADRmu8"),  (4, "ADRmu9"),  (4, "ADRmu10"),  (4, "ADRmu11"),  (4, "ADRmu12"),  ]
     scanner_permutations = set(itertools.combinations(scanner_sources, 2))
     
     while True:
