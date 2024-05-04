@@ -624,7 +624,7 @@ def test_rotary_scanner_episode_2():
 def nbs430():
 
     nsamples = 10
-    switch_delay = 45
+    switch_delay = 60
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
@@ -662,6 +662,9 @@ def nbs430():
             
             polarity_1_samples = numpy.tile(0.0,nsamples)
             
+            instruments["K34420A"].trigger_once() # First reading sometimes unreliable? Bc autorange perhaps?
+            instruments["K34420A"].get_read_val()
+            
             for sample in range(nsamples):
                 instruments["K34420A"].trigger_once()
                 reading = instruments["K34420A"].get_read_val()
@@ -680,6 +683,9 @@ def nbs430():
             time.sleep(switch_delay)
             
             polarity_2_samples = numpy.tile(0.0,nsamples)
+            
+            instruments["K34420A"].trigger_once() # First reading sometimes unreliable? Bc autorange perhaps?
+            instruments["K34420A"].get_read_val()
             
             for sample in range(nsamples):
                 instruments["K34420A"].trigger_once()
