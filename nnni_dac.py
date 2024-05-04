@@ -14,7 +14,7 @@ step  = 0b00000100000000000000
 data = [[],[],[],[],[],[]]
 
 # generates DAC input codes and writes to column 0
-for i in range(start, stop, step):
+for i in range(start, stop + step, step):
     data[0].append(i)
 
 # append extra zeroes to the end to pad number of rows
