@@ -701,6 +701,8 @@ def nbs430():
         switch.switchingCloseRelay("d11") # Park source switches
         switch.switchingCloseRelay("c"+str(perm[0][0])) # Short VM
         
+        time.sleep(switch_delay)
+        
         for sample in range(nsamples):
             instruments["K34420A"].trigger_once()
             reading = instruments["K34420A"].get_read_val()
