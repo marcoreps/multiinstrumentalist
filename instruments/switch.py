@@ -158,7 +158,7 @@ class takovsky_scanner:
 
 class rotary_scanner:
 
-    def __init__(self, dev='/dev/ttyACM1', baud=115200, title='Rotary Scanner'):
+    def __init__(self, dev='/dev/ttyACM0', baud=115200, title='Rotary Scanner'):
         logging.info("Switch is about to initialize. Warning Pinch Points. Moving part can crush or cut. KEEP CLEAR.")
         self.dev = dev
         self.baud = baud
