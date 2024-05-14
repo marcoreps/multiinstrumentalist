@@ -632,7 +632,7 @@ def nbs430():
     
     switch=rotary_scanner()
 
-
+    scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu20"),  ]
     scanner_sources = [(1, "ADRmu6"), (2, "ADRmu11"), (3, "ADRmu12"), (4, "ADRmu20"),  ]
     scanner_permutations = set(itertools.combinations(scanner_sources, 2))
     
@@ -647,16 +647,16 @@ def nbs430():
             switch.switchingCloseRelay("c0") # Home switch
             switch.switchingCloseRelay("d0") # Home switch
             switch.switchingCloseRelay("f0") # Home switch
-            switch.switchingCloseRelay("e0") # Home switch
+            switch.switchingCloseRelay("g0") # Home switch
             
             switch.switchingCloseRelay("a11") # Park + side switches
-            switch.switchingCloseRelay("d11") # Park + side switches
+            switch.switchingCloseRelay("e11") # Park + side switches
             
             switch.switchingCloseRelay("f"+str(perm[0][0])) # Connect Source 1 -
             switch.switchingCloseRelay("b"+str(perm[1][0])) # to Source 2 -
             
-            switch.switchingCloseRelay("e"+str(perm[0][0])) # Connect VM + to Source 1 +
-            switch.switchingCloseRelay("c"+str(perm[1][0]+5)) # Connect VM - to Source 2 +
+            switch.switchingCloseRelay("c"+str(perm[0][0])) # Connect VM + to Source 1 +
+            switch.switchingCloseRelay("d"+str(perm[1][0]+5)) # Connect VM - to Source 2 +
             
             time.sleep(switch_delay)
             
@@ -675,10 +675,10 @@ def nbs430():
             switch.switchingCloseRelay("b11") # Park - side switches
             
             switch.switchingCloseRelay("a"+str(perm[0][0])) # Connect Source 1 +
-            switch.switchingCloseRelay("d"+str(perm[1][0])) # to Source 2 +
+            switch.switchingCloseRelay("e"+str(perm[1][0])) # to Source 2 +
             
-            switch.switchingCloseRelay("e"+str(perm[0][0]+5)) # Connect VM + to Source 1 -
-            switch.switchingCloseRelay("c"+str(perm[1][0])) # Connect VM - to Source 2 -
+            switch.switchingCloseRelay("c"+str(perm[0][0]+5)) # Connect VM + to Source 1 -
+            switch.switchingCloseRelay("d"+str(perm[1][0])) # Connect VM - to Source 2 -
             
             time.sleep(switch_delay)
             
