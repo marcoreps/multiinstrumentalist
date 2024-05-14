@@ -641,12 +641,12 @@ def nbs430():
         
             logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
         
-            switch.switchingCloseRelay("a0") # Home switch
-            switch.switchingCloseRelay("b0") # Home switch
-            switch.switchingCloseRelay("c0") # Home switch
-            switch.switchingCloseRelay("d0") # Home switch
-            switch.switchingCloseRelay("e0") # Home switch
-            switch.switchingCloseRelay("f0") # Home switch
+            #switch.switchingCloseRelay("a0") # Home switch
+            #switch.switchingCloseRelay("b0") # Home switch
+            #switch.switchingCloseRelay("c0") # Home switch
+            #switch.switchingCloseRelay("d0") # Home switch
+            #switch.switchingCloseRelay("e0") # Home switch
+            #switch.switchingCloseRelay("f0") # Home switch
             
             switch.switchingCloseRelay("a11") # Park + side switches
             switch.switchingCloseRelay("e11") # Park + side switches
