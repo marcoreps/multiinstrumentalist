@@ -623,8 +623,8 @@ def test_rotary_scanner_episode_2():
     
 def nbs430():
 
-    nsamples = 10
-    switch_delay = 60
+    nsamples = 1 #10
+    switch_delay = 0 #60
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
