@@ -670,6 +670,7 @@ def nbs430():
         
         writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), mean(polarity_2_samples))
         instruments["K34420A"].rel()
+        instruments["K34420A"].get_read_val()
     
     
         
