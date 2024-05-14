@@ -645,8 +645,8 @@ def nbs430():
             switch.switchingCloseRelay("b0") # Home switch
             switch.switchingCloseRelay("c0") # Home switch
             switch.switchingCloseRelay("d0") # Home switch
+            switch.switchingCloseRelay("e0") # Home switch
             switch.switchingCloseRelay("f0") # Home switch
-            switch.switchingCloseRelay("g0") # Home switch
             
             switch.switchingCloseRelay("a11") # Park + side switches
             switch.switchingCloseRelay("e11") # Park + side switches
