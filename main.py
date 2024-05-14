@@ -631,22 +631,48 @@ def nbs430():
     instruments["K34420A"].config_trigger_hold()
     
     switch=rotary_scanner()
+    
+    switch.switchingCloseRelay("a0") # Home switch
+    switch.switchingCloseRelay("b0") # Home switch
+    switch.switchingCloseRelay("c0") # Home switch
+    switch.switchingCloseRelay("d0") # Home switch
+    switch.switchingCloseRelay("e0") # Home switch
+    switch.switchingCloseRelay("f0") # Home switch
 
     scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu9"),  (5, "ADRmu12"),]
     scanner_permutations = set(itertools.combinations(scanner_sources, 2))
     
     while True:
+    
+    
+        switch.switchingCloseRelay("a11") # Park source switches
+        switch.switchingCloseRelay("b11") # Park source switches
+        switch.switchingCloseRelay("e11") # Park source switches
+        switch.switchingCloseRelay("f11") # Park source switches
+        
+        switch.switchingCloseRelay("c11")
+        switch.switchingCloseRelay("d11")
+        
+        switch.switchingCloseRelay("c5") # Short VM
+        switch.switchingCloseRelay("d10") # Short VM
+        
+        time.sleep(switch_delay)
+        instruments["K34420A"].rel_off()
+        
+        for sample in range(nsamples):
+            instruments["K34420A"].trigger_once()
+            reading = instruments["K34420A"].get_read_val()
+            polarity_2_samples[sample]=reading
+            logging.info("Shorted read "+str(reading))
+        
+        writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), mean(polarity_2_samples))
+        instruments["K34420A"].rel()
+    
+    
         
         for perm in scanner_permutations:
         
             logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
-        
-            switch.switchingCloseRelay("a0") # Home switch
-            switch.switchingCloseRelay("b0") # Home switch
-            switch.switchingCloseRelay("c0") # Home switch
-            switch.switchingCloseRelay("d0") # Home switch
-            switch.switchingCloseRelay("e0") # Home switch
-            switch.switchingCloseRelay("f0") # Home switch
             
             switch.switchingCloseRelay("a11") # Park + side switches
             switch.switchingCloseRelay("e11") # Park + side switches
@@ -693,21 +719,6 @@ def nbs430():
             logging.info("Difference looks like %.*f", 8, difference)
             writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
         
-        switch.switchingCloseRelay("a11") # Park source switches
-        switch.switchingCloseRelay("e11") # Park source switches
-        switch.switchingCloseRelay("d"+str(perm[0][0])) # Short VM
-        
-        time.sleep(switch_delay)
-        instruments["K34420A"].rel_off()
-        
-        for sample in range(nsamples):
-            instruments["K34420A"].trigger_once()
-            reading = instruments["K34420A"].get_read_val()
-            polarity_2_samples[sample]=reading
-            logging.info("Shorted read "+str(reading))
-        
-        writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), mean(polarity_2_samples))
-        instruments["K34420A"].rel()
         
     
     
