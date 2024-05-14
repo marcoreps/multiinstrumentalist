@@ -683,9 +683,6 @@ def nbs430():
             
             polarity_2_samples = numpy.tile(0.0,nsamples)
             
-            #instruments["K34420A"].trigger_once() # First reading sometimes unreliable? Bc autorange perhaps?
-            #instruments["K34420A"].get_read_val()
-            
             for sample in range(nsamples):
                 instruments["K34420A"].trigger_once()
                 reading = instruments["K34420A"].get_read_val()
@@ -697,8 +694,8 @@ def nbs430():
             writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
         
         switch.switchingCloseRelay("a11") # Park source switches
-        switch.switchingCloseRelay("d11") # Park source switches
-        switch.switchingCloseRelay("c"+str(perm[0][0])) # Short VM
+        switch.switchingCloseRelay("e11") # Park source switches
+        switch.switchingCloseRelay("d"+str(perm[0][0])) # Short VM
         
         time.sleep(switch_delay)
         
