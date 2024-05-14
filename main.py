@@ -642,6 +642,9 @@ def nbs430():
     scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu9"),  (5, "ADRmu12"),]
     scanner_permutations = set(itertools.combinations(scanner_sources, 2))
     
+    polarity_1_samples = numpy.tile(0.0,nsamples)
+    polarity_2_samples = numpy.tile(0.0,nsamples)
+    
     while True:
     
     
@@ -685,8 +688,6 @@ def nbs430():
             
             time.sleep(switch_delay)
             
-            polarity_1_samples = numpy.tile(0.0,nsamples)
-            
             #instruments["K34420A"].trigger_once() # First reading sometimes unreliable? Bc autorange perhaps?
             #instruments["K34420A"].get_read_val()
             
@@ -707,7 +708,6 @@ def nbs430():
             
             time.sleep(switch_delay)
             
-            polarity_2_samples = numpy.tile(0.0,nsamples)
             
             for sample in range(nsamples):
                 instruments["K34420A"].trigger_once()
