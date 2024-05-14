@@ -623,8 +623,8 @@ def test_rotary_scanner_episode_2():
     
 def nbs430():
 
-    nsamples = 1 #10
-    switch_delay = 0 #60
+    nsamples = 10 
+    switch_delay = 60 
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
@@ -641,12 +641,12 @@ def nbs430():
         
             logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
         
-            #switch.switchingCloseRelay("a0") # Home switch
-            #switch.switchingCloseRelay("b0") # Home switch
-            #switch.switchingCloseRelay("c0") # Home switch
-            #switch.switchingCloseRelay("d0") # Home switch
-            #switch.switchingCloseRelay("e0") # Home switch
-            #switch.switchingCloseRelay("f0") # Home switch
+            switch.switchingCloseRelay("a0") # Home switch
+            switch.switchingCloseRelay("b0") # Home switch
+            switch.switchingCloseRelay("c0") # Home switch
+            switch.switchingCloseRelay("d0") # Home switch
+            switch.switchingCloseRelay("e0") # Home switch
+            switch.switchingCloseRelay("f0") # Home switch
             
             switch.switchingCloseRelay("a11") # Park + side switches
             switch.switchingCloseRelay("e11") # Park + side switches
@@ -698,6 +698,7 @@ def nbs430():
         switch.switchingCloseRelay("d"+str(perm[0][0])) # Short VM
         
         time.sleep(switch_delay)
+        instruments["K34420A"].rel_off()
         
         for sample in range(nsamples):
             instruments["K34420A"].trigger_once()
@@ -706,6 +707,7 @@ def nbs430():
             logging.info("Shorted read "+str(reading))
         
         writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), mean(polarity_2_samples))
+        instruments["K34420A"].rel()
         
     
     

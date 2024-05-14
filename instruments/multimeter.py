@@ -189,7 +189,7 @@ class HP34420A(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write("CONFigure:VOLTage:DC "+str(RANG)+", MAX, (@FRONt1)")
         self.instr.write("ROUTe:TERMinals FRONt1")
-        self.instr.write("SENSe:VOLTage:DC:NPLCycles 1")
+        self.instr.write("SENSe:VOLTage:DC:NPLCycles 100")
         self.instr.write("INPut:FILTer OFF")
         self.instr.write("TRIGger:DELay:AUTO ON")
         
@@ -205,6 +205,9 @@ class HP34420A(multimeter):
         
     def rel(self):
         self.instr.write("SENSe:NULL ONCE")
+        
+    def rel_off(self):
+        self.instr.write("SENSe:NULL OFF")
         
     def get_points(self):
         return self.instr.query("DATA:POINts?")
