@@ -78,6 +78,10 @@ class HP3458A(multimeter):
         logging.debug(self.title+' ACAL DCV started')
         self.instr.write("ACAL DCV")
         
+    def acal_ALL(self):
+        logging.debug(self.title+' ACAL ALL started')
+        self.instr.write("ACAL")
+        
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
         self.read_stb()
