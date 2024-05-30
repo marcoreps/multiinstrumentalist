@@ -98,16 +98,11 @@ class HP3458A(multimeter):
         temp = self.instr.query("TEMP?")
         return temp
         
-    def get_cal_72(self):
-        logging.debug(self.title+' get_cal_72() called')
-        logging.debug(self.title+' connected')
-        cal72 = self.instr.query("CAL? 72")
-        logging.debug(self.title+' CAL? 72 = '+str(cal72))
-        return cal72
+    def get_cal_param(self, number):
+        logging.debug(self.title+' get_cal_param() called')
+        param = self.instr.query("CAL? "+str(number))
+        return param
 
-    def get_cal_175(self):
-        cal175 = self.instr.query("CAL? 175")
-        return cal175
 
 
 class W4950(multimeter):

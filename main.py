@@ -329,15 +329,16 @@ def read_cal_params(inst):
     while not inst.is_ready():
         logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
         time.sleep(1)
-    writer.write("PPMhub", inst.get_title(), "CAL? 72", inst.get_cal_72())
-    writer.write("PPMhub", inst.get_title(), "CAL? 175", inst.get_cal_175())
+    for n in range(1,254):
+        writer.write("PPMhub", inst.get_title(), "CAL? "+str(n), inst.get_cal_param(n), tags=[["group","cal_params"], ])
         
 def acal_inst(sch, interval, priority, inst):
     while not inst.is_ready():
         logging.info("%s was not ready for acal_inst." % (inst.get_title()))
         time.sleep(1)
-    inst.acal_DCV()
-    read_cal_params
+    #inst.acal_DCV()
+    inst.acal_ALL()
+    #read_cal_params
  
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
