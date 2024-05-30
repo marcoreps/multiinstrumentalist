@@ -228,8 +228,8 @@ def scanner_once():
 
 # III   Br    N   channels[0] ADRmu1 +
 # III   BrW   P   channels[0] ADRmu1 -
-# III   Or    N   channels[1] W4950 +
-# III   OrW   P   channels[1] W4950 -
+# III   Or    N   channels[1] 3458PTB +
+# III   OrW   P   channels[1] 3458PTB +
 # III   Bl    N   channels[2] ADRmu3 +
 # III   BlW   P   channels[2] ADRmu3 -
 # III   Gr    N   channels[3] ADRmu15 +
@@ -279,9 +279,15 @@ def scanner_once():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
+    instruments["3458PTB"]=HP3458A(rm, 'GPIB0::21::INSTR', title='3458B')
+    instruments["3458PTB"].config_DCV(10)
+    instruments["3458PTB"].config_NDIG(9)
+    instruments["3458PTB"].config_NPLC(NPLC)
+    instruments["3458PTB"].config_trigger_hold()
+    
 
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
-    scanner_meters = [(channels[9], instruments["3458A"]),  (channels[8], instruments["3458B"]),  ]
+    scanner_meters = [(channels[9], instruments["3458A"]),  (channels[8], instruments["3458B"]),  (channels[1], instruments["3458PTB"]),]
 
     switch=takovsky_scanner()
     
