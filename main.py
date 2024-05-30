@@ -279,7 +279,7 @@ def scanner_once():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    instruments["3458PTB"]=HP3458A(rm, 'GPIB0::21::INSTR', title='3458B')
+    instruments["3458PTB"]=HP3458A(rm, 'GPIB0::21::INSTR', title='3458PTB')
     instruments["3458PTB"].config_DCV(10)
     instruments["3458PTB"].config_NDIG(9)
     instruments["3458PTB"].config_NPLC(NPLC)
@@ -298,9 +298,11 @@ def scanner_once():
     seconds = 10
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
+    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458PTB"]))
     seconds = seconds + 200
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
+    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458PTB"],))
     seconds = seconds + 60
     
     t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
