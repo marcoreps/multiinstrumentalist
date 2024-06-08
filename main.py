@@ -228,8 +228,8 @@ def scanner_once():
 
 # III   Br    N   channels[0] ADRmu1 +
 # III   BrW   P   channels[0] ADRmu1 -
-# III   Or    N   channels[1] 3458PTB +
-# III   OrW   P   channels[1] 3458PTB +
+# III   Or    N   channels[1] W4950 +
+# III   OrW   P   channels[1] W4950 -
 # III   Bl    N   channels[2] ADRmu3 +
 # III   BlW   P   channels[2] ADRmu3 -
 # III   Gr    N   channels[3] ADRmu15 +
@@ -279,15 +279,14 @@ def scanner_once():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    instruments["3458PTB"]=HP3458A(rm, 'GPIB0::21::INSTR', title='3458PTB')
-    instruments["3458PTB"].config_DCV(10)
-    instruments["3458PTB"].config_NDIG(9)
-    instruments["3458PTB"].config_NPLC(NPLC)
-    instruments["3458PTB"].config_trigger_hold()
+    instruments["W4950"]=W4950(rm, 'GPIB0::9::INSTR')
+    instruments["W4950"].config_accuracy("HIGH")
+    instruments["W4950"].config_DCV(10)
+    instruments["W4950"].config_trigger_hold()
     
 
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
-    scanner_meters = [(channels[9], instruments["3458A"]),  (channels[8], instruments["3458B"]),  (channels[1], instruments["3458PTB"]),]
+    scanner_meters = [(channels[9], instruments["3458A"]),  (channels[8], instruments["3458B"]), (channels[1], instruments["W4950"]), ]
 
     switch=takovsky_scanner()
     
@@ -298,11 +297,9 @@ def scanner_once():
     seconds = 10
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
     sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458PTB"]))
     seconds = seconds + 200
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
     sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
-    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458PTB"],))
     seconds = seconds + 60
     
     t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
