@@ -125,7 +125,7 @@ class F5700A:
     
     def measure(self):
         logging.debug(self.title+' measure started')
-        self.read_val = self.instr.ask("OUT?")
+        self.read_val = self.instr.query("OUT?")
     
     def is_readable(self):
         return self.readable
@@ -141,7 +141,7 @@ class F5700A:
         self.instr.write("*RST")
         self.instr.write("STBY")
         self.instr.write("EXTGUARD OFF")
-        logging.debug("*IDN? -> "+self.instr.ask("*IDN?"))
+        logging.debug("*IDN? -> "+self.instr.query("*IDN?"))
         
         
     def out(self,out_cmd):
