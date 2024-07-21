@@ -86,6 +86,9 @@ def INL_3458A():
     NPLC = 317
     
     instruments["F5700A"]=F5700A(rm, 'GPIB0::1::INSTR', title='5700A')
+    instruments["F5700A"].out(str(umin)+"V")
+    instruments["F5700A"].oper()
+    instruments["F5700A"].rangelck()
     
     instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
     instruments["3458A"].config_DCV(10)
@@ -99,9 +102,10 @@ def INL_3458A():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_auto()
     
-    instruments["F5700A"].out(str(umin)+"V")
-    instruments["F5700A"].oper()
-    instruments["F5700A"].rangelck()
+    instruments["8508A"]=F8508A(rm, 'GPIB0::10::INSTR', title='8508A')
+    instruments["8508A"].config_DCV(10)
+    
+    
     time.sleep(300)
     
     with open('csv/'+timestr+'REPS5700A_3458A_3458B_8508A_INL.csv', mode='w') as csv_file:
