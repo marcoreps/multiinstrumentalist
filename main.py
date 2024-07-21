@@ -139,7 +139,7 @@ def INL_3458A():
             
             HP3458A_out = 0.0
             HP3458B_out = 0.0
-            W4950_out = 0.0
+            F8508_out = 0.0
             
             for n in range (samples_per_meter_per_step):
             
@@ -149,8 +149,8 @@ def INL_3458A():
                 instruments["3458B"].trigger_once()
                 HP3458B_out += float(instruments["3458B"].get_read_val()) / samples_per_meter_per_step
                 
-                instruments["W4950"].trigger_once()
-                F8508_out += float(instruments["W4950"].get_read_val()) / samples_per_meter_per_step
+                instruments["8508A"].trigger_once()
+                F8508_out += float(instruments["8508A"].get_read_val()) / samples_per_meter_per_step
             
             writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, 'F8508_volt': F8508_out})
 
