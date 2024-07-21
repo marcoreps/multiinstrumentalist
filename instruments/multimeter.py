@@ -241,9 +241,6 @@ class F8508A(multimeter):
         time.sleep(2)
         logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         
-
-
-        
     def trigger_once(self):
         logging.debug(self.title+' triggered once')
         self.instr.write("*TRG;GET;RDG?")
@@ -260,6 +257,14 @@ class F8508A(multimeter):
     def config_DCV(self, RANG):
         logging.debug(self.title+" config_DCV")
         dmm.write("DCV "+str(RANG)+",FILT_OFF,RESL8,FAST_OFF,TWO_WR")
+        
+    def config_DCV_fast_off(self, RANG):
+        logging.debug(self.title+" config_DCV")
+        dmm.write("DCV ,FAST_OFF")
+        
+    def config_DCV_fast_on(self, RANG):
+        logging.debug(self.title+" config_DCV")
+        dmm.write("DCV ,FAST_ON")
         
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
