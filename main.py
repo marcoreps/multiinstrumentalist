@@ -78,9 +78,9 @@ def test_W4950():
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     
-    umin = -11
-    umax = 11
-    ustep = 1
+    umin = -10.25
+    umax = 10.25
+    ustep = 0.25
     wait_settle = 20
     samples_per_meter_per_step = 1
     NPLC = 317
