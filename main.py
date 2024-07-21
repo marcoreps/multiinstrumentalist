@@ -77,18 +77,6 @@ def test_W4950():
             
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="5700A")
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
-    instruments["8508A"]=F8508A(ip=vxi_ip, gpib_address=10, title="8508A")
-    
-    instruments["3458A"].config_DCV(10)
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_trigger_auto()
-    
-    instruments["3458B"].config_DCV(10)
-    instruments["3458B"].config_NDIG(9)
-    instruments["3458B"].config_trigger_auto()
     
     umin = -11
     umax = 11
@@ -96,6 +84,20 @@ def INL_3458A():
     wait_settle = 20
     samples_per_meter_per_step = 1
     NPLC = 317
+    
+    instruments["F5700A"]=F5700A(rm, 'GPIB0::1::INSTR', title='5700A')
+    
+    instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+    instruments["3458A"].config_DCV(10)
+    instruments["3458A"].config_NDIG(9)
+    instruments["3458A"].config_NPLC(NPLC)
+    instruments["3458A"].config_trigger_auto()
+    
+    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].config_trigger_auto()
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
