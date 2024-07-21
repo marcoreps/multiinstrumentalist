@@ -227,3 +227,51 @@ class HP34420A(multimeter):
         self.instr.write("INITiate")
         self.instr.write("*TRG")
         
+class F8508A(multimeter):
+
+    def __init__(self, resource_manager, resource_name, title='Fluke 8508A'):
+        self.title = title
+        logging.debug(self.title+' init started')
+        self.rm = resource_manager
+        self.rn = resource_name
+        self.instr =  self.rm.open_resource(self.rn)
+        self.instr.timeout = 30000
+        self.instr.clear()
+        self.instr.write("*RST")
+        time.sleep(2)
+        logging.info("*IDN? -> "+self.instr.query("*IDN?"))
+        
+
+
+        
+    def trigger_once(self):
+        logging.debug(self.title+' triggered once')
+        self.instr.write("*TRG;GET;RDG?")
+        
+        
+    def config_trigger_auto(self):
+        logging.debug(self.title+" config_trigger_auto")
+        self.instr.write("TRIG_SRCE INT")
+        
+    def config_trigger_hold(self):
+        logging.debug(self.title+" config_trigger_hold")
+        self.instr.write("TRIG_SRCE EXT")
+        
+    def config_DCV(self, RANG):
+        logging.debug(self.title+" config_DCV")
+        dmm.write("DCV "+str(RANG)+",FILT_OFF,RESL8,FAST_OFF,TWO_WR")
+        
+    def is_readable(self):
+        logging.debug(self.title+' is_readable() started')
+        mese = int(self.instr.query("MESR?"))
+        logging.debug(self.title+' MESR is '+str(mese))
+        readable = mese & 0b10000000
+        if (readable):
+            logging.debug(self.title+' is readable')
+        return readable
+        
+    def get_read_val(self):
+        logging.debug("get_read_val() connected, reading ... ")
+        read_val = self.instr.read()
+        logging.debug("get_read_val() reading "+str(read_val))
+        return read_val

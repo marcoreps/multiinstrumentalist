@@ -77,10 +77,10 @@ def test_W4950():
             
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
-    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="Reps 5700A")
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="Reps 3458A")
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="Reps 3458B")
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9)
+    instruments["F5700A"]=F5700A(ip=vxi_ip, gpib_address=1, title="5700A")
+    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
+    instruments["8508A"]=F8508A(ip=vxi_ip, gpib_address=10, title="8508A")
     
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
@@ -92,23 +92,23 @@ def INL_3458A():
     
     umin = -11
     umax = 11
-    ustep = 0.25
+    ustep = 1
     wait_settle = 20
     samples_per_meter_per_step = 1
-    NPLC = 100
+    NPLC = 317
     
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
     time.sleep(300)
     
-    with open('csv/'+timestr+'REPS5700A_3458A_3458B_4950_INL.csv', mode='w') as csv_file:
+    with open('csv/'+timestr+'REPS5700A_3458A_3458B_8508A_INL.csv', mode='w') as csv_file:
         csv_file.write("# INL run")
         csv_file.write("# wait_settle = "+str(wait_settle))
         csv_file.write("# samples_per_meter_per_step = "+str(samples_per_meter_per_step))
         csv_file.write("# NPLC = "+str(NPLC))
         
-        fieldnames = ['vref', '3458A_volt', '3458B_volt', 'W4950_volt']
+        fieldnames = ['vref', '3458A_volt', '3458B_volt', 'F8508_volt']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
 
@@ -117,17 +117,17 @@ def INL_3458A():
             logging.debug('main setting source to '+str(u)+'V')
             instruments["3458A"].config_NPLC(10)
             instruments["3458B"].config_NPLC(10)
-            instruments["W4950"].config_accuracy("LOW")
+            instruments["8508A"].config_DCV_fast_on()
             instruments["3458A"].config_trigger_auto()
             instruments["3458B"].config_trigger_auto()
-            instruments["W4950"].config_trigger_auto()
+            instruments["8508A"].config_trigger_auto()
             time.sleep(wait_settle)
             instruments["3458A"].config_NPLC(NPLC)
             instruments["3458B"].config_NPLC(NPLC)
-            instruments["W4950"].config_accuracy("HIGH")
+            instruments["8508A"].config_DCV_fast_on()
             instruments["3458A"].config_trigger_hold()
             instruments["3458B"].config_trigger_hold()
-            instruments["W4950"].config_trigger_hold()
+            instruments["8508A"].config_trigger_hold()
             
             calibrator_out = u
             
@@ -144,9 +144,9 @@ def INL_3458A():
                 HP3458B_out += float(instruments["3458B"].get_read_val()) / samples_per_meter_per_step
                 
                 instruments["W4950"].trigger_once()
-                W4950_out += float(instruments["W4950"].get_read_val()) / samples_per_meter_per_step
+                F8508_out += float(instruments["W4950"].get_read_val()) / samples_per_meter_per_step
             
-            writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, 'W4950_volt': W4950_out})
+            writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, 'F8508_volt': F8508_out})
 
 def temperature_sweep():
 
@@ -732,7 +732,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
