@@ -131,6 +131,7 @@ class F5700A:
         return self.readable
 
     def __init__(self, resource_manager, resource_name, title='FLuke 5700A'):
+        self.title = title
         logging.debug(self.title+' init started')
         self.rm = resource_manager
         self.rn = resource_name
