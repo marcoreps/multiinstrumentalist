@@ -730,7 +730,7 @@ def nbs430():
 try:
     #test_3458A()
     #test_W4950()
-    #INL_3458A()
+    INL_3458A()
     #temperature_sweep()
     #scanner_once()
     #auto_ACAL_3458A()
