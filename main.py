@@ -39,23 +39,22 @@ rm = pyvisa.ResourceManager()
 
 def test_3458A():
 
-    #switch=takovsky_scanner()
-    #switch.switchingCloseRelay(channels[5])
-    #switch.switchingCloseRelay(channels[6])
-
     NPLC = 200
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458A"].config_DCV(10)
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(NPLC)
-    instruments["3458A"].config_trigger_auto()
-    instruments["3458A"].blank_display()
-    
-    while True:
-        if instruments["3458A"].is_readable():
-            writer.write("PPMhub",str(sys.argv[1]), instruments["3458A"].get_title(), instruments["3458A"].get_read_val())
-        #writer.write("lab_sensors", "Ambient Temp", instruments["long_tmp117"].get_title(), instruments["long_tmp117"].get_read_val())
-        time.sleep(1)
+    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(NPLC)
+    instruments["3458B"].config_trigger_auto()
+            
+    timestr = time.strftime("%Y%m%d-%H%M%S_")
+    with open('csv/'+timestr+'3458B_10V_short_200NPLC_az.csv', mode='w') as csv_file:
+        fieldnames = ['time', '3458B_volt']
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        while True:
+                val = float(instruments["3458B"].get_read_val())
+                writer.writerow({'time':time.time(), '3458B_volt': val})
+                logging.info(val)
         
         
 def test_W4950():
@@ -734,9 +733,9 @@ def nbs430():
     
     
 try:
-    #test_3458A()
+    test_3458A()
     #test_W4950()
-    INL_3458A()
+    #INL_3458A()
     #temperature_sweep()
     #scanner_once()
     #auto_ACAL_3458A()
