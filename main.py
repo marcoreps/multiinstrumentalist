@@ -733,11 +733,11 @@ def nbs430():
     
     
 try:
-    test_3458A()
+    #test_3458A()
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    #scanner_once()
+    scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
