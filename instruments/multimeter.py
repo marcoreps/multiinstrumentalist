@@ -216,7 +216,7 @@ class HP34420A(multimeter):
         
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
-        self.instr.write("INITiate")
+        self.instr.write("READ?")
         
         
     def config_trigger_hold(self):
