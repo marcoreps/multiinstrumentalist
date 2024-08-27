@@ -499,7 +499,8 @@ def scanner_34420A():
 def resistance_bridge_temperature_sweep():
     logging.info("resistance_bridge_temperature_sweep()")
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV(0.001)
+    instruments["K34420A"].config_DCV("AUTO")
+    instruments["K34420A"].config_trigger_hold()
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
@@ -509,6 +510,7 @@ def resistance_bridge_temperature_sweep():
     wait_settle = 180
 
     sch = sched.scheduler(time.time, time.sleep)
+    sch.enter(20, 10, instruments["K34420A"].trigger_once)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["K34420A"], "VBridge"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
     i=wait_settle
