@@ -198,8 +198,8 @@ class HP34420A(multimeter):
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        #read_val = self.instr.query("FETCH?")
-        read_val = self.instr.read()
+        #read_val = self.instr.query("FETCH?") #for bus triggering
+        read_val = self.instr.query("READ?") #for auto triggering
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
         
@@ -217,7 +217,7 @@ class HP34420A(multimeter):
         
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
-        self.instr.write("READ?")
+        
         
         
     def config_trigger_hold(self):
