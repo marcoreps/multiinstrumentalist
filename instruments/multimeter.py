@@ -88,7 +88,7 @@ class HP3458A(multimeter):
     def acal_ALL(self):
         logging.debug(self.title+' ACAL ALL started')
         timout_memory = self.instr.timeout
-        self.instr.timeout = 2
+        self.instr.timeout = 2000
         try:
             self.instr.write("ACAL")
         except Exception:
