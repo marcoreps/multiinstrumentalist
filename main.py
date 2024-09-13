@@ -276,7 +276,6 @@ def scanner_once():
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_hold()
-
     
     instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
     instruments["3458B"].config_DCV(10)
@@ -295,7 +294,18 @@ def scanner_once():
     #instruments["W4950"].config_DCV(10)
     #instruments["W4950"].config_trigger_hold()
     
+    instruments["3458A"].acal_ALL()
+    instruments["3458B"].acal_ALL()
+    instruments["3458P"].acal_ALL()
+    
+    while not (instruments["3458A"].is_ready() and instruments["3458B"].is_ready() and instruments["3458B"].is_ready()):
+        time.sleep(5)
 
+    read_cal_params(instruments["3458A"])
+    read_cal_params(instruments["3458B"])
+    read_cal_params(instruments["3458P"])
+
+    
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
     scanner_meters = [(channels[9], instruments["3458A"]),  (channels[8], instruments["3458B"]), (channels[1], instruments["3458P"]), ]
 
@@ -303,19 +313,9 @@ def scanner_once():
     
     sch = sched.scheduler(time.time, time.sleep)
     
+    seconds = 1
+    
     scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
-        
-    seconds = 10
-    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458A"]))
-    seconds = seconds + 1
-    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458B"]))
-    seconds = seconds + 1
-    sch.enter(seconds, 9, acal_inst, argument=(sch, 60*60, 9, instruments["3458P"]))
-    seconds = seconds + 600
-    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458A"],))
-    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458B"],))
-    sch.enter(seconds, 9, read_cal_params, argument=(instruments["3458P"],))
-    seconds = seconds + 60
     
     t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
         
@@ -344,13 +344,6 @@ def read_cal_params(inst):
     for n in range(1,254):
         writer.write("PPMhub", inst.get_title(), "CAL? "+str(n), inst.get_cal_param(n), tags=[["group","cal_params"], ])
         
-def acal_inst(sch, interval, priority, inst):
-    while not inst.is_ready():
-        logging.info("%s was not ready for acal_inst." % (inst.get_title()))
-        time.sleep(1)
-    #inst.acal_DCV()
-    inst.acal_ALL()
-    #read_cal_params
  
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
