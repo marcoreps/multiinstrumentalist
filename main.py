@@ -294,14 +294,14 @@ def scanner_once():
     #instruments["W4950"].config_DCV(10)
     #instruments["W4950"].config_trigger_hold()
     
-    instruments["3458A"].acal_ALL()
+    #instruments["3458A"].acal_ALL()
     instruments["3458B"].acal_ALL()
     instruments["3458P"].acal_ALL()
     
-    while not (instruments["3458A"].is_ready() and instruments["3458B"].is_ready() and instruments["3458B"].is_ready()):
+    while not (instruments["3458B"].is_ready() and instruments["3458P"].is_ready()):
         time.sleep(5)
 
-    read_cal_params(instruments["3458A"])
+    #read_cal_params(instruments["3458A"])
     read_cal_params(instruments["3458B"])
     read_cal_params(instruments["3458P"])
 
@@ -333,7 +333,7 @@ def scanner_once():
         
     logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
     sch.run()
-    instruments["3458A"].blank_display()
+    instruments["3458P"].blank_display()
     instruments["3458B"].blank_display()
         
         
