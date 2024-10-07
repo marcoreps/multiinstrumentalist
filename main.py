@@ -645,12 +645,12 @@ def nbs430():
     
     switch=rotary_scanner()
     
+    switch.switchingCloseRelay("k0") # Home switch
     switch.switchingCloseRelay("a0") # Home switch
-    switch.switchingCloseRelay("b0") # Home switch
-    switch.switchingCloseRelay("c0") # Home switch
-    switch.switchingCloseRelay("d0") # Home switch
     switch.switchingCloseRelay("e0") # Home switch
-    switch.switchingCloseRelay("f0") # Home switch
+    switch.switchingCloseRelay("g0") # Home switch
+    switch.switchingCloseRelay("i0") # Home switch
+    switch.switchingCloseRelay("c0") # Home switch
 
     scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu9"),  (5, "ADRmu12"),]
     scanner_permutations = set(itertools.combinations(scanner_sources, 2))
@@ -661,16 +661,15 @@ def nbs430():
     while True:
     
     
-        switch.switchingCloseRelay("a11") # Park source switches
-        switch.switchingCloseRelay("b11") # Park source switches
-        switch.switchingCloseRelay("e11") # Park source switches
-        switch.switchingCloseRelay("f11") # Park source switches
+        switch.switchingCloseRelay("k"+chr(11)) # Park source switches
+        switch.switchingCloseRelay("a"+chr(11)) # Park source switches
+        switch.switchingCloseRelay("e"+chr(11)) # Park source switches
+        switch.switchingCloseRelay("g"+chr(11)) # Park source switches
+        switch.switchingCloseRelay("i"+chr(11))
+        switch.switchingCloseRelay("c"+chr(11))
         
-        switch.switchingCloseRelay("c11")
-        switch.switchingCloseRelay("d11")
-        
-        switch.switchingCloseRelay("c5") # Short VM
-        switch.switchingCloseRelay("d10") # Short VM
+        switch.switchingCloseRelay("a5") # Short VM
+        switch.switchingCloseRelay("i"+chr(10)) # Short VM
         
         time.sleep(switch_delay)
         instruments["K34420A"].rel_off()
@@ -692,14 +691,14 @@ def nbs430():
         
             logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
             
-            switch.switchingCloseRelay("a11") # Park + side switches
-            switch.switchingCloseRelay("e11") # Park + side switches
+            switch.switchingCloseRelay("k"+chr(11)) # Park + side switches
+            switch.switchingCloseRelay("e"+chr(11)) # Park + side switches
             
-            switch.switchingCloseRelay("f"+str(perm[0][0])) # Connect Source 1 -
-            switch.switchingCloseRelay("b"+str(perm[1][0])) # to Source 2 -
+            switch.switchingCloseRelay("g"+chr(perm[0][0])) # Connect Source 1 -
+            switch.switchingCloseRelay("c"+chr(perm[1][0])) # to Source 2 -
             
-            switch.switchingCloseRelay("c"+str(perm[0][0])) # Connect VM + to Source 1 +
-            switch.switchingCloseRelay("d"+str(perm[1][0]+5)) # Connect VM - to Source 2 +
+            switch.switchingCloseRelay("a"+chr(perm[0][0])) # Connect VM + to Source 1 +
+            switch.switchingCloseRelay("i"+chr(perm[1][0]+5)) # Connect VM - to Source 2 +
             
             time.sleep(switch_delay)
             
@@ -712,14 +711,14 @@ def nbs430():
                 polarity_1_samples[sample]=reading
                 logging.info("In 1 polarity read "+str(reading))
                 
-            switch.switchingCloseRelay("f11") # Park - side switches
-            switch.switchingCloseRelay("b11") # Park - side switches
+            switch.switchingCloseRelay("g"+chr(11)) # Park - side switches
+            switch.switchingCloseRelay("c"+chr(11)) # Park - side switches
             
-            switch.switchingCloseRelay("a"+str(perm[0][0])) # Connect Source 1 +
-            switch.switchingCloseRelay("e"+str(perm[1][0])) # to Source 2 +
+            switch.switchingCloseRelay("k"+chr(perm[0][0])) # Connect Source 1 +
+            switch.switchingCloseRelay("e"+chr(perm[1][0])) # to Source 2 +
             
-            switch.switchingCloseRelay("c"+str(perm[0][0]+5)) # Connect VM + to Source 1 -
-            switch.switchingCloseRelay("d"+str(perm[1][0])) # Connect VM - to Source 2 -
+            switch.switchingCloseRelay("a"+chr(perm[0][0]+5)) # Connect VM + to Source 1 -
+            switch.switchingCloseRelay("i"+chr(perm[1][0])) # Connect VM - to Source 2 -
             
             time.sleep(switch_delay)
             
@@ -743,7 +742,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -751,7 +750,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
