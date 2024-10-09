@@ -739,11 +739,11 @@ def nbs431():
             switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
             switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
             
-            switch.switchingCloseRelay("g"+chr(perm[0][0])) # Connect Source 1 -
-            switch.switchingCloseRelay("c"+chr(perm[1][0])) # to Source 2 -
+            switch.switchingCloseRelay("g"+chr(perm[0][0]+48)) # Connect Source 1 -
+            switch.switchingCloseRelay("c"+chr(perm[1][0]+48)) # to Source 2 -
             
-            switch.switchingCloseRelay("a"+chr(perm[0][0])) # Connect VM + to Source 1 +
-            switch.switchingCloseRelay("i"+chr(perm[1][0]+5)) # Connect VM - to Source 2 +
+            switch.switchingCloseRelay("a"+chr(perm[0][0]+48)) # Connect VM + to Source 1 +
+            switch.switchingCloseRelay("i"+chr(perm[1][0]+5+48)) # Connect VM - to Source 2 +
             
             time.sleep(switch_delay)
             
@@ -759,11 +759,11 @@ def nbs431():
             switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
             switch.switchingCloseRelay("c"+chr(59)) # Park - side switches
             
-            switch.switchingCloseRelay("k"+chr(perm[0][0])) # Connect Source 1 +
-            switch.switchingCloseRelay("e"+chr(perm[1][0])) # to Source 2 +
+            switch.switchingCloseRelay("k"+chr(perm[0][0]+48)) # Connect Source 1 +
+            switch.switchingCloseRelay("e"+chr(perm[1][0]+48)) # to Source 2 +
             
-            switch.switchingCloseRelay("a"+chr(perm[0][0]+5)) # Connect VM + to Source 1 -
-            switch.switchingCloseRelay("i"+chr(perm[1][0])) # Connect VM - to Source 2 -
+            switch.switchingCloseRelay("a"+chr(perm[0][0]+5+48)) # Connect VM + to Source 1 -
+            switch.switchingCloseRelay("i"+chr(perm[1][0]+48)) # Connect VM - to Source 2 -
             
             time.sleep(switch_delay)
             
