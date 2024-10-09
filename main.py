@@ -679,10 +679,10 @@ def nbs430():
             
             
             
-def nbs431():
+def nbs43():
 
-    nsamples = 1
-    switch_delay = 1
+    nsamples = 10 
+    switch_delay = 60 
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
@@ -795,8 +795,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
-    nbs431()
+    nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
