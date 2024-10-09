@@ -435,7 +435,7 @@ def pt100_scanner():
     switch.switchingCloseRelay(channels[11]) # Connect 3458B    
     
     while True:
-        for i in range(11):
+        for i in range(59):
             if i == 0:
                 switch.switchingOpenRelay(channels[10])
             else:
@@ -603,12 +603,12 @@ def nbs430():
     while True:
     
     
-        switch.switchingCloseRelay("k"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("a"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("e"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("g"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("i"+chr(11))
-        switch.switchingCloseRelay("c"+chr(11))
+        switch.switchingCloseRelay("k"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("a"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("e"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("g"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("i"+chr(59))
+        switch.switchingCloseRelay("c"+chr(59))
         
         switch.switchingCloseRelay("a5") # Short VM
         switch.switchingCloseRelay("i"+chr(10)) # Short VM
@@ -633,8 +633,8 @@ def nbs430():
         
             logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
             
-            switch.switchingCloseRelay("k"+chr(11)) # Park + side switches
-            switch.switchingCloseRelay("e"+chr(11)) # Park + side switches
+            switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
+            switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
             
             switch.switchingCloseRelay("g"+chr(perm[0][0])) # Connect Source 1 -
             switch.switchingCloseRelay("c"+chr(perm[1][0])) # to Source 2 -
@@ -653,8 +653,8 @@ def nbs430():
                 polarity_1_samples[sample]=reading
                 logging.info("In 1 polarity read "+str(reading))
                 
-            switch.switchingCloseRelay("g"+chr(11)) # Park - side switches
-            switch.switchingCloseRelay("c"+chr(11)) # Park - side switches
+            switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
+            switch.switchingCloseRelay("c"+chr(59)) # Park - side switches
             
             switch.switchingCloseRelay("k"+chr(perm[0][0])) # Connect Source 1 +
             switch.switchingCloseRelay("e"+chr(perm[1][0])) # to Source 2 +
@@ -706,15 +706,15 @@ def nbs431():
     while True:
     
     
-        switch.switchingCloseRelay("k"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("a"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("e"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("g"+chr(11)) # Park source switches
-        switch.switchingCloseRelay("i"+chr(11))
-        switch.switchingCloseRelay("c"+chr(11))
+        switch.switchingCloseRelay("k"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("a"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("e"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("g"+chr(59)) # Park source switches
+        switch.switchingCloseRelay("i"+chr(59))
+        switch.switchingCloseRelay("c"+chr(59))
         
         switch.switchingCloseRelay("a5") # Short VM
-        switch.switchingCloseRelay("i"+chr(10)) # Short VM
+        switch.switchingCloseRelay("i"+chr(58)) # Short VM
         
         time.sleep(switch_delay)
         instruments["K34420A"].rel_off()
@@ -736,8 +736,8 @@ def nbs431():
         
             logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
             
-            switch.switchingCloseRelay("k"+chr(11)) # Park + side switches
-            switch.switchingCloseRelay("e"+chr(11)) # Park + side switches
+            switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
+            switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
             
             switch.switchingCloseRelay("g"+chr(perm[0][0])) # Connect Source 1 -
             switch.switchingCloseRelay("c"+chr(perm[1][0])) # to Source 2 -
@@ -756,8 +756,8 @@ def nbs431():
                 polarity_1_samples[sample]=reading
                 logging.info("In 1 polarity read "+str(reading))
                 
-            switch.switchingCloseRelay("g"+chr(11)) # Park - side switches
-            switch.switchingCloseRelay("c"+chr(11)) # Park - side switches
+            switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
+            switch.switchingCloseRelay("c"+chr(59)) # Park - side switches
             
             switch.switchingCloseRelay("k"+chr(perm[0][0])) # Connect Source 1 +
             switch.switchingCloseRelay("e"+chr(perm[1][0])) # to Source 2 +
