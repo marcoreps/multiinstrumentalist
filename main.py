@@ -162,10 +162,15 @@ def temperature_sweep():
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
+    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(100)
     instruments["3458B"].config_trigger_auto()
+
+
+
+
+
     
     
     tmin = 18
@@ -568,14 +573,6 @@ def test_rotary_scanner():
             writer.write("PPMhub", "EMF", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
             writer.write("PPMhub", "Actuations", "Rotary Scanner", i)
         
-    
-    
-
-    
-    
-             
-            
-            
             
             
 def nbs430():
