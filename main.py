@@ -155,28 +155,28 @@ def INL_3458A():
 
 def temperature_sweep():
 
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(50)
-    instruments["3458A"].config_trigger_auto()
+    #instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
+    #instruments["3458A"].config_NDIG(9)
+    #instruments["3458A"].config_NPLC(50)
+    #instruments["3458A"].config_trigger_auto()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    #instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
-    #instruments["3458B"].config_NDIG(9)
-    #instruments["3458B"].config_NPLC(50)
-    #instruments["3458B"].config_trigger_auto()
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(100)
+    instruments["3458B"].config_trigger_auto()
     
     
-    tmin = 16
-    tmax = 24
+    tmin = 18
+    tmax = 28
     tstep = 0.1
-    wait_settle = 180
+    wait_settle = 120
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["3458A"], "Vz"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
-    i=wait_settle*5
+    i=wait_settle*1
     for t in numpy.arange(tmin, tmax+0.01, tstep):
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
@@ -685,7 +685,7 @@ try:
     #test_3458A()
     #test_W4950()
     #INL_3458A()
-    #temperature_sweep()
+    temperature_sweep()
     #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
@@ -694,7 +694,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    nbs430()
+    #nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
