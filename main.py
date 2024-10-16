@@ -162,12 +162,13 @@ def temperature_sweep():
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
-    instruments["3458B"].config_NDIG(9)
-    instruments["3458B"].config_NPLC(100)
-    instruments["3458B"].config_trigger_auto()
+    #instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    #instruments["3458B"].config_NDIG(9)
+    #instruments["3458B"].config_NPLC(100)
+    #instruments["3458B"].config_trigger_auto()
 
-
+    instruments["8508A"]=F8508A(rm, 'GPIB0::10::INSTR', title='8508A')
+    instruments["8508A"].config_DCV(10)
 
 
 
@@ -179,7 +180,7 @@ def temperature_sweep():
     wait_settle = 120
 
     sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["3458B"], "Vz"))
+    sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["8508A"], "Vz"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
     i=wait_settle*1
     for t in numpy.arange(tmin, tmax+0.01, tstep):
