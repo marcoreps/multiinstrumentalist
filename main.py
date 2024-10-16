@@ -167,7 +167,7 @@ def temperature_sweep():
     #instruments["3458B"].config_NPLC(100)
     #instruments["3458B"].config_trigger_auto()
 
-    instruments["8508A"]=F8508A(rm, 'GPIB0::10::INSTR', title='8508A')
+    instruments["8508A"]=F8508A(rm, 'GPIB0::9::INSTR', title='8508A')
     instruments["8508A"].config_DCV(200)
 
 
