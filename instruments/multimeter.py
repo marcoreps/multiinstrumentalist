@@ -293,6 +293,7 @@ class F8508A(multimeter):
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
+        dmm.write("*TRG;GET;RDG?")
         read_val = self.instr.read()
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
