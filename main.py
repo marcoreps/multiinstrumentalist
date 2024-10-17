@@ -101,7 +101,7 @@ def INL_3458A():
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_auto()
     
-    instruments["8508A"]=F8508A(rm, 'GPIB0::10::INSTR', title='8508A')
+    instruments["8508A"]=F8508A(rm, 'GPIB0::9::INSTR', title='8508A')
     instruments["8508A"].config_DCV(10)
     
     
@@ -176,9 +176,9 @@ def temperature_sweep():
 
     
     
-    tmin = 18
-    tmax = 28
-    tstep = 0.1
+    tmin = 23
+    tmax = 50
+    tstep = 0.5
     wait_settle = 120
 
     sch = sched.scheduler(time.time, time.sleep)
