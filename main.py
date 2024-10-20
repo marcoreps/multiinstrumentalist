@@ -694,7 +694,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    'nbs430()
+    #nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
