@@ -157,7 +157,7 @@ def temperature_sweep():
 
     instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
     instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(10)
+    instruments["3458A"].config_NPLC(100)
     instruments["3458A"].config_trigger_auto()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
