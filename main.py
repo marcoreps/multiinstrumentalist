@@ -583,6 +583,8 @@ def nbs430():
     nsamples = 10
     switch_delay = 60
     
+    
+    error_counter = 0
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
     instruments["K34420A"].config_trigger_hold()
@@ -605,7 +607,6 @@ def nbs430():
     
     while True:
     
-    
         switch.switchingCloseRelay("k"+chr(59)) # Park source switches
         switch.switchingCloseRelay("a"+chr(59)) # Park source switches
         switch.switchingCloseRelay("e"+chr(59)) # Park source switches
@@ -626,6 +627,9 @@ def nbs430():
             logging.info("Shorted read "+str(reading))
             
         logging.info("stdev "+str(statistics.stdev(polarity_2_samples)))
+        if (statistics.stdev(polarity_1_samples)>3e-7):
+            logging.info("stdev looks high, error likely, re-homing.")
+            error_counter += 1
         
         writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), statistics.mean(polarity_2_samples))
         instruments["K34420A"].rel()
@@ -635,6 +639,8 @@ def nbs430():
     
         
         for perm in scanner_permutations:
+        
+            logging.info("error_counter "+str(error_counter))
         
             logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
             
@@ -659,6 +665,9 @@ def nbs430():
                 logging.info("In 1 polarity read "+str(reading))
                 
             logging.info("stdev "+str(statistics.stdev(polarity_1_samples)))
+            if (statistics.stdev(polarity_1_samples)>3e-7):
+                logging.info("stdev looks high, error likely, re-homing.")
+                error_counter += 1
                 
             switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
             switch.switchingCloseRelay("c"+chr(59)) # Park - side switches
@@ -677,6 +686,11 @@ def nbs430():
                 reading = instruments["K34420A"].get_read_val()
                 polarity_2_samples[sample]=reading
                 logging.info("In 2 polarity read "+str(reading))
+                
+            logging.info("stdev "+str(statistics.stdev(polarity_1_samples)))
+            if (statistics.stdev(polarity_1_samples)>3e-7):
+                logging.info("stdev looks high, error likely, re-homing.")
+                error_counter += 1
                 
             difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
             logging.info("Difference looks like %.*f", 8, difference)
