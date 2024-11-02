@@ -12,7 +12,7 @@ import itertools
 import configparser
 import datetime
 import random
-from statistics import mean 
+import statistics
 from decimal import Decimal
 
 from instruments.sensor import *
@@ -624,8 +624,10 @@ def nbs430():
             reading = instruments["K34420A"].get_read_val()
             polarity_2_samples[sample]=reading
             logging.info("Shorted read "+str(reading))
+            
+        logging.info("stdev "+str(statistics.stdev(polarity_2_samples)))
         
-        writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), mean(polarity_2_samples))
+        writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), statistics.mean(polarity_2_samples))
         instruments["K34420A"].rel()
         instruments["K34420A"].trigger_once()
         instruments["K34420A"].get_read_val()
@@ -656,6 +658,8 @@ def nbs430():
                 polarity_1_samples[sample]=reading
                 logging.info("In 1 polarity read "+str(reading))
                 
+            logging.info("stdev "+str(statistics.stdev(polarity_1_samples)))
+                
             switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
             switch.switchingCloseRelay("c"+chr(59)) # Park - side switches
             
@@ -674,7 +678,7 @@ def nbs430():
                 polarity_2_samples[sample]=reading
                 logging.info("In 2 polarity read "+str(reading))
                 
-            difference = (mean(polarity_1_samples)-mean(polarity_2_samples))/2
+            difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
             logging.info("Difference looks like %.*f", 8, difference)
             writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
         
@@ -687,7 +691,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -695,7 +699,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
