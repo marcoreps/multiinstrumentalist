@@ -704,7 +704,7 @@ try:
     #test_3458A()
     #test_W4950()
     #INL_3458A()
-    #temperature_sweep()
+    temperature_sweep()
     #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
@@ -713,7 +713,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    nbs430()
+    #nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
