@@ -242,15 +242,11 @@ def scanner_once():
 
     
     instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
-    instruments["3458B"].config_DCV(10)
-    instruments["3458B"].config_NDIG(9)
-    instruments["3458B"].config_NPLC(NPLC)
+
     instruments["3458B"].config_trigger_hold()
     
     instruments["3458P"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458P')
-    instruments["3458P"].config_DCV(10)
-    instruments["3458P"].config_NDIG(9)
-    instruments["3458P"].config_NPLC(NPLC)
+
     instruments["3458P"].config_trigger_hold()
     
   
