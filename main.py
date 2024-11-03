@@ -239,20 +239,110 @@ def auto_ACAL_3458A():
     
 def scanner_once():
 
+# III   Br    N   channels[0] ADRmu1 +
+# III   BrW   P   channels[0] ADRmu1 -
+# III   Or    N   channels[1] 3458P / W4950 +
+# III   OrW   P   channels[1] 3458P / W4950 -
+# III   Bl    N   channels[2] ADRmu3 +
+# III   BlW   P   channels[2] ADRmu3 -
+# III   Gr    N   channels[3] ADRmu15 +
+# III   GrW   P   channels[3] ADRmu15 -
 
+# IV    Br    N   channels[4] ADRmu9 +
+# IV    BrW   P   channels[4] ADRmu9 -
+# IV    Or    N   channels[5] ADRmu6 +
+# IV    OrW   P   channels[5] ADRmu6 -
+# IV    Bl    N   channels[6] ADRmu11 +
+# IV    BlW   P   channels[6] ADRmu11 -
+# IV    Gr    N   channels[7] ADRmu12 +
+# IV    GrW   P   channels[7] ADRmu12 -
+
+# II    Br    N   channels[8]   3458B +
+# II    BrW   P   channels[8]   3458B -
+# II    Or    N   channels[9]   3458A +
+# II    OrW   P   channels[9]   3458A -
+# II    Bl    N   channels[10]  ADRmu4 +
+# II    BlW   P   channels[10]  ADRmu4 +
+# II    Gr    N   channels[11]  ADRmu20 +
+# II    GrW   P   channels[11]  ADRmu20 -
+
+# I     Br    N   channels[12]  
+# I     BrW   P   channels[12]  
+# I     Or    N   channels[13]  
+# I     OrW   P   channels[13]  
+# I     Bl    N   channels[14]  
+# I     BlW   P   channels[14]  
+# I     Gr    N   channels[15]  
+# I     GrW   P   channels[15]  
+
+    switch_delay = 120
+    NPLC = 100
+    nmeasurements = 20
+    
+    #instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+    #instruments["3458A"].config_DCV(10)
+    #instruments["3458A"].config_NDIG(9)
+    #instruments["3458A"].config_NPLC(NPLC)
+    #instruments["3458A"].config_trigger_hold()
     
     instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
-
+    instruments["3458B"].config_DCV(10)
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
     instruments["3458P"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458P')
-
+    instruments["3458P"].config_DCV(10)
+    instruments["3458P"].config_NDIG(9)
+    instruments["3458P"].config_NPLC(NPLC)
     instruments["3458P"].config_trigger_hold()
     
-  
+    #instruments["W4950"]=W4950(rm, 'GPIB0::9::INSTR')
+    #instruments["W4950"].config_accuracy("HIGH")
+    #instruments["W4950"].config_DCV(10)
+    #instruments["W4950"].config_trigger_hold()
+    
+    #instruments["3458A"].acal_ALL()
+    instruments["3458B"].acal_ALL()
+    instruments["3458P"].acal_ALL()
+    
+    while not (instruments["3458B"].is_ready() and instruments["3458P"].is_ready()):
+        time.sleep(5)
+
+    #read_cal_params(instruments["3458A"])
     read_cal_params(instruments["3458B"])
     read_cal_params(instruments["3458P"])
 
+    
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
+    scanner_meters = [(channels[8], instruments["3458B"]), (channels[1], instruments["3458P"]), ]
+
+    switch=takovsky_scanner()
+    
+    sch = sched.scheduler(time.time, time.sleep)
+    
+    seconds = 1
+    
+    scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
+    
+    t=[["wiring", "takovsky_scanner"],["guard","to_lo"], ]
+        
+    for perm in scanner_permutations:
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[0][0],)) # Close source
+        sch.enter(seconds, 10, switch.switchingCloseRelay, argument=(perm[1][0],)) # Close meter
+        seconds = seconds + switch_delay
+        for measurement in range(nmeasurements):
+            sch.enter(seconds, 10, perm[1][1].trigger_once)
+            seconds = seconds + NPLC * 0.04 + 0.2
+            sch.enter(seconds, 10, read_inst_scanner, argument=(perm[1][1], perm[0][1]))
+            seconds = seconds + 1
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
+        sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
+        
+    logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
+    sch.run()
+    instruments["3458P"].blank_display()
+    instruments["3458B"].blank_display()
         
         
 def read_cal_params(inst):
@@ -615,7 +705,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -623,7 +713,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
