@@ -591,114 +591,116 @@ def nbs430():
     
     switch=rotary_scanner()
     
-    switch.switchingCloseRelay("k0") # Home switch
-    switch.switchingCloseRelay("a0") # Home switch
-    switch.switchingCloseRelay("e0") # Home switch
-    switch.switchingCloseRelay("g0") # Home switch
-    switch.switchingCloseRelay("i0") # Home switch
-    switch.switchingCloseRelay("c0") # Home switch
-
-    #scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu9"),  (5, "ADRmu12"),]
-    scanner_sources = [(1, "ADRmu3"), (2, "ADRmu15"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu12"),]
-    scanner_permutations = set(itertools.combinations(scanner_sources, 2))
-    
-    polarity_1_samples = numpy.tile(0.0,nsamples)
-    polarity_2_samples = numpy.tile(0.0,nsamples)
-    
     while True:
-    
-        switch.switchingCloseRelay("k"+chr(59)) # Park source switches
-        switch.switchingCloseRelay("a"+chr(59)) # Park source switches
-        switch.switchingCloseRelay("e"+chr(59)) # Park source switches
-        switch.switchingCloseRelay("g"+chr(59)) # Park source switches
-        switch.switchingCloseRelay("i"+chr(59))
-        switch.switchingCloseRelay("c"+chr(59))
         
-        switch.switchingCloseRelay("a5") # Short VM
-        switch.switchingCloseRelay("i"+chr(58)) # Short VM
+        switch.switchingCloseRelay("k0") # Home switch
+        switch.switchingCloseRelay("a0") # Home switch
+        switch.switchingCloseRelay("e0") # Home switch
+        switch.switchingCloseRelay("g0") # Home switch
+        switch.switchingCloseRelay("i0") # Home switch
+        switch.switchingCloseRelay("c0") # Home switch
+
+        #scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu9"),  (5, "ADRmu12"),]
+        scanner_sources = [(1, "ADRmu3"), (2, "ADRmu15"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu12"),]
+        scanner_permutations = set(itertools.combinations(scanner_sources, 2))
         
-        time.sleep(switch_delay)
-        instruments["K34420A"].rel_off()
+        polarity_1_samples = numpy.tile(0.0,nsamples)
+        polarity_2_samples = numpy.tile(0.0,nsamples)
         
-        for sample in range(nsamples):
-            instruments["K34420A"].trigger_once()
-            reading = instruments["K34420A"].get_read_val()
-            polarity_2_samples[sample]=reading
-            logging.info("Shorted read "+str(reading))
+        while True:
+        
+            switch.switchingCloseRelay("k"+chr(59)) # Park source switches
+            switch.switchingCloseRelay("a"+chr(59)) # Park source switches
+            switch.switchingCloseRelay("e"+chr(59)) # Park source switches
+            switch.switchingCloseRelay("g"+chr(59)) # Park source switches
+            switch.switchingCloseRelay("i"+chr(59))
+            switch.switchingCloseRelay("c"+chr(59))
             
-        logging.info("stdev "+str(statistics.stdev(polarity_2_samples)))
-        if (statistics.stdev(polarity_1_samples)>3e-7):
-            logging.info("stdev looks high, error likely, re-homing.")
-            error_counter += 1
-        
-        writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), statistics.mean(polarity_2_samples))
-        instruments["K34420A"].rel()
-        instruments["K34420A"].trigger_once()
-        instruments["K34420A"].get_read_val()
-    
-    
-        
-        for perm in scanner_permutations:
-        
-            logging.info("error_counter "+str(error_counter))
-        
-            logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
-            
-            switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
-            switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
-            
-            switch.switchingCloseRelay("g"+chr(perm[0][0]+48)) # Connect Source 1 -
-            switch.switchingCloseRelay("c"+chr(perm[1][0]+48)) # to Source 2 -
-            
-            switch.switchingCloseRelay("a"+chr(perm[0][0]+48)) # Connect VM + to Source 1 +
-            switch.switchingCloseRelay("i"+chr(perm[1][0]+5+48)) # Connect VM - to Source 2 +
+            switch.switchingCloseRelay("a5") # Short VM
+            switch.switchingCloseRelay("i"+chr(58)) # Short VM
             
             time.sleep(switch_delay)
-            
-            #instruments["K34420A"].trigger_once() # First reading sometimes unreliable? Bc autorange perhaps?
-            #instruments["K34420A"].get_read_val()
-            
-            for sample in range(nsamples):
-                instruments["K34420A"].trigger_once()
-                reading = instruments["K34420A"].get_read_val()
-                polarity_1_samples[sample]=reading
-                logging.info("In 1 polarity read "+str(reading))
-                
-            logging.info("stdev "+str(statistics.stdev(polarity_1_samples)))
-            if (statistics.stdev(polarity_1_samples)>3e-7):
-                logging.info("stdev looks high, error likely, re-homing.")
-                error_counter += 1
-                
-            switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
-            switch.switchingCloseRelay("c"+chr(59)) # Park - side switches
-            
-            switch.switchingCloseRelay("k"+chr(perm[0][0]+48)) # Connect Source 1 +
-            switch.switchingCloseRelay("e"+chr(perm[1][0]+48)) # to Source 2 +
-            
-            switch.switchingCloseRelay("a"+chr(perm[0][0]+5+48)) # Connect VM + to Source 1 -
-            switch.switchingCloseRelay("i"+chr(perm[1][0]+48)) # Connect VM - to Source 2 -
-            
-            time.sleep(switch_delay)
-            
+            instruments["K34420A"].rel_off()
             
             for sample in range(nsamples):
                 instruments["K34420A"].trigger_once()
                 reading = instruments["K34420A"].get_read_val()
                 polarity_2_samples[sample]=reading
-                logging.info("In 2 polarity read "+str(reading))
+                logging.info("Shorted read "+str(reading))
                 
             logging.info("stdev "+str(statistics.stdev(polarity_2_samples)))
-            if (statistics.stdev(polarity_2_samples)>3e-7):
+            if (statistics.stdev(polarity_1_samples)>3e-7):
                 logging.info("stdev looks high, error likely, re-homing.")
                 error_counter += 1
+                break
+            
+            writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), statistics.mean(polarity_2_samples))
+            instruments["K34420A"].rel()
+            instruments["K34420A"].trigger_once()
+            instruments["K34420A"].get_read_val()
+        
+        
+            
+            for perm in scanner_permutations:
+            
+                logging.info("error_counter "+str(error_counter))
+            
+                logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
                 
-            difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
-            logging.info("Difference looks like %.*f", 8, difference)
-            writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
-        
-        
-    
-    
+                switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
+                switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
+                
+                switch.switchingCloseRelay("g"+chr(perm[0][0]+48)) # Connect Source 1 -
+                switch.switchingCloseRelay("c"+chr(perm[1][0]+48)) # to Source 2 -
+                
+                switch.switchingCloseRelay("a"+chr(perm[0][0]+48)) # Connect VM + to Source 1 +
+                switch.switchingCloseRelay("i"+chr(perm[1][0]+5+48)) # Connect VM - to Source 2 +
+                
+                time.sleep(switch_delay)
+                
+                #instruments["K34420A"].trigger_once() # First reading sometimes unreliable? Bc autorange perhaps?
+                #instruments["K34420A"].get_read_val()
+                
+                for sample in range(nsamples):
+                    instruments["K34420A"].trigger_once()
+                    reading = instruments["K34420A"].get_read_val()
+                    polarity_1_samples[sample]=reading
+                    logging.info("In 1 polarity read "+str(reading))
+                    
+                logging.info("stdev "+str(statistics.stdev(polarity_1_samples)))
+                if (statistics.stdev(polarity_1_samples)>3e-7):
+                    logging.info("stdev looks high, error likely, re-homing.")
+                    error_counter += 1
+                    break
+                    
+                switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
+                switch.switchingCloseRelay("c"+chr(59)) # Park - side switches
+                
+                switch.switchingCloseRelay("k"+chr(perm[0][0]+48)) # Connect Source 1 +
+                switch.switchingCloseRelay("e"+chr(perm[1][0]+48)) # to Source 2 +
+                
+                switch.switchingCloseRelay("a"+chr(perm[0][0]+5+48)) # Connect VM + to Source 1 -
+                switch.switchingCloseRelay("i"+chr(perm[1][0]+48)) # Connect VM - to Source 2 -
+                
+                time.sleep(switch_delay)
+                
+                
+                for sample in range(nsamples):
+                    instruments["K34420A"].trigger_once()
+                    reading = instruments["K34420A"].get_read_val()
+                    polarity_2_samples[sample]=reading
+                    logging.info("In 2 polarity read "+str(reading))
+                    
+                logging.info("stdev "+str(statistics.stdev(polarity_2_samples)))
+                if (statistics.stdev(polarity_2_samples)>3e-7):
+                    logging.info("stdev looks high, error likely, re-homing.")
+                    error_counter += 1
+                    break
+                    
+                difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
+                logging.info("Difference looks like %.*f", 8, difference)
+                writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
+
     
 try:
     #test_3458A()
