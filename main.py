@@ -687,8 +687,8 @@ def nbs430():
                 polarity_2_samples[sample]=reading
                 logging.info("In 2 polarity read "+str(reading))
                 
-            logging.info("stdev "+str(statistics.stdev(polarity_1_samples)))
-            if (statistics.stdev(polarity_1_samples)>3e-7):
+            logging.info("stdev "+str(statistics.stdev(polarity_2_samples)))
+            if (statistics.stdev(polarity_2_samples)>3e-7):
                 logging.info("stdev looks high, error likely, re-homing.")
                 error_counter += 1
                 
