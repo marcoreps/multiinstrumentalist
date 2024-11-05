@@ -174,9 +174,9 @@ class rotary_scanner:
     
     def switchingCloseRelay(self, relay):
         try:
-            logging.info("asking relay to "+str(relay))
+            logging.debug("asking relay to "+str(relay))
             self.serial.write((str(relay)+'\r').encode())
-            logging.info(self.serial.readline().rstrip())
+            logging.debug(self.serial.readline().rstrip())
         except:
             logging.error("Error in %s __init__" % self.title, exc_info=True)
             logging.error("Scanner sent so far:")
