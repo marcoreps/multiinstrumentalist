@@ -477,7 +477,7 @@ def rms_34420A():
         for i in range(5):
             readings[i] = float(instruments["K34420A"].get_read_val())
         averages.append(statistics.mean(readings))
-        print(numpy.sqrt(numpy.mean(averages**2)))
+        print(numpy.sqrt(numpy.mean(numpy.square(averages))))
         
 
 
