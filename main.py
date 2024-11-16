@@ -471,11 +471,11 @@ def rms_34420A():
     #instruments["K34420A"].blank_display()
     instruments["K34420A"].config_trigger_auto()
     
-    readings = [0]*1
+    readings = [0]*10
     averages = []
     
     while True:
-        for i in range(1):
+        for i in range(10):
             readings[i] = float(instruments["K34420A"].get_read_val())
         averages.append(statistics.mean(readings))
         print(numpy.sqrt(numpy.mean(numpy.square(averages))))
