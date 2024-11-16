@@ -242,7 +242,7 @@ class HP34420A(multimeter):
         
     def set_filter(self):
         self.instr.write("INPut:FILTer:STATe ON")
-        self.instr.write("INPut:FILTer:TYPE DIGital")
+        self.instr.write("INPut:FILTer:TYPE BOTH")
         self.instr.write("INPut:FILTer:DIGital:RESPonse MEDium")
         
 class F8508A(multimeter):
