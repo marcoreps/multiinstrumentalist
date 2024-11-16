@@ -202,7 +202,6 @@ class HP34420A(multimeter):
         self.instr.write("CONFigure:VOLTage:DC "+str(RANG)+", MAX, (@FRONt1)")
         self.instr.write("ROUTe:TERMinals FRONt1")
         self.instr.write("SENSe:VOLTage:DC:NPLCycles 100")
-        self.instr.write("INPut:FILTer OFF")
         self.instr.write("TRIGger:DELay:AUTO ON")
         
     def blank_display(self):
@@ -231,8 +230,6 @@ class HP34420A(multimeter):
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
         
-        
-        
     def config_trigger_hold(self):
         self.instr.write("TRIGger:SOURce BUS")
         self.instr.write("TRIGger:DELay:AUTO ON")
@@ -242,6 +239,11 @@ class HP34420A(multimeter):
         logging.debug(self.title+' triggered once')
         self.instr.write("INITiate")
         self.instr.write("*TRG")
+        
+    def set_filter(self):
+        self.instr.write("INPut:FILTer:STATe ON")
+        self.instr.write("INPut:FILTer:TYPE DIGital")
+        self.instr.write("INPut:FILTer:DIGital:RESPonse MEDium")
         
 class F8508A(multimeter):
 
