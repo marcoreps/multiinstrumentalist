@@ -217,7 +217,14 @@ class HP34420A(multimeter):
         return read_val
         
     def rel(self):
-        self.instr.write("SENSe:NULL ONCE")
+        self.instr.write("SENSe:NULL:STATe OFF")
+        self.config_trigger_auto()
+        average = 0
+        for i in range(10):
+            average += self.get_read_val()/10
+        self.instr.write("SENSe:VOLTage:DC:NULL:STATe ON")
+        self.instr.write("SENSe:VOLTage:DC:NULL:VALue "+str(average))
+        
         
     def rel_off(self):
         self.instr.write("SENSe:NULL OFF")
