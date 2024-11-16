@@ -202,7 +202,7 @@ class HP34420A(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write("CONFigure:VOLTage:DC "+str(RANG)+", MAX, (@FRONt1)")
         self.instr.write("ROUTe:TERMinals FRONt1")
-        self.instr.write("SENSe:VOLTage:DC:NPLCycles 20")
+        self.instr.write("SENSe:VOLTage:DC:NPLCycles 100")
         self.instr.write("TRIGger:DELay:AUTO ON")
         
     def blank_display(self):
@@ -224,6 +224,7 @@ class HP34420A(multimeter):
             average += float(self.get_read_val())/10
         self.instr.write("SENSe:VOLTage:DC:NULL:STATe ON")
         self.instr.write("SENSe:VOLTage:DC:NULL:VALue "+str(average))
+        print(self.instr.query("SENSe:VOLTage:DC:NPLCycles?"))
         
         
     def rel_off(self):
