@@ -190,12 +190,14 @@ class HP34420A(multimeter):
         self.instr = self.rm.open_resource(self.rn)
         #self.instr.timeout = 20000
         del self.instr.timeout
+        logging.info("*IDN? -> "+self.instr.query("*IDN?"))
+        logging.info("Last ERR -> "+self.instr.query('SYSTem:ERRor?'))
         self.instr.clear()
         self.instr.write("*RST")
         self.instr.write("*CLS")
-        logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         logging.info("SYSTem:VERSion? -> "+self.instr.query("SYSTem:VERSion?"))
-        logging.info(self.instr.query('SYSTem:ERRor?'))
+        #Take some samples before engaging any filters
+        time.sleep(10)
         
     def config_DCV(self, RANG):
         logging.debug(self.title+" config_DCV")
