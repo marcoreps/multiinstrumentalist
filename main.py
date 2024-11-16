@@ -454,14 +454,14 @@ def pt100_scanner():
             instruments["3458B"].trigger_once()
             MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
-def test_34420A():
+def rms_34420A():
     #instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
     #instruments["HP34420A"].config_DCV(0.001)
     #instruments["HP34420A"].rel()
     #instruments["HP34420A"].blank_display()
     #instruments["HP34420A"].config_trigger_auto()
     clock=datetime.datetime.now()
-    print("Reference time: " + str(clock))
+    print("Start time: " + str(clock))
     
     
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
@@ -470,19 +470,14 @@ def test_34420A():
     #instruments["K34420A"].blank_display()
     instruments["K34420A"].config_trigger_auto()
     
-    #while True:
-        #writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
-        #writer.write("PPMhub", "ADRmu4 - ADRmu1", instruments["HP34420A"].get_title(), instruments["HP34420A"].get_read_val())
-        #writer.write("PPMhub", "KS Shorting Plug", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
+
+    
+    while True:
+        for i in range(50):
+            readings[i] = float(instruments["K34420A"].get_read_val())
+        print(statistics.mean(readings))
         
-    timestr = time.strftime("%Y%m%d-%H%M%S_")
-    with open('csv/'+timestr+'HP_34420A_short_NPLC100.csv', mode='w') as csv_file:
-        fieldnames = ['time', '34420a_volt']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-        while True:
-                val = float(instruments["K34420A"].get_read_val())
-                writer.writerow({'time':time.time(), '34420a_volt': val})
+
 
 
 def scanner_34420A():
