@@ -470,7 +470,7 @@ def rms_34420A():
     #instruments["K34420A"].blank_display()
     instruments["K34420A"].config_trigger_auto()
     
-    readings=[]
+    readings = [0]*50
     
     while True:
         for i in range(50):
