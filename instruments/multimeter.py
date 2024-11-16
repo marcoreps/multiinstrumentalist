@@ -221,7 +221,7 @@ class HP34420A(multimeter):
         self.config_trigger_auto()
         average = 0
         for i in range(10):
-            average += self.get_read_val()/10
+            average += float(self.get_read_val())/10
         self.instr.write("SENSe:VOLTage:DC:NULL:STATe ON")
         self.instr.write("SENSe:VOLTage:DC:NULL:VALue "+str(average))
         
