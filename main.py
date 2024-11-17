@@ -476,10 +476,10 @@ def rms_34420A():
     
     while True:
         #instruments["K34420A"].rel()
-        for i in range(10):
+        for i in range(100):
             rel[i] = float(instruments["K34420A"].get_read_val())
             
-        for i in range(50):
+        for i in range(500):
             readings[i] = float(instruments["K34420A"].get_read_val())
         #print(numpy.sqrt(numpy.mean(numpy.square(readings))))
         print(numpy.mean(readings)-numpy.mean(rel))
