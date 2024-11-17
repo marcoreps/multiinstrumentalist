@@ -471,14 +471,18 @@ def rms_34420A():
     #instruments["K34420A"].blank_display()
     instruments["K34420A"].config_trigger_auto()
     
-    readings = [0]*50
+    readings = [0]*500
+    rel = [0]*100
     
     while True:
-        instruments["K34420A"].rel()
+        #instruments["K34420A"].rel()
+        for i in range(10):
+            rel[i] = float(instruments["K34420A"].get_read_val())
+            
         for i in range(50):
             readings[i] = float(instruments["K34420A"].get_read_val())
         #print(numpy.sqrt(numpy.mean(numpy.square(readings))))
-        print(numpy.mean(readings))
+        print(numpy.mean(readings)-numpy.mean(rel))
         
 
 
