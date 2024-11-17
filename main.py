@@ -455,11 +455,6 @@ def pt100_scanner():
             MySeriesHelper(instrument_name="PT100 Ch"+str(i+1), value=float(instruments["3458B"].get_read_val()))
 
 def rms_34420A():
-    #instruments["HP34420A"]=HP34420A(rm, 'GPIB0::7::INSTR', title='HP 34420A')
-    #instruments["HP34420A"].config_DCV(0.001)
-    #instruments["HP34420A"].rel()
-    #instruments["HP34420A"].blank_display()
-    #instruments["HP34420A"].config_trigger_auto()
     clock=datetime.datetime.now()
     print("Start time: " + str(clock))
     
@@ -478,16 +473,13 @@ def rms_34420A():
         rel[i] = float(instruments["K34420A"].get_read_val())
 
     while True:
-        #instruments["K34420A"].rel()
-
-            
         for i in range(500):
             readings[i] = float(instruments["K34420A"].get_read_val()) - numpy.mean(rel)
         
         clock=datetime.datetime.now()
         print(str(clock))
-        #print(numpy.mean(readings))
-        print(numpy.sqrt(numpy.mean(numpy.square(readings))))
+        print(numpy.mean(readings))
+        #print(numpy.sqrt(numpy.mean(numpy.square(readings))))
         
 
 
