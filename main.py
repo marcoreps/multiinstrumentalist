@@ -473,11 +473,13 @@ def rms_34420A():
     
     readings = [0]*500
     rel = [0]*100
-    
+
+    for i in range(100):
+        rel[i] = float(instruments["K34420A"].get_read_val())
+
     while True:
         #instruments["K34420A"].rel()
-        for i in range(100):
-            rel[i] = float(instruments["K34420A"].get_read_val())
+
             
         for i in range(500):
             readings[i] = float(instruments["K34420A"].get_read_val())
