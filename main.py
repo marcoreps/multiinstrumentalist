@@ -482,11 +482,11 @@ def rms_34420A():
 
             
         for i in range(500):
-            readings[i] = float(instruments["K34420A"].get_read_val())
+            readings[i] = float(instruments["K34420A"].get_read_val()) - numpy.mean(rel)
         
         clock=datetime.datetime.now()
         print(str(clock))
-        #print(numpy.mean(readings)-numpy.mean(rel))
+        #print(numpy.mean(readings))
         print(numpy.sqrt(numpy.mean(numpy.square(readings))))
         
 
