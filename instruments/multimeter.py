@@ -223,9 +223,7 @@ class HP34420A(multimeter):
         for i in range(10):
             average += float(self.get_read_val())/10
         self.instr.write("SENSe:VOLTage:DC:NULL:STATe ON")
-        self.instr.write("SENSe:VOLTage:DC:NULL:VALue "+str(average))
-        print(self.instr.query("SENSe:VOLTage:DC:NPLCycles?"))
-        
+        self.instr.write("SENSe:VOLTage:DC:NULL:VALue "+str(average))        
         
     def rel_off(self):
         self.instr.write("SENSe:NULL OFF")
