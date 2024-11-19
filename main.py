@@ -458,7 +458,6 @@ def rms_34420A():
     clock=datetime.datetime.now()
     print("Start time: " + str(clock))
     
-    
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV(0.001)
     #instruments["K34420A"].rel()
@@ -468,8 +467,6 @@ def rms_34420A():
     
     readings = [0]*500
     rel = [0]*100
-
-
 
     while True:
         for i in range(100):
@@ -707,11 +704,11 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    #scanner_once()
+    scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
-    rms_34420A()
+    #rms_34420A()
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
