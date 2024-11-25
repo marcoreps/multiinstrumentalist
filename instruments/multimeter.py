@@ -202,7 +202,7 @@ class HP34420A(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write("CONFigure:VOLTage:DC "+str(RANG)+", MAX, (@FRONt1)")
         self.instr.write("ROUTe:TERMinals FRONt1")
-        self.instr.write("SENSe:VOLTage:DC:NPLCycles 10")
+        self.instr.write("SENSe:VOLTage:DC:NPLCycles 100")
         self.instr.write("TRIGger:DELay:AUTO ON")
         
     def blank_display(self):
@@ -236,15 +236,17 @@ class HP34420A(multimeter):
         
     def config_trigger_auto(self):
         self.instr.write("TRIGger:SOURce IMMediate")
+        self.instr.write("TRIGger:DELay:AUTO ON")
+        self.instr.write("INITiate")
         
     def config_trigger_hold(self):
         self.instr.write("TRIGger:SOURce BUS")
         self.instr.write("TRIGger:DELay:AUTO ON")
+        self.instr.write("INITiate")
         #self.instr.write("TRIGger:COUNt INFinity") Insufficient memory??
         
     def trigger_once(self):
         logging.debug(self.title+' triggered once')
-        self.instr.write("INITiate")
         self.instr.write("*TRG")
         
     def set_filter(self):
