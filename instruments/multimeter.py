@@ -188,7 +188,6 @@ class HP34420A(multimeter):
         self.rm = resource_manager
         self.rn = resource_name
         self.instr = self.rm.open_resource(self.rn)
-        #self.instr.timeout = 20000
         del self.instr.timeout
         logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         logging.info("Last ERR -> "+self.instr.query('SYSTem:ERRor?'))
@@ -218,7 +217,6 @@ class HP34420A(multimeter):
         
     def rel(self):
         self.instr.write("SENSe:VOLTage:DC:NULL:STATe OFF")
-        self.config_trigger_auto()
         average = 0
         for i in range(10):
             average += float(self.get_read_val())/10
@@ -234,19 +232,13 @@ class HP34420A(multimeter):
     def get_error(self):
         return self.instr.query("SYSTem:ERRor?")
         
-    def config_trigger_auto(self):
-        self.instr.write("TRIGger:SOURce IMMediate")
-        self.instr.write("TRIGger:DELay:AUTO ON")
-        self.instr.write("INITiate")
-        
     def config_trigger_hold(self):
         self.instr.write("TRIGger:SOURce BUS")
-        self.instr.write("TRIGger:DELay:AUTO ON")
-        self.instr.write("INITiate")
         #self.instr.write("TRIGger:COUNt INFinity") Insufficient memory??
         
     def trigger_once(self):
         logging.debug(self.title+' triggered once')
+        self.instr.write("INITiate")
         self.instr.write("*TRG")
         
     def set_filter(self):
