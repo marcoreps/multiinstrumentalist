@@ -31,7 +31,7 @@ influx_org = config['INFLUX']['org']
 writer=influx_writer(influx_url, influx_token, influx_org)
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 instruments = dict()
@@ -577,8 +577,8 @@ def test_rotary_scanner():
             
 def nbs430():
 
-    nsamples = 2#10
-    switch_delay = 2#60
+    nsamples = 10
+    switch_delay = 60
     
     
     error_counter = 0
