@@ -577,8 +577,8 @@ def test_rotary_scanner():
             
 def nbs430():
 
-    nsamples = 1#10
-    switch_delay = 1#60
+    nsamples = 2#10
+    switch_delay = 2#60
     
     
     error_counter = 0
