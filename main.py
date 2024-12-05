@@ -577,8 +577,8 @@ def test_rotary_scanner():
             
 def nbs430():
 
-    nsamples = 10
-    switch_delay = 60
+    nsamples = 1#10
+    switch_delay = 1#60
     
     
     error_counter = 0
@@ -704,7 +704,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -712,7 +712,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
