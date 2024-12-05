@@ -623,7 +623,7 @@ def nbs430():
                 instruments["K34420A"].trigger_once()
                 reading = instruments["K34420A"].get_read_val()
                 polarity_2_samples[sample]=reading
-                logging.debug("Shorted read "+str(reading))
+                logging.info("Shorted read "+str(reading))
                 
             logging.debug("stdev "+str(statistics.stdev(polarity_2_samples)))
             if (statistics.stdev(polarity_1_samples)>3e-7):
@@ -642,7 +642,7 @@ def nbs430():
             
                 logging.debug("error_counter "+str(error_counter))
             
-                logging.debug("Looking at "+perm[0][1]+" and "+perm[1][1])
+                logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
                 
                 switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
                 switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
@@ -695,7 +695,7 @@ def nbs430():
                     break
                     
                 difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
-                logging.debug("Difference looks like %.*f", 8, difference)
+                logging.info("Difference looks like %.*f", 8, difference)
                 writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
 
     
