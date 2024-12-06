@@ -31,7 +31,7 @@ influx_org = config['INFLUX']['org']
 writer=influx_writer(influx_url, influx_token, influx_org)
 
 #logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.basicConfig(level=logging.info, format='%(asctime)s %(levelname)-8s %(message)s')
 logging.info("Starting ...")
 
 instruments = dict()
@@ -716,7 +716,7 @@ def resistance_bridge():
     
     timestr = time.strftime("%Y%m%d-%H%M%S_")
     with open('csv/'+timestr+'_resistance_bridge.csv', mode='w') as csv_file:
-        fieldnames = ['time', 'pt100', r_deviation]
+        fieldnames = ['time', 'pt100', 'r_deviation']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         while True:
