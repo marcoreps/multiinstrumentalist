@@ -508,7 +508,7 @@ def resistance_bridge_temperature_sweep():
     logging.info("resistance_bridge_temperature_sweep()")
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
-    instruments["K34420A"].config_trigger_auto()
+    instruments["K34420A"].config_trigger_hold()
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
@@ -698,6 +698,38 @@ def nbs430():
                 logging.info("Difference looks like %.*f", 8, difference)
                 writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
 
+
+def resistance_bridge():
+    logging.info("resistance_bridge_temperature_sweep()")
+    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"].config_DCV("AUTO")
+    instruments["K34420A"].config_trigger_hold()
+    instruments["K34420A"].rel()
+    
+    instruments["3458P"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458P')
+    instruments["3458P"].config_pt100()
+    instruments["3458P"].config_NDIG(9)
+    instruments["3458P"].config_NPLC(100)
+    instruments["3458P"].config_trigger_hold()
+    
+    timestr = time.strftime("%Y%m%d-%H%M%S_")
+    with open('csv/'+timestr+'_resistance_bridge.csv', mode='w') as csv_file:
+        fieldnames = ['time', 'pt100', r_deviation]
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        while True:
+                instruments["K34420A"].trigger_once()
+                instruments["3458P"].trigger_once()
+                
+                pt100 = float(instruments["3458B"].get_read_val())
+                r_deviation = float(instruments["K34420A"].get_read_val())
+                r_deviation = (r_deviation / 10E-9)*4E-6
+                writer.writerow({'time':time.time(), 'pt100': pt100, 'r_deviation': r_deviation})
+                logging.info("At "+str(pt100)+" °C resistance deviates %.*f Ohm", 8, r_deviation)
+    
+    
+
+
     
 try:
     #test_3458A()
@@ -712,7 +744,8 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    nbs430()
+    #nbs430()
+    resistance_bridge()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:

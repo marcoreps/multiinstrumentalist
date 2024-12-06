@@ -115,6 +115,13 @@ class HP3458A(multimeter):
         logging.debug(self.title+' get_cal_param() called')
         param = self.instr.query("CAL? "+str(number))
         return param
+        
+    def config_pt100(self):
+        logging.debug(self.title+' config_pt100 called')
+        self.instr.write("OHMF 100")
+        self.instr.write("MATH CRTD85")
+        
+        
 
 
 
