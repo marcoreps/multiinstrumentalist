@@ -703,9 +703,10 @@ def resistance_bridge():
     logging.info("resistance_bridge_temperature_sweep()")
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
-
-    instruments["K34420A"].rel()
     instruments["K34420A"].config_trigger_hold()
+    instruments["K34420A"].trigger_once()
+    instruments["K34420A"].rel()
+
     
     instruments["3458P"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458P')
     instruments["3458P"].config_pt100()

@@ -223,6 +223,7 @@ class HP34420A(multimeter):
         return read_val
         
     def rel(self):
+        logging.debug(self.title+' rel() started')
         self.instr.write("SENSe:VOLTage:DC:NULL:STATe OFF")
         average = 0
         for i in range(10):
