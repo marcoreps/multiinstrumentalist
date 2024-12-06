@@ -723,7 +723,7 @@ def resistance_bridge():
                 instruments["K34420A"].trigger_once()
                 instruments["3458P"].trigger_once()
                 
-                pt100 = float(instruments["3458B"].get_read_val())
+                pt100 = float(instruments["3458P"].get_read_val())
                 r_deviation = float(instruments["K34420A"].get_read_val())
                 r_deviation = (r_deviation / 10E-9)*4E-6
                 writer.writerow({'time':time.time(), 'pt100': pt100, 'r_deviation': r_deviation})
