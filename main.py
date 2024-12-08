@@ -577,8 +577,8 @@ def test_rotary_scanner():
             
 def nbs430():
 
-    nsamples = 10
-    switch_delay = 60
+    nsamples = 1
+    switch_delay = 6
     
     
     error_counter = 0
@@ -607,10 +607,10 @@ def nbs430():
         while True:
         
             switch.switchingCloseRelay("k"+chr(59)) # Park source switches
-            switch.switchingCloseRelay("a"+chr(59)) # Park source switches
+            #switch.switchingCloseRelay("a"+chr(59)) # Park source switches
             switch.switchingCloseRelay("e"+chr(59)) # Park source switches
             switch.switchingCloseRelay("g"+chr(59)) # Park source switches
-            switch.switchingCloseRelay("i"+chr(59))
+            #switch.switchingCloseRelay("i"+chr(59))
             switch.switchingCloseRelay("c"+chr(59))
             
             switch.switchingCloseRelay("a5") # Short VM
