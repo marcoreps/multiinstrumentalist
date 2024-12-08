@@ -598,7 +598,7 @@ def nbs430():
         switch.switchingCloseRelay("c0") # Home switch
 
         #scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu9"),  (5, "ADRmu12"),]
-        scanner_sources = [(1, "ADRmu3"), (2, "ADRmu15"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu12"),]
+        scanner_sources = [(1, "ADRmu3"), (2, "ADRmu1"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu12"),]
         scanner_permutations = set(itertools.combinations(scanner_sources, 2))
         
         polarity_1_samples = numpy.tile(0.0,nsamples)
