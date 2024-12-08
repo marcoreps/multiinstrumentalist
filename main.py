@@ -623,12 +623,13 @@ def nbs430():
                 instruments["K34420A"].trigger_once()
                 reading = instruments["K34420A"].get_read_val()
                 polarity_2_samples[sample]=reading
-                logging.info("Shorted read "+str(reading))
+                logging.debug("Shorted read "+str(reading))
                 
             logging.debug("stdev "+str(statistics.stdev(polarity_2_samples)))
             if (statistics.stdev(polarity_1_samples)>3e-7):
                 logging.error("stdev looks too high, switches a5 i"+chr(58))
                 error_counter += 1
+                logging.error("error_counter: "+str(error_counter))
                 break
             
             writer.write("PPMhub", "Scanner short circuit", instruments["K34420A"].get_title(), statistics.mean(polarity_2_samples))
@@ -642,7 +643,7 @@ def nbs430():
             
                 logging.debug("error_counter "+str(error_counter))
             
-                logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
+                logging.debug("Looking at "+perm[0][1]+" and "+perm[1][1])
                 
                 switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
                 switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
@@ -668,6 +669,7 @@ def nbs430():
                 if (statistics.stdev(polarity_1_samples)>3e-7):
                     logging.error("stdev looks too high, switches"+" g"+chr(perm[0][0]+48)+" c"+chr(perm[1][0]+48)+" a"+chr(perm[0][0]+48)+" i"+chr(perm[1][0]+5+48))
                     error_counter += 1
+                    logging.error("error_counter: "+str(error_counter))
                     break
                     
                 switch.switchingCloseRelay("g"+chr(59)) # Park - side switches
@@ -692,10 +694,11 @@ def nbs430():
                 if (statistics.stdev(polarity_2_samples)>3e-7):
                     logging.error("stdev looks too high, switches"+" k"+chr(perm[0][0]+48)+" e"+chr(perm[1][0]+48)+" a"+chr(perm[0][0]+5+48)+" i"+chr(perm[1][0]+48))
                     error_counter += 1
+                    logging.error("error_counter: "+str(error_counter))
                     break
                     
                 difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
-                logging.info("Difference looks like %.*f", 8, difference)
+                logging.debug("Difference looks like %.*f", 8, difference)
                 writer.write("PPMhub", (perm[0][1]+" - "+perm[1][1]), instruments["K34420A"].get_title(), difference)
 
 
