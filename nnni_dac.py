@@ -6,24 +6,20 @@ from datetime import datetime
 
 rm = pyvisa.ResourceManager()
 
-start = 0b00000000000000000000
-stop  = 0b11111100000000000000
-step  = 0b00000100000000000000
+# Reference : ±10V
+# DAC Counts: 20000
+# Resolution: 1mV
+# Note: only outputs between ±9V are valid, see 'modern-calibrator-design.pdf'
 
-# temporary container for data
-data = [[],[],[],[],[],[]]
+start =  1000
+stop  = 19000
+step  =  1000
 
-# generates DAC input codes and writes to column 0
-for i in range(start, stop + step, step):
-    data[0].append(i)
+runs = 10
 
-# append extra zeroes to the end to pad number of rows
-data[0].append(0)
-data[0].append(0)
-
-# m and c values for endpoint-fit INL
-m = 0.0
-c = 0.0
+# Generate the input list
+inputList = [i for i in range(start, stop + step, step)]
+sortedInputList = sorted(inputList)  # Keep a sorted copy for reference
 
 NPLC = 100
 soak = 10 # measurement soak time, DAC settles to 0.02% within 1us
@@ -35,54 +31,29 @@ instr.config_NDIG(9)
 instr.config_NPLC(NPLC)
 instr.config_trigger_hold()
 
-serial = serial.Serial("/dev/ttyACM0", 9600)
+serial = serial.Serial("/dev/ttyACM0", 9600) # DAC serial port goes here
 timestr = time.strftime("%Y%m%d-%H%M%S_")
 
-# outer loop writes to columns 1 through 5
-for i in range(1, 6, 1):
-    
-    # step one - calculate m and c values for each columm (i.e. one run)
-    # write 0 value to DAC
-    command = str(data[0][0]) + '\r'
-    serial.write(command.encode())
-    # read 0 value from 3458A
-    instr.trigger_once()
-    startVolt = float(instr.get_read_val())
-    # write stop value to DAC
-    command = str(data[0][63]) + '\r'
-    serial.write(command.encode())
-    # read stop value from 3458A
-    instr.trigger_once()
-    stopVolt = float(instr.get_read_val())
-    
-    #calculate m and c values, they will be stored later
-    m = (stopVolt - startVolt)/(data[0][63] - data[0][0])
-    c = stopVolt - (m * data[0][63])
+fileName = "WoodwardSynchronousDAC.csv"
 
-    # inner loop for 1024 DAC values (indices 0 to 63)
-    for j in range(64):
-        # send DAC values from column 0
-        command = str(data[0][j]) + '\r'
+for run in range(runs):
+    # Shuffle input list for this run
+    random.shuffle(inputList)
+    # Temporary dictionary to store readings
+    readings = {}
+    
+    for value in inputList:
+        print(f"Setting DAC to {value} and reading measurement...")
+        command = str(value) + "\n"
         serial.write(command.encode())
+        sleep(0.5)
         # write 3458A reading for respective col 0 value
         instr.trigger_once()
-        data[i].append(float(instr.get_read_val()))
-    
-    # append m and c to column at the end of each run
-    data[i].append(m)
-    data[i].append(c)
-
-with open('csv/'+timestr+'NNNIDAC_HP3458A_INL.csv', mode='w') as csv_file:
-
-    csv_file.write("# INL run")
-    csv_file.write("# soak = "+str(soak))
-    csv_file.write("# samples_per_meter_per_step = "+str(samples_per_meter_per_step))
-    csv_file.write("# NPLC = "+str(NPLC))
-
-    fieldnames = ['dac_counts', 'Run 1', 'Run 2', 'Run 3', 'Run 4', 'Run 5']
-    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-    writer.writeheader()
-    
-    # 66 here because of added m and c values in each column
-    for i in range(66):
-        writer.writerow({'dac_counts': data[0][i], 'Run 1': data[1][i], 'Run 2': data[2][i], 'Run 3': data[3][i], 'Run 4': data[4][i], 'Run 5': data[5][i]})
+        reading = instr.get_reading_val()
+        if reading is not None:
+            readings[value] = reading
+            
+    # Write readings to the CSV file in the correct order
+    with open(fileName, "a") as f:
+        row = ", ".join(readings.get(key, "N/A") for key in sortedInputList) + "\n"
+        f.write(row)
