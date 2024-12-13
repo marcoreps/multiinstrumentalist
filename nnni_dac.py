@@ -3,7 +3,7 @@ import pyvisa
 import csv
 from instruments.multimeter import *
 import random
-from time
+import time
 import datetime
 
 rm = pyvisa.ResourceManager()
