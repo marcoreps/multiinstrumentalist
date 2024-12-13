@@ -17,7 +17,7 @@ start =  1000
 stop  = 19000
 step  =  1000
 
-runs = 2
+runs = 10
 
 # Generate the input list
 inputList = [i for i in range(start, stop + step, step)]
