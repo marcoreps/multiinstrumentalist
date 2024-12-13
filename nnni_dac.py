@@ -17,7 +17,7 @@ start =  1000
 stop  = 19000
 step  =  1000
 
-runs = 10
+runs = 2
 
 # Generate the input list
 inputList = [i for i in range(start, stop + step, step)]
@@ -54,7 +54,7 @@ for run in range(runs):
         instr.trigger_once()
         reading = instr.get_read_val()
         if reading is not None:
-            readings[value] = reading
+            readings[value] = reading.rstrip()
             
     # Write readings to the CSV file in the correct order
     with open(fileName, "a") as f:
