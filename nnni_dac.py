@@ -52,7 +52,7 @@ for run in range(runs):
         time.sleep(0.5)
         # write 3458A reading for respective col 0 value
         instr.trigger_once()
-        reading = instr.get_reading_val()
+        reading = instr.get_read_val()
         if reading is not None:
             readings[value] = reading
             
