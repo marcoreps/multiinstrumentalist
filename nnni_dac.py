@@ -2,9 +2,9 @@ import serial
 import pyvisa
 import csv
 from instruments.multimeter import *
-from datetime import datetime
 import random
 from time import time
+import datetime
 
 rm = pyvisa.ResourceManager()
 
@@ -34,9 +34,10 @@ instr.config_NPLC(NPLC)
 instr.config_trigger_hold()
 
 serial = serial.Serial("/dev/ttyACM0", 9600) # DAC serial port goes here
-timestr = time.strftime("%Y%m%d-%H%M%S_")
+now = datetime.datetime.now()
+timestr = now.strftime("%Y%m%d-%H%M%S_")
 
-fileName = "WoodwardSynchronousDAC.csv"
+fileName = "csv/"+timestr+"WoodwardSynchronousDAC.csv"
 
 for run in range(runs):
     # Shuffle input list for this run
