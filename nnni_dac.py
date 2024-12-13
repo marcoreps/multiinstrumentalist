@@ -4,6 +4,7 @@ import csv
 from instruments.multimeter import *
 from datetime import datetime
 import random
+from time import time
 
 rm = pyvisa.ResourceManager()
 
@@ -47,7 +48,7 @@ for run in range(runs):
         print(f"Setting DAC to {value} and reading measurement...")
         command = str(value) + "\n"
         serial.write(command.encode())
-        sleep(0.5)
+        time.sleep(0.5)
         # write 3458A reading for respective col 0 value
         instr.trigger_once()
         reading = instr.get_reading_val()
