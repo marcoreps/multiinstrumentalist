@@ -13,9 +13,9 @@ rm = pyvisa.ResourceManager()
 # Resolution: 1mV
 # Note: only outputs between ±9V are valid, see 'modern-calibrator-design.pdf'
 
-start =  1000
-stop  = 19000
-step  =  1000
+start =  9000
+stop  = 11000
+step  =  100
 
 runs = 10
 
