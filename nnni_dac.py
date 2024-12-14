@@ -49,7 +49,7 @@ for run in range(runs):
         print(f"Setting DAC to {value} and reading measurement...")
         command = str(value) + "\n"
         serial.write(command.encode())
-        time.sleep(0.5)
+        time.sleep(soak)
         # write 3458A reading for respective col 0 value
         instr.trigger_once()
         reading = instr.get_read_val()
