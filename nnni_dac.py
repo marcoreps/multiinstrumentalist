@@ -24,7 +24,7 @@ inputList = [i for i in range(start, stop + step, step)]
 sortedInputList = sorted(inputList)  # Keep a sorted copy for reference
 
 NPLC = 100
-soak = 10 # measurement soak time, DAC settles to 0.02% within 1us
+soak = 1 # measurement soak time, DAC settles to 0.02% within 1us
 samples_per_meter_per_step = 5
 
 instr=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
