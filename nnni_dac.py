@@ -40,7 +40,7 @@ with open(file_name, mode="w", newline="") as file:
     print(f"Starting measurements... Logging to {file_name}")
     for i in range(1, 1001):
         instr.trigger_once()
-        reading = instr.get_reading_val()
+        reading = instr.get_read_val()
 
         if reading is not None:
             writer.writerow([i, reading])
