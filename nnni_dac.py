@@ -7,7 +7,7 @@ from datetime import datetime
 
 # Initialize the resource manager and instrument
 rm = pyvisa.ResourceManager()
-instr = HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+instr = HP3458A(rm, 'GPIB0::23::INSTR', title='3458A')
 
 # Configure the 3458A multimeter
 instr.config_DCV(10)
