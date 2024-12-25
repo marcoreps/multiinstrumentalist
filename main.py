@@ -507,14 +507,14 @@ def scanner_34420A():
 def resistance_bridge_temperature_sweep():
     logging.info("resistance_bridge_temperature_sweep()")
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV("AUTO")
+    instruments["K34420A"].config_DCV("0")
     instruments["K34420A"].config_trigger_hold()
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    tmin = 20
-    tmax = 60
-    tstep = 1
+    tmin = 18
+    tmax = 28
+    tstep = 0.2
     wait_settle = 180
 
     sch = sched.scheduler(time.time, time.sleep)
@@ -705,7 +705,7 @@ def nbs430():
 def resistance_bridge():
     logging.info("resistance_bridge_temperature_sweep()")
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV("AUTO")
+    instruments["K34420A"].config_DCV("0")
     instruments["K34420A"].config_trigger_hold()
     instruments["K34420A"].trigger_once()
     instruments["K34420A"].rel()
@@ -747,9 +747,9 @@ try:
     #pt100_scanner()
     #rms_34420A()
     #scanner_34420A()
-    #resistance_bridge_temperature_sweep()
+    resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
 
 
