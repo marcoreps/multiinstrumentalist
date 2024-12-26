@@ -509,9 +509,11 @@ def resistance_bridge_temperature_sweep():
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("0.001")
 
-
-
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+    
+    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
+    instruments["3458B"].config_PT100_2W()
+
     
     tmin = 18
     tmax = 28
@@ -521,6 +523,8 @@ def resistance_bridge_temperature_sweep():
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["K34420A"], "VBridge"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458B"], "Divider Temp"))
+
     i=wait_settle
     for t in numpy.arange(tmin, tmax+0.01, tstep):
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
