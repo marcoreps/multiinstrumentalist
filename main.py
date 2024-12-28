@@ -480,13 +480,13 @@ def resistance_bridge_temperature_sweep():
     for t in numpy.arange(tmin, tmax+0.01, tstep):
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
-        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+        #sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
         #logging.info("point added "+str(t))
     i+=wait_settle*10
     #for t in numpy.arange(tmin, tmax+0.01, tstep):
     for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
-        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+        #sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
     logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
     sch.run()
     
