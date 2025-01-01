@@ -280,7 +280,7 @@ class F8508A(multimeter):
         
     def config_trigger_hold(self):
         logging.debug(self.title+" config_trigger_hold")
-        self.instr.write("TRIG_SRCE EXT")
+        self.instr.write("TRG_SRCE EXT")
         
     def config_DCV(self, RANG):
         logging.debug(self.title+" config_DCV")
