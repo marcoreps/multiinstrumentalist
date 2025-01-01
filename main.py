@@ -698,7 +698,7 @@ def f8508a_logger():
     instruments["8508A"].config_trigger_auto()
     
     while True:
-        val = float(instruments["8508A"].query("*TRG;RDG?"))
+        val = float(instruments["8508A"].get_read_val())
         writer.write("PPMhub", sys.argv[1], instruments["8508A"].get_title(), val)
         print(val)
 
