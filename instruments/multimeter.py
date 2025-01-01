@@ -283,15 +283,8 @@ class F8508A(multimeter):
         
     def config_DCV(self, RANG):
         logging.debug(self.title+" config_DCV")
-        self.instr.write("DCV "+str(RANG)+",FILT_OFF,RESL8,FAST_ON,TWO_WR")
+        self.instr.write("DCV "+str(RANG)+",FILT_OFF,RESL8,FAST_OFF")
         
-    def config_DCV_fast_off(self):
-        logging.debug(self.title+" config_DCV_fast_off")
-        self.instr.write("DCV ,FAST_OFF")
-        
-    def config_DCV_fast_on(self):
-        logging.debug(self.title+" config_DCV_fast_on")
-        self.instr.write("DCV ,FAST_ON")
         
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
