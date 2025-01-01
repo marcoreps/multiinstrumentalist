@@ -690,6 +690,17 @@ def resistance_bridge():
                 logging.info("At "+str(pt100)+" °C resistance deviates %.*f Ohm", 8, r_deviation)
     
     
+def f8508a_logger():
+
+    instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='8508A')
+    instruments["8508A"].config_DCV(100)
+    instruments["8508A"].config_DCV_fast_off()
+    instruments["8508A"].config_trigger_auto()
+    
+    while True:
+        val = float(my_instrument.query("*TRG;RDG?"))
+        writer.write("PPMhub", sys.argv[1], instruments["8508A"].get_title(), val)
+        print(val)
 
 
     
@@ -704,10 +715,11 @@ try:
     #pt100_scanner()
     #rms_34420A()
     #scanner_34420A()
-    resistance_bridge_temperature_sweep()
+    #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
     #nbs430()
     #resistance_bridge()
+    f8508a_logger()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
