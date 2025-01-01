@@ -469,7 +469,7 @@ def resistance_bridge_temperature_sweep():
     tmin = 18
     tmax = 28
     tstep = 0.2
-    wait_settle = 900
+    wait_settle = 2000
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["K34420A"], "VBridge"))
@@ -715,11 +715,11 @@ try:
     #pt100_scanner()
     #rms_34420A()
     #scanner_34420A()
-    #resistance_bridge_temperature_sweep()
+    resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
     #nbs430()
     #resistance_bridge()
-    f8508a_logger()
+    #f8508a_logger()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
