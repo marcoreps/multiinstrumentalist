@@ -715,9 +715,9 @@ try:
     #pt100_scanner()
     #rms_34420A()
     #scanner_34420A()
-    resistance_bridge_temperature_sweep()
+    #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
     #resistance_bridge()
     #f8508a_logger()
 
