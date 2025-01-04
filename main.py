@@ -460,7 +460,7 @@ def resistance_bridge_temperature_sweep():
     instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("0.01")
 
-    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+    #instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
     instruments["3458B"].config_pt100()
@@ -473,7 +473,7 @@ def resistance_bridge_temperature_sweep():
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["K34420A"], "VBridge"))
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
+    #sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["3458B"], "Divider Temp"))
 
     #i=wait_settle
@@ -481,13 +481,13 @@ def resistance_bridge_temperature_sweep():
     for t in numpy.arange(tmin, tmax+0.01, tstep):
     #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
-        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+        #sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
         #logging.info("point added "+str(t))
     i+=wait_settle*2
     #for t in numpy.arange(tmin, tmax+0.01, tstep):
     for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
         i+=wait_settle
-        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+        #sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
     logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
     sch.run()
     
