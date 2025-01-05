@@ -303,15 +303,15 @@ def scanner_once():
     #instruments["W4950"].config_trigger_hold()
     
     #instruments["3458A"].acal_ALL()
-    instruments["3458B"].acal_ALL()
-    instruments["3458P"].acal_ALL()
+    #instruments["3458B"].acal_ALL()
+    #instruments["3458P"].acal_ALL()
     
     while not (instruments["3458B"].is_ready() and instruments["3458P"].is_ready()):
         time.sleep(5)
 
-    #read_cal_params(instruments["3458A"])
-    read_cal_params(instruments["3458B"])
-    read_cal_params(instruments["3458P"])
+
+    #read_cal_params(instruments["3458B"])
+    #read_cal_params(instruments["3458P"])
 
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
