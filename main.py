@@ -259,8 +259,8 @@ def scanner_once():
 
 # II    Br    N   channels[8]   3458B +
 # II    BrW   P   channels[8]   3458B -
-# II    Or    N   channels[9]   3458A +
-# II    OrW   P   channels[9]   3458A -
+# II    Or    N   channels[9]   
+# II    OrW   P   channels[9]   
 # II    Bl    N   channels[10]  ADRmu4 +
 # II    BlW   P   channels[10]  ADRmu4 +
 # II    Gr    N   channels[11]  ADRmu20 +
@@ -279,11 +279,6 @@ def scanner_once():
     NPLC = 100
     nmeasurements = 20
     
-    #instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
-    #instruments["3458A"].config_DCV(10)
-    #instruments["3458A"].config_NDIG(9)
-    #instruments["3458A"].config_NPLC(NPLC)
-    #instruments["3458A"].config_trigger_hold()
     
     instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
     instruments["3458B"].config_DCV(10)
@@ -302,16 +297,15 @@ def scanner_once():
     #instruments["W4950"].config_DCV(10)
     #instruments["W4950"].config_trigger_hold()
     
-    #instruments["3458A"].acal_ALL()
-    #instruments["3458B"].acal_ALL()
-    #instruments["3458P"].acal_ALL()
+    instruments["3458B"].acal_ALL()
+    instruments["3458P"].acal_ALL()
     
     while not (instruments["3458B"].is_ready() and instruments["3458P"].is_ready()):
         time.sleep(5)
 
 
-    #read_cal_params(instruments["3458B"])
-    #read_cal_params(instruments["3458P"])
+    read_cal_params(instruments["3458B"])
+    read_cal_params(instruments["3458P"])
 
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
