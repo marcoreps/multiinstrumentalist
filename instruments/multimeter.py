@@ -325,7 +325,7 @@ class K2182A(multimeter):
         self.instr.write(":syst:pres")
         
         
-    def config_DCV(self, RANG):
+    def config_DCV(self):
         logging.debug(self.title+" config_DCV")
         self.instr.write(":SENSe:VOLTage:RANGe 0")
         self.instr.write(":SENSe:VOLTage:RANGe:AUTO off")
