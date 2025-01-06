@@ -302,3 +302,48 @@ class F8508A(multimeter):
         read_val = self.instr.read()
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
+        
+    def config_pt100():
+        logging.debug(self.title+" config_pt100")
+        self.instr.write("PRT \"Default probe    \"")
+        
+        
+class K2182A(multimeter):
+
+    def __init__(self, resource_manager, resource_name, title='Keithley 2182A'):
+        self.title = title
+        logging.debug(self.title+' init started')
+        self.rm = resource_manager
+        self.rn = resource_name
+        self.instr =  self.rm.open_resource(self.rn)
+        self.instr.timeout = 30000
+        self.instr.clear()
+        self.instr.write('*RST')
+        self.instr.write('*CLS')
+        time.sleep(2)
+        logging.info("*IDN? -> "+self.instr.query("*IDN?"))
+        self.instr.write(":syst:pres")
+        
+        
+    def config_DCV(self, RANG):
+        logging.debug(self.title+" config_DCV")
+        self.instr.write(":SENSe:VOLTage:RANGe 0")
+        self.instr.write(":SENSe:VOLTage:RANGe:AUTO off")
+        
+        self.instr.write(":SENSe:VOLTage:LPASs ON")
+        self.instr.write(":SENSe:VOLTage:DFILter:STATe ON")
+        self.instr.write(":SENSe:VOLTage:DFILter:COUNt 100")
+        self.instr.write(":SYSTem:AZERo:STATe ON")
+        self.instr.write(":SYSTem:FAZero:STATe ON")
+        self.instr.write(":SYSTem:LSYNc:STATe ON")
+
+        self.instr.write(":SENSe:VOLTage:NPLCycles 1")
+
+        
+        
+        
+    def get_read_val(self):
+        logging.debug("get_read_val() connected, reading ... ")
+        read_val = self.instr.query(":MEASure?")
+        logging.debug("get_read_val() reading "+str(read_val))
+        return read_val
