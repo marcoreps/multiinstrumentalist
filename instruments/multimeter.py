@@ -344,6 +344,6 @@ class K2182A(multimeter):
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        read_val = self.instr.query(":MEASure?")
+        read_val = self.instr.query(":FETCh?")
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val

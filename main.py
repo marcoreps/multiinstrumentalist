@@ -462,13 +462,13 @@ def resistance_bridge_temperature_sweep():
     
     tmin = 18
     tmax = 28
-    tstep = 0.5
-    wait_settle = 5400
+    tstep = 0.1
+    wait_settle = 60*60
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["2182a"], "VBridge"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 120, 10, instruments["8508a"], "DUT Temp"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 60*10, 10, instruments["8508a"], "DUT Temp"))
 
     #i=wait_settle
     i=0
