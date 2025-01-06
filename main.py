@@ -457,7 +457,7 @@ def resistance_bridge_temperature_sweep():
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
     instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
-    instruments["8508a"].config_pt100()
+    #instruments["8508a"].config_pt100()
 
     
     tmin = 18
