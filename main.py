@@ -451,12 +451,12 @@ def scanner_34420A():
         
 def resistance_bridge_temperature_sweep():
     logging.info("resistance_bridge_temperature_sweep()")
-    instruments["2182a"]=K2182A(rm, 'GPIB0::4::INSTR', title='Keithley 2182a')
+    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["8508a"]=F8508A(rm, 'GPIB0::9::INSTR', title='Fluke 8508A')
+    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
     instruments["8508a"].config_pt100()
 
     
