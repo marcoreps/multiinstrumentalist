@@ -303,7 +303,7 @@ class F8508A(multimeter):
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
         
-    def config_pt100():
+    def config_pt100(self):
         logging.debug(self.title+" config_pt100")
         self.instr.write("PRT \"Default probe    \"")
         
