@@ -348,10 +348,9 @@ class K2182A(multimeter):
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe 0")
-        read_val1 = self.instr.query(":FETCh?")
-        
-        self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe 0")
-        read_val2 = self.instr.query(":FETCh?")
+        self.instr.write("sens:func 'volt'")
+        read_val1 = self.instr.query("sens:chan 1; :read?")
+        self.instr.write("sens:func 'volt'")
+        read_val2 = self.instr.query("sens:chan 2; :read?")
         logging.debug("get_read_val() reading "+str(float(read_val1)-float(read_val2)))
         return str(float(read_val1)-float(read_val2))
