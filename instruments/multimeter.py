@@ -329,6 +329,7 @@ class K2182A(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write(":SENSe:VOLTage:RANGe 0")
         self.instr.write(":SENSe:VOLTage:RANGe:AUTO off")
+        self.instr.write(":SENSe:VOLTage:DELTa ON")
         
         self.instr.write(":SENSe:VOLTage:LPASs ON")
         self.instr.write(":SENSe:VOLTage:DFILter:STATe ON")

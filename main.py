@@ -463,7 +463,7 @@ def resistance_bridge_temperature_sweep():
     tmin = 18
     tmax = 28
     tstep = 0.1
-    wait_settle = 60*60
+    wait_settle = 60*30
 
     sch = sched.scheduler(time.time, time.sleep)
     sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["2182a"], "VBridge"))
@@ -471,15 +471,24 @@ def resistance_bridge_temperature_sweep():
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 60*10, 10, instruments["8508a"], "DUT Temp"))
 
     i=wait_settle
-    for t in numpy.arange(tmin, tmax+0.01, tstep):
-    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    for t in numpy.arange(23, tmax+0.01, tstep):
         i+=wait_settle
         sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
-    i+=wait_settle*2
-    #for t in numpy.arange(tmin, tmax+0.01, tstep):
-    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
+    i+=wait_settle*4
+    for t in numpy.flip(numpy.arange(23, tmax+0.01, tstep)):
         i+=wait_settle
         sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*4
+    for t in numpy.flip(numpy.arange(tmin-0.01, 23, tstep)):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*4
+    for t in numpy.arange(tmin-0.01, 23, tstep):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*4
+    sch.enter(i, 9, logging.info, argument=("All done, but still recording until shutdown"))
+        
     logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
     sch.run()
     
