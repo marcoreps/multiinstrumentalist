@@ -356,5 +356,5 @@ class K2182A(multimeter):
         
         self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe 0")
         read_val2 = self.instr.query(":FETCh?")
-        logging.debug("get_read_val() reading "+str(read_val))
+        logging.debug("get_read_val() reading "+str(read_val1-read_val2))
         return read_val1-read_val2
