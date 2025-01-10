@@ -327,24 +327,34 @@ class K2182A(multimeter):
         
     def config_DCV(self):
         logging.debug(self.title+" config_DCV")
-        self.instr.write(":SENSe:VOLTage:RANGe 0")
-        self.instr.write(":SENSe:VOLTage:RANGe:AUTO off")
-        self.instr.write(":SENSe:VOLTage:DELTa ON")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe 0")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe:AUTO off")
         
-        self.instr.write(":SENSe:VOLTage:LPASs ON")
-        self.instr.write(":SENSe:VOLTage:DFILter:STATe ON")
-        self.instr.write(":SENSe:VOLTage:DFILter:COUNt 100")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:LPASs ON")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:STATe ON")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:COUNt 100")
         self.instr.write(":SYSTem:AZERo:STATe ON")
         self.instr.write(":SYSTem:FAZero:STATe ON")
         self.instr.write(":SYSTem:LSYNc:STATe ON")
 
-        self.instr.write(":SENSe:VOLTage:NPLCycles 1")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:NPLCycles 1")
+        
+        self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe 0")
+        self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe:AUTO off")
+        self.instr.write(":SENSe:VOLTage:CHANnel2:LPASs ON")
+        self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:STATe ON")
+        self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:COUNt 100")
+        self.instr.write(":SENSe:VOLTage:CHANnel2:NPLCycles 1")
 
         
         
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        read_val = self.instr.query(":FETCh?")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe 0")
+        read_val1 = self.instr.query(":FETCh?")
+        
+        self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe 0")
+        read_val2 = self.instr.query(":FETCh?")
         logging.debug("get_read_val() reading "+str(read_val))
-        return read_val
+        return read_val1-read_val2
