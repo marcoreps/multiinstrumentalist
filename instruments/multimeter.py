@@ -327,24 +327,21 @@ class K2182A(multimeter):
         
     def config_DCV(self):
         logging.debug(self.title+" config_DCV")
-        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe 0")
-        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe:AUTO off")
-        
+        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe 0")        
         self.instr.write(":SENSe:VOLTage:CHANnel1:LPASs ON")
-        self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:STATe ON")
-        self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:COUNt 100")
+        #self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:STATe ON")
+        #self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:COUNt 100")
         self.instr.write(":SYSTem:AZERo:STATe ON")
         self.instr.write(":SYSTem:FAZero:STATe ON")
         self.instr.write(":SYSTem:LSYNc:STATe ON")
 
-        self.instr.write(":SENSe:VOLTage:CHANnel1:NPLCycles 1")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:NPLCycles 10")
         
         self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe 0")
-        self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe:AUTO off")
         self.instr.write(":SENSe:VOLTage:CHANnel2:LPASs ON")
-        self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:STATe ON")
-        self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:COUNt 100")
-        self.instr.write(":SENSe:VOLTage:CHANnel2:NPLCycles 1")
+        #self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:STATe ON")
+        #self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:COUNt 100")
+        self.instr.write(":SENSe:VOLTage:CHANnel2:NPLCycles 10")
 
         
         
