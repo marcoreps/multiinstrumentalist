@@ -262,7 +262,7 @@ class F8508A(multimeter):
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
-        self.instr.timeout = 30000
+        self.instr.timeout = 50000
         #self.instr.clear()
         #self.instr.write('*RST')
         #self.instr.write('*CLS')
