@@ -512,7 +512,7 @@ def voltage_temperature_sweep():
     sch = sched.scheduler(time.time, time.sleep)
     #sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["2182a"], "VBridge"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 60*10, 10, instruments["8508a"], "hamon divider output"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 60*10, 10, instruments["8508A"], "hamon divider output"))
 
     i=wait_settle
     for t in numpy.arange(23, tmax+0.01, tstep):
