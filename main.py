@@ -493,6 +493,50 @@ def resistance_bridge_temperature_sweep():
     sch.run()
     
     
+def voltage_temperature_sweep():
+    logging.info("resistance_bridge_temperature_sweep()")
+
+    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+    
+    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
+    instruments["8508A"].config_DCV(20)
+    instruments["8508A"].config_trigger_hold()
+    
+
+    
+    tmin = 18
+    tmax = 28
+    tstep = 0.1
+    wait_settle = 60*10
+
+    sch = sched.scheduler(time.time, time.sleep)
+    #sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["2182a"], "VBridge"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
+    sch.enter(10, 10, recursive_read_inst, argument=(sch, 60*10, 10, instruments["8508a"], "hamon divider output"))
+
+    i=wait_settle
+    for t in numpy.arange(23, tmax+0.01, tstep):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*4
+    for t in numpy.flip(numpy.arange(23, tmax+0.01, tstep)):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*4
+    for t in numpy.flip(numpy.arange(tmin-0.01, 23, tstep)):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*4
+    for t in numpy.arange(tmin-0.01, 23, tstep):
+        i+=wait_settle
+        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
+    i+=wait_settle*4
+    sch.enter(i, 9, logging.info, argument=("All done, but still recording until shutdown"))
+        
+    logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
+    sch.run()
+    
+    
     
 def test_rotary_scanner():
 
@@ -716,11 +760,12 @@ try:
     #pt100_scanner()
     #rms_34420A()
     #scanner_34420A()
-    resistance_bridge_temperature_sweep()
+    #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
     #nbs430()
     #resistance_bridge()
     #f8508a_logger()
+    voltage_temperature_sweep()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
