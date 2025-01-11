@@ -506,7 +506,7 @@ def voltage_temperature_sweep():
     
     tmin = 18
     tmax = 28
-    tstep = 0.1
+    tstep = 0.5
     wait_settle = 60*10
 
     sch = sched.scheduler(time.time, time.sleep)
