@@ -500,7 +500,6 @@ def voltage_temperature_sweep():
     
     instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
     instruments["8508A"].config_DCV(20)
-    instruments["8508A"].config_trigger_hold()
     
 
     
