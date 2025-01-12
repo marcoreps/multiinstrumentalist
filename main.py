@@ -498,9 +498,9 @@ def voltage_temperature_sweep():
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
-    instruments["8508A"].config_DCV(10)
-    instruments["8508A"].config_trigger_hold()
+    #instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
+    #instruments["8508A"].config_DCV(10)
+    #instruments["8508A"].config_trigger_hold()
     
     instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
