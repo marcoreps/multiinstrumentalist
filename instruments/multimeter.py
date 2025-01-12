@@ -329,28 +329,21 @@ class K2182A(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe 0")        
         self.instr.write(":SENSe:VOLTage:CHANnel1:LPASs ON")
-        #self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:STATe ON")
-        #self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:COUNt 100")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:STATe ON")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:COUNt 100")
         self.instr.write(":SYSTem:AZERo:STATe ON")
         self.instr.write(":SYSTem:FAZero:STATe ON")
         self.instr.write(":SYSTem:LSYNc:STATe ON")
 
-        self.instr.write(":SENSe:VOLTage:CHANnel1:NPLCycles 10")
+        self.instr.write(":SENSe:VOLTage:CHANnel1:NPLCycles 1")
         
-        self.instr.write(":SENSe:VOLTage:CHANnel2:RANGe 0")
-        self.instr.write(":SENSe:VOLTage:CHANnel2:LPASs ON")
-        #self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:STATe ON")
-        #self.instr.write(":SENSe:VOLTage:CHANnel2:DFILter:COUNt 100")
-        self.instr.write(":SENSe:VOLTage:CHANnel2:NPLCycles 10")
+
 
         
         
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        self.instr.write("sens:func 'volt'")
-        read_val1 = self.instr.query("sens:chan 1; :read?")
-        self.instr.write("sens:func 'volt'")
-        read_val2 = self.instr.query("sens:chan 2; :read?")
-        logging.debug("get_read_val() reading "+str(float(read_val1)-float(read_val2)))
-        return str(float(read_val1)-float(read_val2))
+        read_val = self.instr.query(":FETCh?")
+        logging.debug("get_read_val() reading "+str(read_val))
+        return read_val
