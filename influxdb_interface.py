@@ -14,7 +14,7 @@ class influx_writer:
         
     def write(self, bucket, measurement, field, val, timestamp=None, tags=None):
         if not timestamp:
-            timestamp = datetime.utcnow()
+            timestamp = datetime.now()
         logging.debug('writing point to influxdb: measurement=%s field=%s val=%s'%(str(measurement),str(field),str(val)))
         p = Point(measurement).field(field, float(val)).time(timestamp, WritePrecision.MS)
         if tags is not None:
