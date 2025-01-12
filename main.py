@@ -540,43 +540,7 @@ def voltage_temperature_sweep():
     sch.run()
     
     
-    
-def test_rotary_scanner():
-
-    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV(0.001)
-    instruments["K34420A"].config_trigger_auto()
-    
-    switch=rotary_scanner()
-    
-    time.sleep(5)
-    
-    i=0
-    nreadings=30
-    
-    while True:
-        for k in range(100):
-            i+=1
-            pos=random.randint(1,11)
-            logging.info("Going to switch position "+str(pos))
-            switch.switchingCloseRelay(pos)
-            while (switch.distanceToGo()):
-                pass
-        
-        
-        switch.home()
-        time.sleep(5)
-        
-        switch.switchingCloseRelay(6)
-        logging.info("Going to switch position 8")
-        while (switch.distanceToGo()):
-            pass
-            
-        time.sleep(60)
-                
-        for j in range(nreadings):
-            writer.write("PPMhub", "EMF", instruments["K34420A"].get_title(), instruments["K34420A"].get_read_val())
-            writer.write("PPMhub", "Actuations", "Rotary Scanner", i)
+   
         
             
             
@@ -631,7 +595,7 @@ def nbs430():
                 logging.debug("Shorted read "+str(reading))
                 
             logging.debug("stdev "+str(statistics.stdev(polarity_2_samples)))
-            if (statistics.stdev(polarity_1_samples)>3e-7):
+            if (statistics.stdev(polarity_2_samples)>3e-7):
                 logging.error("stdev looks too high, switches a5 i"+chr(58))
                 error_counter += 1
                 logging.error("error_counter: "+str(error_counter))
@@ -749,6 +713,90 @@ def f8508a_logger():
         val = float(instruments["8508A"].get_read_val())
         writer.write("PPMhub", sys.argv[1], instruments["8508A"].get_title(), val)
         print(val)
+
+
+
+def resistance_bridge_reversal():
+
+    nsamples = 100
+    switch_delay = 60
+    error_counter = 0
+    
+    tmin = 18
+    tmax = 28
+    tstep = 0.5
+    measurements_per_tstep = 10
+    
+    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
+    instruments["2182a"].config_DCV()
+    
+    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+    
+    switch=rotary_scanner()
+    
+    switch.switchingCloseRelay("k0") # Home switch
+    switch.switchingCloseRelay("a0") # Home switch
+    switch.switchingCloseRelay("e0") # Home switch
+    switch.switchingCloseRelay("g0") # Home switch
+    switch.switchingCloseRelay("i0") # Home switch
+    switch.switchingCloseRelay("c0") # Home switch
+    
+    switch.switchingCloseRelay("k"+chr(59)) # Park source switches
+    switch.switchingCloseRelay("e"+chr(59)) # Park source switches
+    switch.switchingCloseRelay("g"+chr(59)) # Park source switches
+    switch.switchingCloseRelay("c"+chr(59))
+    switch.switchingCloseRelay("a"+chr(59))
+    switch.switchingCloseRelay("i"+chr(59))
+    
+    polarity_1_samples = numpy.tile(0.0,nsamples)
+    polarity_2_samples = numpy.tile(0.0,nsamples)
+    
+    from itertools import chain
+    temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
+    
+    for t in temperatures:
+        
+        instruments["arroyo"].out(t)
+        
+        switch.switchingCloseRelay("a1") # Bridge+ to Source+
+        switch.switchingCloseRelay("i1") # Bridge- to Source-
+        
+        time.sleep(switch_delay)
+        
+        for sample in range(nsamples):
+            reading = instruments["2182a"].get_read_val()
+            polarity_1_samples[sample]=reading
+            logging.debug("polarity 2 read "+str(reading))
+            
+        logging.debug("stdev "+str(statistics.stdev(polarity_1_samples)))
+        if (statistics.stdev(polarity_1_samples)>3e-7):
+            logging.error("stdev looks too high")
+            error_counter += 1
+            logging.error("error_counter: "+str(error_counter))
+            break
+            
+            
+        switch.switchingCloseRelay("a6") # Bridge+ to Source-
+        switch.switchingCloseRelay("i6") # Bridge- to Source+
+        
+        time.sleep(switch_delay)
+        
+        for sample in range(nsamples):
+            reading = instruments["2182a"].get_read_val()
+            polarity_2_samples[sample]=reading
+            logging.debug("polarity 2 read "+str(reading))
+            
+        logging.debug("stdev "+str(statistics.stdev(polarity_2_samples)))
+        if (statistics.stdev(polarity_2_samples)>3e-7):
+            logging.error("stdev looks too high")
+            error_counter += 1
+            logging.error("error_counter: "+str(error_counter))
+            break
+
+                
+            difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
+            logging.debug("Difference looks like %.*f", 8, difference)
+            writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["K34420A"].get_title(), difference)
 
 
     
