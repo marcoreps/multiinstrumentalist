@@ -327,14 +327,14 @@ class K2182A(multimeter):
         
     def config_DCV(self):
         logging.debug(self.title+" config_DCV")
-        self.instr.write(":SENSe:VOLTage:CHANnel1:RANGe 0")        
-        self.instr.write(":SENSe:VOLTage:CHANnel1:LPASs ON")
-        self.instr.write(":SENSe:VOLTage:CHANnel1:DFILter:STATe OFF")
+        self.instr.write(":SENSe:VOLTage:RANGe 0")        
+        self.instr.write(":SENSe:VOLTage:LPASs ON")
+        self.instr.write(":SENSe:VOLTage:DFILter:STATe OFF")
         self.instr.write(":SYSTem:AZERo:STATe ON")
         self.instr.write(":SYSTem:FAZero:STATe ON")
         self.instr.write(":SYSTem:LSYNc:STATe ON")
 
-        self.instr.write(":SENSe:VOLTage:CHANnel1:NPLCycles 1")
+        self.instr.write(":SENSe:VOLTage:NPLCycles 1")
         
 
 

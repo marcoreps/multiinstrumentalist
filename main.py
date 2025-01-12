@@ -799,7 +799,7 @@ def resistance_bridge_reversal():
                     
             difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
             logging.info("Difference looks like %.*f", 8, difference)
-            writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["K34420A"].get_title(), difference)
+            writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
 
 
     
