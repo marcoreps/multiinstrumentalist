@@ -718,14 +718,14 @@ def f8508a_logger():
 
 def resistance_bridge_reversal():
 
-    nsamples = 100
-    switch_delay = 60
+    nsamples = 75
+    switch_delay = 45
     error_counter = 0
     
     tmin = 18
     tmax = 28
     tstep = 0.1
-    measurements_per_tstep = 10
+    measurements_per_tstep = 8
     
     instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
