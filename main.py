@@ -502,6 +502,9 @@ def voltage_temperature_sweep():
     instruments["8508A"].config_DCV(10)
     instruments["8508A"].config_trigger_hold()
     
+    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
+    instruments["2182a"].config_DCV()
+    
 
     
     tmin = 18
@@ -510,9 +513,9 @@ def voltage_temperature_sweep():
     wait_settle = 60*10
 
     sch = sched.scheduler(time.time, time.sleep)
-    #sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["2182a"], "VBridge"))
+    sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["2182a"], "VBridge"))
     sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 30, 10, instruments["8508A"], "hamon divider output"))
+    #sch.enter(10, 10, recursive_read_inst, argument=(sch, 30, 10, instruments["8508A"], "hamon divider output"))
 
     i=0
     for t in numpy.arange(23, tmax+0.01, tstep):
