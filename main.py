@@ -755,7 +755,7 @@ def resistance_bridge_reversal():
     temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
     
     for t in temperatures:
-        for measurement in measurements_per_tstep:
+        for measurement in range(measurements_per_tstep):
         
             instruments["arroyo"].out(t)
             
