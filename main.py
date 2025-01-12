@@ -816,7 +816,8 @@ try:
     #nbs430()
     #resistance_bridge()
     #f8508a_logger()
-    voltage_temperature_sweep()
+    #voltage_temperature_sweep()
+    resistance_bridge_reversal()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
