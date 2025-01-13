@@ -725,7 +725,7 @@ def resistance_bridge_reversal():
     tmin = 18
     tmax = 28
     tstep = 0.1
-    measurements_per_tstep = 20
+    measurements_per_tstep = 5
     
     instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
