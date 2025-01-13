@@ -725,7 +725,7 @@ def resistance_bridge_reversal():
     tmin = 18
     tmax = 28
     tstep = 0.1
-    measurements_per_tstep = 5
+    measurements_per_tstep = 10
     
     instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
@@ -753,7 +753,7 @@ def resistance_bridge_reversal():
     
     from itertools import chain
     #temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
-    temperatures = [23.0, 28.0, 18.0]
+    temperatures = [23.0, 28.0, 23.0, 18.0]
     
     while True:
         for t in temperatures:
