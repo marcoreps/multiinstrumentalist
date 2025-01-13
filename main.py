@@ -753,7 +753,7 @@ def resistance_bridge_reversal():
     
     from itertools import chain
     #temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
-    temperatures = [18.0, 23.0, 28.0]
+    temperatures = [23.0, 28.0, 18.0]
     
     while True:
         for t in temperatures:
