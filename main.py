@@ -778,7 +778,7 @@ def resistance_bridge_reversal():
                     logging.error("stdev looks too high")
                     error_counter += 1
                     logging.error("error_counter: "+str(error_counter))
-                    break
+                    #break
                     
                     
                 switch.switchingCloseRelay("a6") # Bridge+ to Source-
@@ -797,7 +797,7 @@ def resistance_bridge_reversal():
                     logging.error("stdev looks too high")
                     error_counter += 1
                     logging.error("error_counter: "+str(error_counter))
-                    break
+                    #break
 
                         
                 difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
