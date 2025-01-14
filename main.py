@@ -725,7 +725,7 @@ def resistance_bridge_reversal():
     tmin = 18
     tmax = 28
     tstep = 0.1
-    measurements_per_tstep = 10
+    measurements_per_tstep = 20
     
     instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
@@ -759,7 +759,8 @@ def resistance_bridge_reversal():
     
     while True:
         for t in temperatures:
-        
+            
+            logging.info("Setting new chamber temperature: "+str(t)+" °C")
             instruments["arroyo"].out(t)
             
             for measurement in range(measurements_per_tstep):
@@ -801,11 +802,12 @@ def resistance_bridge_reversal():
                     #break
                     
                 if (measurement == measurements_per_tstep-1):
-                    writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["8508a"].get_title(), instruments["8508a"].get_read_val())
+                    logging.info("Asking 8508A for DUT temperature")
+                    writer.write("Temperature sweep", "DUT Temperature", instruments["8508a"].get_title(), instruments["8508a"].get_read_val())
 
                         
                 difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
-                logging.info("Difference looks like %.*f", 8, difference)
+                logging.debug("Difference looks like %.*f", 8, difference)
                 writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
 
 
