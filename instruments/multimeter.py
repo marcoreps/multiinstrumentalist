@@ -264,8 +264,8 @@ class F8508A(multimeter):
         self.instr =  self.rm.open_resource(self.rn)
         self.instr.timeout = 50000
         self.instr.clear()
-        self.instr.write('*RST')
-        self.instr.write('*CLS')
+        #self.instr.write('*RST')
+        #self.instr.write('*CLS')
         time.sleep(2)
         logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         

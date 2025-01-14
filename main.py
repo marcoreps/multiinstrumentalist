@@ -718,8 +718,8 @@ def f8508a_logger():
 
 def resistance_bridge_reversal():
 
-    nsamples = 75
-    switch_delay = 45
+    nsamples = 100
+    switch_delay = 60
     error_counter = 0
     
     tmin = 18
@@ -731,6 +731,8 @@ def resistance_bridge_reversal():
     instruments["2182a"].config_DCV()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+    
+    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
     
     switch=rotary_scanner()
     
@@ -752,8 +754,8 @@ def resistance_bridge_reversal():
     polarity_2_samples = numpy.tile(0.0,nsamples)
     
     from itertools import chain
-    #temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
-    temperatures = [23.0, 28.0, 23.0, 18.0]
+    temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
+    #temperatures = [23.0, 28.0, 23.0, 18.0]
     
     while True:
         for t in temperatures:
@@ -780,7 +782,6 @@ def resistance_bridge_reversal():
                     logging.error("error_counter: "+str(error_counter))
                     #break
                     
-                    
                 switch.switchingCloseRelay("a6") # Bridge+ to Source-
                 switch.switchingCloseRelay("i6") # Bridge- to Source+
                 
@@ -798,6 +799,9 @@ def resistance_bridge_reversal():
                     error_counter += 1
                     logging.error("error_counter: "+str(error_counter))
                     #break
+                    
+                if (measurement == measurements_per_tstep-1):
+                    writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["8508a"].get_title(), instruments["8508a"].get_read_val())
 
                         
                 difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
