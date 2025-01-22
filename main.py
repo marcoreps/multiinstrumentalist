@@ -763,6 +763,7 @@ def resistance_bridge_reversal():
     
     while True:
         logging.info("While True lööp")
+        logging.info("len temperatures: "+str(len(temperatures)))
         for t in temperatures:
             logging.info("for t lööp")
             logging.info("Setting new chamber temperature: "+str(t)+" °C")
