@@ -758,14 +758,10 @@ def resistance_bridge_reversal():
     temperatures = chain([18.0,18.0], numpy.arange(18.0, 23.0, tstep), [23.0,23.0], numpy.arange(23, tmax+0.01, tstep))
     #temperatures = [23.0, 28.0, 23.0, 18.0]
     
-    for t in temperatures:
-        logging.info("Planned step: "+str(t)+" °C")
+
     
     while True:
-        logging.info("While True lööp")
-        logging.info("len temperatures: "+str(len(temperatures)))
         for t in temperatures:
-            logging.info("for t lööp")
             logging.info("Setting new chamber temperature: "+str(t)+" °C")
             instruments["arroyo"].out(t)
             time.sleep(switch_delay)
