@@ -762,8 +762,9 @@ def resistance_bridge_reversal():
         logging.info("Planned step: "+str(t)+" °C")
     
     while True:
+        logging.info("While True lööp")
         for t in temperatures:
-            
+            logging.info("for t lööp")
             logging.info("Setting new chamber temperature: "+str(t)+" °C")
             instruments["arroyo"].out(t)
             time.sleep(switch_delay)
