@@ -736,26 +736,30 @@ def resistance_bridge_reversal():
     
     switch=rotary_scanner()
     
-    switch.switchingCloseRelay("k0") # Home switch
-    switch.switchingCloseRelay("a0") # Home switch
-    switch.switchingCloseRelay("e0") # Home switch
-    switch.switchingCloseRelay("g0") # Home switch
-    switch.switchingCloseRelay("i0") # Home switch
-    switch.switchingCloseRelay("c0") # Home switch
+    #switch.switchingCloseRelay("k0") # Home switch
+    #switch.switchingCloseRelay("a0") # Home switch
+    #switch.switchingCloseRelay("e0") # Home switch
+    #switch.switchingCloseRelay("g0") # Home switch
+    #switch.switchingCloseRelay("i0") # Home switch
+    #switch.switchingCloseRelay("c0") # Home switch
     
-    switch.switchingCloseRelay("k"+chr(59)) # Park source switches
-    switch.switchingCloseRelay("e"+chr(59)) # Park source switches
-    switch.switchingCloseRelay("g"+chr(59)) # Park source switches
-    switch.switchingCloseRelay("c"+chr(59))
-    switch.switchingCloseRelay("a"+chr(59))
-    switch.switchingCloseRelay("i"+chr(59))
+    #switch.switchingCloseRelay("k"+chr(59)) # Park source switches
+    #switch.switchingCloseRelay("e"+chr(59)) # Park source switches
+    #switch.switchingCloseRelay("g"+chr(59)) # Park source switches
+    #switch.switchingCloseRelay("c"+chr(59))
+    #switch.switchingCloseRelay("a"+chr(59))
+    #switch.switchingCloseRelay("i"+chr(59))
     
     polarity_1_samples = numpy.tile(0.0,nsamples)
     polarity_2_samples = numpy.tile(0.0,nsamples)
     
     from itertools import chain
-    temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
+    #temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
+    temperatures = chain([18.0,18.0], numpy.arange(18.0, 23.0, tstep), [23.0,23.0], numpy.arange(23, tmax+0.01, tstep))
     #temperatures = [23.0, 28.0, 23.0, 18.0]
+    
+    for t in temperatures:
+        logging.info("Planned step: "+str(t)+" °C")
     
     while True:
         for t in temperatures:
