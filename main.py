@@ -727,12 +727,12 @@ def resistance_bridge_reversal():
     tstep = 0.1
     measurements_per_tstep = 20
     
-    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::gpib0,4', title='Keithley 2182a')
+    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::gpib0,9', title='Fluke 8508A')
+    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
     
     switch=rotary_scanner()
     
@@ -755,7 +755,7 @@ def resistance_bridge_reversal():
     
     from itertools import chain
     #temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
-    temperatures = chain([18.0,18.0], numpy.arange(18.0, 23.0, tstep), [23.0,23.0], numpy.arange(23, tmax+0.01, tstep))
+    temperatures = chain([28.0,28.0], numpy.flip(numpy.arange(23.0, 28.00001, tstep)), [23.0,23.0,23.0])
     #temperatures = [23.0, 28.0, 23.0, 18.0]
     
 
@@ -820,7 +820,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -832,7 +832,7 @@ try:
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
-    #resistance_bridge_reversal()
+    resistance_bridge_reversal()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
