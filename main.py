@@ -40,7 +40,7 @@ rm = pyvisa.ResourceManager()
 def test_3458A():
 
     NPLC = 200
-    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    instruments["3458B"]=HP3458A(rm, 'gpib0::23::INSTR', title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
@@ -84,24 +84,24 @@ def INL_3458A():
     samples_per_meter_per_step = 1
     NPLC = 317
     
-    instruments["F5700A"]=F5700A(rm, 'GPIB0::1::INSTR', title='5700A')
+    instruments["F5700A"]=F5700A(rm, 'gpib0::1::INSTR', title='5700A')
     instruments["F5700A"].out(str(umin)+"V")
     instruments["F5700A"].oper()
     instruments["F5700A"].rangelck()
     
-    instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+    instruments["3458A"]=HP3458A(rm, 'gpib0::22::INSTR', title='3458A')
     instruments["3458A"].config_DCV(10)
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(NPLC)
     instruments["3458A"].config_trigger_auto()
     
-    instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    instruments["3458B"]=HP3458A(rm, 'gpib0::23::INSTR', title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_auto()
     
-    instruments["8508A"]=F8508A(rm, 'GPIB0::9::INSTR', title='8508A')
+    instruments["8508A"]=F8508A(rm, 'gpib0::9::INSTR', title='8508A')
     instruments["8508A"].config_DCV(10)
     
     
@@ -155,19 +155,19 @@ def INL_3458A():
 
 def temperature_sweep():
 
-    instruments["3458A"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458A')
+    instruments["3458A"]=HP3458A(rm, 'gpib0::22::INSTR', title='3458A')
     instruments["3458A"].config_NDIG(9)
     instruments["3458A"].config_NPLC(100)
     instruments["3458A"].config_trigger_auto()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    #instruments["3458B"]=HP3458A(rm, 'GPIB0::23::INSTR', title='3458B')
+    #instruments["3458B"]=HP3458A(rm, 'gpib0::23::INSTR', title='3458B')
     #instruments["3458B"].config_NDIG(9)
     #instruments["3458B"].config_NPLC(100)
     #instruments["3458B"].config_trigger_auto()
 
-    #instruments["8508A"]=F8508A(rm, 'GPIB0::9::INSTR', title='8508A')
+    #instruments["8508A"]=F8508A(rm, 'gpib0::9::INSTR', title='8508A')
     #instruments["8508A"].config_DCV(100)
     #instruments["8508A"].config_DCV_fast_off()
     #instruments["8508A"].config_trigger_auto()
@@ -280,19 +280,19 @@ def scanner_once():
     nmeasurements = 20
     
     
-    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.178.65::GPIB0,23', title='3458B')
+    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.178.65::gpib0,23', title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.178.65::GPIB0,22', title='3458P')
+    instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.178.65::gpib0,22', title='3458P')
     instruments["3458P"].config_DCV(10)
     instruments["3458P"].config_NDIG(9)
     instruments["3458P"].config_NPLC(NPLC)
     instruments["3458P"].config_trigger_hold()
     
-    #instruments["W4950"]=W4950(rm, 'GPIB0::9::INSTR')
+    #instruments["W4950"]=W4950(rm, 'gpib0::9::INSTR')
     #instruments["W4950"].config_accuracy("HIGH")
     #instruments["W4950"].config_DCV(10)
     #instruments["W4950"].config_trigger_hold()
@@ -403,7 +403,7 @@ def rms_34420A():
     clock=datetime.datetime.now()
     print("Start time: " + str(clock))
     
-    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV(0.001)
     #instruments["K34420A"].rel()
     #instruments["K34420A"].set_filter()
@@ -432,7 +432,7 @@ def scanner_34420A():
     NPLC = 100
     nmeasurements = 100
     
-    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV(0.001)
     
     scanner_sources = [(channels[0], "Ch0"), (channels[2], "Ch2"), (channels[3], "Ch3"), (channels[4], "Ch4"), (channels[6], "Ch6"), (channels[7], "Ch7"), (channels[5], "Ch5"), (channels[10], "Ch10"), (channels[11], "Ch11"), ]
@@ -451,12 +451,12 @@ def scanner_34420A():
         
 def resistance_bridge_temperature_sweep():
     logging.info("resistance_bridge_temperature_sweep()")
-    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
+    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::gpib0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
+    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::gpib0,9', title='Fluke 8508A')
     #instruments["8508a"].config_pt100()
 
     
@@ -498,11 +498,11 @@ def voltage_temperature_sweep():
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    #instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
+    #instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::gpib0,9', title='Fluke 8508A')
     #instruments["8508A"].config_DCV(10)
     #instruments["8508A"].config_trigger_hold()
     
-    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
+    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::gpib0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
     
 
@@ -551,7 +551,7 @@ def nbs430():
     
     
     error_counter = 0
-    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
     instruments["K34420A"].config_trigger_hold()
     
@@ -673,14 +673,14 @@ def nbs430():
 
 def resistance_bridge():
     logging.info("resistance_bridge_temperature_sweep()")
-    instruments["K34420A"]=HP34420A(rm, 'GPIB0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("0")
     instruments["K34420A"].config_trigger_hold()
     instruments["K34420A"].trigger_once()
     instruments["K34420A"].rel()
 
     
-    instruments["3458P"]=HP3458A(rm, 'GPIB0::22::INSTR', title='3458P')
+    instruments["3458P"]=HP3458A(rm, 'gpib0::22::INSTR', title='3458P')
     instruments["3458P"].config_pt100()
     instruments["3458P"].config_NDIG(9)
     instruments["3458P"].config_NPLC(100)
@@ -704,7 +704,7 @@ def resistance_bridge():
     
 def f8508a_logger():
 
-    instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='8508A')
+    instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::gpib0,9', title='8508A')
     instruments["8508A"].config_DCV(100)
     instruments["8508A"].config_trigger_hold()
     
@@ -727,12 +727,12 @@ def resistance_bridge_reversal():
     tstep = 0.1
     measurements_per_tstep = 20
     
-    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
+    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::gpib0,4', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
+    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::gpib0,9', title='Fluke 8508A')
     
     switch=rotary_scanner()
     
