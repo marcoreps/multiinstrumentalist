@@ -40,7 +40,7 @@ rm = pyvisa.ResourceManager()
 def test_3458A():
     NPLC = 100
     instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.178.65::gpib0,23', title='3458B')
-    instruments["3458B"].config_ohmf(10000)
+    instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_auto()
