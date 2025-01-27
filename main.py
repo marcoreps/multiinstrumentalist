@@ -38,23 +38,16 @@ instruments = dict()
 rm = pyvisa.ResourceManager()
 
 def test_3458A():
-
-    NPLC = 200
-    instruments["3458B"]=HP3458A(rm, 'gpib0::23::INSTR', title='3458B')
-    instruments["3458B"].config_DCV(10)
+    NPLC = 100
+    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.178.65::gpib0,23', title='3458B')
+    instruments["3458B"].config_ohmf(10000)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_auto()
-            
-    timestr = time.strftime("%Y%m%d-%H%M%S_")
-    with open('csv/'+timestr+'3458B_10V_short_200NPLC_az.csv', mode='w') as csv_file:
-        fieldnames = ['time', '3458B_volt']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-        while True:
-                val = float(instruments["3458B"].get_read_val())
-                writer.writerow({'time':time.time(), '3458B_volt': val})
-                logging.info(val)
+
+    while(True):
+        print(instruments["3458B"].get_read_val())
+
         
         
 def test_W4950():
@@ -816,7 +809,7 @@ def resistance_bridge_reversal():
 
     
 try:
-    #test_3458A()
+    test_3458A()
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
@@ -832,7 +825,7 @@ try:
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
-    resistance_bridge_reversal()
+    #resistance_bridge_reversal()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
