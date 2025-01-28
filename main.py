@@ -813,7 +813,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -823,7 +823,7 @@ try:
     #test_rotary_scanner_episode_2()
     #nbs430()
     #resistance_bridge()
-    #f8508a_logger()
+    f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
 
