@@ -697,7 +697,7 @@ def resistance_bridge():
     
 def f8508a_logger():
 
-    instruments["8508A"]=F8508A(rm, 'TCPIP::192.168.0.88::gpib0,9', title='8508A')
+    instruments["8508A"]=F8508A(rm, 'gpib0::9::INSTR', title='8508A')
     instruments["8508A"].config_DCV(100)
     instruments["8508A"].config_trigger_hold()
     
