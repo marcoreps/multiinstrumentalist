@@ -809,8 +809,8 @@ def resistance_bridge_reversal():
                 
 def ratio_1281():
 
-    delay = 6
-    nsamples = 1
+    delay = 800
+    nsamples = 10
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 
