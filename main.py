@@ -822,7 +822,7 @@ def ratio_1281():
     temperatures = [23.0,28.0,23.0,18.0]
     
     while True:
-        for t in temperatures:
+        for t in range(temperatures):
             instruments["arroyo"].out(t)
             for sample in nsamples:
                 time.sleep(delay)
