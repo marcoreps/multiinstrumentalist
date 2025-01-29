@@ -814,7 +814,7 @@ def ratio_1281():
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 
-    instruments["1281"]=D1281(rm, 'TCPIP::192.168.0.88::gpib0,16', title='1281')
+    instruments["1281"]=D1281(rm, 'TCPIP::192.168.0.65::gpib0,16', title='1281')
     instruments["1281"].config_DCV(10)
     instruments["1281"].config_ratio()
     instruments["1281"].config_trigger_hold()
