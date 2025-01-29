@@ -364,7 +364,7 @@ class D1281(multimeter):
         self.instr.write('*CLS')
         time.sleep(2)
         self.instr.write("*IDN?")
-        logging.info("*IDN? -> "+self.instr.read_bytes(23))
+        logging.info("*IDN? -> "+str(self.instr.read_bytes(23)))
         self.instr.read_bytes(27)
         logging.info("*OPT? -> "+self.instr.query("*OPT?"))
 
