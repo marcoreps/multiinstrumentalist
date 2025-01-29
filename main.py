@@ -822,9 +822,9 @@ def ratio_1281():
     temperatures = [23.0,28.0,23.0,18.0]
     
     while True:
-        for t in range(temperatures):
+        for t in temperatures:
             instruments["arroyo"].out(t)
-            for sample in nsamples:
+            for sample in range(nsamples):
                 time.sleep(delay)
                 ratio=instruments["1281"].get_read_val()
                 writer.write("Temperature sweep", "Hamon Divider Ratio", instruments["1281"].get_title(), ratio)
