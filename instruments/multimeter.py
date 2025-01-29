@@ -342,13 +342,51 @@ class K2182A(multimeter):
 
         self.instr.write(":SENSe:VOLTage:NPLCycles 1")
         
-
-
-        
-        
-        
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
         read_val = self.instr.query(":FETCh?")
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
+        
+        
+        
+class D1281(multimeter):
+
+    def __init__(self, resource_manager, resource_name, title='Fluke 8508A'):
+        self.title = title
+        logging.debug(self.title+' init started')
+        self.rm = resource_manager
+        self.rn = resource_name
+        self.instr =  self.rm.open_resource(self.rn)
+        self.instr.timeout = 50000
+        self.instr.clear()
+        self.instr.write('*RST')
+        self.instr.write('*CLS')
+        time.sleep(2)
+        self.instr.write("*IDN?")
+        info =  dmm.read_bytes(23)
+        self.instr.read_bytes(27)
+        logging.info("*OPT? -> "+self.instr.query("*OPT?"))
+
+    def config_DCV(self, RANG):
+        logging.debug(self.title+" config_DCV")
+        self.instr.write("DCV "+str(RANG)+",FILT_OFF,RESL8,FAST_OFF")
+        
+    def config_trigger_hold(self):
+        logging.debug(self.title+" config_trigger_hold")
+        self.instr.write("TRG_SRCE EXT")
+        
+    def config_trigger_auto(self):
+        logging.debug(self.title+" config_trigger_auto")
+        self.instr.write("TRIG_SRCE INT")
+
+    def get_read_val(self):
+        logging.debug("get_read_val() connected, reading ... ")
+        read_val = float(dmm.query("X?"))
+        logging.debug("get_read_val() reading "+str(read_val))
+        return read_val
+
+    def config_ratio(self):
+        logging.debug(self.title+" config_ratio")
+        self.instr.write('INPUT DIV_B')
+        

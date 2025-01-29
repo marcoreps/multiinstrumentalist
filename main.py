@@ -805,7 +805,31 @@ def resistance_bridge_reversal():
                 difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
                 logging.debug("Difference looks like %.*f", 8, difference)
                 writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
+                
+                
+def ratio_1281():
 
+    delay = 6
+    nsamples = 1
+
+    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
+
+    instruments["1281"]=D1281(rm, 'TCPIP::192.168.0.88::gpib0,16', title='1281')
+    instruments["1281"].config_DCV(10)
+    instruments["1281"].config_ratio()
+    instruments["1281"].config_trigger_hold()
+    
+    temperatures = [23.0,28.0,23.0,18.0]
+    
+    while True:
+        for t in temperatures:
+            instruments["arroyo"].out(t)
+            for sample in nsamples:
+                time.sleep(delay)
+                ratio=instruments["1281"].get_read_val()
+                writer.write("Temperature sweep", "Hamon Divider Ratio", instruments["1281"].get_title(), ratio)
+                writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
+                
 
     
 try:
@@ -813,7 +837,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -826,6 +850,7 @@ try:
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
+    ratio_1281()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
