@@ -358,13 +358,13 @@ class D1281(multimeter):
         self.rm = resource_manager
         self.rn = resource_name
         self.instr =  self.rm.open_resource(self.rn)
-        self.instr.timeout = 50000
+        self.instr.timeout = 70000
         self.instr.clear()
         self.instr.write('*RST')
         self.instr.write('*CLS')
         time.sleep(2)
         self.instr.write("*IDN?")
-        info =  self.instr.read_bytes(23)
+        logging.info("*IDN? -> "+self.instr.read_bytes(23))
         self.instr.read_bytes(27)
         logging.info("*OPT? -> "+self.instr.query("*OPT?"))
 
