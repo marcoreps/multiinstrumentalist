@@ -382,7 +382,7 @@ class D1281(multimeter):
 
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        read_val = float(dmm.query("X?"))
+        read_val = float(self.instr.query("X?"))
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
 
