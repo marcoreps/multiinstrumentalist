@@ -809,13 +809,13 @@ def resistance_bridge_reversal():
                 
 def ratio_1281():
 
-    delay = 800
+    delay = 300
     nsamples = 10
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 
     instruments["1281"]=D1281(rm, 'TCPIP::192.168.178.65::gpib0,16', title='1281')
-    instruments["1281"].config_DCV(10)
+    instruments["1281"].config_DCV(1)
     instruments["1281"].config_ratio()
     instruments["1281"].config_trigger_hold()
     
