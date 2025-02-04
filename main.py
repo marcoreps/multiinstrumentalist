@@ -819,7 +819,8 @@ def ratio_1281():
     instruments["1281"].config_ratio()
     instruments["1281"].config_trigger_hold()
     
-    temperatures = [23.0,28.0,23.0,18.0]
+    #temperatures = [23.0,28.0,23.0,18.0]
+    temperatures = [18.0,]
     
     while True:
         for t in temperatures:
