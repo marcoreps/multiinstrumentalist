@@ -827,7 +827,7 @@ def ratio_1281():
             for sample in range(nsamples):
                 time.sleep(delay)
                 ratio=instruments["1281"].get_read_val()
-                writer.write("Temperature sweep", "Hamon Divider Ratio", instruments["1281"].get_title(), ratio)
+                writer.write("Temperature sweep", "Divider Ratio", instruments["1281"].get_title(), ratio)
                 writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
                 
 
