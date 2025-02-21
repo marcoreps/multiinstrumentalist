@@ -838,7 +838,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    #scanner_once()
+    scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -851,7 +851,7 @@ try:
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
-    ratio_1281()
+    #ratio_1281()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
