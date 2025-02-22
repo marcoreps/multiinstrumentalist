@@ -301,7 +301,7 @@ def scanner_once():
     read_cal_params(instruments["3458P"])
 
     
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[4], "ADRmu9"), (channels[6], "ADRmu11"), (channels[7], "ADRmu12"), (channels[5], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[12], "ADRmu9"), (channels[14], "ADRmu11"), (channels[15], "ADRmu12"), (channels[13], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
     scanner_meters = [(channels[8], instruments["3458B"]), (channels[1], instruments["3458P"]), ]
 
     switch=takovsky_scanner()
