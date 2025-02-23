@@ -560,7 +560,7 @@ def nbs430():
         switch.switchingCloseRelay("c0") # Home switch
 
         #scanner_sources = [(1, "ADRmu1"), (2, "ADRmu4"), (3, "ADRmu6"), (4, "ADRmu9"),  (5, "ADRmu12"),]
-        scanner_sources = [(1, "ADRmu3"), (2, "ADRmu1"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu12"),]
+        scanner_sources = [(1, "ADRmu3"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu11"),  (5, "ADRmu12"),]
         scanner_permutations = set(itertools.combinations(scanner_sources, 2))
         
         polarity_1_samples = numpy.tile(0.0,nsamples)
@@ -838,7 +838,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -846,7 +846,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
