@@ -223,8 +223,8 @@ class HP34420A(multimeter):
         
     def get_read_val(self):
         logging.debug("get_read_val() connected, reading ... ")
-        #read_val = self.instr.query("FETCH?") #for bus triggering
-        read_val = self.instr.query("READ?") #for auto triggering
+        read_val = self.instr.query("FETCH?") #for bus triggering
+        #read_val = self.instr.query("READ?") #for auto triggering
         logging.debug("get_read_val() reading "+str(read_val))
         return read_val
         
