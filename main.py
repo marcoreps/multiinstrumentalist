@@ -544,7 +544,7 @@ def nbs430():
     
     
     error_counter = 0
-    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"]=HP34420A(rm, 'TCPIP::192.168.178.65::gpib0,8', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
     instruments["K34420A"].config_trigger_hold()
     
