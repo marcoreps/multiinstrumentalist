@@ -602,13 +602,15 @@ def nbs430():
         
             
             for perm in scanner_permutations:
-            
+                logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
+                
                 if(perm[0][1]>perm[1][1]): # We don't need both V1-V2 and V2-V1
+                    logging.info("swappy")
                     perm=[perm[1],perm[0]] # so we use alphabetically sorted pairs
             
                 logging.debug("error_counter "+str(error_counter))
             
-                logging.debug("Looking at "+perm[0][1]+" and "+perm[1][1])
+                logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
                 
                 switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
                 switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
