@@ -603,6 +603,9 @@ def nbs430():
             
             for perm in scanner_permutations:
             
+                if(perm[0][1]>perm[1][1]): # We don't need both V1-V2 and V2-V1
+                    perm=[perm[1],perm[0]] # so we use alphabetically sorted pairs
+            
                 logging.debug("error_counter "+str(error_counter))
             
                 logging.debug("Looking at "+perm[0][1]+" and "+perm[1][1])
