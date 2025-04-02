@@ -16,7 +16,7 @@ class influx_writer:
         if not timestamp:
             timestamp = datetime.now()
         logging.debug('writing point to influxdb: measurement=%s field=%s val=%s'%(str(measurement),str(field),str(val)))
-        p = Point(measurement).field(field, float(val)).time(timestamp, WritePrecision.MS)
+        p = Point(measurement).field(field, float(val))
         if tags is not None:
             for t in tags:
                 p.tag(t[0], t[1])
