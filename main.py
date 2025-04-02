@@ -39,7 +39,7 @@ rm = pyvisa.ResourceManager()
 
 def test_3458A():
     NPLC = 100
-    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.178.65::gpib0,23', title='3458B')
+    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
@@ -273,13 +273,13 @@ def scanner_once():
     nmeasurements = 20
     
     
-    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.178.65::gpib0,23', title='3458B')
+    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
     instruments["3458B"].config_DCV(10)
     instruments["3458B"].config_NDIG(9)
     instruments["3458B"].config_NPLC(NPLC)
     instruments["3458B"].config_trigger_hold()
     
-    instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.178.65::gpib0,22', title='3458P')
+    instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
     instruments["3458P"].config_DCV(10)
     instruments["3458P"].config_NDIG(9)
     instruments["3458P"].config_NPLC(NPLC)
@@ -544,7 +544,7 @@ def nbs430():
     
     
     error_counter = 0
-    instruments["K34420A"]=HP34420A(rm, 'TCPIP::192.168.178.65::gpib0,8', title='Keysight 34420A')
+    instruments["K34420A"]=HP34420A(rm, 'TCPIP::192.168.0.5::gpib0,8', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("AUTO")
     instruments["K34420A"].config_trigger_hold()
     
@@ -824,7 +824,7 @@ def ratio_1281():
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 
-    instruments["1281"]=D1281(rm, 'TCPIP::192.168.178.65::gpib0,16', title='1281')
+    instruments["1281"]=D1281(rm, 'TCPIP::192.168.0.5::gpib0,16', title='1281')
     instruments["1281"].config_DCV(0.1)
     instruments["1281"].config_ratio()
     instruments["1281"].config_trigger_hold()
