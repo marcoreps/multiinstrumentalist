@@ -372,6 +372,14 @@ class D1281(multimeter):
         logging.debug(self.title+" config_DCV")
         self.instr.write("DCV "+str(RANG)+",FILT_OFF,RESL8,FAST_OFF")
         
+    def config_OHMS(self, RANG):
+        logging.debug(self.title+" config_OHMS")
+        dmm.write("OHMS "+str(RANG)+",FWR,FAST_OFF,RESL8")
+        
+    def config_TRUE_OHMS(self, RANG):
+        logging.debug(self.title+" config_TRUE_OHMS")
+        dmm.write("TRUE_OHMS "+str(RANG)+",FAST_OFF,RESL8")
+        
     def config_trigger_hold(self):
         logging.debug(self.title+" config_trigger_hold")
         self.instr.write("TRG_SRCE EXT")
@@ -389,4 +397,12 @@ class D1281(multimeter):
     def config_ratio(self):
         logging.debug(self.title+" config_ratio")
         self.instr.write('INPUT DIV_B')
+        
+    def config_front_input(self):
+        logging.debug(self.title+" config_front_input")
+        self.instr.write('INPUT FRONT')
+        
+    def config_input_off(self):
+        logging.debug(self.title+" config_input_off")
+        self.instr.write('INPUT OFF')
         

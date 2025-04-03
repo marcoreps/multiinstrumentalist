@@ -6,6 +6,7 @@ import serial
 from multiprocessing import Process, Queue
 import time
 import qwiic_ccs811
+import qwiic_i2c
 
 
 
@@ -45,45 +46,97 @@ class CCS811:
     def is_measuring(self):
         return False
         
-class TMP117:
-    
-    i2c_ch = 1
-    reg_temp = 0x00
-    reg_config = 0x01
-    bus = SMBus(i2c_ch)
-    readable = True
-    read_val = 0.0
-    
-    def is_readable(self):
-        return self.readable
-    
-    def __init__(self, address, title):
-        self.title = title
-        logging.debug(self.title+' init started')
-        self.i2c_address = address
-        val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_config, 2)
-        val[1] = val[1] & 0b00111111
-        val[1] = val[1] | (0b10 << 6)
-        self.bus.write_i2c_block_data(self.i2c_address, self.reg_config, val)
-        val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_config, 2)
-        
-        
-    def measure(self):
-        pass
-        
-        
-    def get_title(self):
-        return self.title
-        
-    def get_read_val(self):
-        val = self.bus.read_i2c_block_data(self.i2c_address, self.reg_temp, 2)
-        temp_c = (val[0] << 8) | (val[1] )
-        temp_c = temp_c * 0.0078125
-        return temp_c
+MODE_CONTINUOUS_CONVERSION_MODE = 0b00
+MODE_ONE_SHOT = 0b11
+MODE_SHUTDOWN = 0b01
 
+MODE_AVG_0  = 0b00
+MODE_AVG_8  = 0b01
+MODE_AVG_32 = 0b10
+MODE_AVG_64 = 0x11
+
+# Knonwn Addresses.
+I2C_ADDRESSES = [0x48, 0x49, 0x4a, 0x4b]
+
+class Tmp117(object):
+  REG_TEMP_RESULT   = 0X00
+  REG_CONFIGURATION = 0x01
+  REG_T_HIGH_LIMIT  = 0X02
+  REG_T_LOW_LIMIT   = 0X03
+  REG_EEPROM_UL     = 0X04
+  REG_EEPROM1       = 0X05
+  REG_EEPROM2       = 0X06
+  REG_TEMP_OFFSET   = 0X07
+  REG_EEPROM3       = 0X08
+  REG_DEVICE_ID     = 0X0F
+
+  DEVICE_ID_VALUE = 0x0117
+  TEMP_RESOLUTION = 0.0078125
+    
+  def __init__(self, address=None, i2c_driver=None):
+    self.address = I2C_ADDRESSES[0] if address is None else address
+
+    self._i2c = i2c_driver or qwiic_i2c.getI2CDriver()
+    if self._i2c is None:
+      raise RuntimeError("Unable to load I2C driver.")
+
+  def init(self):
+    if not qwiic_i2c.isDeviceConnected(self.address):
+      raise RuntimeError(
+          'Device is not connected at address: 0x{:X}'
+          .format(self.address))
+    chip_id = self.getDeviceId()
+    if chip_id != self.DEVICE_ID_VALUE:
+      raise ValueError('Wrong chip id at address: 0x{:X}'.format(chip_id))
         
-    def is_measuring(self):
-        return False
+  def readRegister(self, register):
+    data = self._i2c.readWord(self.address, register)
+
+    return (data >> 8) & 0xff | (data & 0xff) << 8
+
+  def writeRegister(self, register, data):
+    data = (data >> 8) & 0xff | (data & 0xff) << 8
+    self._i2c.writeWord(self.address, register, data)
+    
+  def readTempC(self):
+    reg_value = self.readRegister(self.REG_TEMP_RESULT)
+    return reg_value * self.TEMP_RESOLUTION
+
+  def getConfigurationRegister(self):
+    return self.readRegister(self.REG_CONFIGURATION)
+
+  def writeConfiguration(self, config):
+    self.writeRegister(self.REG_CONFIGURATION, config)
+    
+  def setConversionMode(self, mode):
+    if mode not in (MODE_AVG_0, MODE_AVG_8, MODE_AVG_32, MODE_AVG_64):
+      return
+    config = self.getConfigurationRegister()
+    config &= ~(0x3 << 5)
+    config |= (mode << 5)
+    self.writeConfiguration(config)
+
+
+  def setMode(self, mode):
+    config = self.getConfigurationRegister()
+    config &= ~(0x03 << 10)
+    config |= (mode << 10)
+    self.writeConfiguration(config)
+        
+        
+  def oneShotMode(self):
+    self.setMode(MODE_ONE_SHOT)
+
+
+
+  def getDeviceId(self):
+    return self.readRegister(self.REG_DEVICE_ID)
+    
+  def dataReady(self):
+    config = self.getConfigurationRegister()
+    return config & (1 << 13)
+
+
         
         
         

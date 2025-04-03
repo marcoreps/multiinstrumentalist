@@ -721,6 +721,46 @@ def f8508a_logger():
 
 def resistance_bridge_reversal():
 
+
+
+# III   Br    N   channels[0] ADRmu1 +
+# III   BrW   P   channels[0] ADRmu1 -
+# III   Or    N   channels[1] 3458P / W4950 +
+# III   OrW   P   channels[1] 3458P / W4950 -
+# III   Bl    N   channels[2] ADRmu3 +
+# III   BlW   P   channels[2] ADRmu3 -
+# III   Gr    N   channels[3] ADRmu15 +
+# III   GrW   P   channels[3] ADRmu15 -
+
+# IV    Br    N   channels[4] ADRmu9 +
+# IV    BrW   P   channels[4] ADRmu9 -
+# IV    Or    N   channels[5] ADRmu6 +
+# IV    OrW   P   channels[5] ADRmu6 -
+# IV    Bl    N   channels[6] ADRmu11 +
+# IV    BlW   P   channels[6] ADRmu11 -
+# IV    Gr    N   channels[7] ADRmu12 +
+# IV    GrW   P   channels[7] ADRmu12 -
+
+# II    Br    N   channels[8]   3458B +
+# II    BrW   P   channels[8]   3458B -
+# II    Or    N   channels[9]   
+# II    OrW   P   channels[9]   
+# II    Bl    N   channels[10]  ADRmu4 +
+# II    BlW   P   channels[10]  ADRmu4 +
+# II    Gr    N   channels[11]  ADRmu20 +
+# II    GrW   P   channels[11]  ADRmu20 -
+
+# I     Br    N   channels[12]  
+# I     BrW   P   channels[12]  
+# I     Or    N   channels[13]  
+# I     OrW   P   channels[13]  
+# I     Bl    N   channels[14]  
+# I     BlW   P   channels[14]  
+# I     Gr    N   channels[15]  
+# I     GrW   P   channels[15]  
+
+
+
     nsamples = 100
     switch_delay = 60
     error_counter = 0
@@ -730,35 +770,28 @@ def resistance_bridge_reversal():
     tstep = 0.1
     measurements_per_tstep = 20
     
-    instruments["2182a"]=K2182A(rm, 'TCPIP::192.168.0.88::GPIB0,4', title='Keithley 2182a')
+    instruments["2182a"]=K2182A(rm, 'gpib0::4::INSTR', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
     
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
     
-    instruments["8508a"]=F8508A(rm, 'TCPIP::192.168.0.88::GPIB0,9', title='Fluke 8508A')
+    instruments["1281"]=D1281(rm, 'gpib0::16::INSTR', title='1281')
     
-    switch=rotary_scanner()
+    i2c_address = 0x4a
+    instruments["tmp117"] = Tmp117(i2c_address)
+    instruments["tmp117"].init()
+    instruments["tmp117"].setConversionMode(0x11)
+    instruments["tmp117"].oneShotMode()
     
-    #switch.switchingCloseRelay("k0") # Home switch
-    #switch.switchingCloseRelay("a0") # Home switch
-    #switch.switchingCloseRelay("e0") # Home switch
-    #switch.switchingCloseRelay("g0") # Home switch
-    #switch.switchingCloseRelay("i0") # Home switch
-    #switch.switchingCloseRelay("c0") # Home switch
-    
-    #switch.switchingCloseRelay("k"+chr(59)) # Park source switches
-    #switch.switchingCloseRelay("e"+chr(59)) # Park source switches
-    #switch.switchingCloseRelay("g"+chr(59)) # Park source switches
-    #switch.switchingCloseRelay("c"+chr(59))
-    #switch.switchingCloseRelay("a"+chr(59))
-    #switch.switchingCloseRelay("i"+chr(59))
+    switch=takovsky_scanner()
+
     
     polarity_1_samples = numpy.tile(0.0,nsamples)
     polarity_2_samples = numpy.tile(0.0,nsamples)
     
     from itertools import chain
-    #temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
-    temperatures = chain([28.0,28.0], numpy.flip(numpy.arange(23.0, 28.00001, tstep)), [23.0,23.0,23.0])
+    temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
+    #temperatures = chain([28.0,28.0], numpy.flip(numpy.arange(23.0, 28.00001, tstep)), [23.0,23.0,23.0])
     #temperatures = [23.0, 28.0, 23.0, 18.0]
     
 
@@ -780,7 +813,7 @@ def resistance_bridge_reversal():
                     writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
                     reading = instruments["2182a"].get_read_val()
                     polarity_1_samples[sample]=reading
-                    logging.debug("polarity 2 read "+str(reading))
+                    logging.debug("polarity 1 read "+str(reading))
                     
                 logging.debug("stdev "+str(statistics.stdev(polarity_1_samples)))
                 if (statistics.stdev(polarity_1_samples)>3e-7):
@@ -819,28 +852,50 @@ def resistance_bridge_reversal():
                 
 def ratio_1281():
 
-    delay = 600
-    nsamples = 10
+    delay = 60
+    
+    i2c_address = 0x4a
+    instruments["tmp117"] = Tmp117(i2c_address)
+    instruments["tmp117"].init()
+    instruments["tmp117"].setConversionMode(0x11)
+    #instruments["tmp117"].oneShotMode()
+
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 
-    instruments["1281"]=D1281(rm, 'TCPIP::192.168.0.5::gpib0,16', title='1281')
+    instruments["1281"]=D1281(rm, 'gpib0::16::INSTR', title='1281')
     instruments["1281"].config_DCV(0.1)
     instruments["1281"].config_ratio()
     instruments["1281"].config_trigger_hold()
     
-    #temperatures = [23.0,28.0,23.0,18.0]
-    temperatures = [18.0,23.0]
     
     while True:
-        for t in temperatures:
-            instruments["arroyo"].out(t)
-            for sample in range(nsamples):
-                time.sleep(delay)
-                ratio=instruments["1281"].get_read_val()
-                writer.write("Temperature sweep", "Divider Ratio", instruments["1281"].get_title(), ratio)
-                writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
-                
+        
+        
+        instruments["tmp117"].oneShotMode()
+        while not sensor.dataReady():
+            time.sleep(1)
+        writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", instruments["tmp117"].readTempC())
+        
+        
+        writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
+
+        
+        instruments["1281"].config_TRUE_OHMS(100)
+        instruments["1281"].config_front_input()
+        time.sleep(60)
+        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), instruments["1281"].get_read_val())
+        instruments["1281"].config_input_off()
+        
+        
+        instruments["1281"].config_OHMS(10000)
+        instruments["1281"].config_ratio()
+        time.sleep(60)
+        writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), instruments["1281"].get_read_val())
+        instruments["1281"].config_input_off()
+        
+        
+        time.sleep(delay)
 
     
 try:
@@ -856,12 +911,12 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
-    #ratio_1281()
+    ratio_1281()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
