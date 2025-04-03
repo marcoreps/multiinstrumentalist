@@ -560,8 +560,8 @@ def nbs430():
         switch.switchingCloseRelay("c0") # Home switch
 
         #scanner_sources = [(1, "ADRmu6"), (2, "ADRmu4"), (3, "ADRmu1"), (4, "ADRmu9"),  (5, "ADRmu12"),]
-        #scanner_sources = [(1, "ADRmu3"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu11"),  (5, "ADRmu12"),]
-        scanner_sources = [(1, "ADRmu15"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu6"),  (5, "ADRmu9"),]
+        scanner_sources = [(1, "ADRmu3"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu11"),  (5, "ADRmu12"),]
+        #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu6"),  (5, "ADRmu9"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu4"), (3, "ADRmu3"), (4, "ADRmu6"),  (5, "ADRmu11"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu4"), (3, "ADRmu12"), (4, "ADRmu20"),  (5, "ADRmu11"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu9"),  (5, "ADRmu11"),]
@@ -614,8 +614,6 @@ def nbs430():
                     perm=[perm[1],perm[0]] # so we use alphabetically sorted pairs
             
                 logging.debug("error_counter "+str(error_counter))
-            
-                logging.info("Looking at "+perm[0][1]+" and "+perm[1][1])
                 
                 switch.switchingCloseRelay("k"+chr(59)) # Park + side switches
                 switch.switchingCloseRelay("e"+chr(59)) # Park + side switches
@@ -918,12 +916,12 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
-    ratio_1281()
+    #ratio_1281()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
