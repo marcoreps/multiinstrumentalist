@@ -875,26 +875,31 @@ def ratio_1281():
         instruments["tmp117"].oneShotMode()
         while not sensor.dataReady():
             time.sleep(1)
-        writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", instruments["tmp117"].readTempC())
+        tmp117 = instruments["tmp117"].readTempC()
+        writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
+        logging.info("ambient tmp117="+str(tmp117))
         
-        
-        writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
-
+        arroyo=instruments["arroyo"].get_read_val()
+        writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), arroyo)
+        logging.info("arroyo chamber="+str(arroyo))
         
         instruments["1281"].config_TRUE_OHMS(100)
         instruments["1281"].config_front_input()
         time.sleep(60)
-        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), instruments["1281"].get_read_val())
+        pt100=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
-        
+        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
+        logging.info("thermometer well pt100="+str(pt100))
         
         instruments["1281"].config_OHMS(10000)
         instruments["1281"].config_ratio()
         time.sleep(60)
-        writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), instruments["1281"].get_read_val())
+        ratio=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
+        writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
+        logging.info("Ratio SR104/its thermistor="+str(ratio))
         
-        
+        logging.info("quick break...")
         time.sleep(delay)
 
     
