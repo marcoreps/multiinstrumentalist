@@ -374,11 +374,11 @@ class D1281(multimeter):
         
     def config_OHMS(self, RANG):
         logging.debug(self.title+" config_OHMS")
-        dmm.write("OHMS "+str(RANG)+",FWR,FAST_OFF,RESL8")
+        self.instr..write("OHMS "+str(RANG)+",FWR,FAST_OFF,RESL8")
         
     def config_TRUE_OHMS(self, RANG):
         logging.debug(self.title+" config_TRUE_OHMS")
-        dmm.write("TRUE_OHMS "+str(RANG)+",FAST_OFF,RESL8")
+        self.instr..write("TRUE_OHMS "+str(RANG)+",FAST_OFF,RESL8")
         
     def config_trigger_hold(self):
         logging.debug(self.title+" config_trigger_hold")
