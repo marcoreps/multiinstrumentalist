@@ -852,6 +852,8 @@ def resistance_bridge_reversal():
                 
 def ratio_1281():
 
+    logging.info("Welcome to ratio_1281()")
+
     delay = 60
     
     i2c_address = 0x4a
@@ -873,7 +875,7 @@ def ratio_1281():
         
         
         instruments["tmp117"].oneShotMode()
-        while not sensor.dataReady():
+        while not instruments["tmp117"].dataReady():
             time.sleep(1)
         tmp117 = instruments["tmp117"].readTempC()
         writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
