@@ -559,8 +559,8 @@ def nbs430():
         switch.switchingCloseRelay("i0") # Home switch
         switch.switchingCloseRelay("c0") # Home switch
 
-        #scanner_sources = [(1, "ADRmu6"), (2, "ADRmu4"), (3, "ADRmu1"), (4, "ADRmu9"),  (5, "ADRmu12"),]
-        scanner_sources = [(1, "ADRmu3"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu11"),  (5, "ADRmu12"),]
+        scanner_sources = [(1, "ADRmu6"), (2, "ADRmu4"), (3, "ADRmu1"), (4, "ADRmu9"),  (5, "ADRmu12"),]
+        #scanner_sources = [(1, "ADRmu3"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu11"),  (5, "ADRmu12"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu6"),  (5, "ADRmu9"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu4"), (3, "ADRmu3"), (4, "ADRmu6"),  (5, "ADRmu11"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu4"), (3, "ADRmu12"), (4, "ADRmu20"),  (5, "ADRmu11"),]
