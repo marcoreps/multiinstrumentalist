@@ -331,9 +331,12 @@ class K2182A(multimeter):
         self.instr.write(":syst:pres")
         
         
-    def config_DCV(self):
+    def config_DCV(self, RANG="AUTO"):
         logging.debug(self.title+" config_DCV")
-        self.instr.write(":SENSe:VOLTage:RANGe 0")        
+        if RANG == "AUTO":
+            self.instr.write(":SENSe:VOLTage:RANGe:AUTO")
+        else:
+            self.instr.write(":SENSe:VOLTage:RANGe "+str(RANG))
         self.instr.write(":SENSe:VOLTage:LPASs ON")
         self.instr.write(":SENSe:VOLTage:DFILter:STATe OFF")
         self.instr.write(":SYSTem:AZERo:STATe ON")

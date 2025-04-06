@@ -852,13 +852,13 @@ def ratio_1281():
 
     logging.info("Welcome to ratio_1281()")
 
-    delay = 600
+    delay = 60
+    nsamples = 10
     
     i2c_address = 0x4a
     instruments["tmp117"] = Tmp117(i2c_address)
     instruments["tmp117"].init()
     instruments["tmp117"].setConversionMode(0x11)
-    #instruments["tmp117"].oneShotMode()
 
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
@@ -868,9 +868,19 @@ def ratio_1281():
     instruments["1281"].config_ratio()
     instruments["1281"].config_trigger_hold()
     
+    switch=takovsky_scanner()
+    #switch.switchingSet4Wire(True)
+    
+    #Connect Vref CHB
+    switch.switchingCloseRelay(channels[2])
+    #Connect Vref CHA
+    switch.switchingCloseRelay(channels[14])
+    
+    instruments["2182a"]=K2182A(rm, 'gpib0::4::INSTR', title='Keithley 2182a')
+    instruments["2182a"].config_DCV()
+    
     
     while True:
-        
         
         instruments["tmp117"].oneShotMode()
         while not instruments["tmp117"].dataReady():
@@ -898,6 +908,51 @@ def ratio_1281():
         instruments["1281"].config_input_off()
         writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
         logging.info("Ratio SR104/its thermistor="+str(ratio))
+        
+        #NVM manual range
+        instruments["2182a"].config_DCV(0)
+        
+        #Connect ref divider pos pol
+        switch.switchingCloseRelay(channels[3])
+        
+        #Connect DUT divider pos pol
+        switch.switchingCloseRelay(channels[2])
+        
+        #take NVM samples pos pol
+        for sample in range(nsamples):
+            #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
+            reading = instruments["2182a"].get_read_val()
+            #polarity_1_samples[sample]=reading
+            logging.debug("polarity 1 read "+str(reading))
+        
+        #Disconnect ref divider pos pol
+        switch.switchingOpenRelay(channels[3])
+        
+        #Disconnect DUT divider pos pol
+        switch.switchingOpenRelay(channels[2])
+        
+        #Connect ref divider neg pol
+        switch.switchingCloseRelay(channels[15])
+        
+        #Connect DUT divider neg pol
+        switch.switchingCloseRelay(channels[0])
+        
+        #take NVM samples neg pol
+        for sample in range(nsamples):
+            #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
+            reading = instruments["2182a"].get_read_val()
+            #polarity_1_samples[sample]=reading
+            logging.debug("polarity 2 read "+str(reading))
+        
+        #Disconnect ref divider neg pol
+        switch.switchingOpenRelay(channels[15])
+        
+        #Disconnect DUT divider neg pol
+        switch.switchingOpenRelay(channels[0])
+        
+        #NVM autorange
+        instruments["2182a"].config_DCV()
+        
         
         logging.info("quick break...")
         time.sleep(delay)
