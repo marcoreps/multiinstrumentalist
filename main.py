@@ -924,7 +924,7 @@ def ratio_1281():
             #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
             reading = instruments["2182a"].get_read_val()
             #polarity_1_samples[sample]=reading
-            logging.debug("polarity 1 read "+str(reading))
+            logging.info("polarity 1 read "+str(reading))
         
         #Disconnect ref divider pos pol
         switch.switchingOpenRelay(channels[3])
@@ -944,7 +944,7 @@ def ratio_1281():
             #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
             reading = instruments["2182a"].get_read_val()
             #polarity_1_samples[sample]=reading
-            logging.debug("polarity 2 read "+str(reading))
+            logging.info("polarity 2 read "+str(reading))
         
         #Disconnect ref divider neg pol
         switch.switchingOpenRelay(channels[15])
