@@ -853,7 +853,10 @@ def ratio_1281():
     logging.info("Welcome to ratio_1281()")
 
     delay = 60
-    nsamples = 10
+    nsamples = 100
+    
+    polarity_1_samples = numpy.tile(0.0,nsamples)
+    polarity_2_samples = numpy.tile(0.0,nsamples)
     
     i2c_address = 0x4a
     instruments["tmp117"] = Tmp117(i2c_address)
@@ -920,11 +923,9 @@ def ratio_1281():
         
         #take NVM samples pos pol
         for sample in range(nsamples):
-            logging.info("pos sample")
-            #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
             reading = instruments["2182a"].get_read_val()
-            #polarity_1_samples[sample]=reading
-            logging.info("polarity 1 read "+str(reading))
+            polarity_1_samples[sample]=reading
+            logging.debug("polarity 1 read "+str(reading))
         
         #Disconnect ref divider pos pol
         switch.switchingOpenRelay(channels[3])
@@ -940,11 +941,9 @@ def ratio_1281():
         
         #take NVM samples neg pol
         for sample in range(nsamples):
-            logging.info("neg sample")
-            #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
             reading = instruments["2182a"].get_read_val()
-            #polarity_1_samples[sample]=reading
-            logging.info("polarity 2 read "+str(reading))
+            polarity_2_samples[sample]=reading
+            logging.debug("polarity 2 read "+str(reading))
         
         #Disconnect ref divider neg pol
         switch.switchingOpenRelay(channels[15])
@@ -955,6 +954,8 @@ def ratio_1281():
         #NVM autorange
         instruments["2182a"].config_DCV()
         
+        difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
+        logging.info("Difference looks like %.*f", 8, difference)
         
         logging.info("quick break...")
         time.sleep(delay)
