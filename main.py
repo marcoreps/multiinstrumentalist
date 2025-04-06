@@ -957,6 +957,7 @@ def ratio_1281():
         instruments["2182a"].config_DCV()
         
         difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
+        writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
         logging.info("Difference looks like %.*f", 8, difference)
         
         logging.info("quick break...")
