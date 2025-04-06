@@ -852,7 +852,7 @@ def ratio_1281():
 
     logging.info("Welcome to ratio_1281()")
 
-    delay = 60
+    delay = 600
     nsamples = 100
     
     polarity_1_samples = numpy.tile(0.0,nsamples)
@@ -898,19 +898,19 @@ def ratio_1281():
         
         instruments["1281"].config_OHMS_LoI(100)
         instruments["1281"].config_front_input()
-        #time.sleep(60)
-        #pt100=instruments["1281"].get_read_val()
+        time.sleep(60)
+        pt100=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
-        #writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
-        #logging.info("thermometer well pt100="+str(pt100))
+        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
+        logging.info("thermometer well pt100="+str(pt100))
         
         instruments["1281"].config_TRUE_OHMS(10000)
         instruments["1281"].config_ratio()
-        #time.sleep(60)
-        #ratio=instruments["1281"].get_read_val()
+        time.sleep(60)
+        ratio=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
-        #writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
-        #logging.info("Ratio SR104/its thermistor="+str(ratio))
+        writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
+        logging.info("Ratio SR104/its thermistor="+str(ratio))
         
         #NVM manual range
         instruments["2182a"].config_DCV(0)
@@ -922,7 +922,7 @@ def ratio_1281():
         switch.switchingCloseRelay(channels[1])
         
         #take NVM samples pos pol
-        time.sleep(10)
+        time.sleep(60)
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_1_samples[sample]=reading
@@ -941,7 +941,7 @@ def ratio_1281():
         switch.switchingCloseRelay(channels[0])
         
         #take NVM samples neg pol
-        time.sleep(10)
+        time.sleep(60)
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_2_samples[sample]=reading
