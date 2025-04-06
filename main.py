@@ -919,7 +919,7 @@ def ratio_1281():
         switch.switchingCloseRelay(channels[3])
         
         #Connect DUT divider pos pol
-        switch.switchingCloseRelay(channels[2])
+        switch.switchingCloseRelay(channels[1])
         
         #take NVM samples pos pol
         time.sleep(10)
@@ -932,7 +932,7 @@ def ratio_1281():
         switch.switchingOpenRelay(channels[3])
         
         #Disconnect DUT divider pos pol
-        switch.switchingOpenRelay(channels[2])
+        switch.switchingOpenRelay(channels[1])
         
         #Connect ref divider neg pol
         switch.switchingCloseRelay(channels[15])
