@@ -903,11 +903,11 @@ def ratio_1281():
         
         instruments["1281"].config_TRUE_OHMS(10000)
         instruments["1281"].config_ratio()
-        time.sleep(60)
-        ratio=instruments["1281"].get_read_val()
+        #time.sleep(60)
+        #ratio=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
-        writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
-        logging.info("Ratio SR104/its thermistor="+str(ratio))
+        #writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
+        #logging.info("Ratio SR104/its thermistor="+str(ratio))
         
         #NVM manual range
         instruments["2182a"].config_DCV(0)
@@ -920,6 +920,7 @@ def ratio_1281():
         
         #take NVM samples pos pol
         for sample in range(nsamples):
+            logging.info("pos sample")
             #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
             reading = instruments["2182a"].get_read_val()
             #polarity_1_samples[sample]=reading
@@ -939,6 +940,7 @@ def ratio_1281():
         
         #take NVM samples neg pol
         for sample in range(nsamples):
+            logging.info("neg sample")
             #writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), instruments["arroyo"].get_read_val())
             reading = instruments["2182a"].get_read_val()
             #polarity_1_samples[sample]=reading
