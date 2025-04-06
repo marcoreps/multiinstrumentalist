@@ -852,7 +852,7 @@ def ratio_1281():
 
     logging.info("Welcome to ratio_1281()")
 
-    delay = 60
+    delay = 120
     
     i2c_address = 0x4a
     instruments["tmp117"] = Tmp117(i2c_address)
@@ -883,7 +883,7 @@ def ratio_1281():
         writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), arroyo)
         logging.info("arroyo chamber="+str(arroyo))
         
-        instruments["1281"].config_TRUE_OHMS(100)
+        instruments["1281"].config_OHMS_LoI(100)
         instruments["1281"].config_front_input()
         time.sleep(60)
         pt100=instruments["1281"].get_read_val()
@@ -891,7 +891,7 @@ def ratio_1281():
         writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
         logging.info("thermometer well pt100="+str(pt100))
         
-        instruments["1281"].config_OHMS(10000)
+        instruments["1281"].config_TRUE_OHMS(10000)
         instruments["1281"].config_ratio()
         time.sleep(60)
         ratio=instruments["1281"].get_read_val()
@@ -908,7 +908,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -921,7 +921,7 @@ try:
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
-    #ratio_1281()
+    ratio_1281()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
