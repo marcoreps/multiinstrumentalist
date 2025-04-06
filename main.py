@@ -898,11 +898,11 @@ def ratio_1281():
         
         instruments["1281"].config_OHMS_LoI(100)
         instruments["1281"].config_front_input()
-        time.sleep(60)
-        pt100=instruments["1281"].get_read_val()
+        #time.sleep(60)
+        #pt100=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
-        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
-        logging.info("thermometer well pt100="+str(pt100))
+        #writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
+        #logging.info("thermometer well pt100="+str(pt100))
         
         instruments["1281"].config_TRUE_OHMS(10000)
         instruments["1281"].config_ratio()
@@ -922,6 +922,7 @@ def ratio_1281():
         switch.switchingCloseRelay(channels[2])
         
         #take NVM samples pos pol
+        time.sleep(10)
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_1_samples[sample]=reading
@@ -940,6 +941,7 @@ def ratio_1281():
         switch.switchingCloseRelay(channels[0])
         
         #take NVM samples neg pol
+        time.sleep(10)
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_2_samples[sample]=reading
