@@ -852,7 +852,7 @@ def ratio_1281():
 
     logging.info("Welcome to ratio_1281()")
 
-    delay = 120
+    delay = 600
     
     i2c_address = 0x4a
     instruments["tmp117"] = Tmp117(i2c_address)
