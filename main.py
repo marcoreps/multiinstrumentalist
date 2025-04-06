@@ -925,7 +925,7 @@ def ratio_1281():
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_1_samples[sample]=reading
-            logging.debug("polarity 1 read "+str(reading))
+        logging.info("polarity 1 read "+str(statistics.mean(polarity_1_samples)))
         
         #Disconnect ref divider pos pol
         switch.switchingOpenRelay(channels[3])
@@ -943,7 +943,7 @@ def ratio_1281():
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_2_samples[sample]=reading
-            logging.debug("polarity 2 read "+str(reading))
+        logging.info("polarity 2 read "+str(statistics.mean(polarity_2_samples)))
         
         #Disconnect ref divider neg pol
         switch.switchingOpenRelay(channels[15])
