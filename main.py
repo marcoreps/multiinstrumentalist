@@ -852,8 +852,8 @@ def ratio_1281():
 
     logging.info("Welcome to ratio_1281()")
 
-    tmin = 17.9
-    tmax = 28.1
+    tmin = 18
+    tmax = 28
     tstep = 1
     tsetp_delay = 60*60*24
     measurement_delay = 60*60
@@ -888,7 +888,7 @@ def ratio_1281():
     
     import threading
     from itertools import chain
-    temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin, 23, tstep)), numpy.arange(tmin, 23, tstep))
+    temperatures = chain(numpy.arange(23, tmax, tstep), numpy.flip(numpy.arange(23, tmax, tstep)), numpy.flip(numpy.arange(tmin, 23, tstep)), numpy.arange(tmin, 23, tstep))
     logging.info("Planned temperature steps at seconds:")
     seconds = 0
     for t in temperatures:
