@@ -888,7 +888,7 @@ def ratio_1281():
     
     import threading
     from itertools import chain
-    temperatures = chain(numpy.arange(23, tmax, tstep), numpy.flip(numpy.arange(23, tmax, tstep)), numpy.flip(numpy.arange(tmin, 23, tstep)), numpy.arange(tmin, 23, tstep))
+    temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax+0.1, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin, 23.1, tstep))
     logging.info("Planned temperature steps at seconds:")
     seconds = 0
     for t in temperatures:
@@ -896,7 +896,7 @@ def ratio_1281():
         logging.info(str(t)+" °C after "+str(seconds)+" seconds")
         seconds += tsetp_delay
         
-    logging.info("Planning done, enjoy!")
+    logging.info("Planning done, enjoy the ride!")
     
     while True:
         
