@@ -855,7 +855,7 @@ def ratio_1281():
     tmin = 18
     tmax = 28
     tstep = 1
-    tsetp_delay = 60*60*24
+    tsetp_delay = 60*60*20
     measurement_delay = 60*60
     nsamples = 100
     
