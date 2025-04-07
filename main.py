@@ -852,7 +852,11 @@ def ratio_1281():
 
     logging.info("Welcome to ratio_1281()")
 
-    delay = 600
+    tmin = 17.9
+    tmax = 28.1
+    tstep = 1
+    tsetp_delay = 60*60*24
+    measurement_delay = 60*60
     nsamples = 100
     
     polarity_1_samples = numpy.tile(0.0,nsamples)
@@ -882,6 +886,17 @@ def ratio_1281():
     instruments["2182a"]=K2182A(rm, 'gpib0::4::INSTR', title='Keithley 2182a')
     instruments["2182a"].config_DCV()
     
+    import threading
+    from itertools import chain
+    temperatures = chain(numpy.arange(23, tmax+0.01, tstep), numpy.flip(numpy.arange(23, tmax+0.01, tstep)), numpy.flip(numpy.arange(tmin-0.01, 23, tstep)), numpy.arange(tmin-0.01, 23, tstep))
+    logging.info("Planned temperature steps at seconds:")
+    seconds = 0
+    for t in temperatures:
+        threading.Timer(seconds, lambda: instruments["arroyo"].out(t)).start()
+        logging.info(str(t)+" °C after "+str(seconds)+" seconds")
+        seconds += tsetp_delay
+        
+    logging.info("Planning done, enjoy!")
     
     while True:
         
@@ -890,11 +905,11 @@ def ratio_1281():
             time.sleep(1)
         tmp117 = instruments["tmp117"].readTempC()
         writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
-        logging.info("ambient tmp117="+str(tmp117))
+        logging.debug("ambient tmp117="+str(tmp117))
         
         arroyo=instruments["arroyo"].get_read_val()
         writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), arroyo)
-        logging.info("arroyo chamber="+str(arroyo))
+        logging.debug("arroyo chamber="+str(arroyo))
         
         instruments["1281"].config_OHMS_LoI(100)
         instruments["1281"].config_front_input()
@@ -902,7 +917,7 @@ def ratio_1281():
         pt100=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
         writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
-        logging.info("thermometer well pt100="+str(pt100))
+        logging.debug("thermometer well pt100="+str(pt100))
         
         instruments["1281"].config_TRUE_OHMS(10000)
         instruments["1281"].config_ratio()
@@ -910,7 +925,7 @@ def ratio_1281():
         ratio=instruments["1281"].get_read_val()
         instruments["1281"].config_input_off()
         writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
-        logging.info("Ratio SR104/its thermistor="+str(ratio))
+        logging.debug("Ratio SR104/its thermistor="+str(ratio))
         
         #NVM manual range
         instruments["2182a"].config_DCV(0)
@@ -926,7 +941,7 @@ def ratio_1281():
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_1_samples[sample]=reading
-        logging.info("polarity 1 read "+str(statistics.mean(polarity_1_samples)))
+        logging.debug("polarity 1 read "+str(statistics.mean(polarity_1_samples)))
         
         #Disconnect ref divider pos pol
         switch.switchingOpenRelay(channels[3])
@@ -945,7 +960,7 @@ def ratio_1281():
         for sample in range(nsamples):
             reading = instruments["2182a"].get_read_val()
             polarity_2_samples[sample]=reading
-        logging.info("polarity 2 read "+str(statistics.mean(polarity_2_samples)))
+        logging.debug("polarity 2 read "+str(statistics.mean(polarity_2_samples)))
         
         #Disconnect ref divider neg pol
         switch.switchingOpenRelay(channels[15])
@@ -958,10 +973,10 @@ def ratio_1281():
         
         difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
         writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
-        logging.info("Difference looks like %.*f", 8, difference)
+        logging.debug("Difference looks like %.*f", 8, difference)
         
-        logging.info("quick break...")
-        time.sleep(delay)
+        logging.debug("quick break...")
+        time.sleep(measurement_delay)
 
     
 try:
