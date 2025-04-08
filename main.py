@@ -977,6 +977,23 @@ def ratio_1281():
         
         logging.debug("quick break...")
         time.sleep(measurement_delay)
+        
+        
+def tmp():
+    i2c_address = 0x4a
+    instruments["tmp117"] = Tmp117(i2c_address)
+    instruments["tmp117"].init()
+    instruments["tmp117"].setConversionMode(0x11)
+    
+    while True:
+        instruments["tmp117"].oneShotMode()
+        while not instruments["tmp117"].dataReady():
+            time.sleep(1)
+        tmp117 = instruments["tmp117"].readTempC()
+        writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
+        logging.info("ambient tmp117="+str(tmp117))
+        time.sleep(30)
+        
 
     
 try:
@@ -997,7 +1014,8 @@ try:
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
-    ratio_1281()
+    #ratio_1281()
+    tmp()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
