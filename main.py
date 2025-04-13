@@ -847,7 +847,21 @@ def resistance_bridge_reversal():
                 logging.debug("Difference looks like %.*f", 8, difference)
                 writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
                 
-                
+
+def set_temperature(arroyo, temp):
+    arroyo.out(temp)
+    logging.info(f"Setting temperature to {temp} °C")
+    
+def schedule_temperatures(arroyo, temperatures, tsetp_delay):
+    s = sched.scheduler(time.time, time.sleep)
+    seconds = 0
+    for t in temperatures:
+        s.enter(seconds, 1, set_temperature, argument=(arroyo, t))
+        logging.info(f"Planned temperature: {t} °C after {seconds} seconds")
+        seconds += tsetp_delay
+    s.run()
+
+
 def ratio_8508a():
 
     logging.info("Welcome to ratio_8508a()")
@@ -909,15 +923,12 @@ def ratio_8508a():
 
     
     
-    import threading
+    import sched
     from itertools import chain
     temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
     logging.info("Planned temperature steps at seconds:")
     seconds = 0
-    for t in temperatures:
-        threading.Timer(seconds, lambda: instruments["arroyo"].out(t)).start()
-        logging.info(str(t)+" °C after "+str(seconds)+" seconds")
-        seconds += tsetp_delay
+    schedule_temperatures(arroyo, temperatures, tsetp_delay)
         
     logging.info("Planning done, enjoy the ride!")
     
@@ -941,7 +952,6 @@ def ratio_8508a():
         instruments["8508A"].config_pt100()
         time.sleep(60)
         pt100=instruments["8508A"].get_read_val()
-        instruments["8508A"].config_input_off()
         writer.write("Temperature sweep", "Thermometer Well PT100", instruments["8508A"].get_title(), pt100)
         logging.info("thermometer well pt100="+str(pt100))
         switch.switchingOpenRelay(channels[13])
