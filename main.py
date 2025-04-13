@@ -928,12 +928,12 @@ def ratio_8508a():
             time.sleep(1)
         tmp117 = instruments["tmp117"].readTempC()
         writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
-        logging.debug("ambient tmp117="+str(tmp117))
+        logging.info("ambient tmp117="+str(tmp117))
         
         
         arroyo=instruments["arroyo"].get_read_val()
         writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), arroyo)
-        logging.debug("arroyo chamber="+str(arroyo))
+        logging.info("arroyo chamber="+str(arroyo))
         
         
         switch.switchingCloseRelay(channels[13])
@@ -943,7 +943,7 @@ def ratio_8508a():
         pt100=instruments["8508A"].get_read_val()
         instruments["8508A"].config_input_off()
         writer.write("Temperature sweep", "Thermometer Well PT100", instruments["8508A"].get_title(), pt100)
-        logging.debug("thermometer well pt100="+str(pt100))
+        logging.info("thermometer well pt100="+str(pt100))
         switch.switchingOpenRelay(channels[13])
         switch.switchingOpenRelay(channels[1])
         
@@ -954,7 +954,7 @@ def ratio_8508a():
         time.sleep(60)
         sr104=instruments["8508A"].get_read_val()
         writer.write("Temperature sweep", "SR104", instruments["8508A"].get_title(), sr104)
-        logging.debug("SR104="+str(sr104))
+        logging.info("SR104="+str(sr104))
         switch.switchingOpenRelay(channels[12])
         switch.switchingOpenRelay(channels[0])
         
@@ -965,7 +965,7 @@ def ratio_8508a():
         time.sleep(60)
         F742A=instruments["8508A"].get_read_val()
         writer.write("Temperature sweep", "F742A", instruments["8508A"].get_title(), F742A)
-        logging.debug("F742A="+str(F742A))
+        logging.info("F742A="+str(F742A))
         switch.switchingOpenRelay(channels[15])
         switch.switchingOpenRelay(channels[3])
         
@@ -976,7 +976,7 @@ def ratio_8508a():
         time.sleep(60)
         sr104therm=instruments["8508A"].get_read_val()
         writer.write("Temperature sweep", "SR104 Thermistor", instruments["8508A"].get_title(), sr104therm)
-        logging.debug("SR104 Thermistor="+str(sr104therm))
+        logging.info("SR104 Thermistor="+str(sr104therm))
         switch.switchingOpenRelay(channels[8])
         switch.switchingOpenRelay(channels[4])
         
@@ -987,7 +987,7 @@ def ratio_8508a():
         time.sleep(60)
         VHP10k=instruments["8508A"].get_read_val()
         writer.write("Temperature sweep", "VHP10k", instruments["8508A"].get_title(), VHP10k)
-        logging.debug("VHP10k="+str(VHP10k))
+        logging.info("VHP10k="+str(VHP10k))
         switch.switchingOpenRelay(channels[14])
         switch.switchingOpenRelay(channels[2])
         
