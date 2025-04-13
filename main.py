@@ -852,15 +852,86 @@ def set_temperature(arroyo, temp):
     arroyo.out(temp)
     logging.info(f"Setting temperature to {temp} °C")
     
-def schedule_temperatures(arroyo, temperatures, tsetp_delay):
-    s = sched.scheduler(time.time, time.sleep)
+def schedule_temperatures(s, arroyo, temperatures, tsetp_delay):
     seconds = 0
     for t in temperatures:
         s.enter(seconds, 1, set_temperature, argument=(arroyo, t))
         logging.info(f"Planned temperature: {t} °C after {seconds} seconds")
         seconds += tsetp_delay
-    s.run()
-
+        
+def measure(instruments, switch):
+    instruments["tmp117"].oneShotMode()
+    while not instruments["tmp117"].dataReady():
+        time.sleep(1)
+    tmp117 = instruments["tmp117"].readTempC()
+    writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
+    logging.info("ambient tmp117="+str(tmp117))
+    
+    
+    arroyo=instruments["arroyo"].get_read_val()
+    writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), arroyo)
+    logging.info("arroyo chamber="+str(arroyo))
+    
+    
+    switch.switchingCloseRelay(channels[13])
+    switch.switchingCloseRelay(channels[1])
+    instruments["8508A"].config_pt100()
+    time.sleep(60)
+    pt100=instruments["8508A"].get_read_val()
+    writer.write("Temperature sweep", "Thermometer Well PT100", instruments["8508A"].get_title(), pt100)
+    logging.info("thermometer well pt100="+str(pt100))
+    switch.switchingOpenRelay(channels[13])
+    switch.switchingOpenRelay(channels[1])
+    
+    
+    switch.switchingCloseRelay(channels[12])
+    switch.switchingCloseRelay(channels[0])
+    instruments["8508A"].config_TRUE_OHMS(10000)
+    time.sleep(60)
+    sr104=instruments["8508A"].get_read_val()
+    writer.write("Temperature sweep", "SR104", instruments["8508A"].get_title(), sr104)
+    logging.info("SR104="+str(sr104))
+    switch.switchingOpenRelay(channels[12])
+    switch.switchingOpenRelay(channels[0])
+    
+    
+    switch.switchingCloseRelay(channels[15])
+    switch.switchingCloseRelay(channels[3])
+    instruments["8508A"].config_TRUE_OHMS(10000)
+    time.sleep(60)
+    F742A=instruments["8508A"].get_read_val()
+    writer.write("Temperature sweep", "F742A", instruments["8508A"].get_title(), F742A)
+    logging.info("F742A="+str(F742A))
+    switch.switchingOpenRelay(channels[15])
+    switch.switchingOpenRelay(channels[3])
+    
+    
+    switch.switchingCloseRelay(channels[8])
+    switch.switchingCloseRelay(channels[4])
+    instruments["8508A"].config_TRUE_OHMS(10000)
+    time.sleep(60)
+    sr104therm=instruments["8508A"].get_read_val()
+    writer.write("Temperature sweep", "SR104 Thermistor", instruments["8508A"].get_title(), sr104therm)
+    logging.info("SR104 Thermistor="+str(sr104therm))
+    switch.switchingOpenRelay(channels[8])
+    switch.switchingOpenRelay(channels[4])
+    
+    
+    switch.switchingCloseRelay(channels[14])
+    switch.switchingCloseRelay(channels[2])
+    instruments["8508A"].config_TRUE_OHMS(10000)
+    time.sleep(60)
+    VHP10k=instruments["8508A"].get_read_val()
+    writer.write("Temperature sweep", "VHP10k", instruments["8508A"].get_title(), VHP10k)
+    logging.info("VHP10k="+str(VHP10k))
+    switch.switchingOpenRelay(channels[14])
+    switch.switchingOpenRelay(channels[2])
+    
+def schedule_measurements(s, instruments, switch):
+    seconds = 0
+        while seconds < 60*60*24*20:
+            s.enter(seconds, 2, measure, argument=(instruments, switch))
+            seconds += measurement_delay
 
 def ratio_8508a():
 
@@ -926,84 +997,20 @@ def ratio_8508a():
     import sched
     from itertools import chain
     temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
+    
+    s = sched.scheduler(time.time, time.sleep)
+    
     logging.info("Planned temperature steps at seconds:")
-    seconds = 0
-    schedule_temperatures(instruments["arroyo"], temperatures, tsetp_delay)
-        
+    schedule_temperatures(s, instruments["arroyo"], temperatures, tsetp_delay)
+    logging.info("Planning measurements ...")
+    schedule_measurements(s, instruments, switch)
     logging.info("Planning done, enjoy the ride!")
     
-    while True:
-        
-        instruments["tmp117"].oneShotMode()
-        while not instruments["tmp117"].dataReady():
-            time.sleep(1)
-        tmp117 = instruments["tmp117"].readTempC()
-        writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
-        logging.info("ambient tmp117="+str(tmp117))
+    s.run()
+    
+
         
         
-        arroyo=instruments["arroyo"].get_read_val()
-        writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), arroyo)
-        logging.info("arroyo chamber="+str(arroyo))
-        
-        
-        switch.switchingCloseRelay(channels[13])
-        switch.switchingCloseRelay(channels[1])
-        instruments["8508A"].config_pt100()
-        time.sleep(60)
-        pt100=instruments["8508A"].get_read_val()
-        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["8508A"].get_title(), pt100)
-        logging.info("thermometer well pt100="+str(pt100))
-        switch.switchingOpenRelay(channels[13])
-        switch.switchingOpenRelay(channels[1])
-        
-        
-        switch.switchingCloseRelay(channels[12])
-        switch.switchingCloseRelay(channels[0])
-        instruments["8508A"].config_TRUE_OHMS(10000)
-        time.sleep(60)
-        sr104=instruments["8508A"].get_read_val()
-        writer.write("Temperature sweep", "SR104", instruments["8508A"].get_title(), sr104)
-        logging.info("SR104="+str(sr104))
-        switch.switchingOpenRelay(channels[12])
-        switch.switchingOpenRelay(channels[0])
-        
-        
-        switch.switchingCloseRelay(channels[15])
-        switch.switchingCloseRelay(channels[3])
-        instruments["8508A"].config_TRUE_OHMS(10000)
-        time.sleep(60)
-        F742A=instruments["8508A"].get_read_val()
-        writer.write("Temperature sweep", "F742A", instruments["8508A"].get_title(), F742A)
-        logging.info("F742A="+str(F742A))
-        switch.switchingOpenRelay(channels[15])
-        switch.switchingOpenRelay(channels[3])
-        
-        
-        switch.switchingCloseRelay(channels[8])
-        switch.switchingCloseRelay(channels[4])
-        instruments["8508A"].config_TRUE_OHMS(10000)
-        time.sleep(60)
-        sr104therm=instruments["8508A"].get_read_val()
-        writer.write("Temperature sweep", "SR104 Thermistor", instruments["8508A"].get_title(), sr104therm)
-        logging.info("SR104 Thermistor="+str(sr104therm))
-        switch.switchingOpenRelay(channels[8])
-        switch.switchingOpenRelay(channels[4])
-        
-        
-        switch.switchingCloseRelay(channels[14])
-        switch.switchingCloseRelay(channels[2])
-        instruments["8508A"].config_TRUE_OHMS(10000)
-        time.sleep(60)
-        VHP10k=instruments["8508A"].get_read_val()
-        writer.write("Temperature sweep", "VHP10k", instruments["8508A"].get_title(), VHP10k)
-        logging.info("VHP10k="+str(VHP10k))
-        switch.switchingOpenRelay(channels[14])
-        switch.switchingOpenRelay(channels[2])
-        
-        
-        logging.debug("quick break...")
-        time.sleep(measurement_delay)
         
         
 def tmp():
