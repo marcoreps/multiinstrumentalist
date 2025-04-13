@@ -929,9 +929,9 @@ def measure(instruments, switch):
     
 def schedule_measurements(s, instruments, switch):
     seconds = 0
-        while seconds < 60*60*24*20:
-            s.enter(seconds, 2, measure, argument=(instruments, switch))
-            seconds += measurement_delay
+    while seconds < 60*60*24*20:
+        s.enter(seconds, 2, measure, argument=(instruments, switch))
+        seconds += measurement_delay
 
 def ratio_8508a():
 
