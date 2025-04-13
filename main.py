@@ -848,7 +848,7 @@ def resistance_bridge_reversal():
                 writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
                 
                 
-def ratio_1281():
+def ratio_8508a():
 
     logging.info("Welcome to ratio_1281()")
 
@@ -856,7 +856,7 @@ def ratio_1281():
     tmax = 28
     tstep = 1
     tsetp_delay = 60*60*20
-    measurement_delay = 60*60
+    measurement_delay = 60*15
     nsamples = 100
     
     polarity_1_samples = numpy.tile(0.0,nsamples)
@@ -870,25 +870,48 @@ def ratio_1281():
 
     instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
 
-    instruments["1281"]=D1281(rm, 'gpib0::16::INSTR', title='1281')
-    instruments["1281"].config_DCV(0.1)
-    instruments["1281"].config_ratio()
-    instruments["1281"].config_trigger_hold()
+    instruments["8508A"]=F8508A(rm, 'gpib0::9::INSTR', title='Fluke 8508A')
+    instruments["8508A"].config_TRUE_OHMS(10000)
+    instruments["8508A"].config_trigger_hold()
     
     switch=takovsky_scanner()
-    #switch.switchingSet4Wire(True)
+    switch.switchingSet4Wire(True)
     
-    #Connect Vref CHB
-    switch.switchingCloseRelay(channels[2])
-    #Connect Vref CHA
-    switch.switchingCloseRelay(channels[14])
+    # C     OrW    CHA_P                    I+ DMM
+    # C     Bl     CHA_N                    I- DMM
+    # C     BlW    CHB_P                    Sense+ DMM  
+    # C     Or     CHB_N                    Sense- DMM
     
-    instruments["2182a"]=K2182A(rm, 'gpib0::4::INSTR', title='Keithley 2182a')
-    instruments["2182a"].config_DCV()
+    # I     Br     CHA_N   channels[12]     SR104 I-
+    # I     BrW    CHA_P   channels[12]     SR104 I+
+    # I     Or     CHA_N   channels[13]     PT100 I-
+    # I     OrW    CHA_P   channels[13]     PT100 I+
+    # I     Bl     CHA_N   channels[14]     VHP10k I-
+    # I     BlW    CHA_P   channels[14]     VHP10k I+
+    # I     Gr     CHA_N   channels[15]     742A I-
+    # I     GrW    CHA_P   channels[15]     742A I+
+    
+    # II    Br     CHA_N   channels[8]      SR104 Thermistor I-
+    # II    BrW    CHA_P   channels[8]      SR104 Thermistor I+
+    
+    # III   Br     CHB_N   channels[0]      SR104 Sense-
+    # III   BrW    CHB_P   channels[0]      SR104 Sense+
+    # III   Or     CHB_N   channels[1]      PT100 Sense-
+    # III   OrW    CHB_P   channels[1]      PT100 Sense+
+    # III   Bl     CHB_N   channels[2]      VHP10k Sense-
+    # III   BlW    CHB_P   channels[2]      VHP10k Sense+
+    # III   Gr     CHB_N   channels[3]      742A Sense-
+    # III   GrW    CHB_P   channels[3]      742A Sense+
+    
+    # IV    Br     CHB_N   channels[4]      SR104 Thermistor Sense-
+    # IV    BrW    CHB_P   channels[4]      SR104 Thermistor Sense-
+    
+
+    
     
     import threading
     from itertools import chain
-    temperatures = chain(numpy.arange(24, tmax+0.1, tstep), numpy.flip(numpy.arange(24, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
+    temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
     logging.info("Planned temperature steps at seconds:")
     seconds = 0
     for t in temperatures:
@@ -907,73 +930,67 @@ def ratio_1281():
         writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.debug("ambient tmp117="+str(tmp117))
         
+        
         arroyo=instruments["arroyo"].get_read_val()
         writer.write("Temperature sweep", "Chamber Temp", instruments["arroyo"].get_title(), arroyo)
         logging.debug("arroyo chamber="+str(arroyo))
         
-        instruments["1281"].config_OHMS_LoI(100)
-        instruments["1281"].config_front_input()
-        time.sleep(60)
-        pt100=instruments["1281"].get_read_val()
-        instruments["1281"].config_input_off()
-        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["1281"].get_title(), pt100)
-        logging.debug("thermometer well pt100="+str(pt100))
         
-        instruments["1281"].config_TRUE_OHMS(10000)
-        instruments["1281"].config_ratio()
-        time.sleep(60)
-        ratio=instruments["1281"].get_read_val()
-        instruments["1281"].config_input_off()
-        writer.write("Temperature sweep", "SR104/Thermistor", instruments["1281"].get_title(), ratio)
-        logging.debug("Ratio SR104/its thermistor="+str(ratio))
-        
-        #NVM manual range
-        instruments["2182a"].config_DCV(0)
-        
-        #Connect ref divider pos pol
-        switch.switchingCloseRelay(channels[3])
-        
-        #Connect DUT divider pos pol
+        switch.switchingCloseRelay(channels[13])
         switch.switchingCloseRelay(channels[1])
-        
-        #take NVM samples pos pol
+        instruments["8508A"].config_pt100()
         time.sleep(60)
-        for sample in range(nsamples):
-            reading = instruments["2182a"].get_read_val()
-            polarity_1_samples[sample]=reading
-        logging.debug("polarity 1 read "+str(statistics.mean(polarity_1_samples)))
-        
-        #Disconnect ref divider pos pol
-        switch.switchingOpenRelay(channels[3])
-        
-        #Disconnect DUT divider pos pol
+        pt100=instruments["8508A"].get_read_val()
+        instruments["8508A"].config_input_off()
+        writer.write("Temperature sweep", "Thermometer Well PT100", instruments["8508A"].get_title(), pt100)
+        logging.debug("thermometer well pt100="+str(pt100))
+        switch.switchingOpenRelay(channels[13])
         switch.switchingOpenRelay(channels[1])
         
-        #Connect ref divider neg pol
-        switch.switchingCloseRelay(channels[15])
         
-        #Connect DUT divider neg pol
+        switch.switchingCloseRelay(channels[12])
         switch.switchingCloseRelay(channels[0])
-        
-        #take NVM samples neg pol
+        instruments["8508A"].config_TRUE_OHMS(10000)
         time.sleep(60)
-        for sample in range(nsamples):
-            reading = instruments["2182a"].get_read_val()
-            polarity_2_samples[sample]=reading
-        logging.debug("polarity 2 read "+str(statistics.mean(polarity_2_samples)))
-        
-        #Disconnect ref divider neg pol
-        switch.switchingOpenRelay(channels[15])
-        
-        #Disconnect DUT divider neg pol
+        sr104=instruments["8508A"].get_read_val()
+        writer.write("Temperature sweep", "SR104", instruments["8508A"].get_title(), sr104)
+        logging.debug("SR104="+str(sr104))
+        switch.switchingOpenRelay(channels[12])
         switch.switchingOpenRelay(channels[0])
         
-        #NVM autorange
-        instruments["2182a"].config_DCV()
         
-        difference = (statistics.mean(polarity_1_samples)-statistics.mean(polarity_2_samples))/2
-        writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
-        logging.debug("Difference looks like %.*f", 8, difference)
+        switch.switchingCloseRelay(channels[15])
+        switch.switchingCloseRelay(channels[3])
+        instruments["8508A"].config_TRUE_OHMS(10000)
+        time.sleep(60)
+        F742A=instruments["8508A"].get_read_val()
+        writer.write("Temperature sweep", "F742A", instruments["8508A"].get_title(), F742A)
+        logging.debug("F742A="+str(F742A))
+        switch.switchingOpenRelay(channels[15])
+        switch.switchingOpenRelay(channels[3])
+        
+        
+        switch.switchingCloseRelay(channels[8])
+        switch.switchingCloseRelay(channels[4])
+        instruments["8508A"].config_TRUE_OHMS(10000)
+        time.sleep(60)
+        sr104therm=instruments["8508A"].get_read_val()
+        writer.write("Temperature sweep", "SR104 Thermistor", instruments["8508A"].get_title(), sr104therm)
+        logging.debug("SR104 Thermistor="+str(sr104therm))
+        switch.switchingOpenRelay(channels[8])
+        switch.switchingOpenRelay(channels[4])
+        
+        
+        switch.switchingCloseRelay(channels[14])
+        switch.switchingCloseRelay(channels[2])
+        instruments["8508A"].config_TRUE_OHMS(10000)
+        time.sleep(60)
+        VHP10k=instruments["8508A"].get_read_val()
+        writer.write("Temperature sweep", "VHP10k", instruments["8508A"].get_title(), VHP10k)
+        logging.debug("VHP10k="+str(VHP10k))
+        switch.switchingOpenRelay(channels[14])
+        switch.switchingOpenRelay(channels[2])
+        
         
         logging.debug("quick break...")
         time.sleep(measurement_delay)
@@ -993,6 +1010,7 @@ def tmp():
         writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.info("ambient tmp117="+str(tmp117))
         time.sleep(30)
+        
         
 
     
@@ -1015,7 +1033,8 @@ try:
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
     #ratio_1281()
-    tmp()
+    #tmp()
+    ratio_8508a()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:

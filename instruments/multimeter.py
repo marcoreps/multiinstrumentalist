@@ -310,8 +310,13 @@ class F8508A(multimeter):
         return read_val
         
     def config_pt100(self):
+        #self.instr.write('PRT_CHR "Rice",STD_PRT,FOUR_WR')
         logging.debug(self.title+" config_pt100")
-        self.instr.write("PRT \"Default probe    \"")
+        self.instr.write('PRT "Default probe",DEG_C,RESL8')
+        
+    def config_TRUE_OHMS(self, RANG):
+        logging.debug(self.title+" config_TRUE_OHMS")
+        self.instr.write("TRUE_OHMS "+str(RANG)+",FAST_OFF,RESL8")
         
         
 class K2182A(multimeter):
