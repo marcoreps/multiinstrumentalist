@@ -941,7 +941,7 @@ def ratio_8508a():
     tmax = 28
     tstep = 1
     tsetp_delay = 60*60*20
-    measurement_delay = 60*10
+    measurement_delay = 60*20
     nsamples = 100
     
     polarity_1_samples = numpy.tile(0.0,nsamples)
