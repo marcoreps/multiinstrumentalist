@@ -870,7 +870,7 @@ def ratio_8508a():
     tmax = 28
     tstep = 1
     tsetp_delay = 60*60*20
-    measurement_delay = 60*15
+    measurement_delay = 60*10
     nsamples = 100
     
     polarity_1_samples = numpy.tile(0.0,nsamples)
@@ -928,7 +928,7 @@ def ratio_8508a():
     temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
     logging.info("Planned temperature steps at seconds:")
     seconds = 0
-    schedule_temperatures(arroyo, temperatures, tsetp_delay)
+    schedule_temperatures(instruments["arroyo"], temperatures, tsetp_delay)
         
     logging.info("Planning done, enjoy the ride!")
     
