@@ -927,7 +927,7 @@ def measure(instruments, switch):
     switch.switchingOpenRelay(channels[14])
     switch.switchingOpenRelay(channels[2])
     
-def schedule_measurements(s, instruments, switch):
+def schedule_measurements(s, instruments, switch, measurement_delay):
     seconds = 0
     while seconds < 60*60*24*20:
         s.enter(seconds, 2, measure, argument=(instruments, switch))
@@ -1003,7 +1003,7 @@ def ratio_8508a():
     logging.info("Planned temperature steps at seconds:")
     schedule_temperatures(s, instruments["arroyo"], temperatures, tsetp_delay)
     logging.info("Planning measurements ...")
-    schedule_measurements(s, instruments, switch)
+    schedule_measurements(s, instruments, switch, measurement_delay)
     logging.info("Planning done, enjoy the ride!")
     
     s.run()
