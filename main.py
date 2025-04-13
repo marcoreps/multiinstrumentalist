@@ -850,7 +850,7 @@ def resistance_bridge_reversal():
                 
 def ratio_8508a():
 
-    logging.info("Welcome to ratio_1281()")
+    logging.info("Welcome to ratio_8508a()")
 
     tmin = 18
     tmax = 28
