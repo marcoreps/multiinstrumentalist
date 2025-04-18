@@ -967,8 +967,8 @@ def ratio_8508a():
     # C     BlW    CHB_P                    Sense+ DMM  
     # C     Or     CHB_N                    Sense- DMM
     
-    # I     Br     CHA_N   channels[12]     SR104 I-
-    # I     BrW    CHA_P   channels[12]     SR104 I+
+    # I     Br     CHA_N   channels[12]     SR104 I- Terminal 1
+    # I     BrW    CHA_P   channels[12]     SR104 I+ Terminal 4
     # I     Or     CHA_N   channels[13]     PT100 I-
     # I     OrW    CHA_P   channels[13]     PT100 I+
     # I     Bl     CHA_N   channels[14]     VHP10k I-
@@ -976,11 +976,11 @@ def ratio_8508a():
     # I     Gr     CHA_N   channels[15]     742A I-
     # I     GrW    CHA_P   channels[15]     742A I+
     
-    # II    Br     CHA_N   channels[8]      SR104 Thermistor I-
-    # II    BrW    CHA_P   channels[8]      SR104 Thermistor I+
+    # II    Br     CHA_N   channels[8]      SR104 Thermistor I- Terminal 4
+    # II    BrW    CHA_P   channels[8]      SR104 Thermistor I+ Terminal 1
     
-    # III   Br     CHB_N   channels[0]      SR104 Sense-
-    # III   BrW    CHB_P   channels[0]      SR104 Sense+
+    # III   Br     CHB_N   channels[0]      SR104 Sense- Terminal 2
+    # III   BrW    CHB_P   channels[0]      SR104 Sense+ Terminal 3
     # III   Or     CHB_N   channels[1]      PT100 Sense-
     # III   OrW    CHB_P   channels[1]      PT100 Sense+
     # III   Bl     CHB_N   channels[2]      VHP10k Sense-
@@ -996,7 +996,9 @@ def ratio_8508a():
     
     import sched
     from itertools import chain
-    temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
+    #temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
+    temperatures = chain(28, numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
+
     
     s = sched.scheduler(time.time, time.sleep)
     
