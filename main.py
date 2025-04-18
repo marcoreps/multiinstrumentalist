@@ -997,7 +997,7 @@ def ratio_8508a():
     import sched
     from itertools import chain
     #temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
-    temperatures = chain(28, numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
+    temperatures = chain([28], numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
 
     
     s = sched.scheduler(time.time, time.sleep)
