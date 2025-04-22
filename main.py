@@ -1056,7 +1056,7 @@ def smu_tec_perhaps():
     instruments["2400"].set_output_on()
     
     
-    pid = PID(1, 0.1, 0.05, setpoint=24.0)
+    pid = PID(0.4, 0.0, 0.00, setpoint=24.0)
     pid.output_limits = (-1,1)
     
     while True:
@@ -1069,7 +1069,7 @@ def smu_tec_perhaps():
         control = pid(tmp117)
         logging.info("control="+str(control))
         instruments["2400"].set_source_current(control)
-        time.sleep(1)
+        time.sleep(0.1)
         
         
 
