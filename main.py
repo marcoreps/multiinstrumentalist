@@ -1056,7 +1056,7 @@ def smu_tec_perhaps():
     instruments["2400"].set_output_on()
     
     
-    pid = PID(0.4, 0.01, 1.00, setpoint=24.0)
+    pid = PID(0.4, 0.01, 10.00, setpoint=24.0)
     pid.output_limits = (-1,1)
     
     while True:
