@@ -1057,7 +1057,7 @@ def smu_tec_perhaps():
     
     
     pid = PID(1, 0.1, 0.05, setpoint=24.0)
-    pid.output_limits(-1,1)
+    pid.output_limits = (-1,1)
     
     while True:
         instruments["tmp117"].oneShotMode()
