@@ -1062,7 +1062,7 @@ def smu_tec_perhaps():
     while True:
         instruments["tmp117"].oneShotMode()
         while not instruments["tmp117"].dataReady():
-            time.sleep(0.1)
+            time.sleep(0.2)
         tmp117 = instruments["tmp117"].readTempC()
         #writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.info("TEC="+str(tmp117))
