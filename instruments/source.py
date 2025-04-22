@@ -201,10 +201,10 @@ class K2400:
         self.instr.write(':SENS:FUNC '+sense_type)
         
     def set_source_type(self, source_type):
-        self.send_command(':SOUR:FUNC '+source_type)
+        self.instr.write(':SOUR:FUNC '+source_type)
         
     def set_source_current_range(self, source_range):
-        self.send_command(':SOUR:CURRent:RANGe '+str(source_range))
+        self.instr.write(':SOUR:CURRent:RANGe '+str(source_range))
 
     def set_sense_voltage_range(self, rang):
         self.instr.write(':SENS:VOLT:RANG '+str(rang))
