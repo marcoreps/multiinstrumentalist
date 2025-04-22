@@ -1029,6 +1029,28 @@ def tmp():
         writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.info("ambient tmp117="+str(tmp117))
         time.sleep(30)
+
+
+
+def smu_tec_perhaps():
+    i2c_address = 0x4a
+    instruments["tmp117"] = Tmp117(i2c_address)
+    instruments["tmp117"].init()
+    instruments["tmp117"].setConversionMode(0x11)
+    
+    instruments["2400"]=K2400(rm, 'gpib0::24::INSTR', title='Keithley 2400')
+    instruments["2400"].set_source_type("CURRENT")
+    instruments["2400"].set_source_current_range(1)
+    instruments["2400"].set_source_current(0.1)
+    
+    while True:
+        instruments["tmp117"].oneShotMode()
+        while not instruments["tmp117"].dataReady():
+            time.sleep(1)
+        tmp117 = instruments["tmp117"].readTempC()
+        #writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
+        logging.info("TEC="+str(tmp117))
+        time.sleep(10)
         
         
 
@@ -1053,7 +1075,8 @@ try:
     #resistance_bridge_reversal()
     #ratio_1281()
     #tmp()
-    ratio_8508a()
+    #ratio_8508a()
+    smu_tec_perhaps()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
