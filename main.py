@@ -1035,6 +1035,7 @@ def tmp():
 def smu_tec_perhaps():
 
     from simple_pid import PID
+    from itertools import chain
     
     tmin = 18
     tmax = 28
