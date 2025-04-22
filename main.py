@@ -1038,7 +1038,7 @@ def smu_tec_perhaps():
     instruments["tmp117"].init()
     instruments["tmp117"].setConversionMode(0x11)
     
-    instruments["2400"]=K2400(rm, 'gpib0::24::INSTR', title='Keithley 2400')
+    instruments["2400"]=K2400(rm, 'TCPIP::192.168.0.5::gpib0,24', title='Keithley 2400')
     instruments["2400"].set_source_type("CURRENT")
     instruments["2400"].set_source_current_range(1)
     instruments["2400"].set_source_current(0.1)
