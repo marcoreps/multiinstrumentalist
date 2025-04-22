@@ -1056,13 +1056,13 @@ def smu_tec_perhaps():
     instruments["2400"].set_output_on()
     
     
-    pid = PID(0.4, 0.01, 10.00, setpoint=24.0)
+    pid = PID(0.4, 0.01, 5.00, setpoint=24.0)
     pid.output_limits = (-1,1)
     
     while True:
         instruments["tmp117"].oneShotMode()
         while not instruments["tmp117"].dataReady():
-            time.sleep(1)
+            time.sleep(0.1)
         tmp117 = instruments["tmp117"].readTempC()
         #writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.info("TEC="+str(tmp117))
