@@ -1055,9 +1055,8 @@ def smu_tec_perhaps():
     instruments["2400"].set_source_current(0)
     instruments["2400"].set_output_on()
     
-    temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
     
-    pid = PID(1, 0.1, 0.05, setpoint=temperatures[0])
+    pid = PID(1, 0.1, 0.05, setpoint=24.0)
     pid.output_limits(-1,1)
     
     while True:
