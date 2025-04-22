@@ -141,7 +141,7 @@ class F5700A:
         self.instr.write("*RST")
         self.instr.write("STBY")
         self.instr.write("EXTGUARD OFF")
-        logging.debug("*IDN? -> "+self.instr.query("*IDN?"))
+        logging.info("*IDN? -> "+self.instr.query("*IDN?"))
         
         
     def out(self,out_cmd):
@@ -165,3 +165,49 @@ class F5700A:
     def rangelck(self):
         self.instr.write("RANGELCK ON")            
         
+        
+        
+        
+        
+class K2400:
+    def __init__(self, resource_manager, resource_name, title='Keithley 2400'):
+        self.title = title
+        logging.debug(self.title+' init started')
+        self.rm = resource_manager
+        self.rn = resource_name
+        self.instr = self.rm.open_resource(self.rn)
+        self.instr.timeout = 60*1000
+        self.instr.clear()
+        self.instr.write("*RST")
+        logging.info("*IDN? -> "+self.instr.query("*IDN?"))
+        self.instr.write(":SYST:BEEP:STAT OFF")
+         
+    def get_title(self):
+        return self.title
+        
+    def set_output_on(self):
+        self.instr.write(':OUTP ON')
+
+    def set_output_off(self):
+        self.instr.write(':OUTP OFF')
+        
+    def set_source_voltage(self, voltage):
+        self.instr.write(':SOUR:VOLT %s' %voltage)
+            
+    def set_source_current(self, current):
+        self.instr.write(':SOUR:CURR %s' %current)
+
+    def set_sense(self, sense):
+        self.instr.write(':SENS:FUNC "'+sense+'"')
+
+    def set_sense_voltage_range(self, rang):
+        self.instr.write(':SENS:VOLT:RANG '+str(rang))
+
+    def set_sense_current_range(self, rang):
+        self.instr.write(':SENS:CURR:RANG '+str(rang))
+
+    def set_voltage_compliance(self, compliance):
+        self.instr.write(':SENS:VOLT:PROT '+str(compliance))
+
+    def set_voltage_compliance(self, compliance):
+        self.instr.write(':SENS:CURR:PROT '+str(compliance))
