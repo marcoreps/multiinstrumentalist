@@ -1033,6 +1033,15 @@ def tmp():
 
 
 def smu_tec_perhaps():
+
+    from simple_pid import PID
+    
+    tmin = 18
+    tmax = 28
+    tstep = 1
+    tsetp_delay = 60*1
+
+
     i2c_address = 0x4a
     instruments["tmp117"] = Tmp117(i2c_address)
     instruments["tmp117"].init()
@@ -1041,8 +1050,13 @@ def smu_tec_perhaps():
     instruments["2400"]=K2400(rm, 'TCPIP::192.168.0.5::gpib0,24', title='Keithley 2400')
     instruments["2400"].set_source_type("CURRENT")
     instruments["2400"].set_source_current_range(1)
-    instruments["2400"].set_source_current(-1)
+    instruments["2400"].set_source_current(0)
     instruments["2400"].set_output_on()
+    
+    temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
+    
+    pid = PID(1, 0.1, 0.05, setpoint=temperatures[0])
+    pid.output_limits(-1,1)
     
     while True:
         instruments["tmp117"].oneShotMode()
@@ -1051,7 +1065,10 @@ def smu_tec_perhaps():
         tmp117 = instruments["tmp117"].readTempC()
         #writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.info("TEC="+str(tmp117))
-        time.sleep(10)
+        control = pid(tmp117)
+        logging.info("control="+str(control))
+        instruments["2400"].set_source_current(control)
+        time.sleep(1)
         
         
 
