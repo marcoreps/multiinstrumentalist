@@ -1042,6 +1042,7 @@ def smu_tec_perhaps():
     instruments["2400"].set_source_type("CURRENT")
     instruments["2400"].set_source_current_range(1)
     instruments["2400"].set_source_current(0.1)
+    instruments["2400"].set_output_on()
     
     while True:
         instruments["tmp117"].oneShotMode()
