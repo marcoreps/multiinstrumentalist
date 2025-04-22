@@ -1035,12 +1035,13 @@ def tmp():
 def smu_tec_perhaps():
 
     from simple_pid import PID
-    from itertools import chain
     
     tmin = 18
     tmax = 28
-    tstep = 1
-    tsetp_delay = 60*1
+    tstep = 0.1
+    seconds_per_tsetp = 60*1
+    
+    start_time = time.time()
 
 
     i2c_address = 0x4a
