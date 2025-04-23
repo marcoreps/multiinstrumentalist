@@ -1112,7 +1112,7 @@ def smu_tec_perhaps():
     instruments["2400"].enable_display_upper_text()
     
     
-    pid = PID(0.7, 0.01, 4.00, setpoint=start_temp)
+    pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
     pid.output_limits = (-1,1)
     
     while True:
