@@ -1138,6 +1138,8 @@ def smu_tec_perhaps():
     pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
     pid.output_limits = (-1,1)
     
+    triggered = 0
+    
     while True:
         instruments["tmp117"].oneShotMode()
         while not instruments["tmp117"].dataReady():
@@ -1149,9 +1151,10 @@ def smu_tec_perhaps():
         control = pid(tmp117)
         logging.debug("control="+str(control))
         
-        if time.time()-last_measurement >= measurement_every_seconds:
+        if time.time()-last_measurement >= measurement_every_seconds and not triggered:
             logging.debug("nvm measurement triggered")
             instruments["K34420A"].trigger_once()
+            triggered = 1
         if time.time()-last_measurement >= measurement_every_seconds+10:
             logging.info("nvm is being read")
             nvm = float(instruments["K34420A"].get_read_val())
