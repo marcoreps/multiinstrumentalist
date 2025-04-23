@@ -1146,7 +1146,7 @@ def smu_tec_perhaps():
             start_temp=tstart,
             rise_rate=k_per_hour,
             max_temp=tmax,
-            dwell=dwell_seconds),
+            dwell=dwell_seconds,
             min_temp=tmin
         )
         logging.info("temperautre target="+str(setpoint))
