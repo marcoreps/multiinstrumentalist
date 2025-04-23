@@ -1054,6 +1054,7 @@ def smu_tec_perhaps():
     instruments["2400"].set_source_current_range(1)
     instruments["2400"].set_source_current(0)
     instruments["2400"].set_output_on()
+    instruments["2400"].enable_display_upper_text()
     
     
     pid = PID(0.7, 0.01, 4.00, setpoint=19.0)
