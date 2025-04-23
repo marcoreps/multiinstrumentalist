@@ -1110,7 +1110,7 @@ def smu_tec_perhaps():
     tmin = 18.0
     tmax = 28.0
     k_per_hour = 1000.0
-    dwell_seconds = 60
+    dwell_seconds = 10
     
     start_time = time.time()
 
