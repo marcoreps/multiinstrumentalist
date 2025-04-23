@@ -5,12 +5,12 @@ import pyvisa
 import csv
 import logging
 from time import time
+from datetime import datetime, timedelta
 import numpy
 import sys
 import sched
 import itertools
 import configparser
-import datetime
 import random
 import statistics
 from decimal import Decimal
