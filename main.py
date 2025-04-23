@@ -1151,7 +1151,7 @@ def smu_tec_perhaps():
         
         instruments["K34420A"].trigger_once()
         nvm = float(instruments["K34420A"].get_read_val())
-        writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm, tags=[["smalltec"],)
+        writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm, tags=[["smalltec"]])
         
         instruments["2400"].set_source_current(control)
 
