@@ -1053,7 +1053,7 @@ def get_target_temperature(
     Returns:
         The target temperature (°C) at the time.
     """
-    current_time = time.now()
+    current_time = time.time()
     seconds_elapsed = current_time - start_time
 
     # Phase 1: Dwell at start_temp
@@ -1110,7 +1110,7 @@ def smu_tec_perhaps():
     k_per_hour = 100.0
     dwell_seconds = 60
     
-    start_time = time.now()
+    start_time = time.time()
 
 
     i2c_address = 0x4a
