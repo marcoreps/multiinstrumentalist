@@ -1062,7 +1062,7 @@ def get_target_temperature(
     time_to_max_seconds = (max_temp - start_temp) / rise_rate * 3600
     time_to_max = timedelta(seconds=time_to_max_seconds)
     if time_elapsed < time_to_max_seconds:
-        return start_temp + rise_rate * (time_elapsed.total_seconds() / 3600)
+        return start_temp + rise_rate * (time_elapsed / 3600)
 
     # Phase 2: Dwell at Max
     dwell_end_time = start_time + time_to_max + dwell_at_max
