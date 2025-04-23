@@ -1035,7 +1035,7 @@ def get_target_temperature(
     start_temp: float,
     rise_rate: float,  # °C per hour
     max_temp: float,
-    dwell_at_max: timedelta,
+    dwell: timedelta,
     min_temp: float,
     dwell_at_min: timedelta
 ) -> float:
@@ -1048,36 +1048,39 @@ def get_target_temperature(
         start_temp: The initial temperature (°C).
         rise_rate: The rate of temperature increase (°C per hour).
         max_temp: The maximum temperature (°C).
-        dwell_at_max: The duration to hold at the maximum temperature (timedelta).
+        dwell: The duration to hold at the maximum temperature (timedelta).
         min_temp: The minimum temperature (°C).
-        dwell_at_min: The duration to hold at the minimum temperature (timedelta).
 
     Returns:
-        The target temperature (°C) at the given time.
+        The target temperature (°C) at the time.
     """
     current_time = time.time()
     time_elapsed = current_time - start_time
 
-    # Phase 1: Rise
+    # Phase 1: Dwell at start_temp
+    if time_elapsed < dwell:
+        return start_temp
+        
+    # Phase 2: Rise
     time_to_max_seconds = (max_temp - start_temp) / rise_rate * 3600
     time_to_max = timedelta(seconds=time_to_max_seconds)
     if time_elapsed < time_to_max_seconds:
         return start_temp + rise_rate * (time_elapsed / 3600)
 
     # Phase 2: Dwell at Max
-    dwell_end_time = start_time + time_to_max + dwell_at_max
+    dwell_end_time = start_time + time_to_max + dwell
     if time_elapsed < dwell_end_time:
         return max_temp
 
     # Phase 3: Fall
-    time_at_max_end = start_time + time_to_max + dwell_at_max
+    time_at_max_end = start_time + time_to_max + dwell
     time_to_min = timedelta(seconds=(max_temp - min_temp) / rise_rate * 3600)
     fall_end_time = time_at_max_end + time_to_min
     if time_elapsed < fall_end_time:
         return max_temp - rise_rate * ((time_elapsed - time_at_max_end).total_seconds() / 3600)
 
     # Phase 4: Dwell at Min
-    dwell_end_time = fall_end_time + dwell_at_min
+    dwell_end_time = fall_end_time + dwell
     if time_elapsed < dwell_end_time:
         return min_temp
 
