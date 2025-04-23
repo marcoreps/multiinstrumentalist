@@ -262,11 +262,11 @@ class HP34420A(multimeter):
         self.instr.write("INPut:FILTer:DIGital:RESPonse MEDium")
         
     def is_readable(self):
-        logging.info(self.title+' is_readable() started')
+        logging.debug(self.title+' is_readable() started')
         self.read_stb()
-        logging.info(self.title+' stb is '+str(self.stb))
+        logging.debug(self.title+' stb is '+str(self.stb))
         readable = self.stb & 16
-        logging.info("Meter is readable="+str(readable))
+        logging.debug("Meter is readable="+str(readable))
         return readable
         
 class F8508A(multimeter):

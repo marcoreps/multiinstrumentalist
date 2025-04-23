@@ -1145,7 +1145,7 @@ def smu_tec_perhaps():
         tmp117 = instruments["tmp117"].readTempC()
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
         writer.write("Small Temperature Sweep", "DUT_Temperature", "TMP117", tmp117)
-        logging.info("temperautre sensed="+str(tmp117))
+        logging.debug("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
         logging.debug("control="+str(control))
         
@@ -1159,7 +1159,7 @@ def smu_tec_perhaps():
             writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm)
         
         instruments["2400"].set_source_current(control)
-        logging.info("new TEC current:"+str(control))
+        logging.debug("new TEC current:"+str(control))
 
         setpoint=get_target_temperature(
             start_time=start_time,
@@ -1169,7 +1169,7 @@ def smu_tec_perhaps():
             dwell=dwell_seconds,
             min_temp=tmin
         )
-        logging.info("temperautre target="+str(setpoint))
+        logging.debug("temperautre target="+str(setpoint))
         
         pid.setpoint = setpoint
         
