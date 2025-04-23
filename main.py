@@ -1064,7 +1064,7 @@ def get_target_temperature(
     time_to_max_seconds = (max_temp - start_temp) / rise_rate * 3600
     time_to_max = timedelta(seconds=time_to_max_seconds)
     if time_elapsed < time_to_max:
-        return start_temp + rise_rate * (time_elapsed / 3600)
+        return start_temp + rise_rate * (time_elapsed.hours / 3600)
 
     # Phase 2: Dwell at Max
     dwell_end_time = start_time + time_to_max + dwell
@@ -1092,10 +1092,10 @@ def smu_tec_perhaps():
 
     from simple_pid import PID
     
-    tstart = 23
-    tmin = 18
-    tmax = 28
-    k_per_hour = 10
+    tstart = 23.0
+    tmin = 18.0
+    tmax = 28.0
+    k_per_hour = 10.0
     dwell_hours_at_extreme = 0.01
     
     start_time = datetime.now()
