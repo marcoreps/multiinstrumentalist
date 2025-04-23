@@ -1043,48 +1043,60 @@ def get_target_temperature(
     based on the defined temperature sweep plan.
 
     Args:
-        start_time: The datetime object representing the start of the temperature sweep.
+        start_time: The time object representing the start of the temperature sweep.
         start_temp: The initial temperature (°C).
         rise_rate: The rate of temperature increase (°C per hour).
         max_temp: The maximum temperature (°C).
-        dwell: The duration to hold at the maximum temperature (timedelta).
+        dwell: Seconds to hold at the maximum temperature.
         min_temp: The minimum temperature (°C).
 
     Returns:
         The target temperature (°C) at the time.
     """
-    current_time = datetime.now()
-    time_elapsed = current_time - start_time
+    current_time = time.now()
+    seconds_elapsed = current_time - start_time
 
     # Phase 1: Dwell at start_temp
-    if time_elapsed < dwell:
+    if seconds_elapsed < dwell:
         return start_temp
         
-    # Phase 2: Rise
-    time_to_max_seconds = (max_temp - start_temp) / rise_rate * 3600
-    time_to_max = timedelta(seconds=time_to_max_seconds)
-    if time_elapsed < time_to_max:
-        return start_temp + rise_rate * (time_elapsed.seconds / 3600)
+    # Phase 2: Rise to max_temp
+    phase_2_seconds = dwell+(max_temp - start_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_2_seconds:
+        return start_temp + rise_rate * (seconds_elapsed / 3600)
 
-    # Phase 2: Dwell at Max
-    dwell_end_time = start_time + time_to_max + dwell
-    if time_elapsed < dwell_end_time:
+    # Phase 3: Dwell at max_temp
+    phase_3_seconds = dwell+phase_2_seconds
+    if seconds_elapsed < phase_3_seconds:
         return max_temp
 
-    # Phase 3: Fall
-    time_at_max_end = start_time + time_to_max + dwell
-    time_to_min = timedelta(seconds=(max_temp - min_temp) / rise_rate * 3600)
-    fall_end_time = time_at_max_end + time_to_min
-    if time_elapsed < fall_end_time:
-        return max_temp - rise_rate * ((time_elapsed - time_at_max_end).total_seconds() / 3600)
+    # Phase 4: Fall to start_temp
+    phase_4_seconds = phase_3_seconds+(max_temp - start_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_4_seconds:
+        return max_temp - rise_rate * (seconds_elapsed / 3600)
+        
+    # Phase 5: Dwell at start_temp
+    phase_5_seconds = dwell+phase_4_seconds
+    if seconds_elapsed < phase_5_seconds:
+        return start_temp
 
-    # Phase 4: Dwell at Min
-    dwell_end_time = fall_end_time + dwell
-    if time_elapsed < dwell_end_time:
+    # Phase 6: Fall to min_temp
+    phase_6_seconds = phase_5_seconds+(start_temp - min_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_6_seconds:
+        return start_temp - rise_rate * (seconds_elapsed / 3600)
+        
+    # Phase 7: Dwell at min_temp
+    phase_7_seconds = dwell+phase_6_seconds
+    if seconds_elapsed < phase_7_seconds:
         return min_temp
-
-    # If the current time is beyond the entire sweep
-    return min_temp  # Or you could raise an exception or return None
+        
+    # Phase 8: Rise to start_temp
+    phase_8_seconds = phase_7_seconds+(start_temp - min_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_8_seconds:
+        return min_temp + rise_rate * (seconds_elapsed / 3600)
+        
+    # Phase 9: Remain at start_temp
+    return start_temp 
     
     
 
@@ -1096,9 +1108,9 @@ def smu_tec_perhaps():
     tmin = 18.0
     tmax = 28.0
     k_per_hour = 100.0
-    dwell_hours_at_extreme = 0.005
+    dwell_seconds = 60
     
-    start_time = datetime.now()
+    start_time = time.now()
 
 
     i2c_address = 0x4a
@@ -1126,7 +1138,7 @@ def smu_tec_perhaps():
         #writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.info("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
-        logging.info("control="+str(control))
+        logging.debug("control="+str(control))
         instruments["2400"].set_source_current(control)
 
         setpoint=get_target_temperature(
@@ -1134,7 +1146,7 @@ def smu_tec_perhaps():
             start_temp=tstart,
             rise_rate=k_per_hour,
             max_temp=tmax,
-            dwell=timedelta(hours = dwell_hours_at_extreme),
+            dwell=dwell_seconds),
             min_temp=tmin
         )
         logging.info("temperautre target="+str(setpoint))
