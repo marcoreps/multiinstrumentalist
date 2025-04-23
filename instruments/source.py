@@ -221,5 +221,5 @@ class K2400:
     def set_display_upper_text(self, text):
         self.instr.write(':DISPlay:WINDow1:TEXT:DATA "'+str(text)+'"')
         
-    def enable_display_upper_text(self, text):
+    def enable_display_upper_text(self):
         self.instr.write(':DISPlay:WINDow1:TEXT:STATe 1')
