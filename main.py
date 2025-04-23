@@ -1106,7 +1106,7 @@ def smu_tec_perhaps():
 
     from simple_pid import PID
     
-    tstart = 23.0
+    tstart = 24.0
     tmin = 18.0
     tmax = 28.0
     k_per_hour = 1.0
@@ -1135,7 +1135,8 @@ def smu_tec_perhaps():
     instruments["K34420A"].config_trigger_hold()
     
     
-    pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
+    #pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
+    pid = PID(0.7, 0.01, 0.00, setpoint=tstart)
     pid.output_limits = (-1,1)
     
     triggered = 0
