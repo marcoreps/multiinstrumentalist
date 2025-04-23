@@ -260,6 +260,14 @@ class HP34420A(multimeter):
         self.instr.write("INPut:FILTer:TYPE DIGital")
         self.instr.write("INPut:FILTer:DIGital:RESPonse MEDium")
         
+    def is_readable(self):
+        logging.info(self.title+' is_readable() started')
+        self.read_stb()
+        logging.info(self.title+' stb is '+str(self.stb))
+        readable = self.stb & 16
+        logging.info("Meter is readable="+str(readable))
+        return readable
+        
 class F8508A(multimeter):
 
     def __init__(self, resource_manager, resource_name, title='Fluke 8508A'):

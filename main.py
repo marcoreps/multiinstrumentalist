@@ -1111,8 +1111,10 @@ def smu_tec_perhaps():
     tmax = 28.0
     k_per_hour = 1.0
     dwell_seconds = 60.0*60.0
+    measurement_every_seconds = 60
     
     start_time = time.time()
+    last_measurement = time.time()
 
 
     i2c_address = 0x4a
@@ -1149,9 +1151,12 @@ def smu_tec_perhaps():
         control = pid(tmp117)
         logging.debug("control="+str(control))
         
-        instruments["K34420A"].trigger_once()
-        nvm = float(instruments["K34420A"].get_read_val())
-        writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm)
+        if last_measurement >= measurement_every_seconds:
+            instruments["K34420A"].trigger_once()
+            last_measurement=time.time()
+        if instruments["K34420A"].is_readable():
+            nvm = float(instruments["K34420A"].get_read_val())
+            writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm)
         
         instruments["2400"].set_source_current(control)
 
