@@ -1133,8 +1133,6 @@ def smu_tec_perhaps():
     instruments["K34420A"]=HP34420A(rm, 'TCPIP::192.168.0.5::gpib0,8', title='Keysight 34420A')
     instruments["K34420A"].config_DCV("0")
     instruments["K34420A"].config_trigger_hold()
-    instruments["K34420A"].trigger_once()
-    instruments["K34420A"].rel()
     
     
     pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
