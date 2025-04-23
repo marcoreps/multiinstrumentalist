@@ -1150,7 +1150,7 @@ def smu_tec_perhaps():
         logging.debug("control="+str(control))
         
         if time.time()-last_measurement >= measurement_every_seconds:
-            logging.info("nvm measurement triggered")
+            logging.debug("nvm measurement triggered")
             instruments["K34420A"].trigger_once()
             last_measurement=time.time()
         if instruments["K34420A"].is_readable():
