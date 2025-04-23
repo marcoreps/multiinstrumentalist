@@ -1036,7 +1036,6 @@ def get_target_temperature(
     rise_rate: float,  # °C per hour
     max_temp: float,
     dwell_at_max: timedelta,
-    fall_rate: float,  # °C per hour
     min_temp: float,
     dwell_at_min: timedelta
 ) -> float:
