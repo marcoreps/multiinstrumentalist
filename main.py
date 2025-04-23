@@ -1036,8 +1036,7 @@ def get_target_temperature(
     rise_rate: float,  # °C per hour
     max_temp: float,
     dwell: timedelta,
-    min_temp: float,
-    dwell_at_min: timedelta
+    min_temp: float
 ) -> float:
     """
     Calculates the target temperature at a given time (in seconds since the epoch)
