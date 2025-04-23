@@ -1055,6 +1055,8 @@ def get_target_temperature(
     """
     current_time = time.time()
     seconds_elapsed = current_time - start_time
+    logging.debug("seconds_elapsed ="+str(seconds_elapsed))
+
 
     # Phase 1: Dwell at start_temp
     if seconds_elapsed < dwell:
@@ -1063,7 +1065,7 @@ def get_target_temperature(
     # Phase 2: Rise to max_temp
     phase_2_seconds = dwell+(max_temp - start_temp) / rise_rate * 3600
     if seconds_elapsed < phase_2_seconds:
-        return start_temp + rise_rate * (seconds_elapsed-dwell / 3600)
+        return start_temp + rise_rate * ((seconds_elapsed-dwell) / 3600)
 
     # Phase 3: Dwell at max_temp
     phase_3_seconds = dwell+phase_2_seconds
@@ -1073,7 +1075,7 @@ def get_target_temperature(
     # Phase 4: Fall to start_temp
     phase_4_seconds = phase_3_seconds+(max_temp - start_temp) / rise_rate * 3600
     if seconds_elapsed < phase_4_seconds:
-        return max_temp - rise_rate * (seconds_elapsed-phase_3_seconds / 3600)
+        return max_temp - rise_rate * ((seconds_elapsed-phase_3_seconds) / 3600)
         
     # Phase 5: Dwell at start_temp
     phase_5_seconds = dwell+phase_4_seconds
@@ -1083,7 +1085,7 @@ def get_target_temperature(
     # Phase 6: Fall to min_temp
     phase_6_seconds = phase_5_seconds+(start_temp - min_temp) / rise_rate * 3600
     if seconds_elapsed < phase_6_seconds:
-        return start_temp - rise_rate * (seconds_elapsed-phase_5_seconds / 3600)
+        return start_temp - rise_rate * ((seconds_elapsed-phase_5_seconds) / 3600)
         
     # Phase 7: Dwell at min_temp
     phase_7_seconds = dwell+phase_6_seconds
@@ -1093,7 +1095,7 @@ def get_target_temperature(
     # Phase 8: Rise to start_temp
     phase_8_seconds = phase_7_seconds+(start_temp - min_temp) / rise_rate * 3600
     if seconds_elapsed < phase_8_seconds:
-        return min_temp + rise_rate * (seconds_elapsed-phase_7_seconds / 3600)
+        return min_temp + rise_rate * ((seconds_elapsed-phase_7_seconds) / 3600)
         
     # Phase 9: Remain at start_temp
     return start_temp 
