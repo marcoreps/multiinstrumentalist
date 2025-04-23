@@ -1156,10 +1156,11 @@ def smu_tec_perhaps():
             instruments["K34420A"].trigger_once()
             triggered = 1
         if time.time()-last_measurement >= measurement_every_seconds+10:
-            logging.info("nvm is being read")
+            logging.debug("nvm is being read")
             nvm = float(instruments["K34420A"].get_read_val())
             writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm)
             last_measurement=time.time()
+            triggered = 0
         
         instruments["2400"].set_source_current(control)
         logging.debug("new TEC current:"+str(control))
