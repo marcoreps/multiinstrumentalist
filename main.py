@@ -1144,7 +1144,7 @@ def smu_tec_perhaps():
             time.sleep(0.2)
         tmp117 = instruments["tmp117"].readTempC()
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
-        writer.write("Small Temperature Sweep", "DUT_Temperature", "TMP117", tmp117, tags=[["smalltec"],)
+        writer.write("Small Temperature Sweep", "DUT_Temperature", "TMP117", tmp117, tags=[["smalltec"]],)
         logging.info("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
         logging.debug("control="+str(control))
