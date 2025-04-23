@@ -1030,16 +1030,71 @@ def tmp():
         logging.info("ambient tmp117="+str(tmp117))
         time.sleep(30)
 
+def get_target_temperature(
+    start_time: datetime,
+    start_temp: float,
+    rise_rate: float,  # °C per hour
+    max_temp: float,
+    dwell_at_max: timedelta,
+    fall_rate: float,  # °C per hour
+    min_temp: float,
+    dwell_at_min: timedelta
+) -> float:
+    """
+    Calculates the target temperature at a given time (in seconds since the epoch)
+    based on the defined temperature sweep plan.
 
+    Args:
+        start_time: The datetime object representing the start of the temperature sweep.
+        start_temp: The initial temperature (°C).
+        rise_rate: The rate of temperature increase (°C per hour).
+        max_temp: The maximum temperature (°C).
+        dwell_at_max: The duration to hold at the maximum temperature (timedelta).
+        min_temp: The minimum temperature (°C).
+        dwell_at_min: The duration to hold at the minimum temperature (timedelta).
+
+    Returns:
+        The target temperature (°C) at the given time.
+    """
+    current_time = time.time()
+    time_elapsed = current_time - start_time
+
+    # Phase 1: Rise
+    time_to_max = timedelta(seconds=(max_temp - start_temp) / rise_rate * 3600)
+    if time_elapsed < time_to_max:
+        return start_temp + rise_rate * (time_elapsed.total_seconds() / 3600)
+
+    # Phase 2: Dwell at Max
+    dwell_end_time = start_time + time_to_max + dwell_at_max
+    if time_elapsed < dwell_end_time:
+        return max_temp
+
+    # Phase 3: Fall
+    time_at_max_end = start_time + time_to_max + dwell_at_max
+    time_to_min = timedelta(seconds=(max_temp - min_temp) / rise_rate * 3600)
+    fall_end_time = time_at_max_end + time_to_min
+    if time_elapsed < fall_end_time:
+        return max_temp - rise_rate * ((time_elapsed - time_at_max_end).total_seconds() / 3600)
+
+    # Phase 4: Dwell at Min
+    dwell_end_time = fall_end_time + dwell_at_min
+    if time_elapsed < dwell_end_time:
+        return min_temp
+
+    # If the current time is beyond the entire sweep
+    return min_temp  # Or you could raise an exception or return None
+    
+    
 
 def smu_tec_perhaps():
 
     from simple_pid import PID
     
+    tstart = 23
     tmin = 18
     tmax = 28
-    tstep = 0.1
-    seconds_per_tsetp = 60*1
+    k_per_hour = 1
+    dwell_hours_at_extreme = 1
     
     start_time = time.time()
 
@@ -1057,7 +1112,7 @@ def smu_tec_perhaps():
     instruments["2400"].enable_display_upper_text()
     
     
-    pid = PID(0.7, 0.01, 4.00, setpoint=19.0)
+    pid = PID(0.7, 0.01, 4.00, setpoint=start_temp)
     pid.output_limits = (-1,1)
     
     while True:
@@ -1071,6 +1126,22 @@ def smu_tec_perhaps():
         control = pid(tmp117)
         logging.info("control="+str(control))
         instruments["2400"].set_source_current(control)
+
+        setpoint=get_target_temperature(
+            start_time=start_time,
+            start_temp=tstart,
+            rise_rate=k_per_hour,
+            max_temp=tmax,
+            dwell_at_max=timedelta(hours = dwell_hours_at_extreme),
+            min_temp=tmin,
+            dwell_at_min=timedelta(hours = dwell_hours_at_extreme)
+        )
+        
+        pid.setpoint = setpoint
+        
+        if abs(setpoint-tmp117)>11.0: #things are getting out of control
+            instruments["2400"].set_output_off()
+            logging.error("Thermal runaway")
 
         
         
