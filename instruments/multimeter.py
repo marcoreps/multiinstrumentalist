@@ -251,9 +251,10 @@ class HP34420A(multimeter):
         #self.instr.write("TRIGger:COUNt INFinity") Insufficient memory??
         
     def trigger_once(self):
-        logging.debug(self.title+' triggered once')
+        logging.info(self.title+' triggered once')
         self.instr.write("INITiate")
         self.instr.write("*TRG")
+        logging.info(self.title+' trigger once function done')
         
     def set_filter(self):
         self.instr.write("INPut:FILTer:STATe ON")
