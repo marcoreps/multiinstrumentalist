@@ -217,3 +217,6 @@ class K2400:
 
     def set_voltage_compliance(self, compliance):
         self.instr.write(':SENS:CURR:PROT '+str(compliance))
+        
+    def set_display_upper(self, text):
+        self.instr.write(':DISPlay:WINDow1:TEXT:DATA "'+str(text)+'"')
