@@ -1095,8 +1095,8 @@ def smu_tec_perhaps():
     tstart = 23.0
     tmin = 18.0
     tmax = 28.0
-    k_per_hour = 10.0
-    dwell_hours_at_extreme = 0.01
+    k_per_hour = 30.0
+    dwell_hours_at_extreme = 0.005
     
     start_time = datetime.now()
 
@@ -1144,6 +1144,7 @@ def smu_tec_perhaps():
         if abs(setpoint-tmp117)>11.0: #things are getting out of control
             instruments["2400"].set_output_off()
             logging.error("Thermal runaway")
+            logging.error("This ends here")
             break
 
         
