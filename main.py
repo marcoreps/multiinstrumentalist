@@ -1106,7 +1106,7 @@ def smu_tec_perhaps():
 
     from simple_pid import PID
     
-    tstart = 23.0
+    tstart = 24.0
     tmin = 18.0
     tmax = 28.0
     k_per_hour = 1.0
