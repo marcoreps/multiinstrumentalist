@@ -1095,8 +1095,8 @@ def smu_tec_perhaps():
     tstart = 23
     tmin = 18
     tmax = 28
-    k_per_hour = 1
-    dwell_hours_at_extreme = 1
+    k_per_hour = 10
+    dwell_hours_at_extreme = 0.01
     
     start_time = datetime.now()
 
