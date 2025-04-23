@@ -1065,7 +1065,7 @@ def smu_tec_perhaps():
         while not instruments["tmp117"].dataReady():
             time.sleep(0.2)
         tmp117 = instruments["tmp117"].readTempC()
-        instruments["2400"].enable_display_upper_text(str(round(tmp117, 3))+" °C")
+        instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" °C")
         #writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
         logging.info("TEC="+str(tmp117))
         control = pid(tmp117)
