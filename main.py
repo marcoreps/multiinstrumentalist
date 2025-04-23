@@ -1109,8 +1109,8 @@ def smu_tec_perhaps():
     tstart = 23.0
     tmin = 18.0
     tmax = 28.0
-    k_per_hour = 1000.0
-    dwell_seconds = 10
+    k_per_hour = 1.0
+    dwell_seconds = 60.0*60.0
     
     start_time = time.time()
 
@@ -1128,6 +1128,13 @@ def smu_tec_perhaps():
     instruments["2400"].enable_display_upper_text()
     
     
+    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
+    instruments["K34420A"].config_DCV("0")
+    instruments["K34420A"].config_trigger_hold()
+    instruments["K34420A"].trigger_once()
+    instruments["K34420A"].rel()
+    
+    
     pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
     pid.output_limits = (-1,1)
     
@@ -1137,10 +1144,15 @@ def smu_tec_perhaps():
             time.sleep(0.2)
         tmp117 = instruments["tmp117"].readTempC()
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
-        #writer.write("Temperature sweep", "Ambient_Temp", "TMP117_on_calibratorpi", tmp117)
+        writer.write("Small Temperature Sweep", "DUT_Temperature", "TMP117", tmp117, tags=[["smalltec"],)
         logging.info("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
         logging.debug("control="+str(control))
+        
+        instruments["K34420A"].trigger_once()
+        nvm = float(instruments["K34420A"].get_read_val())
+        writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm, tags=[["smalltec"],)
+        
         instruments["2400"].set_source_current(control)
 
         setpoint=get_target_temperature(
