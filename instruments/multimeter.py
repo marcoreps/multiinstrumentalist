@@ -265,9 +265,9 @@ class HP34420A(multimeter):
         logging.debug(self.title+' is_readable() started')
         
         logging.info(self.title+' stb is '+str(self.instr.read_stb()))
-        readable = self.stb & 16
-        logging.debug("Meter is readable="+str(readable))
-        return readable
+        #readable = self.stb & 16
+        #logging.debug("Meter is readable="+str(readable))
+        #return readable
         
 class F8508A(multimeter):
 
