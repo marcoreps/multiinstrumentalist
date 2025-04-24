@@ -1109,8 +1109,8 @@ def smu_tec_perhaps():
     tstart = 23.0
     tmin = 18.0
     tmax = 28.0
-    k_per_hour = 1.0
-    dwell_seconds = 60.0*60.0
+    k_per_hour = 2.0
+    dwell_seconds = 60.0*30.0
     measurement_every_seconds = 60
     
     start_time = time.time()
@@ -1147,7 +1147,7 @@ def smu_tec_perhaps():
             time.sleep(0.2)
         tmp117 = instruments["tmp117"].readTempC()
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
-        writer.write("Small Temperature Sweep", "DUT_Temperature", "TMP117", tmp117)
+
         logging.debug("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
         logging.debug("control="+str(control))
@@ -1160,6 +1160,7 @@ def smu_tec_perhaps():
             logging.debug("nvm is being read")
             nvm = float(instruments["K34420A"].get_read_val())
             writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm)
+            writer.write("Small Temperature Sweep", "DUT_Temperature", "TMP117", tmp117)
             last_measurement=time.time()
             triggered = 0
         
