@@ -995,7 +995,7 @@ def ratio_8508a():
             min_temp=tmin
         )
         
-        arroyo.out(new_setpoint)
+        instruments["arroyo"].out(new_setpoint)
 
         
         
