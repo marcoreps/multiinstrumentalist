@@ -848,16 +848,7 @@ def resistance_bridge_reversal():
                 writer.write("Temperature sweep", "Reversible Resistance Bridge", instruments["2182a"].get_title(), difference)
                 
 
-def set_temperature(arroyo, temp):
-    arroyo.out(temp)
-    logging.info(f"Setting temperature to {temp} °C")
-    
-def schedule_temperatures(s, arroyo, temperatures, tsetp_delay):
-    seconds = 0
-    for t in temperatures:
-        s.enter(seconds, 1, set_temperature, argument=(arroyo, t))
-        logging.info(f"Planned temperature: {t} °C after {seconds} seconds")
-        seconds += tsetp_delay
+
         
 def measure(instruments, switch):
     instruments["tmp117"].oneShotMode()
@@ -927,25 +918,21 @@ def measure(instruments, switch):
     switch.switchingOpenRelay(channels[14])
     switch.switchingOpenRelay(channels[2])
     
-def schedule_measurements(s, instruments, switch, measurement_delay):
-    seconds = 0
-    while seconds < 60*60*24*20:
-        s.enter(seconds, 2, measure, argument=(instruments, switch))
-        seconds += measurement_delay
+
 
 def ratio_8508a():
 
     logging.info("Welcome to ratio_8508a()")
 
-    tmin = 18
-    tmax = 28
-    tstep = 1
-    tsetp_delay = 60*60*20
-    measurement_delay = 60*20
-    nsamples = 100
+    tstart = 23.0
+    tmin = 18.0
+    tmax = 28.0
+    k_per_hour = 2.0
+    dwell_seconds = 60.0*30.0
+    measurement_every_seconds = 60*30
     
-    polarity_1_samples = numpy.tile(0.0,nsamples)
-    polarity_2_samples = numpy.tile(0.0,nsamples)
+    start_time = time.time()
+    last_measurement = time.time()
     
     i2c_address = 0x4a
     instruments["tmp117"] = Tmp117(i2c_address)
@@ -991,27 +978,25 @@ def ratio_8508a():
     # IV    Br     CHB_N   channels[4]      SR104 Thermistor Sense-
     # IV    BrW    CHB_P   channels[4]      SR104 Thermistor Sense-
     
-
+    triggered = 0
     
-    
-    import sched
-    from itertools import chain
-    #temperatures = chain(numpy.arange(23, tmax+0.1, tstep), numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
-    temperatures = chain([28.0,], numpy.flip(numpy.arange(23, tmax-0.9, tstep)), numpy.flip(numpy.arange(tmin, 23.1, tstep)), numpy.arange(tmin+1, 23.1, tstep))
-
-    
-    s = sched.scheduler(time.time, time.sleep)
-    
-    logging.info("Planned temperature steps at seconds:")
-    schedule_temperatures(s, instruments["arroyo"], temperatures, tsetp_delay)
-    logging.info("Planning measurements ...")
-    schedule_measurements(s, instruments, switch, measurement_delay)
-    logging.info("Planning done, enjoy the ride!")
-    
-    s.run()
-    
-
+    while True:
         
+        if time.time()-last_measurement >= measurement_every_seconds:
+            logging.debug("measurement triggered")
+            measure(instruments, switch)
+        
+        new_setpoint=get_target_temperature(
+            start_time=start_time,
+            start_temp=tstart,
+            rise_rate=k_per_hour,
+            max_temp=tmax,
+            dwell=dwell_seconds,
+            min_temp=tmin
+        )
+        
+        arroyo.out(new_setpoint)
+
         
         
         
@@ -1209,8 +1194,8 @@ try:
     #resistance_bridge_reversal()
     #ratio_1281()
     #tmp()
-    #ratio_8508a()
-    smu_tec_perhaps()
+    ratio_8508a()
+    #smu_tec_perhaps()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
