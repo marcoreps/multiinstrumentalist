@@ -924,18 +924,12 @@ def ratio_8508a():
 
     logging.info("Welcome to ratio_8508a()")
 
-    #tstart = 23.0
-    #tmin = 18.0
-    #tmax = 28.0
-    #k_per_hour = 0.05
-    #dwell_seconds = 60.0*60.0*20
-    measurement_every_seconds = 60*20
-    
     tstart = 23.0
     tmin = 18.0
     tmax = 28.0
-    k_per_hour = 5*60*3
-    dwell_seconds = 10
+    k_per_hour = 0.05
+    dwell_seconds = 60.0*60.0*20
+    measurement_every_seconds = 60*20
     
     start_time = time.time()
     last_measurement = time.time()
