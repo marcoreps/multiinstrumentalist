@@ -1000,10 +1000,9 @@ def ratio_8508a():
             dwell=dwell_seconds,
             min_temp=tmin
         )
-        logging.info("temp="+str(new_setpoint))
-        #instruments["arroyo"].out(new_setpoint)
+        instruments["arroyo"].out(new_setpoint)
         
-        time.sleep(0.1)
+        time.sleep(10)
 
         
         
