@@ -1264,8 +1264,8 @@ try:
     #resistance_bridge_reversal()
     #ratio_1281()
     #tmp()
-    ratio_8508a()
-    #smu_tec_perhaps()
+    #ratio_8508a()
+    smu_tec_perhaps()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
