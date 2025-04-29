@@ -924,12 +924,18 @@ def ratio_8508a():
 
     logging.info("Welcome to ratio_8508a()")
 
+    #tstart = 23.0
+    #tmin = 18.0
+    #tmax = 28.0
+    #k_per_hour = 0.05
+    #dwell_seconds = 60.0*60.0*20
+    measurement_every_seconds = 60*20
+    
     tstart = 23.0
     tmin = 18.0
     tmax = 28.0
-    k_per_hour = 2.0
-    dwell_seconds = 60.0*30.0
-    measurement_every_seconds = 60*30
+    k_per_hour = 5*60*3
+    dwell_seconds = 10
     
     start_time = time.time()
     last_measurement = time.time()
@@ -986,7 +992,7 @@ def ratio_8508a():
             logging.debug("measurement triggered")
             measure(instruments, switch)
         
-        new_setpoint=get_target_temperature(
+        new_setpoint=get_target_temperature_min_first(
             start_time=start_time,
             start_temp=tstart,
             rise_rate=k_per_hour,
@@ -994,8 +1000,10 @@ def ratio_8508a():
             dwell=dwell_seconds,
             min_temp=tmin
         )
+        logging.info("temp="+str(new_setpoint))
+        #instruments["arroyo"].out(new_setpoint)
         
-        instruments["arroyo"].out(new_setpoint)
+        time.sleep(0.1)
 
         
         
@@ -1085,6 +1093,75 @@ def get_target_temperature(
     # Phase 9: Remain at start_temp
     return start_temp 
     
+    
+def get_target_temperature_min_first(
+    start_time: datetime,
+    start_temp: float,
+    rise_rate: float,  # °C per hour
+    max_temp: float,
+    dwell: timedelta,
+    min_temp: float
+) -> float:
+    """
+    Calculates the target temperature at a given time (in seconds since the epoch)
+    based on the defined temperature sweep plan.
+
+    Args:
+        start_time: The time object representing the start of the temperature sweep.
+        start_temp: The initial temperature (°C).
+        rise_rate: The rate of temperature increase (°C per hour).
+        max_temp: The maximum temperature (°C).
+        dwell: Seconds to hold at the maximum temperature.
+        min_temp: The minimum temperature (°C).
+
+    Returns:
+        The target temperature (°C) at the time.
+    """
+    current_time = time.time()
+    seconds_elapsed = current_time - start_time
+    logging.debug("seconds_elapsed ="+str(seconds_elapsed))
+
+    # Phase 1: Dwell at start_temp
+    if seconds_elapsed < dwell:
+        return start_temp
+        
+    # Phase 2: Fall to min_temp
+    phase_2_seconds = dwell+(start_temp - min_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_2_seconds:
+        return start_temp - rise_rate * ((seconds_elapsed-dwell) / 3600)
+        
+    # Phase 3: Dwell at min_temp
+    phase_3_seconds = dwell+phase_2_seconds
+    if seconds_elapsed < phase_3_seconds:
+        return min_temp
+        
+    # Phase 4: Rise to start_temp
+    phase_4_seconds = phase_3_seconds+(start_temp - min_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_4_seconds:
+        return min_temp + rise_rate * ((seconds_elapsed-phase_3_seconds) / 3600)
+        
+    # Phase 5: Dwell at start_temp
+    phase_5_seconds = dwell+phase_4_seconds
+    if seconds_elapsed < phase_5_seconds:
+        return start_temp
+        
+    # Phase 6: Rise to max_temp
+    phase_6_seconds = phase_5_seconds+(max_temp - start_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_6_seconds:
+        return start_temp + rise_rate * ((seconds_elapsed-phase_5_seconds) / 3600)
+
+    # Phase 7: Dwell at max_temp
+    phase_7_seconds = dwell+phase_6_seconds
+    if seconds_elapsed < phase_7_seconds:
+        return max_temp
+
+    # Phase 8: Fall to start_temp
+    phase_8_seconds = phase_7_seconds+(max_temp - start_temp) / rise_rate * 3600
+    if seconds_elapsed < phase_8_seconds:
+        return max_temp - rise_rate * ((seconds_elapsed-phase_7_seconds) / 3600)
+
+    # Phase 9: Remain at start_temp
+    return start_temp 
     
 
 def smu_tec_perhaps():
