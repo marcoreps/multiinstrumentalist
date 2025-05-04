@@ -931,7 +931,11 @@ def ratio_8508a():
     dwell_seconds = 60.0*60.0*20
     measurement_every_seconds = 60*20
     
-    start_time = time.time()
+
+    dt_object = datetime.datetime(2025, 4, 29, 7, 39, 27)
+    start_time = time.mktime(dt_object.timetuple())
+    
+    #start_time = time.time()
     last_measurement = time.time()
     
     i2c_address = 0x4a
@@ -994,7 +998,7 @@ def ratio_8508a():
             dwell=dwell_seconds,
             min_temp=tmin
         )
-        instruments["arroyo"].out(new_setpoint)
+        #instruments["arroyo"].out(new_setpoint)
         
         time.sleep(10)
 
