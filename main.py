@@ -932,7 +932,7 @@ def ratio_8508a():
     measurement_every_seconds = 60*20
     
 
-    dt_object = datetime(2025, 4, 29, 7, 39, 27)
+    dt_object = datetime(2025, 4, 29, 10, 39, 27)
     start_time = time.mktime(dt_object.timetuple())
     
     #start_time = time.time()
@@ -998,7 +998,7 @@ def ratio_8508a():
             dwell=dwell_seconds,
             min_temp=tmin
         )
-        #instruments["arroyo"].out(new_setpoint)
+        instruments["arroyo"].out(new_setpoint)
         
         time.sleep(10)
 
