@@ -932,7 +932,7 @@ def ratio_8508a():
     measurement_every_seconds = 60*20
     
 
-    dt_object = datetime.datetime(2025, 4, 29, 7, 39, 27)
+    dt_object = datetime(2025, 4, 29, 7, 39, 27)
     start_time = time.mktime(dt_object.timetuple())
     
     #start_time = time.time()
