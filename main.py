@@ -326,7 +326,6 @@ def scanner_once():
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[0][0],)) # Open source
         sch.enter(seconds, 10, switch.switchingOpenRelay, argument=(perm[1][0],)) # Open meter
         
-    logging.info("This round will take "+str(datetime.timedelta(seconds=seconds)))
     sch.run()
     instruments["3458P"].blank_display()
     instruments["3458B"].blank_display()
