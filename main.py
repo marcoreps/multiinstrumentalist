@@ -1253,7 +1253,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    #scanner_once()
+    scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -1268,7 +1268,7 @@ try:
     #resistance_bridge_reversal()
     #ratio_1281()
     #tmp()
-    ratio_8508a()
+    #ratio_8508a()
     #smu_tec_perhaps()
 
 
