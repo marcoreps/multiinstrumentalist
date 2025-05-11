@@ -559,11 +559,20 @@ def nbs430():
         switch.switchingCloseRelay("c0") # Home switch
 
         scanner_sources = [(1, "ADRmu6"), (2, "ADRmu4"), (3, "ADRmu1"), (4, "ADRmu9"),  (5, "ADRmu12"),]
+        #scanner_sources = [(1, "ADRmu6"), (2, "ADRmu3"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu15"),]
+        #scanner_sources = [(1, "ADRmu4"), (2, "ADRmu3"), (3, "ADRmu1"), (4, "ADRmu20"),  (5, "ADRmu11"),]
+        #scanner_sources = [(1, "ADRmu9"), (2, "ADRmu12"), (3, "ADRmu15"), (4, "ADRmu1"),  (5, "ADRmu20"),]
+        
+        
+        
+        
+        
+        
         #scanner_sources = [(1, "ADRmu3"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu11"),  (5, "ADRmu12"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu20"), (3, "ADRmu1"), (4, "ADRmu6"),  (5, "ADRmu9"),]
         #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu4"), (3, "ADRmu3"), (4, "ADRmu6"),  (5, "ADRmu11"),]
-        #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu4"), (3, "ADRmu12"), (4, "ADRmu20"),  (5, "ADRmu11"),]
-        #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu9"),  (5, "ADRmu11"),]
+            #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu4"), (3, "ADRmu12"), (4, "ADRmu20"),  (5, "ADRmu11"),]
+            #scanner_sources = [(1, "ADRmu15"), (2, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu9"),  (5, "ADRmu11"),]
         
         scanner_permutations = set(itertools.combinations(scanner_sources, 2))
         
@@ -1252,7 +1261,7 @@ try:
     #test_W4950()
     #INL_3458A()
     #temperature_sweep()
-    scanner_once()
+    #scanner_once()
     #auto_ACAL_3458A()
     #noise_3458A()
     #pt100_scanner()
@@ -1260,7 +1269,7 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    #nbs430()
+    nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
