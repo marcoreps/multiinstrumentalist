@@ -935,15 +935,13 @@ def ratio_8508a():
     tstart = 23.0
     tmin = 18.0
     tmax = 28.0
-    k_per_hour = 0.05
+    k_per_hour = 0.07
     dwell_seconds = 60.0*60.0*20
     measurement_every_seconds = 60*20
     
 
     dt_object = datetime(2025, 4, 29, 10, 39, 27)
-    start_time = time.mktime(dt_object.timetuple())
-    
-    #start_time = time.time()
+    start_time = time.time()
     last_measurement = time.time()
     
     i2c_address = 0x4a
