@@ -998,7 +998,7 @@ def ratio_8508a():
             logging.debug("measurement triggered")
             measure(instruments, switch)
         
-        new_setpoint=get_target_temperature_min_first(
+        new_setpoint=get_target_temperature(
             start_time=start_time,
             start_temp=tstart,
             rise_rate=k_per_hour,
@@ -1269,14 +1269,14 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
     #ratio_1281()
     #tmp()
-    #ratio_8508a()
+    ratio_8508a()
     #smu_tec_perhaps()
 
 
