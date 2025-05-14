@@ -560,8 +560,8 @@ def nbs430():
 
         #scanner_sources = [(1, "ADRmu6"), (2, "ADRmu4"), (3, "ADRmu1"), (4, "ADRmu9"),  (5, "ADRmu12"),]
         #scanner_sources = [(1, "ADRmu6"), (2, "ADRmu3"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu15"),]
-        scanner_sources = [(1, "ADRmu4"), (2, "ADRmu3"), (3, "ADRmu1"), (4, "ADRmu20"),  (5, "ADRmu11"),]
-        #scanner_sources = [(1, "ADRmu9"), (2, "ADRmu12"), (3, "ADRmu15"), (4, "ADRmu1"),  (5, "ADRmu20"),]
+        #scanner_sources = [(1, "ADRmu4"), (2, "ADRmu3"), (3, "ADRmu1"), (4, "ADRmu20"),  (5, "ADRmu11"),]
+        scanner_sources = [(1, "ADRmu9"), (2, "ADRmu12"), (3, "ADRmu15"), (4, "ADRmu20"),  (5, "ADRmu1"),]
         
         
         
