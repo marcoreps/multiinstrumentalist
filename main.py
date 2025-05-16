@@ -932,8 +932,18 @@ def ratio_8508a():
     
 
     dt_object = datetime(2025, 4, 29, 10, 39, 27)
-    start_time = time.time()
+    start_time = datetime.datetime(2025, 5, 13, 12, 40)
+    #start_time = time.time()
     last_measurement = time.time()
+    logging.info("first temperature = "+str(get_target_temperature(
+            start_time=start_time,
+            start_temp=tstart,
+            rise_rate=k_per_hour,
+            max_temp=tmax,
+            dwell=dwell_seconds,
+            min_temp=tmin
+        )))
+
     
     i2c_address = 0x4a
     instruments["tmp117"] = Tmp117(i2c_address)
@@ -1258,14 +1268,14 @@ try:
     #scanner_34420A()
     #resistance_bridge_temperature_sweep()
     #test_rotary_scanner_episode_2()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
     #resistance_bridge_reversal()
     #ratio_1281()
     #tmp()
-    #ratio_8508a()
+    ratio_8508a()
     #smu_tec_perhaps()
 
 
