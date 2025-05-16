@@ -930,9 +930,7 @@ def ratio_8508a():
     dwell_seconds = 60.0*60.0*20
     measurement_every_seconds = 60*20
     
-
-    dt_object = datetime(2025, 4, 29, 10, 39, 27)
-    start_time = datetime.datetime(2025, 5, 13, 12, 40)
+    start_time = datetime(2025, 5, 13, 12, 40)
     #start_time = time.time()
     last_measurement = time.time()
     logging.info("first temperature = "+str(get_target_temperature(
