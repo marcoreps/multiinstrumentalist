@@ -146,49 +146,6 @@ def INL_3458A():
             
             writer.writerow({'vref': calibrator_out, '3458A_volt': HP3458A_out, '3458B_volt': HP3458B_out, 'F8508_volt': F8508_out})
 
-def temperature_sweep():
-
-    instruments["3458A"]=HP3458A(rm, 'gpib0::22::INSTR', title='3458A')
-    instruments["3458A"].config_NDIG(9)
-    instruments["3458A"].config_NPLC(100)
-    instruments["3458A"].config_trigger_auto()
-    
-    instruments["arroyo"]=Arroyo(dev='/dev/ttyUSB0', baud=38400, title='Arroyo TECSource')
-    
-    #instruments["3458B"]=HP3458A(rm, 'gpib0::23::INSTR', title='3458B')
-    #instruments["3458B"].config_NDIG(9)
-    #instruments["3458B"].config_NPLC(100)
-    #instruments["3458B"].config_trigger_auto()
-
-    #instruments["8508A"]=F8508A(rm, 'gpib0::9::INSTR', title='8508A')
-    #instruments["8508A"].config_DCV(100)
-    #instruments["8508A"].config_DCV_fast_off()
-    #instruments["8508A"].config_trigger_auto()
-
-
-
-    
-    
-    tmin = 23
-    tmax = 50
-    tstep = 0.3
-    wait_settle = 130
-
-    sch = sched.scheduler(time.time, time.sleep)
-    sch.enter(20, 10, recursive_read_inst, argument=(sch, 20, 10, instruments["3458A"], "Vz"))
-    sch.enter(10, 10, recursive_read_inst, argument=(sch, 10, 10, instruments["arroyo"], "Chamber Temp"))
-    i=wait_settle*5
-    for t in numpy.arange(tmin, tmax+0.01, tstep):
-    #for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
-        i+=wait_settle
-        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
-    i+=wait_settle*12
-    #for t in numpy.arange(tmin, tmax+0.01, tstep):
-    for t in numpy.flip(numpy.arange(tmin, tmax+0.01, tstep)):
-        i+=wait_settle
-        sch.enter(i, 9, instruments["arroyo"].out, argument=([t]))
-    logging.info("This temperature sweep will take "+str(datetime.timedelta(seconds=i)))
-    sch.run()
 
 def read_inst_scanner(inst, dut, bucket="PPMhub"):
     logging.debug("Reading inst with title %s after a measurement of %s" % (inst.get_title(), dut))
@@ -200,34 +157,6 @@ def read_inst_scanner(inst, dut, bucket="PPMhub"):
 
 
 
-def auto_ACAL_3458A():
-    
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
-    instruments["3458B"].config_10DCV_9digit()
-    #instruments["3458B"].config_10OHMF_9digit()
-    #instruments["3458B"].config_10kOHMF_9digit()
-    instruments["3458B"].config_NPLC100()
-    instruments["3458B"].blank_display()
-    instruments["3458B"].config_trigger_auto()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
-    last_temp = instruments["temp_short"].get_read_val()
-
-    while True:
-        now = datetime.datetime.now()
-        if not(now.minute % 10) and not(now.second) and instruments["3458B"].is_readable():
-            MySeriesHelper(instrument_name=HP3458B_temperature.get_title(), value=float(HP3458B_temperature.get_read_val()))
-            time.sleep(1)
-        temperature = instruments["temp_short"].get_read_val()
-        logging.debug("Actual Temp = %s   Last ACAL temp = %s" % (temperature, last_temp))
-        if abs(last_temp - temperature) > 1:
-            instruments["3458B"].acal_DCV()
-            time.sleep(80)
-            last_temp = instruments["temp_short"].get_read_val()
-
-        for i in instruments.values():
-            if i.is_readable():
-                MySeriesHelper(instrument_name=i.get_title(), value=float(i.get_read_val()))
-        time.sleep(1)
         
     
 def scanner_once():
@@ -343,102 +272,9 @@ def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
     writer.write(bucket, name, inst.get_title(), inst.get_read_val())
     
-def noise_3458A():
-
-    seconds_per_step=60*20
-
-    instruments["3458A"]=HP3458A(ip=vxi_ip, gpib_address=22, title="3458A")
-    instruments["3458A"].config_10DCV_9digit()
-    #instruments["3458A"].config_10OHMF_9digit()
-    #instruments["3458A"].config_10kOHMF_9digit()
-    #instruments["3458A"].config_1mA_9digit()
-    instruments["3458A"].blank_display()
-    instruments["3458A"].config_trigger_auto()
-    HP3458A_temperature=HP3458A_temp(HP3458A=instruments["3458A"], title="HP3458A Int Temp Sensor")
-    
-    instruments["3458B"]=HP3458A(ip=vxi_ip, gpib_address=23, title="3458B")
-    instruments["3458B"].config_10DCV_9digit()
-    #instruments["3458B"].config_10OHMF_9digit()
-    #instruments["3458B"].config_10kOHMF_9digit()
-    #instruments["3458B"].config_1mA_9digit()
-    instruments["3458B"].blank_display()
-    instruments["3458B"].config_trigger_auto()
-    HP3458B_temperature=HP3458A_temp(HP3458A=instruments["3458B"], title="HP3458B Int Temp Sensor")
-    
-    NPLCs = [0.1, 1, 10, 50, 100, 500, 1000]
-    
-    with open('csv/3458A_vs_B_noise.csv', mode='w') as csv_file:
-        fieldnames = ['NPLC', '3458A_reading', '3458B_reading']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-        
-        for NPLC in NPLCs:
-            logging.info("NPLC "+str(NPLC))
-            instruments["3458A"].config_NPLC(NPLC)
-            instruments["3458B"].config_NPLC(NPLC)
-            start = datetime.datetime.now()
-            deltat = datetime.datetime.now() - start
-            while deltat.seconds < seconds_per_step:
-                #while not instruments["3458A"].is_readable():
-                    #time.sleep(0.1)
-                readingA = instruments["3458A"].get_read_val()
-                #while not instruments["3458B"].is_readable():
-                    #time.sleep(0.1)
-                readingB = instruments["3458B"].get_read_val()
-                logging.debug( str(NPLC) + "," + str(readingA) + "," + str(readingB) )
-                writer.writerow({'NPLC': NPLC, '3458A_reading': readingA, '3458B_reading': readingB})
-                deltat = datetime.datetime.now() - start
-                
+              
 
 
-def rms_34420A():
-    clock=datetime.datetime.now()
-    print("Start time: " + str(clock))
-    
-    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV(0.001)
-    #instruments["K34420A"].rel()
-    #instruments["K34420A"].set_filter()
-    #instruments["K34420A"].blank_display()
-    instruments["K34420A"].config_trigger_auto()
-    
-    readings = [0]*500
-    rel = [0]*100
-
-    while True:
-        for i in range(100):
-            rel[i] = float(instruments["K34420A"].get_read_val())
-        for i in range(500):
-            readings[i] = float(instruments["K34420A"].get_read_val()) - numpy.mean(rel)
-        
-        clock=datetime.datetime.now()
-        print(str(clock))
-        print(numpy.mean(readings))
-        #print(numpy.sqrt(numpy.mean(numpy.square(readings))))
-        
-
-
-
-def scanner_34420A():
-    switch_delay = 120
-    NPLC = 100
-    nmeasurements = 100
-    
-    instruments["K34420A"]=HP34420A(rm, 'gpib0::8::INSTR', title='Keysight 34420A')
-    instruments["K34420A"].config_DCV(0.001)
-    
-    scanner_sources = [(channels[0], "Ch0"), (channels[2], "Ch2"), (channels[3], "Ch3"), (channels[4], "Ch4"), (channels[6], "Ch6"), (channels[7], "Ch7"), (channels[5], "Ch5"), (channels[10], "Ch10"), (channels[11], "Ch11"), ]
-    scanner_meters = [(channels[9], instruments["K34420A"]),   ]
-    switch=takovsky_scanner()
-    scanner_permutations = list(itertools.product(scanner_sources, scanner_meters))
-    
-    for perm in scanner_permutations:
-        switch.switchingCloseRelay(perm[0][0])
-        switch.switchingCloseRelay(perm[1][0],) # Close meter
-        for measurement in range(nmeasurements):
-            read_inst_scanner(perm[1][1], perm[0][1])
-        switch.switchingOpenRelay(perm[0][0],) # Open source
-        switch.switchingOpenRelay(perm[1][0],) # Open meter
         
         
 def resistance_bridge_temperature_sweep():
@@ -1260,15 +1096,8 @@ try:
     #test_3458A()
     #test_W4950()
     #INL_3458A()
-    #temperature_sweep()
-    #scanner_once()
-    #auto_ACAL_3458A()
-    #noise_3458A()
-    #pt100_scanner()
-    #rms_34420A()
-    #scanner_34420A()
+    scanner_once()
     #resistance_bridge_temperature_sweep()
-    #test_rotary_scanner_episode_2()
     #nbs430()
     #resistance_bridge()
     #f8508a_logger()
@@ -1276,7 +1105,7 @@ try:
     #resistance_bridge_reversal()
     #ratio_1281()
     #tmp()
-    ratio_8508a()
+    #ratio_8508a()
     #smu_tec_perhaps()
 
 
