@@ -1095,8 +1095,7 @@ def smu_tec_perhaps():
 try:
     #test_3458A()
     #test_W4950()
-    #INL_3458A()
-    scanner_once()
+    #scanner_once()
     #resistance_bridge_temperature_sweep()
     #nbs430()
     #resistance_bridge()
@@ -1106,7 +1105,7 @@ try:
     #ratio_1281()
     #tmp()
     #ratio_8508a()
-    #smu_tec_perhaps()
+    smu_tec_perhaps()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
