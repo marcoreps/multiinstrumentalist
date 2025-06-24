@@ -1097,7 +1097,7 @@ try:
     #test_W4950()
     #scanner_once()
     #resistance_bridge_temperature_sweep()
-    #nbs430()
+    nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
@@ -1105,7 +1105,7 @@ try:
     #ratio_1281()
     #tmp()
     #ratio_8508a()
-    smu_tec_perhaps()
+    #smu_tec_perhaps()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
