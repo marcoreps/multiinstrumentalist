@@ -149,11 +149,11 @@ def INL_3458A():
 
 def read_inst_scanner(inst, dut, bucket="PPMhub"):
     logging.debug("Reading inst with title %s after a measurement of %s" % (inst.get_title(), dut))
-    #if inst.is_readable():
-    writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
-    #    logging.debug('debug step')
-    #else:
-    #    logging.info(inst.get_title()+' was not readable')
+    val=0.0
+    for i in range(10):
+        val+=float(inst.get_read_val())
+    writer.write(bucket, dut, inst.get_title(), val/10)
+    logging.info("%s read %s = %s" % (inst.get_title(), dut, str(val)))
 
 
 
@@ -270,7 +270,11 @@ def read_cal_params(inst):
  
 def recursive_read_inst(sch, interval, priority, inst, name, bucket="Temperature sweep"):
     sch.enter(interval, priority, recursive_read_inst, argument=(sch, interval, priority, inst, name, bucket))
-    writer.write(bucket, name, inst.get_title(), inst.get_read_val())
+    val=0.0
+    for i in range(10):
+        val+=float(inst.get_read_val())
+    writer.write(bucket, name, inst.get_title(), val/10)
+    logging.info("%s was not ready for read_cal_params." % (inst.get_title()))
     
               
 
@@ -1095,9 +1099,9 @@ def smu_tec_perhaps():
 try:
     #test_3458A()
     #test_W4950()
-    #scanner_once()
+    scanner_once()
     #resistance_bridge_temperature_sweep()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
