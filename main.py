@@ -150,10 +150,10 @@ def INL_3458A():
 def read_inst_scanner(inst, dut, bucket="PPMhub"):
     logging.debug("Reading inst with title %s after a measurement of %s" % (inst.get_title(), dut))
     val=0.0
-    for i in range(10):
-        val+=float(inst.get_read_val())
-    writer.write(bucket, dut, inst.get_title(), val/10)
-    logging.info("%s read %s = %s" % (inst.get_title(), dut, str(val)))
+    #for i in range(10):
+     #   val+=float(inst.get_read_val())
+    writer.write(bucket, dut, inst.get_title(), inst.get_read_val())
+    #logging.info("%s read %s = %s" % (inst.get_title(), dut, str(val)))
 
 
 
