@@ -170,14 +170,14 @@ def scanner_once():
 # III   Gr    N   channels[3] ADRmu15 +
 # III   GrW   P   channels[3] ADRmu15 -
 
-# IV    Br    N   channels[4] ADRmu9 +
-# IV    BrW   P   channels[4] ADRmu9 -
-# IV    Or    N   channels[5] ADRmu6 +
-# IV    OrW   P   channels[5] ADRmu6 -
-# IV    Bl    N   channels[6] ADRmu11 +
-# IV    BlW   P   channels[6] ADRmu11 -
-# IV    Gr    N   channels[7] ADRmu12 +
-# IV    GrW   P   channels[7] ADRmu12 -
+# IV    Br    N   channels[4]
+# IV    BrW   P   channels[4]
+# IV    Or    N   channels[5]
+# IV    OrW   P   channels[5]
+# IV    Bl    N   channels[6]
+# IV    BlW   P   channels[6]
+# IV    Gr    N   channels[7]
+# IV    GrW   P   channels[7]
 
 # II    Br    N   channels[8]   3458B +
 # II    BrW   P   channels[8]   3458B -
@@ -188,14 +188,14 @@ def scanner_once():
 # II    Gr    N   channels[11]  ADRmu20 +
 # II    GrW   P   channels[11]  ADRmu20 -
 
-# I     Br    N   channels[12]  
-# I     BrW   P   channels[12]  
-# I     Or    N   channels[13]  
-# I     OrW   P   channels[13]  
-# I     Bl    N   channels[14]  
-# I     BlW   P   channels[14]  
-# I     Gr    N   channels[15]  
-# I     GrW   P   channels[15]  
+# I     Br    N   channels[12] ADRmu9 +
+# I     BrW   P   channels[12] ADRmu9 -
+# I     Or    N   channels[13]
+# I     OrW   P   channels[13]
+# I     Bl    N   channels[14] ADRmu11 +
+# I     BlW   P   channels[14] ADRmu11 -
+# I     Gr    N   channels[15] ADRmu12 +
+# I     GrW   P   channels[15] ADRmu12 -
 
     switch_delay = 120
     NPLC = 100
@@ -230,7 +230,7 @@ def scanner_once():
     read_cal_params(instruments["3458P"])
 
     
-    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[12], "ADRmu9"), (channels[14], "ADRmu11"), (channels[15], "ADRmu12"), (channels[13], "ADRmu6"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
+    scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[12], "ADRmu9"), (channels[14], "ADRmu11"), (channels[15], "ADRmu12"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
     scanner_meters = [(channels[8], instruments["3458B"]), (channels[1], instruments["3458P"]), ]
 
     switch=takovsky_scanner()
