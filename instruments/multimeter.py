@@ -119,6 +119,8 @@ class HP3458A(multimeter):
     def config_pt100(self):
         logging.debug(self.title+' config_pt100 called')
         self.instr.write("OHMF 100")
+        self.instr.write("OCOMP ON")
+        self.instr.write("DELAY 1")
         self.instr.write("MATH CRTD85")
         
     def config_OHMF(self, RANG):

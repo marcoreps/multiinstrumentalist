@@ -1042,6 +1042,13 @@ def smu_tec_perhaps():
     instruments["K34420A"].config_trigger_hold()
     
     
+    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
+    instruments["3458B"].config_pt100()
+    instruments["3458B"].config_NDIG(9)
+    instruments["3458B"].config_NPLC(100)
+    instruments["3458B"].config_trigger_hold()
+    
+    
     #pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
     pid = PID(0.3, 0.0005, 1.00, setpoint=tstart)
     pid.output_limits = (-1,1)
@@ -1049,12 +1056,17 @@ def smu_tec_perhaps():
     triggered = 0
     
     while True:
-        instruments["tmp117"].oneShotMode()
-        while not instruments["tmp117"].dataReady():
-            time.sleep(0.2)
-        tmp117 = instruments["tmp117"].readTempC()
+        #instruments["tmp117"].oneShotMode()
+        #while not instruments["tmp117"].dataReady():
+        #    time.sleep(0.2)
+        #tmp117 = instruments["tmp117"].readTempC()
+        
+        instruments["3458B"].trigger_once()
+        float(instruments["3458P"].get_read_val())
+        tmp117 = float(instruments["3458P"].get_read_val())
+        
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
-
+        
         logging.debug("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
         logging.debug("control="+str(control))
@@ -1099,7 +1111,7 @@ def smu_tec_perhaps():
 try:
     #test_3458A()
     #test_W4950()
-    scanner_once()
+    #scanner_once()
     #resistance_bridge_temperature_sweep()
     #nbs430()
     #resistance_bridge()
@@ -1109,7 +1121,7 @@ try:
     #ratio_1281()
     #tmp()
     #ratio_8508a()
-    #smu_tec_perhaps()
+    smu_tec_perhaps()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
