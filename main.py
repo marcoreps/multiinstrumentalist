@@ -1044,8 +1044,8 @@ def smu_tec_perhaps():
     
     instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
     instruments["3458B"].config_pt100()
-    instruments["3458B"].config_NDIG(9)
-    instruments["3458B"].config_NPLC(100)
+    #instruments["3458B"].config_NDIG(9)
+    #instruments["3458B"].config_NPLC(100)
     instruments["3458B"].config_trigger_hold()
     
     
