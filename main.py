@@ -1067,7 +1067,7 @@ def smu_tec_perhaps():
         
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
         
-        logging.debug("temperautre sensed="+str(tmp117))
+        logging.info("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
         logging.debug("control="+str(control))
         
