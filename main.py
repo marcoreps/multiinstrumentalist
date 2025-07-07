@@ -1062,8 +1062,8 @@ def smu_tec_perhaps():
         #tmp117 = instruments["tmp117"].readTempC()
         
         instruments["3458B"].trigger_once()
-        float(instruments["3458P"].get_read_val())
-        tmp117 = float(instruments["3458P"].get_read_val())
+        float(instruments["3458B"].get_read_val())
+        tmp117 = float(instruments["3458B"].get_read_val())
         
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
         
