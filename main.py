@@ -1070,12 +1070,13 @@ def smu_tec_perhaps():
         
         instruments["2400"].set_display_upper_text(str(round(tmp117, 3))+" C")
         
-        logging.info("temperautre sensed="+str(tmp117))
+        logging.debug("temperautre sensed="+str(tmp117))
         control = pid(tmp117)
         logging.debug("control="+str(control))
         
         if time.time()-last_measurement >= measurement_every_seconds and not triggered:
             logging.debug("nvm measurement triggered")
+            logging.info("temperautre target="+str(pid.setpoint))
             instruments["K34420A"].trigger_once()
             triggered = 1
             writer.write("Temperature sweep", "reference resistor temp", instruments["tmp119"].get_title(), float(instruments["tmp119"].get_read_val()))
