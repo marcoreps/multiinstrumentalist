@@ -1054,7 +1054,7 @@ def smu_tec_perhaps():
     
     
     #pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
-    pid = PID(0.3, 0.0005, 1.00, setpoint=tstart)
+    pid = PID(0.3, 0.0002, 1.00, setpoint=tstart)
     pid.output_limits = (-1,1)
     
     triggered = 0
