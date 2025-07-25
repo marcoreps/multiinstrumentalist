@@ -265,11 +265,11 @@ class tmp119_mg24:
         try:
             # Open the serial port with a timeout for readline()
             self.serial_port = serial.Serial(serial_port, serial_baud, timeout=10) 
-            logging.info(f"Successfully opened serial port {SERIAL_PORT} at {SERIAL_BAUD_RATE} baud.")
+            logging.info(f"Successfully opened serial port {serial_port} at {serial_baud} baud.")
             self.serial_port.flushInput()
             logging.info("Serial input buffer flushed.")
         except serial.SerialException as e:
-            logging.error(f"Could not open serial port {SERIAL_PORT}: {e}")
+            logging.error(f"Could not open serial port {serial_port}: {e}")
         
     def get_read_val(self):
         latest_temperature = None
