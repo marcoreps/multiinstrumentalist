@@ -1114,10 +1114,11 @@ def tmp119_vs_pt100():
     instruments["tmp119"]=tmp119_mg24()
     
     while(True):
+        time.sleep(10)
         instruments["3458B"].trigger_once()
         writer.write("Temperature sweep", "Ambient_Temp", "pico SE012 PT100 3458A", float(instruments["3458B"].get_read_val()))
         writer.write("Temperature sweep", "Ambient_Temp", instruments["tmp119"].get_title(), float(instruments["tmp119"].get_read_val()))
-        time.sleep(10)
+        
 
 
     
