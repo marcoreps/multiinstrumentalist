@@ -289,16 +289,16 @@ class tmp119_mg24:
                         temperature = float(temp_str)
                         latest_temperature = temperature
                     except (ValueError, IndexError) as e:
-                        self.logger.warning(f"Failed to parse temperature from line '{line}': {e}")
+                        logging.warning(f"Failed to parse temperature from line '{line}': {e}")
                 elif line:
                     self.logger.debug(f"Non-temperature line received from MG24 (buffered): '{line}'")
 
             return latest_temperature
         except serial.SerialTimeoutException:
-            self.logger.warning("Serial read timed out while buffering.")
+            logging.warning("Serial read timed out while buffering.")
             return None
         except Exception as e:
-            self.logger.error(f"Error reading from serial port for buffering: {e}")
+            logging.error(f"Error reading from serial port for buffering: {e}")
             return None
             
     def get_title(self):
