@@ -257,3 +257,50 @@ class HP3458A_temp:
     def measure(self):
         pass
         
+class tmp119_mg24:
+
+    def __init__(self, serial_port='/dev/ttyACM1',serial_baud=115200, title='TMP119 on MG24'):
+        self.title = title
+        self.serial_port = None
+        try:
+            # Open the serial port with a timeout for readline()
+            self.serial_port = serial.Serial(serial_port, serial_baud, timeout=10) 
+            logging.info(f"Successfully opened serial port {SERIAL_PORT} at {SERIAL_BAUD_RATE} baud.")
+            self.serial_port.flushInput()
+            logging.info("Serial input buffer flushed.")
+        except serial.SerialException as e:
+            logging.error(f"Could not open serial port {SERIAL_PORT}: {e}")
+        
+    def get_read_val(self):
+        latest_temperature = None
+        try:
+            while self.serial_port.in_waiting > 0:
+                line_bytes = self.serial_port.readline()
+                if not line_bytes:
+                    self.logger.debug("Serial readline timed out while draining buffer.")
+                    continue
+
+                line = line_bytes.decode('utf-8').strip()
+                self.logger.debug(f"Raw serial line received from MG24 (buffered): '{line}'")
+
+                if line.startswith("Temperature:"):
+                    try:
+                        temp_str = line.split(':')[1]
+                        temperature = float(temp_str)
+                        latest_temperature = temperature
+                    except (ValueError, IndexError) as e:
+                        self.logger.warning(f"Failed to parse temperature from line '{line}': {e}")
+                elif line:
+                    self.logger.debug(f"Non-temperature line received from MG24 (buffered): '{line}'")
+
+            return latest_temperature
+        except serial.SerialTimeoutException:
+            self.logger.warning("Serial read timed out while buffering.")
+            return None
+        except Exception as e:
+            self.logger.error(f"Error reading from serial port for buffering: {e}")
+            return None
+            
+    def get_title(self):
+        logging.debug(self.title+' get_title started')
+        return self.title

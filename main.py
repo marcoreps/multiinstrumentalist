@@ -1104,7 +1104,21 @@ def smu_tec_perhaps():
             break
 
         
-        
+def tmp119_vs_pt100():
+    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
+    instruments["3458B"].config_pt100()
+    #instruments["3458B"].config_NDIG(9)
+    #instruments["3458B"].config_NPLC(100)
+    instruments["3458B"].config_trigger_hold()
+    
+    instruments["tmp119"]=tmp119_mg24()
+    
+    while(True):
+        instruments["3458B"].trigger_once()
+        writer.write("Temperature sweep", "Ambient_Temp", "pico SE012 PT100 3458A", float(instruments["3458B"].get_read_val()))
+        writer.write("Temperature sweep", "Ambient_Temp", instruments["tmp119"].get_title(), float(instruments["tmp119"].get_read_val()))
+        time.sleep(10)
+
 
     
 try:
@@ -1120,7 +1134,8 @@ try:
     #ratio_1281()
     #tmp()
     #ratio_8508a()
-    smu_tec_perhaps()
+    #smu_tec_perhaps()
+    tmp119_vs_pt100()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
