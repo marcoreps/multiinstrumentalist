@@ -277,11 +277,11 @@ class tmp119_mg24:
             while self.serial_port.in_waiting > 0:
                 line_bytes = self.serial_port.readline()
                 if not line_bytes:
-                    self.logger.debug("Serial readline timed out while draining buffer.")
+                    logging.debug("Serial readline timed out while draining buffer.")
                     continue
 
                 line = line_bytes.decode('utf-8').strip()
-                self.logger.debug(f"Raw serial line received from MG24 (buffered): '{line}'")
+                logging.debug(f"Raw serial line received from MG24 (buffered): '{line}'")
 
                 if line.startswith("Temperature:"):
                     try:
@@ -291,7 +291,7 @@ class tmp119_mg24:
                     except (ValueError, IndexError) as e:
                         logging.warning(f"Failed to parse temperature from line '{line}': {e}")
                 elif line:
-                    self.logger.debug(f"Non-temperature line received from MG24 (buffered): '{line}'")
+                    logging.debug(f"Non-temperature line received from MG24 (buffered): '{line}'")
 
             return latest_temperature
         except serial.SerialTimeoutException:
