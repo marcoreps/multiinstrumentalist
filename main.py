@@ -1084,7 +1084,7 @@ def smu_tec_perhaps():
             logging.debug("nvm is being read")
             nvm = float(instruments["K34420A"].get_read_val())
             writer.write("Small Temperature Sweep", "Bridge_voltage", instruments["K34420A"].get_title(), nvm)
-            writer.write("Small Temperature Sweep", "DUT_Temperature", "TMP117", tmp117)
+            writer.write("Small Temperature Sweep", "DUT_Temperature", "Well PT100", tmp117)
             last_measurement=time.time()
             triggered = 0
         
