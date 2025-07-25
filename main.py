@@ -1049,6 +1049,10 @@ def smu_tec_perhaps():
     instruments["3458B"].config_trigger_hold()
     
     
+    instruments["tmp119"]=tmp119_mg24()
+
+    
+    
     #pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
     pid = PID(0.3, 0.0005, 1.00, setpoint=tstart)
     pid.output_limits = (-1,1)
@@ -1074,6 +1078,8 @@ def smu_tec_perhaps():
             logging.debug("nvm measurement triggered")
             instruments["K34420A"].trigger_once()
             triggered = 1
+            writer.write("Temperature sweep", "reference resistor temp", instruments["tmp119"].get_title(), float(instruments["tmp119"].get_read_val()))
+
         if time.time()-last_measurement >= measurement_every_seconds+10:
             logging.debug("nvm is being read")
             nvm = float(instruments["K34420A"].get_read_val())
@@ -1135,8 +1141,8 @@ try:
     #ratio_1281()
     #tmp()
     #ratio_8508a()
-    #smu_tec_perhaps()
-    tmp119_vs_pt100()
+    smu_tec_perhaps()
+    #tmp119_vs_pt100()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
