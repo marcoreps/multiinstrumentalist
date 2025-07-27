@@ -1110,6 +1110,7 @@ def smu_tec_perhaps():
             pid.components[1] = last_pid_i
         else:
             last_pid_i = pid.components[1]
+            print(pid.components)
         
         if abs(setpoint-tmp117)>11.0: #things are getting out of control
             instruments["2400"].set_output_off()
