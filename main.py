@@ -1054,7 +1054,7 @@ def smu_tec_perhaps():
     
     
     #pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
-    pid = PID(3, 0.0001, 0.00, setpoint=tstart) # for L&N hamon
+    pid = PID(6, 0.0000, 0.00, setpoint=tstart) # for L&N hamon
     pid.output_limits = (-1,1)
     
     triggered = 0
