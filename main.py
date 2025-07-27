@@ -1054,10 +1054,11 @@ def smu_tec_perhaps():
     
     
     #pid = PID(0.7, 0.01, 4.00, setpoint=tstart)
-    pid = PID(0.5, 0.001, 1.00, setpoint=tstart) # for L&N hamon
+    pid = PID(0.5, 0.01, 1.00, setpoint=tstart) # for L&N hamon
     pid.output_limits = (-1,1)
     
     triggered = 0
+    last_pid_i = 0
     
     while True:
         #instruments["tmp117"].oneShotMode()
@@ -1103,7 +1104,12 @@ def smu_tec_perhaps():
         logging.debug("temperautre target="+str(setpoint))
         
         pid.setpoint = setpoint
-        print(pid.components)
+        
+        # anti-windup
+        if control == pid.output_limits[0] or control == pid.output_limits[1]:
+            pid.components[1] = last_pid_i
+        else:
+            last_pid_i = pid.components[1]
         
         if abs(setpoint-tmp117)>11.0: #things are getting out of control
             instruments["2400"].set_output_off()
