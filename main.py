@@ -1136,7 +1136,7 @@ def tmp119_vs_pt100():
 try:
     #test_3458A()
     #test_W4950()
-    #scanner_once()
+    scanner_once()
     #resistance_bridge_temperature_sweep()
     #nbs430()
     #resistance_bridge()
@@ -1146,7 +1146,7 @@ try:
     #ratio_1281()
     #tmp()
     #ratio_8508a()
-    smu_tec_perhaps()
+    #smu_tec_perhaps()
     #tmp119_vs_pt100()
 
 
