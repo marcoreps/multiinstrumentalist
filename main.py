@@ -398,11 +398,10 @@ def nbs430():
         switch.switchingCloseRelay("i0") # Home switch
         switch.switchingCloseRelay("c0") # Home switch
 
-        scanner_sources = [(1, "ADRmu6"), (2, "ADRmu4"), (3, "ADRmu1"), (4, "ADRmu9"),  (5, "ADRmu12"),]
-        #scanner_sources = [(1, "ADRmu6"), (2, "ADRmu3"), (3, "ADRmu20"), (4, "ADRmu11"),  (5, "ADRmu15"),]
-        #scanner_sources = [(1, "ADRmu4"), (2, "ADRmu3"), (3, "ADRmu1"), (4, "ADRmu20"),  (5, "ADRmu11"),]
-        #scanner_sources = [(1, "ADRmu9"), (2, "ADRmu12"), (3, "ADRmu15"), (4, "ADRmu20"),  (5, "ADRmu1"),]
-        #scanner_sources = [(1, "ADRmu9"), (2, "ADRmu12"), (3, "ADRmu11"), (4, "ADRmu3"),  (5, "ADRmu1"),]
+        scanner_sources = [(1, "ADRmu1"), (2, "ADRmu3"), (3, "ADRmu4"), (4, "ADRmu9"), (5, "ADRmu11"),]
+        #scanner_sources = [(1, "ADRmu1"), (2, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
+        #scanner_sources = [(2, "ADRmu11"), (1, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
+        #scanner_sources = [(1, "ADRmu4"), (2, "ADRmu9"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
 
         
         scanner_permutations = set(itertools.combinations(scanner_sources, 2))
@@ -1136,9 +1135,9 @@ def tmp119_vs_pt100():
 try:
     #test_3458A()
     #test_W4950()
-    scanner_once()
+    #scanner_once()
     #resistance_bridge_temperature_sweep()
-    #nbs430()
+    nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
