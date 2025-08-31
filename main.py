@@ -400,8 +400,8 @@ def nbs430():
 
         #scanner_sources = [(1, "ADRmu1"), (2, "ADRmu3"), (3, "ADRmu4"), (4, "ADRmu9"), (5, "ADRmu11"),]
         #scanner_sources = [(1, "ADRmu1"), (2, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
-        scanner_sources = [(1, "ADRmu11"), (2, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
-        #scanner_sources = [(1, "ADRmu4"), (2, "ADRmu9"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
+        #scanner_sources = [(1, "ADRmu11"), (2, "ADRmu3"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
+        scanner_sources = [(1, "ADRmu4"), (2, "ADRmu9"), (3, "ADRmu12"), (4, "ADRmu20"), (5, "ADRmu15"),]
 
         
         scanner_permutations = set(itertools.combinations(scanner_sources, 2))
