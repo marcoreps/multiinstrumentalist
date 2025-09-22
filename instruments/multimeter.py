@@ -129,7 +129,9 @@ class HP3458A(multimeter):
         self.instr.write("OCOMP ON")
         self.instr.write("DELAY 1")
         
-        
+    def beep(self):
+        logging.debug(self.title+' config_ohmf called')
+        self.instr.write("BEEP")
 
 
 
