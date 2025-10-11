@@ -1134,14 +1134,14 @@ def job_function():
 
     instruments["3458B"].acal_ALL()
     instruments["3458P"].acal_ALL()
-    instruments["3458H"].acal_ALL()
+    #instruments["3458H"].acal_ALL()
 
     while not (instruments["3458B"].is_ready()):
         time.sleep(10)
 
     read_cal_params(instruments["3458B"])
     read_cal_params(instruments["3458P"])
-    read_cal_params(instruments["3458H"])
+    #read_cal_params(instruments["3458H"])
     
 
 def hourly_acal():
@@ -1149,7 +1149,7 @@ def hourly_acal():
     time.sleep(1)
     instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
     time.sleep(1)
-    instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,21', title='3458H')
+    #instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,21', title='3458H')
     time.sleep(1)
     
     scheduler = BackgroundScheduler()
