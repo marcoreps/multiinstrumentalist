@@ -9,7 +9,8 @@ from datetime import datetime, timedelta
 import numpy
 import sys
 import sched
-from apscheduler.schedulers.background import BackgroundSchedulerimport itertools
+from apscheduler.schedulers.background import BackgroundScheduler
+import itertools
 import configparser
 import random
 import statistics
