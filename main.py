@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 import numpy
 import sys
 import sched
-import itertools
+from apscheduler.schedulers.background import BackgroundSchedulerimport itertools
 import configparser
 import random
 import statistics
@@ -1129,7 +1129,35 @@ def tmp119_vs_pt100():
         writer.write("Temperature sweep", "Ambient_Temp", "pico SE012 PT100 3458A", float(instruments["3458B"].get_read_val()))
         writer.write("Temperature sweep", "Ambient_Temp", instruments["tmp119"].get_title(), float(instruments["tmp119"].get_read_val()))
         
+def job_function():
 
+    instruments["3458B"].acal_ALL()
+    instruments["3458P"].acal_ALL()
+    instruments["3458H"].acal_ALL()
+
+    while not (instruments["3458B"].is_ready()):
+        time.sleep(10)
+
+    read_cal_params(instruments["3458B"])
+    read_cal_params(instruments["3458P"])
+    read_cal_params(instruments["3458H"])
+    
+
+def hourly_acal():
+    instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
+    instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
+    instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,24', title='3458H')
+    
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(job_function, 'cron', minute=0, id='hourly_acal_task')
+    scheduler.add_job(job_function, 'date', run_date=datetime.now() + timedelta(seconds=5))
+    scheduler.start()
+    
+    try:
+        while True:
+            time.sleep(10)
+    except (KeyboardInterrupt, SystemExit):
+        scheduler.shutdown()
 
     
 try:
@@ -1137,7 +1165,7 @@ try:
     #test_W4950()
     #scanner_once()
     #resistance_bridge_temperature_sweep()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
@@ -1147,6 +1175,7 @@ try:
     #ratio_8508a()
     #smu_tec_perhaps()
     #tmp119_vs_pt100()
+    hourly_acal()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
