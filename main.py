@@ -1146,8 +1146,11 @@ def job_function():
 
 def hourly_acal():
     instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
+    time.sleep(1)
     instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
+    time.sleep(1)
     instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,21', title='3458H')
+    time.sleep(1)
     
     scheduler = BackgroundScheduler()
     scheduler.add_job(job_function, 'cron', minute=0, id='hourly_acal_task')
