@@ -1142,6 +1142,9 @@ def job_function():
     read_cal_params(instruments["3458B"])
     read_cal_params(instruments["3458P"])
     read_cal_params(instruments["3458H"])
+    instruments["3458B"].blank_display()
+    instruments["3458P"].blank_display()
+    instruments["3458H"].blank_display()
     
 
 def hourly_acal():
