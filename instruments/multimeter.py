@@ -58,9 +58,7 @@ class HP3458A(multimeter):
         
     def blank_display(self):
         logging.debug(self.title+" blank_display")
-        self.instr.write("ARANGE ON")
-        self.instr.write("DISP MSG,\"                 \"")
-        #self.instr.visalib.sessions[self.instr.session].interface.ibloc()
+        self.instr.write("DISP OFF,'    '")
         
     def config_trigger_auto(self):
         logging.debug(self.title+" config_trigger_auto")
