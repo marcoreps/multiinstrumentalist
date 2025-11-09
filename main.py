@@ -1135,6 +1135,10 @@ def job_function():
     instruments["3458B"].acal_ALL()
     instruments["3458P"].acal_ALL()
     instruments["3458H"].acal_ALL()
+    instruments["3458g1"].acal_ALL()
+    instruments["3458g2"].acal_ALL()
+    instruments["3458g3"].acal_ALL()
+    instruments["3458g4"].acal_ALL()
 
     while not (instruments["3458B"].is_ready()):
         time.sleep(10)
@@ -1142,9 +1146,17 @@ def job_function():
     read_cal_params(instruments["3458B"])
     read_cal_params(instruments["3458P"])
     read_cal_params(instruments["3458H"])
+    read_cal_params(instruments["3458g1"])
+    read_cal_params(instruments["3458g2"])
+    read_cal_params(instruments["3458g3"])
+    read_cal_params(instruments["3458g4"])
     instruments["3458B"].blank_display()
     instruments["3458P"].blank_display()
     instruments["3458H"].blank_display()
+    instruments["3458g1"].blank_display()
+    instruments["3458g2"].blank_display()
+    instruments["3458g3"].blank_display()
+    instruments["3458g4"].blank_display()
     
 
 def hourly_acal():
@@ -1155,9 +1167,25 @@ def hourly_acal():
     instruments["3458H"]=HP3458A(rm, 'gpib0::21::INSTR', title='3458H')
     instruments["3458H"].blank_display()
     
+    instruments["3458g1"]=HP3458A(rm, 'gpib0::2::INSTR', title='3458A_MY45054264')
+    instruments["3458g1"].blank_display()
+    
+    instruments["3458g2"]=HP3458A(rm, 'gpib0::24::INSTR', title='3458A_US28028957')
+    instruments["3458g2"].blank_display()
+    
+    instruments["3458g3"]=HP3458A(rm, 'gpib0::22::INSTR', title='3458A_MY59352556')
+    instruments["3458g3"].blank_display()
+    
+    instruments["3458g4"]=HP3458A(rm, 'gpib0::5::INSTR', title='3458A_2823A25425')
+    instruments["3458g4"].blank_display()
+    
+    job_function()
+    
     scheduler = BackgroundScheduler()
     scheduler.add_job(job_function, 'cron', minute=0, hour='*/2', id='bi_hourly_acal_task')
     scheduler.start()
+    
+
     
     try:
         while True:
