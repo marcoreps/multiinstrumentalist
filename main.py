@@ -1176,9 +1176,9 @@ def hourly_acal():
 try:
     #test_3458A()
     #test_W4950()
-    scanner_once()
+    #scanner_once()
     #resistance_bridge_temperature_sweep()
-    #nbs430()
+    nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
