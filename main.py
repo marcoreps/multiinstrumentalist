@@ -1171,6 +1171,16 @@ def hourly_acal():
             time.sleep(10)
     except (KeyboardInterrupt, SystemExit):
         scheduler.shutdown()
+        
+        
+def acal_3458p():
+    instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
+    instruments["3458P"].blank_display()
+    instruments["3458P"].acal_ALL()
+    while not (instruments["3458P"].is_ready()):
+        time.sleep(10)
+    read_cal_params(instruments["3458P"])
+    instruments["3458P"].blank_display()
 
     
 try:
@@ -1178,7 +1188,7 @@ try:
     #test_W4950()
     #scanner_once()
     #resistance_bridge_temperature_sweep()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
@@ -1189,6 +1199,7 @@ try:
     #smu_tec_perhaps()
     #tmp119_vs_pt100()
     #hourly_acal()
+    acal_3458p()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
