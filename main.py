@@ -1134,7 +1134,7 @@ def job_function():
 
     instruments["3458B"].acal_ALL()
     instruments["3458P"].acal_ALL()
-    #instruments["3458H"].acal_ALL()
+    instruments["3458AB"].acal_ALL()
 
 
     while not (instruments["3458B"].is_ready()):
@@ -1142,11 +1142,11 @@ def job_function():
 
     read_cal_params(instruments["3458B"])
     read_cal_params(instruments["3458P"])
-    #read_cal_params(instruments["3458H"])
+    read_cal_params(instruments["3458AB"])
  
     instruments["3458B"].blank_display()
     instruments["3458P"].blank_display()
-    #instruments["3458H"].blank_display()
+    instruments["3458AB"].blank_display()
 
     
 
@@ -1155,10 +1155,10 @@ def hourly_acal():
     instruments["3458B"].blank_display()
     instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
     instruments["3458P"].blank_display()
-    #instruments["3458H"]=HP3458A(rm, 'gpib0::21::INSTR', title='3458H')
-    #instruments["3458H"].blank_display()
+    instruments["3458AB"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,21', title='3458AB')
+    instruments["3458AB"].blank_display()
     
-    job_function()
+    #job_function()
     
     scheduler = BackgroundScheduler()
     scheduler.add_job(job_function, 'cron', minute=0, hour='*/2', id='bi_hourly_acal_task')
