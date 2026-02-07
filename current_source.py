@@ -22,7 +22,7 @@ def current_source_output_impedance_test():
     name = "Current_Source"
 
     runs = 5
-    settling_time = 5.0  # seconds
+    settling_time = 1.0  # seconds
 
     start = -10.0
     stop  = +1.0
@@ -54,10 +54,8 @@ def current_source_output_impedance_test():
         for counter, voltage in enumerate(randomized_setpoints, start=1):
 
             smu.set_source_voltage(voltage)
-            logging.info(":MEAS:CURR?")
             time.sleep(settling_time)
-
-            reply = smu.instr.query(":MEAS:CURR?").split(',') # returns string voltage,current,....
+            reply = smu.instr.query(":READ?").split(',') # returns string voltage,current,....
             current = float(reply[1])
             measurements[voltage].append(current)
 
