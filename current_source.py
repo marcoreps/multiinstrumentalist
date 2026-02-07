@@ -37,21 +37,9 @@ def current_source_output_impedance_test():
     )
 
     smu = instruments["2400"]
-    logging.info("step 1")
-    time.sleep(3000)
-
     smu.set_source_type("VOLT")
-    logging.info("step 2")
-    time.sleep(3000)
-    
     smu.set_sense_type("CURR")
-    logging.info("step 3")
-    time.sleep(3000)
-
     smu.set_voltage_compliance(0.1)
-    logging.info("step 4")
-    time.sleep(3000)
-
     smu.set_output_on()
 
     for run in range(runs):
