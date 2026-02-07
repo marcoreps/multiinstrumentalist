@@ -180,8 +180,8 @@ class K2400:
         self.instr.clear()
         self.instr.write("*RST")
         logging.info("*IDN? -> "+self.instr.query("*IDN?"))
-        self.instr.write(":SYST:BEEP:STAT OFF")
-        self.instr.write(":SENS:FUNC:CONC OFF") # meas only 1 function
+        #self.instr.write(":SYST:BEEP:STAT OFF")
+        #self.instr.write(":SENS:FUNC:CONC OFF") # meas only 1 function
          
     def get_title(self):
         return self.title
