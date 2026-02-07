@@ -13,6 +13,9 @@ from instruments.switch import *
 rm = pyvisa.ResourceManager()
 instruments = dict()
 
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)-8s %(message)s')
+logging.info("Starting ...")
+
 def current_source_output_impedance_test():
 
     name = "Current_Source"
