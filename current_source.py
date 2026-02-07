@@ -51,7 +51,7 @@ def current_source_output_impedance_test():
             smu.set_source_voltage(voltage)
             time.sleep(settling_time)
 
-            replystring = smu.instr.query(":MEAS:CURR?") # returns string voltage,current,....
+            reply = smu.instr.query(":MEAS:CURR?").split(',') # returns string voltage,current,....
             current = float(replystring[1])
             measurements[voltage].append(current)
 
