@@ -215,7 +215,7 @@ class K2400:
     def set_voltage_compliance(self, compliance):
         self.instr.write(':SENS:VOLT:PROT '+str(compliance))
 
-    def set_voltage_compliance(self, compliance):
+    def set_current_compliance(self, compliance):
         self.instr.write(':SENS:CURR:PROT '+str(compliance))
         
     def set_display_upper_text(self, text):
