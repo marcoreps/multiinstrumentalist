@@ -3,6 +3,8 @@ import csv
 import logging
 import pyvisa
 import random
+from datetime import datetime, timedelta
+
 
 from instruments.sensor import *
 from instruments.multimeter import *
