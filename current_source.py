@@ -22,7 +22,7 @@ def current_source_output_impedance_test():
     name = "Current_Source"
 
     runs = 5
-    settling_time = 5.0  # seconds
+    settling_time = 2.0  # seconds
 
     start = -10.0
     stop  = +1.0
@@ -39,7 +39,7 @@ def current_source_output_impedance_test():
 
     smu = instruments["2400"]
     smu.set_source_type("VOLT")
-    smu.instr.write(":SENSe:CURRent:NPLCycles 1")
+    smu.instr.write(":SENSe:CURRent:NPLCycles 10")
     smu.set_voltage_compliance(0.1)
     smu.set_source_current_range(0.001)
     smu.set_current_compliance(0.0006)
@@ -49,7 +49,7 @@ def current_source_output_impedance_test():
         logging.info(f"Run {run + 1} of {runs}")
         randomized_setpoints = setpoints.copy()
         random.shuffle(randomized_setpoints)
-
+        smu.instr.query(":READ?")
         for counter, voltage in enumerate(randomized_setpoints, start=1):
 
             smu.set_source_voltage(voltage)
