@@ -39,12 +39,12 @@ def current_source_output_impedance_test():
 
     smu = instruments["2400"]
     smu.set_source_type("VOLT")
-    #smu.set_sense_type("CURR")
     smu.instr.write(":SENSe:CURRent:NPLCycles 10")
     smu.set_voltage_compliance(0.1)
     smu.set_source_current_range(0.001)
     smu.set_current_compliance(0.0006)
     smu.set_output_on()
+    time.sleep(10)
 
     for run in range(runs):
         logging.info(f"Run {run + 1} of {runs}")
