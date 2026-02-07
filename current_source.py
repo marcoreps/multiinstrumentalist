@@ -22,7 +22,7 @@ def current_source_output_impedance_test():
     name = "Current_Source"
 
     runs = 5
-    settling_time = 1.0  # seconds
+    settling_time = 5.0  # seconds
 
     start = -10.0
     stop  = +1.0
@@ -44,7 +44,6 @@ def current_source_output_impedance_test():
     smu.set_source_current_range(0.001)
     smu.set_current_compliance(0.0006)
     smu.set_output_on()
-    time.sleep(10)
 
     for run in range(runs):
         logging.info(f"Run {run + 1} of {runs}")
