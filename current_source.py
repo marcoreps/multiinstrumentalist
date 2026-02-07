@@ -21,7 +21,7 @@ def current_source_output_impedance_test():
 
     name = "Current_Source"
 
-    runs = 5
+    runs = 50
     settling_time = 2.0  # seconds
 
     start = -10.0
