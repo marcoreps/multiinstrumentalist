@@ -11,7 +11,7 @@ from instruments.source import *
 from instruments.switch import *
 
 rm = pyvisa.ResourceManager()
-
+instruments = dict()
 
 def current_source_output_impedance_test():
 
