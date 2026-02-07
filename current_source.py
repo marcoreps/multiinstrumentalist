@@ -1,3 +1,5 @@
+import numpy as np
+
 def current_source_output_impedance_test():
 
     name = "Current_Source"
