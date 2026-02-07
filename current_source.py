@@ -1,12 +1,17 @@
 import numpy as np
 import csv
 import logging
+import pyvisa
+
 
 
 from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
 from instruments.switch import *
+
+rm = pyvisa.ResourceManager()
+
 
 def current_source_output_impedance_test():
 
