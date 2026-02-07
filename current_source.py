@@ -4,9 +4,6 @@ import logging
 import pyvisa
 import random
 
-
-
-
 from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
