@@ -60,3 +60,5 @@ def current_source_output_impedance_test():
             row = [float(setpoint)] + measurements[setpoint]
             writer.writerow(row)
     smu.set_output_off()
+    
+current_source_output_impedance_test()
