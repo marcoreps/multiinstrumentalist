@@ -41,6 +41,8 @@ def current_source_output_impedance_test():
     smu.set_source_type("VOLT")
     smu.set_sense_type("CURR")
     smu.set_voltage_compliance(0.1)
+    smu.set_source_current_range(0.001)
+    smu.set_current_compliance(0.0006)
     smu.set_output_on()
 
     for run in range(runs):
