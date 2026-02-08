@@ -1132,31 +1132,31 @@ def tmp119_vs_pt100():
         
 def job_function():
 
-    instruments["3458B"].acal_ALL()
-    instruments["3458P"].acal_ALL()
+    #instruments["3458B"].acal_ALL()
+    #instruments["3458P"].acal_ALL()
     instruments["3458H"].acal_ALL()
 
 
     while not (instruments["3458B"].is_ready()):
         time.sleep(10)
 
-    read_cal_params(instruments["3458B"])
-    read_cal_params(instruments["3458P"])
+    #read_cal_params(instruments["3458B"])
+    #read_cal_params(instruments["3458P"])
     read_cal_params(instruments["3458H"])
  
-    instruments["3458B"].blank_display()
-    instruments["3458P"].blank_display()
-    instruments["3458H"].blank_display()
+    #instruments["3458B"].blank_display()
+    #instruments["3458P"].blank_display()
+    #instruments["3458H"].blank_display()
 
     
 
 def hourly_acal():
     instruments["3458B"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,23', title='3458B')
-    instruments["3458B"].blank_display()
+    #instruments["3458B"].blank_display()
     instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
-    instruments["3458P"].blank_display()
+    #instruments["3458P"].blank_display()
     instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,25', title='3458H')
-    instruments["3458H"].blank_display()
+    #instruments["3458H"].blank_display()
     time.sleep(5)
     job_function()
     
