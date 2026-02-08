@@ -25,7 +25,7 @@ def current_source_output_impedance_test():
     settling_time = 2.0  # seconds
 
     start = -10.0
-    stop  = +1.0
+    stop  = +5.0
     step  = 1.0
 
     setpoints = list(np.arange(start, stop + step, step))
