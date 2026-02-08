@@ -1155,7 +1155,7 @@ def hourly_acal():
     instruments["3458B"].blank_display()
     instruments["3458P"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,22', title='3458P')
     instruments["3458P"].blank_display()
-    instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,24', title='3458H')
+    instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,25', title='3458H')
     instruments["3458H"].blank_display()
     time.sleep(50)
     job_function()
