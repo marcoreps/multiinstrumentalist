@@ -1157,7 +1157,7 @@ def hourly_acal():
     instruments["3458P"].blank_display()
     instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,25', title='3458H')
     instruments["3458H"].blank_display()
-    time.sleep(50)
+    time.sleep(5)
     job_function()
     
     scheduler = BackgroundScheduler()
