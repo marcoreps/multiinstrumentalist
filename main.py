@@ -1132,16 +1132,16 @@ def tmp119_vs_pt100():
         
 def job_function():
 
-    #instruments["3458B"].acal_ALL()
-    #instruments["3458P"].acal_ALL()
+    instruments["3458B"].acal_ALL()
+    instruments["3458P"].acal_ALL()
     instruments["3458H"].acal_ALL()
 
 
     while not (instruments["3458B"].is_ready()):
         time.sleep(10)
 
-    #read_cal_params(instruments["3458B"])
-    #read_cal_params(instruments["3458P"])
+    read_cal_params(instruments["3458B"])
+    read_cal_params(instruments["3458P"])
     read_cal_params(instruments["3458H"])
  
     #instruments["3458B"].blank_display()
