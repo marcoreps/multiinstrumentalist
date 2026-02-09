@@ -83,21 +83,19 @@ class HP3458A(multimeter):
         self.instr.timeout = timout_memory        
         
         
-    def acal_ALL(self):
-        logging.debug(f"{self.title} ACAL ALL starting...")
-        original_timeout = self.instr.timeout
-        self.instr.timeout = 5000 
+def acal_ALL(self):
+    logging.debug(f"{self.title} ACAL ALL starting...")
+    self.instr.timeout = 5000 
+    
+    try:
+        self.instr.write("ACAL ALL")
         
-        try:
-            self.instr.clear()
-            self.instr.write("ACAL ALL")
-            self.instr.flush(vpp43.VI_WRITE_BUF_DISCARD) 
+    except Exception as e:
+        if "VI_ERROR_IO" in str(e):
+            logging.info(f"{self.title} ACAL started successfully (Bus clamped as expected).")
+        else:
+            logging.error(f"{self.title} unexpected error: {e}")
             
-        except Exception as e:
-            logging.error(f"Error starting ACAL on {self.title}: {e}")
-        finally:
-            self.instr.timeout = original_timeout
-
 
 
         
