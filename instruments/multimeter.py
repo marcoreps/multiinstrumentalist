@@ -84,16 +84,22 @@ class HP3458A(multimeter):
         
         
     def acal_ALL(self):
-        logging.debug(self.title+' ACAL ALL started')
-        #timout_memory = self.instr.timeout
-        #self.instr.timeout = 2000
-        #try:
-        self.instr.clear()
-        self.instr.write("ACAL")
-        time.sleep(1)
-        #except Exception:
-        #    pass
-        #self.instr.timeout = timout_memory     
+        logging.debug(f"{self.title} ACAL ALL starting...")
+        original_timeout = self.instr.timeout
+        self.instr.timeout = 5000 
+        
+        try:
+            self.instr.clear()
+            self.instr.write("ACAL ALL")
+            self.instr.flush(vpp43.VI_WRITE_BUF_DISCARD) 
+            
+        except Exception as e:
+            logging.error(f"Error starting ACAL on {self.title}: {e}")
+        finally:
+            self.instr.timeout = original_timeout
+
+
+
         
     def is_readable(self):
         logging.debug(self.title+' is_readable() started')
