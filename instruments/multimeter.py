@@ -85,7 +85,7 @@ class HP3458A(multimeter):
         
     def acal_ALL(self):
         logging.debug(f"{self.title} ACAL ALL starting...")
-        self.instr.timeout = 5000 
+        #self.instr.timeout = 5000 
         
         try:
             self.instr.write("ACAL ALL")
@@ -95,8 +95,6 @@ class HP3458A(multimeter):
                 logging.info(f"{self.title} ACAL started successfully (Bus clamped as expected).")
             else:
                 logging.error(f"{self.title} unexpected error: {e}")
-            
-
 
         
     def is_readable(self):
