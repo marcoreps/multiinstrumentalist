@@ -16,7 +16,7 @@ import random
 import statistics
 from decimal import Decimal
 
-from instruments.sensor import *
+#from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
 from instruments.switch import *
