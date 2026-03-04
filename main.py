@@ -51,22 +51,7 @@ def test_3458A():
 
         
         
-def test_W4950():
-    instruments["W4950"]=W4950(ip=vxi_ip, gpib_address=9)
-    instruments["W4950"].config_trigger_hold()
-    instruments["W4950"].config_accuracy("HIGH")
-    
-    timestr = time.strftime("%Y%m%d-%H%M%S_")
-    with open('csv/'+timestr+'4950_10V_HIACC_short.csv', mode='w') as csv_file:
-        fieldnames = ['time', 'W4950_volt']
-        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-        writer.writeheader()
-    
-        while True:
-            instruments["W4950"].trigger_once()
-            val = float(instruments["W4950"].get_read_val())
-            print(val)
-            writer.writerow({'time':time.time(), 'W4950_volt': val})
+
             
 def INL_3458A():
     timestr = time.strftime("%Y%m%d-%H%M%S_")
@@ -1156,7 +1141,7 @@ def hourly_acal():
     instruments["3458H"].blank_display()
     
     scheduler = BackgroundScheduler()
-    scheduler.add_job(job_function, 'cron', minute=0, hour='*/2', id='bi_hourly_acal_task')
+    scheduler.add_job(job_function, 'cron', minute=0, hour='*/10', id='acal_task')
     scheduler.start()
 
     try:
