@@ -19,7 +19,7 @@ from decimal import Decimal
 #from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
-#from instruments.switch import *
+from instruments.switch import *
 
 from influxdb_interface import influx_writer
 
@@ -149,8 +149,8 @@ def scanner_once():
 
 # III   Br    N   channels[0] ADRmu1 +
 # III   BrW   P   channels[0] ADRmu1 -
-# III   Or    N   channels[1] 3458P / W4950 +
-# III   OrW   P   channels[1] 3458P / W4950 -
+# III   Or    N   channels[1] 3458P
+# III   OrW   P   channels[1] 3458P
 # III   Bl    N   channels[2] ADRmu3 +
 # III   BlW   P   channels[2] ADRmu3 -
 # III   Gr    N   channels[3] ADRmu15 +
@@ -167,8 +167,8 @@ def scanner_once():
 
 # II    Br    N   channels[8]   3458B +
 # II    BrW   P   channels[8]   3458B -
-# II    Or    N   channels[9]   
-# II    OrW   P   channels[9]   
+# II    Or    N   channels[9]   3458H +
+# II    OrW   P   channels[9]   3458H -
 # II    Bl    N   channels[10]  ADRmu4 +
 # II    BlW   P   channels[10]  ADRmu4 +
 # II    Gr    N   channels[11]  ADRmu20 +
@@ -200,24 +200,14 @@ def scanner_once():
     instruments["3458P"].config_NPLC(NPLC)
     instruments["3458P"].config_trigger_hold()
     
-    #instruments["W4950"]=W4950(rm, 'gpib0::9::INSTR')
-    #instruments["W4950"].config_accuracy("HIGH")
-    #instruments["W4950"].config_DCV(10)
-    #instruments["W4950"].config_trigger_hold()
-    
-    instruments["3458B"].acal_ALL()
-    instruments["3458P"].acal_ALL()
-    
-    while not (instruments["3458B"].is_ready() and instruments["3458P"].is_ready()):
-        time.sleep(5)
-
-
-    read_cal_params(instruments["3458B"])
-    read_cal_params(instruments["3458P"])
-
+    instruments["3458H"]=HP3458A(rm, 'TCPIP::192.168.0.5::gpib0,25', title='3458H')
+    instruments["3458H"].config_DCV(10)
+    instruments["3458H"].config_NDIG(9)
+    instruments["3458H"].config_NPLC(NPLC)
+    instruments["3458H"].config_trigger_hold()
     
     scanner_sources = [(channels[0], "ADRmu1"), (channels[2], "ADRmu3"), (channels[3], "ADRmu15"), (channels[12], "ADRmu9"), (channels[14], "ADRmu11"), (channels[15], "ADRmu12"), (channels[10], "ADRmu4"), (channels[11], "ADRmu20"), ]
-    scanner_meters = [(channels[8], instruments["3458B"]), (channels[1], instruments["3458P"]), ]
+    scanner_meters = [(channels[8], instruments["3458B"]), (channels[1], instruments["3458P"]), (channels[9], instruments["3458H"]), ]
 
     switch=takovsky_scanner()
     
@@ -1155,7 +1145,7 @@ def hourly_acal():
 try:
     #test_3458A()
     #test_W4950()
-    #scanner_once()
+    scanner_once()
     #resistance_bridge_temperature_sweep()
     #nbs430()
     #resistance_bridge()
@@ -1167,7 +1157,7 @@ try:
     #ratio_8508a()
     #smu_tec_perhaps()
     #tmp119_vs_pt100()
-    hourly_acal()
+    #hourly_acal()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
