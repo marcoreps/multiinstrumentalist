@@ -19,7 +19,7 @@ from decimal import Decimal
 #from instruments.sensor import *
 from instruments.multimeter import *
 from instruments.source import *
-from instruments.switch import *
+#from instruments.switch import *
 
 from influxdb_interface import influx_writer
 
@@ -1147,7 +1147,7 @@ try:
     #test_W4950()
     #scanner_once()
     #resistance_bridge_temperature_sweep()
-    nbs430()
+    #nbs430()
     #resistance_bridge()
     #f8508a_logger()
     #voltage_temperature_sweep()
@@ -1157,7 +1157,7 @@ try:
     #ratio_8508a()
     #smu_tec_perhaps()
     #tmp119_vs_pt100()
-    #hourly_acal()
+    hourly_acal()
 
 
 except (KeyboardInterrupt, SystemExit) as exErr:
